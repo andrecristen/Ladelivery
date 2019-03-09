@@ -1,0 +1,14 @@
+.div-ajax-carregamento-pagina {
+    position: absolute;
+    display: none;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    opacity: 0.65;
+    -moz-opacity: 0.65;
+    filter: alpha(opacity=65);
+    background: black;
+    text-align: center;
+}

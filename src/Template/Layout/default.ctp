@@ -134,9 +134,8 @@ $cacheControl = '?v=06-02-2019-01'
         </ul>
     </div>
 </div>
-</div>
 <?php if ($login && $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR) : ?>
-<div style="margin-left: 300px; overflow-y: scroll; height:auto;" class="content">
+<div class="content-next-menu content">
     <?php else:; ?>
     <div style="overflow-y: scroll; height:auto;" class="content">
         <?php endif; ?>

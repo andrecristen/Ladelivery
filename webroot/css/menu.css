@@ -10,6 +10,12 @@
     height: 100%;
     color: #e1ffff;
 }
+
+.content-next-menu{
+    margin-left: 300px;
+    overflow-y: scroll;
+    height:auto;
+}
 .nav-side-menu .brand {
     background-color: #23282e;
     line-height: 50px;
@@ -114,6 +120,7 @@
     .nav-side-menu {
         position: relative;
         width: 100%;
+        height: auto;
         margin-bottom: 10px;
     }
     .nav-side-menu .toggle-btn {
@@ -213,6 +220,14 @@ body {
     transition: all 1s ease;
 }
 @media (max-width: 767px) {
+    .content-next-menu{
+        margin-left: 0px;
+    }
+
+    .content{
+        padding: 0px;
+    }
+
     .nav-side-menu .sub-menu {
         position: relative;
         width: 100%;

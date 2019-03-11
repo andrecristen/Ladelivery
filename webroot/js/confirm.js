@@ -2,7 +2,7 @@ function confirmar() {
     if(verificaMinimoOpcoes()){
         alert('Confirmado');
     }else{
-        alert('Selecione forma de pagamento para o pedido atual');
+        alertify.error('Selecione uma forma de pagamento');
     }
 }
 

@@ -7,7 +7,7 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Error\Debugger;
 use Cake\Http\Exception\NotFoundException;
 
-$cacheControl = '?v=24-01-2019-01';
+$cacheControl = new \App\Model\Utils\CacheControl();
 $this->layout = false;
 $tableLocator = new \Cake\ORM\Locator\TableLocator();
 $params = ($this->getRequest()->getAttribute('params'));
@@ -26,24 +26,27 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Pedido : <?= $pedido ?></title>
+    <title>Fechar Pedido : #<?= $pedidoModel->id ?></title>
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css<?= h($cacheControl) ?>"
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css<?= h($cacheControl->getCacheVersion()) ?>"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css<?= h($cacheControl) ?>"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css<?= h($cacheControl->getCacheVersion()) ?>"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js<?= h($cacheControl) ?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js<?= h($cacheControl) ?>9"
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js<?= h($cacheControl->getCacheVersion()) ?>9"
             integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
             crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js<?= h($cacheControl) ?>"
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js<?= h($cacheControl->getCacheVersion()) ?>"
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/css/bootstrap-select.min.css<?= h($cacheControl) ?>">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/js/bootstrap-select.min.js<?= h($cacheControl) ?>"></script>
-    <script src="/js/confirm.js<?= h($cacheControl) ?>"></script>
-    <link rel="stylesheet" href="/css/cart2.css<?= h($cacheControl) ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/css/bootstrap-select.min.css<?= h($cacheControl->getCacheVersion()) ?>">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/js/bootstrap-select.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
+    <script src="/js/confirm.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
+    <link rel="stylesheet" href="/css/cart.css<?= h($cacheControl->getCacheVersion()) ?>"><!-- JavaScript -->
+    <script src="/ladev/alert/alertify.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
+    <link rel="stylesheet" href="/ladev/alert/css/alertify.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
+    <link rel="stylesheet" href="/ladev/alert/css/themes/default.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
 
 </head>
 <body style="margin-top: 65px;">
@@ -88,6 +91,8 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
 </nav>
 
 <div class="container">
+    <br/>
+    <h2>Fechar Pedido</h2>
     <main>
         <div class="basket-module">
             <label for="promo-code">Cupom</label>
@@ -97,7 +102,7 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
         <div class="basket">
             <div class="basket-labels">
                 <ul>
-                    <li class="item item-heading">Produto</li>
+                    <li class="item item-heading">Item</li>
                     <li class="price">Preço</li>
                     <li class="quantity">Quantidade</li>
                     <li class="subtotal">Total</li>
@@ -141,7 +146,7 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
             <div class="summary">
                 <div class="summary-total-items"><span class="total-items"></span>Resumo</div>
                 <div class="summary-total">
-                    <div class="total-title">Produtos</div>
+                    <div class="total-title">Itens</div>
                     <div class="total-value final-value" id="basket-total"><?= $totalCarrinho ?></div>
                     <div class="total-title">Desconto</div>
                     <div class="total-value final-value" id="basket-total"><?= $desconto ?></div>

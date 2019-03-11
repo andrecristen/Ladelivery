@@ -40,4 +40,5 @@ endif;
 <p class="error">
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= h($message) ?>
+    <?= h('Algo de errado aconteceu, você tem certeza que esta navegando nas águas corretas marinheiro') ?>
 </p>

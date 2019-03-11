@@ -131,6 +131,7 @@ class ListasController extends AppController
 
     public function getListas($produto = null)
     {
+        $this->render(false);
         $tableLocator = new TableLocator();
         $listas = [];
         $options = [];

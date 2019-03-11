@@ -70,9 +70,15 @@ function montaListasAdicionais(data) {
         allSelectMultiple();
     }
     if (listasAdicionadas === 0) {
-        var labelEmpty = document.createElement('h4');
-        labelEmpty.textContent = 'Este produto não permite essa ação...';
-        document.getElementById('contentOptions').appendChild(labelEmpty);
+        var divAlert = document.createElement('div');
+        divAlert.setAttribute('class', 'alert alert-danger');
+        var icon = document.createElement('i');
+        icon.setAttribute('class', 'far fa-grin-beam-sweat fa-3x');
+        divAlert.appendChild(icon);
+        var span = document.createElement('span');
+        span.textContent = 'Ahh que pena este item não permite isso!';
+        divAlert.appendChild(span);
+        document.getElementById('contentOptions').appendChild(divAlert);
     }
 }
 
@@ -90,9 +96,15 @@ function findLists(produtoId) {
             montaListasAdicionais(data);
         },
         error: function (data) {
-            var labelEmpty = document.createElement('h4');
-            labelEmpty.textContent = 'Este produto não permite essa ação...';
-            document.getElementById('contentOptions').appendChild(labelEmpty);
+            var divAlert = document.createElement('div');
+            divAlert.setAttribute('class', 'alert alert-danger');
+            var icon = document.createElement('i');
+            icon.setAttribute('class', 'far fa-grin-beam-sweat fa-3x');
+            divAlert.appendChild(icon);
+            var span = document.createElement('span');
+            span.textContent = 'Não sei como dizer isso mas não foi possível carregar as opções para este produto!';
+            divAlert.appendChild(span);
+            document.getElementById('contentOptions').appendChild(divAlert);
         }
     });
 }

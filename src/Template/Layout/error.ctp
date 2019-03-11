@@ -30,18 +30,34 @@
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <div id="container">
-        <div id="header">
-            <h1><?= __('Error') ?></h1>
-        </div>
-        <div id="content">
-            <?= $this->Flash->render() ?>
+<div class="page-wrap d-flex flex-row align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center">
+                <div id="header">
+                    <h1><?= __('ÓH NÃO Marinheiro! algo nada legal aconteceu!') ?></h1>
+                </div>
+                <div id="content">
+                    <?= $this->Flash->render() ?>
 
-            <?= $this->fetch('content') ?>
+                    <?= $this->fetch('content') ?>
+                </div>
+                <div id="footer">
+                    <?= $this->Html->link(__('Back'), 'javascript:history.back()') ?>
+                </div>
+            </div>
         </div>
-        <div id="footer">
-            <?= $this->Html->link(__('Back'), 'javascript:history.back()') ?>
-        </div>
+    </div>
+</div>
+    <div id="container">
     </div>
 </body>
 </html>
+<style>
+    body {
+        background: #dedede;
+    }
+    .page-wrap {
+        min-height: 100vh;
+    }
+</style>

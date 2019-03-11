@@ -31,8 +31,8 @@ endif;
 $this->end();
 endif;
 ?>
-<h2><?= h($message) ?></h2>
 <p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
+    <strong><?= __d('cake', 'Opss! Algo deu errado!') ?>: </strong>
     <?= __d('cake', 'A requisição para o endereço {0} na teve sucesso no servidor.', "<strong>'{$url}'</strong>") ?>
 </p>
+<h2><?= h($message) ?></h2>

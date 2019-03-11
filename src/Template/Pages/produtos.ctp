@@ -95,8 +95,7 @@ if (isset($_SESSION['Auth']['User']['id'])){
         </div>
     <?php }else{?>
     <!-- Button trigger modal -->
-    <button id="openModal" style="display: none" type="button" class="btn btn-primary" data-toggle="modal"
-            data-target="#modal">
+    <button id="openModal" style="display: none" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" data-backdrop="static" data-keyboard="false">
         abrir modal
     </button>
 
@@ -127,7 +126,7 @@ if (isset($_SESSION['Auth']['User']['id'])){
                                 <label for="exampleFormControlInput1">Produto</label>
                                 <input type="text" readonly class="form-control" id="nomeProduto">
                             </div>
-                            <div class="form-group">
+                            <div style="display: none" class="form-group">
                                 <label for="exampleFormControlInput1">Preço Produto Original</label>
                                 <input type="text" readonly class="form-control" id="precoProdutoOriginal">
                             </div>
@@ -148,7 +147,6 @@ if (isset($_SESSION['Auth']['User']['id'])){
                                 <textarea placeholder="Digite observações, por exemplo, retirar pepino."
                                           class="form-control" id="observacaoDigitada" rows="2"></textarea>
                             </div>
-<!--                            <button style="float: right;" class="btn btn-info btn-sm" onclick="openTab(event, 'opcoes')">Deseja algum adicional?</button>-->
                         </div>
                     </div>
 
@@ -165,13 +163,12 @@ if (isset($_SESSION['Auth']['User']['id'])){
             </div>
         </div>
     </div>
-    <h4 class="my-4">Produtos da Categoria:
-        <small><?= $categoriaNome ?></small>
+    <h4 class="my-4">Produtos da Categoria: <?= strtoupper($categoriaNome) ?>
     </h4>
     <?php if (!isset($_SESSION['Auth']['User']['id'])) { ?>
         <div class="row">
             <div style="width: 100%" class="alert alert-info">
-                <h4>Para poder adicionar ao carrinho, por favor entre com sua conta!</h4>
+                <h4><i class="fas fa-exclamation-triangle fa-fw" style="color: #ff1b2e"></i>Para poder adicionar ao carrinho, por favor entre com sua conta!</h4>
             </div>
         </div>
     <?php } ?>
@@ -180,9 +177,10 @@ if (isset($_SESSION['Auth']['User']['id'])){
         $produtoscount = 0;
         foreach ($query as $produto) {
 //            Buscamos a imagem do produto
-            $produtosImagensTable = \Cake\ORM\TableRegistry::get('ProdutosImagens');
-            $existImage = $produtosImagensTable->query();
+            $produtosImagensTable = $tableLocator->get('ProdutosImagens');
+            $existImage = $produtosImagensTable->find();
             $existImage->where(['produto_id' => $produto->id]);
+            /** @var $existImage \App\Model\Entity\ProdutosImagen*/
             $existImage = $existImage->first();
             ?>
             <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
@@ -220,7 +218,7 @@ if (isset($_SESSION['Auth']['User']['id'])){
         }
         if ($produtoscount < 1) { ?>
             <div style="width: 100%" class="alert alert-danger" role="alert">
-                <i class="far fa-grin-beam-sweat fa-3x"></i>&nbsp;<span>Está categoria ainda não possui nenhum item cadastrado, mas não deixe de visitar para encontrar novidades!</span>
+                <i class="far fa-grin-beam-sweat fa-3x" style="color: #000000"></i>&nbsp;<span>Está categoria ainda não possui nenhum item cadastrado, mas não deixe de visitar para encontrar novidades!</span>
             </div>
         <?php } ?>
     </div>

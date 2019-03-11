@@ -82,7 +82,28 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
         </div>
     </div>
 </nav>
+<!-- Button trigger modal -->
+<button id="openModal" style="display: none" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" data-backdrop="static" data-keyboard="false">
+    abrir modal
+</button>
 
+<!-- Modal -->
+<div class="modal" id="modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div style="min-height: auto" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Precisa de troco para quanto?</h5>
+            </div>
+            <div class="modal-body">
+               <input style="width: 100%" type="number" id="trocoInput" min="0">
+            </div>
+            <div class="modal-footer">
+                <button style="display: none" type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" onclick="confirmarTroco()" class="btn btn-primary">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container main-cart">
     <br/>
     <h2>Fechar Pedido</h2>

@@ -432,6 +432,19 @@ class PedidosController extends AppController
         return false;
     }
 
+    public function saveTrocoPara($trocoPara){
+        $this->render(false);
+        $success = false;
+        $validator = new ValidaPedidoAbertoCliente();
+        /** @var $pedido Pedido*/
+        $pedido = $validator->existsPedidoEmAberto($this->Auth->user('id'), true);
+        $pedido->troco_para = floatval($trocoPara);
+        if($this->Pedidos->save($pedido)){
+            $success = true;
+        }
+        echo json_encode(['success' => $success]);
+    }
+
     public function calcularAcrescimo($formaPagamentoId){
         $this->render(false);
         $success = false;
@@ -445,11 +458,15 @@ class PedidosController extends AppController
             /** @var $pedido Pedido*/
             $pedido = $validator->existsPedidoEmAberto($this->Auth->user('id'), true);
             $pedido->formas_pagamento_id = $formaPagamento->id;
+
             if($formaPagamento->aumenta_valor){
                 $acrescimo = $pedido->valor_total_cobrado * ($formaPagamento->aumenta_valor/100);
                 $pedido->valor_acrescimo = $acrescimo;
             }else{
                 $pedido->valor_acrescimo = 0;
+            }
+            if(!$formaPagamento->necessita_troco){
+                $pedido->troco_para = 0;
             }
             if($this->Pedidos->save($pedido)){
                 $success = true;

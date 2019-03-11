@@ -33,9 +33,32 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
             <td><?= h($status) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Valor Total Cobrado') ?></th>
+            <th scope="row"><?= __('Valor Produtos') ?></th>
             <td><?= $this->Number->format($pedido->valor_total_cobrado) ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Valor Acrescimo') ?></th>
+            <td><?= $this->Number->format($pedido->valor_acrescimo) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Valor Desconto') ?></th>
+            <td><?= $this->Number->format($pedido->valor_desconto) ?></td>
+        </tr>
+        <?php if($createEntregaTable){?>
+            <tr>
+                <th scope="row"><?= __('Valor Entrega') ?></th>
+                <td><?= $this->Number->format($entrega->valor_entrega) ?></td>
+            </tr>
+            <tr>
+                <th scope="row"><?= __('Valor Total') ?></th>
+                <td><?= $this->Number->format(($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto) ?></td>
+            </tr>
+        <?php }else{ ?>
+            <tr>
+                <th scope="row"><?= __('Valor Total') ?></th>
+                <td><?= $this->Number->format(($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto) ?></td>
+            </tr>
+        <?php }?>
     </table>
     <?php
     if ($createEntregaTable) {

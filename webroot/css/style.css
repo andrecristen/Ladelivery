@@ -265,6 +265,7 @@ p.notice {
 p.error {
     color: #fff;
     background: #C3232D;
+    border: 3px solid black;
 }
 
 pre {

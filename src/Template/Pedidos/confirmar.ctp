@@ -25,19 +25,25 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
             <div class="form-group">
                 <span>Valor Produtos: R$<?= $pedido->valor_total_cobrado ?></span>
             </div>
+            <div class="form-group">
+                <span>Valor Acrescimo: R$<?= $pedido->valor_acrescimo ?></span>
+            </div>
+            <div class="form-group">
+                <span>Valor Desconto: R$<?= $pedido->valor_desconto ?></span>
+            </div>
             <?php if($entrega){?>
                 <div class="form-group">
                     <span>Valor Entrega: R$<?= $entrega->valor_entrega ?></span>
                 </div>
                 <div class="form-group">
-                    <b>Valor Total: R$<?= $entrega->valor_entrega + $pedido->valor_total_cobrado ?></b>
+                    <b>Valor Total: R$<?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?></b>
                 </div>
             <?php }else{ ?>
                 <div class="form-group">
                     <span>Valor Entrega: Entrega não contratada</span>
                 </div>
                 <div class="form-group">
-                    <b>Valor Total: R$<?= $pedido->valor_total_cobrado ?></b>
+                    <b>Valor Total: R$<?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?></b>
                 </div>
             <?php }?>
         </div>

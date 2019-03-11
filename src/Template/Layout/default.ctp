@@ -142,9 +142,23 @@ $cacheControl = '?v=06-02-2019-01'
         <?= $this->fetch('content') ?>
     </div>
     <script>
-        $("select").select2({
-            minimumInputLength: 0
+        $(document).ready(function () {
+            var lis = $(".collapsed");
+            lis.each(onClickSaveLastSistem);
+            if(sessionStorage.getItem("sistemaSelecionado")){
+                var clickable = $(document).find('[data-target="'+sessionStorage.getItem("sistemaSelecionado")+'"]');
+                clickable.click();
+            }
+            $("select").select2({
+                minimumInputLength: 0
+            });
         });
+
+        function onClickSaveLastSistem(index, element) {
+            $(element).click(function() {
+                sessionStorage.setItem("sistemaSelecionado", $(element).attr('data-target'));
+            });
+        }
     </script>
     <footer>
     </footer>

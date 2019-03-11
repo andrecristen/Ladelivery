@@ -28,7 +28,6 @@ $cacheControl = '?v=06-02-2019-01'
     <?= $this->Html->meta('icon') ?>
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('menu.css') ?>
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
@@ -56,7 +55,8 @@ $cacheControl = '?v=06-02-2019-01'
     <!--    FONTAWESOME CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css<?= h($cacheControl) ?>"
           integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
+    <?= $this->Html->css('menu.css') ?>
+    <?= $this->Html->script('menu.js') ?>
 </head>
 <body>
 <?= $this->Flash->render() ?>
@@ -64,7 +64,7 @@ $cacheControl = '?v=06-02-2019-01'
 <div class="nav-side-menu">
     <div class="brand">LADelivery - LADev</div>
     <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
-
+    <i class="fa fa-bars fa-2x toggle-btn-pc" onclick="closeMenu()"></i>
     <div class="menu-list">
         <ul id="menu-content" class="menu-content collapse out">
             <li class="collapsed active">
@@ -141,25 +141,6 @@ $cacheControl = '?v=06-02-2019-01'
         <?php endif; ?>
         <?= $this->fetch('content') ?>
     </div>
-    <script>
-        $(document).ready(function () {
-            var lis = $(".collapsed");
-            lis.each(onClickSaveLastSistem);
-            if(sessionStorage.getItem("sistemaSelecionado")){
-                var clickable = $(document).find('[data-target="'+sessionStorage.getItem("sistemaSelecionado")+'"]');
-                clickable.click();
-            }
-            $("select").select2({
-                minimumInputLength: 0
-            });
-        });
-
-        function onClickSaveLastSistem(index, element) {
-            $(element).click(function() {
-                sessionStorage.setItem("sistemaSelecionado", $(element).attr('data-target'));
-            });
-        }
-    </script>
     <footer>
     </footer>
 </body>

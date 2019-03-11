@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\CupomSite;
 use App\Model\Entity\Endereco;
+use App\Model\Entity\FormasPagamento;
 use App\Model\Entity\ItensCarrinho;
 use App\Model\Entity\Lista;
 use App\Model\Entity\OpcoesExtra;
@@ -13,6 +15,10 @@ use App\Model\Entity\PedidosProduto;
 use App\Model\Entity\TaxasEntregasCotacao;
 use App\Model\Entity\TemposMedio;
 use App\Model\Table\PedidosProdutosTable;
+use App\Model\Table\PedidosTable;
+use App\Model\Utils\ValidaPedidoAbertoCliente;
+use Aura\Intl\Exception;
+use Cake\Database\Connection;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Locator\TableLocator;
@@ -26,11 +32,17 @@ use Cake\ORM\Locator\TableLocator;
  */
 class PedidosController extends AppController
 {
+    /** @var  $pedidoSession Pedido*/
+    protected $pedidoSession;
 
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->pertmiteAction('generatePedido');
+        $this->pertmiteAction('aplicarCupom');
+        $this->pertmiteAction('calcularAcrescimo');
+        $this->pertmiteAction('rejeitarPedidoAberto');
+        $this->pertmiteAction('confirmarPedidoAberto');
         $this->validateActions();
     }
 
@@ -44,7 +56,10 @@ class PedidosController extends AppController
         $this->paginate = [
             'contain' => ['Users', 'FormasPagamentos']
         ];
-        $pedidos = $this->paginate($this->Pedidos->find()->where(['tipo_pedido' => Pedido::TIPO_PEDIDO_DELIVERY, 'status_pedido <> ' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE]))->sortBy('id', SORT_DESC);
+        $pedidos = $this->paginate($this->Pedidos->find()->where(
+            ['tipo_pedido' => Pedido::TIPO_PEDIDO_DELIVERY,
+            'status_pedido <> ' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE]
+        ))->sortBy('id', SORT_DESC);
 
         $this->set(compact('pedidos'));
     }
@@ -366,8 +381,154 @@ class PedidosController extends AppController
         echo json_encode(['success' => $success, 'pedido' => $newPedido->id]);
     }
 
+    public function rejeitarPedidoAberto(){
+        $this->render(false);
+        $success = false;
+        if ($this->forceAlterarSituacao(Pedido::STATUS_CANCELADO_CLIENTE)){
+            $success = true;
+        }
+        echo json_encode(['success'=> $success]);
+    }
+
+    public function confirmarPedidoAberto($formaPagamento = null){
+        $this->render(false);
+        try{
+            $this->Pedidos->getConnection()->begin();
+            $success = $this->forceAlterarSituacao(Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA);
+            if($success){
+                /** @var $pedido Pedido*/
+                $this->getPedidoSession()->formas_pagamento_id = intval($formaPagamento);
+                if($this->Pedidos->save($this->getPedidoSession())){
+                    $this->Pedidos->getConnection()->commit();
+                    $msg = 'Sucesso';
+                }else{
+                    throw new Exception('Não foi possível vincular forma de pagamento ao pedido, se o problema persistir comunique a empresa');
+                }
+            }else{
+                throw new Exception('Não foi possível alterar a situação do pedido, se o problema persistir comunique a empresa');
+            }
+        }catch (Exception $exception){
+            $success = false;
+            $msg = $exception->getMessage();
+            $this->Pedidos->getConnection()->rollback();
+        }
+        echo json_encode(['success' => $success, 'message'=>$msg]);
+    }
+
+    private function forceAlterarSituacao($situacao){
+        $tableLocator = new TableLocator();
+        /** @var $tablePedidos PedidosTable*/
+        $tablePedidos = $tableLocator->get('Pedidos');
+        $validator = new ValidaPedidoAbertoCliente();
+        /** @var $pedido Pedido*/
+        $pedido = $validator->existsPedidoEmAberto($this->Auth->user('id'), true);
+        if($pedido){
+            $this->setPedidoSession($pedido);
+            $pedido->status_pedido = $situacao;
+            if($tablePedidos->save($pedido)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function calcularAcrescimo($formaPagamentoId){
+        $this->render(false);
+        $success = false;
+        $reload = true;
+        $tableLocator = new TableLocator();
+        $validator = new ValidaPedidoAbertoCliente();
+        $formaPagamentoTable = $tableLocator->get('FormasPagamentos');
+        /** @var $formaPagamento FormasPagamento*/
+        $formaPagamento = $formaPagamentoTable->find()->where(['id' => $formaPagamentoId])->first();
+        if($formaPagamento){
+            /** @var $pedido Pedido*/
+            $pedido = $validator->existsPedidoEmAberto($this->Auth->user('id'), true);
+            $pedido->formas_pagamento_id = $formaPagamento->id;
+            if($formaPagamento->aumenta_valor){
+                $acrescimo = $pedido->valor_total_cobrado * ($formaPagamento->aumenta_valor/100);
+                $pedido->valor_acrescimo = $acrescimo;
+            }else{
+                $pedido->valor_acrescimo = 0;
+            }
+            if($this->Pedidos->save($pedido)){
+                $success = true;
+                $reload = true;
+            }
+            if(!$formaPagamento->aumenta_valor){
+                $reload = false;
+            }
+        }else{
+            $success = false;
+            $reload = true;
+        }
+        echo json_encode(['success' => $success, 'reload' => $reload]);
+    }
+
+    public function aplicarCupom($cupom = null){
+        $tableLocator = new TableLocator();
+        $validator = new ValidaPedidoAbertoCliente();
+        $this->render(false);
+        $success = false;
+        if($cupom){
+            $cupom = strtoupper($cupom);
+            /** @var $cupomModel CupomSite*/
+            $cupomTable = $tableLocator->get('CupomSite');
+            $cupomModel = $cupomTable->find()->where(['nome_cupom' => $cupom ,'maximo_vezes_usar' => 0])->first();
+            if(!$cupomModel){
+                $cupomModel = $cupomTable->find()->where(['nome_cupom' => $cupom,'vezes_usado < maximo_vezes_usar'])->first();
+            }
+            if($cupomModel){
+                $cupomModel->vezes_usado++;
+                /** @var $pedido Pedido*/
+                $pedido = $validator->existsPedidoEmAberto($this->Auth->user('id'), true);
+                if($pedido){
+                    $valorDesconto = 0;
+                    if ($cupomModel->porcentagem){
+                        $valorDesconto = $pedido->valor_total_cobrado * ($cupomModel->valor_desconto / 100);
+                    }else{
+                        $valorDesconto =  $cupomModel->valor_desconto;
+                    }
+                    if($valorDesconto > 0){
+                        $pedido->valor_desconto = $valorDesconto;
+                        $pedido->cupom_usado = $cupom;
+                        if($this->Pedidos->save($pedido)){
+                            $success = true;
+                            $cupomTable->save($cupomModel);
+                        }else{
+                            $success = false;
+                        }
+                    }
+                }else{
+                    $success = false;
+                }
+            }else{
+                $success = false;
+            }
+        }
+        echo json_encode(['success' => $success]);
+    }
+
     public function view($id = null){
         $pedido = $this->Pedidos->get($id);
         $this->set('pedido', $pedido);
     }
+
+    /**
+     * @return Pedido
+     */
+    public function getPedidoSession()
+    {
+        return $this->pedidoSession;
+    }
+
+    /**
+     * @param Pedido $pedidoSession
+     */
+    public function setPedidoSession($pedidoSession)
+    {
+        $this->pedidoSession = $pedidoSession;
+    }
+
+
 }

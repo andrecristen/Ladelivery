@@ -6,18 +6,19 @@
 ?>
 <div class="container bootstrap snippet">
     <div class="row">
-        <div class="col-sm-3"><!--left col-->
+        <div class="col-sm-4"><!--left col-->
             <div class="text-center">
                 <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <a href="/" class="pull-left btn btn-danger"><i class="fas fa-home"></i> Início</a>
+                    <a href="/pedidos/meus-pedidos/<?= $_SESSION['Auth']['User']['id'] ?>" class="btn btn-success"><i class="fas fa-cart-arrow-down"></i> Pedidos</a>
                     <a href="/enderecos/meus-enderecos/<?= $_SESSION['Auth']['User']['id'] ?>" class="btn btn-primary"><i class="fas fa-map-marked-alt"></i> Endereços</a>
                 </div>
             </div>
             </hr>
             <br>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <?= $this->Form->create($user) ?>
             <fieldset>
                 <legend><?= __('Pessoa') ?></legend>

@@ -1,12 +1,4 @@
 <?php
-
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Http\Exception\NotFoundException;
-
 $cacheControl = new \App\Model\Utils\CacheControl();
 $this->layout = false;
 $tableLocator = new \Cake\ORM\Locator\TableLocator();
@@ -16,6 +8,7 @@ $controllerPedido = new \App\Model\Utils\ValidaPedidoAbertoCliente();
 if (isset($_SESSION['Auth']['User']['id'])){
     $pedido = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);
 }
+/** @var $pedidoModel \App\Model\Entity\Pedido*/
 $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
     'status_pedido'=> \App\Model\Entity\Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE,
     'user_id' => $_SESSION['Auth']['User']['id'] ])->first();
@@ -43,10 +36,10 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/css/bootstrap-select.min.css<?= h($cacheControl->getCacheVersion()) ?>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/js/bootstrap-select.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
     <script src="/js/confirm.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
-    <link rel="stylesheet" href="/css/cart.css<?= h($cacheControl->getCacheVersion()) ?>"><!-- JavaScript -->
+    <link rel="stylesheet" href="/css/cart.css<?= h($cacheControl->getCacheVersion()) ?>">
     <script src="/ladev/alert/alertify.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
     <link rel="stylesheet" href="/ladev/alert/css/alertify.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
-    <link rel="stylesheet" href="/ladev/alert/css/themes/default.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
+    <link rel="stylesheet" href="/ladev/alert/css/themes/bootstrap.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
 
 </head>
 <body style="margin-top: 65px;">
@@ -90,14 +83,14 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
     </div>
 </nav>
 
-<div class="container">
+<div class="container main-cart">
     <br/>
     <h2>Fechar Pedido</h2>
     <main>
         <div class="basket-module">
             <label for="promo-code">Cupom</label>
-            <input id="promo-code" type="text" name="promo-code" maxlength="5" class="promo-code-field">
-            <button class="promo-code-cta btn-primary">Aplicar</button>
+            <input id="promo-code" type="text" name="promo-code" class="promo-code-field">
+            <button onclick="aplicarCupom()" class="promo-code-cta btn-primary">Aplicar</button>
         </div>
         <div class="basket">
             <div class="basket-labels">
@@ -111,11 +104,19 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
             <?php
             $totalCarrinho = 0;
             $totalEntrega = 0;
-            $desconto = 0;
+            $desconto = $pedidoModel->valor_desconto;
+            $acrescimo = $pedidoModel->valor_acrescimo;
             $itensCarrinho = 0;
             $pedidoProdutos = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $pedidoModel->id]);
+            /** @var $pedidoEntrega \App\Model\Entity\PedidosEntrega*/
+            $pedidoEntrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id' => $pedidoModel->id])->first();
+            if($pedidoEntrega){
+                $totalEntrega = $pedidoEntrega->valor_entrega;
+            }
+            /** @var $pedidoProduto \App\Model\Entity\PedidosProduto*/
             foreach ($pedidoProdutos as $pedidoProduto) {
                 $produtos = $tableLocator->get('Produtos')->find()->where(['id' => intval($pedidoProduto->produto_id)])->limit(1);
+                /** @var $useProduto \App\Model\Entity\Produto*/
                 $useProduto = $produtos->first();
                 $totalCarrinho = $totalCarrinho + ($pedidoProduto->valor_total_cobrado);
                 $itensCarrinho = $itensCarrinho + 1;
@@ -143,31 +144,35 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
             ?>
         </div>
         <aside>
-            <div class="summary">
+            <div style="height: 350px" class="summary">
                 <div class="summary-total-items"><span class="total-items"></span>Resumo</div>
                 <div class="summary-total">
                     <div class="total-title">Itens</div>
                     <div class="total-value final-value" id="basket-total"><?= $totalCarrinho ?></div>
                     <div class="total-title">Desconto</div>
                     <div class="total-value final-value" id="basket-total"><?= $desconto ?></div>
+                    <div class="total-title">Acréscimo</div>
+                    <div class="total-value final-value" id="basket-total"><?= $acrescimo?></div>
                     <div class="total-title">Entrega</div>
                     <div class="total-value final-value" id="basket-total"><?= $totalEntrega ?></div>
                     <br/>
-                    <div class="total-title">Total</div>
-                    <div class="total-value final-value" id="basket-total"><?= ($totalCarrinho + $totalEntrega) - $desconto ?></div>
+                    <div class="total-title max-option">Total</div>
+                    <div class="total-value final-value max-option" id="basket-total"><b><?= ($totalCarrinho + $totalEntrega + $acrescimo) - $desconto ?></b></div>
                 </div>
                 <?php if($itensCarrinho > 0) {?>
                     <div class="summary-total">
                         <div style="width: auto; margin-right: 2px;" class="total-title">Forma Pagamento</div>
-                        <select class="select-endereco" name="pagamentoSelect">
+                        <select onchange="calcularAcrecimo()" class="select-endereco" name="pagamentoSelect">
                             <option disabled selected value="false">Selecione a forma de pagamento</option>
                             <?php
                             /** @var $formasPagamento \App\Model\Entity\FormasPagamento[]*/
                             $formasPagamento = $tableLocator->get('FormasPagamentos')->find();
-                            foreach ($formasPagamento as $formaPagamento){
-                                ?>
-                                <option value="<?= $formaPagamento->id?>" ><?= $formaPagamento->nome?></option>
-                                <?php
+                            foreach ($formasPagamento as $formaPagamento) {
+                                if ($formaPagamento->id == $pedidoModel->formas_pagamento_id) {
+                                    echo '<option selected value="'.$formaPagamento->id.'" troco="'.$formaPagamento->necessita_troco.'">'.$formaPagamento->nome.'</option>';
+                                } else {
+                                    echo '<option value="'.$formaPagamento->id.'" troco="'.$formaPagamento->necessita_troco.'">'.$formaPagamento->nome.'</option>';
+                                }
                             }
                             ?>
                         </select>
@@ -178,12 +183,10 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
                         <button onclick="cancelar()" class="checkout-cta btn-danger">Cancelar Pedido</button>
                     </div>
                 <?php }else{?>
-                    <div class="alert alert-info" style="text-align: center">
-                        Este pedido não possui itens, por favor cancele ele e continue comprando...
+                    <div class="alert alert-danger" style="text-align: center">
+                        Aconteceu algum erro e foi criado um pedido sem itens, por favor cancele ele para poder começar outro...
                     </div>
-                    <div class="summary-checkout">
-                        <a href="../pages/categorias" class="checkout-cta btn-warning">Continuar Comprando</a>
-                    </div>
+                    <button onclick="cancelar()" class="checkout-cta btn-danger">Cancelar Pedido</button>
                 <?php } ?>
             </div>
         </aside>

@@ -11,8 +11,12 @@ use Cake\ORM\Entity;
  * @property float $valor_total_cobrado
  * @property int|null $tempo_producao_aproximado_minutos
  * @property float $troco_para
+ * @property float $valor_desconto
+ * @property float $valor_acrescimo
  * @property int $tipo_pedido
  * @property int $status_pedido
+ * @property int $formas_pagamento_id
+ * @property string $cupom_usado
  * @property \Cake\I18n\FrozenTime $data_pedido
  *
  * @property \App\Model\Entity\User $user
@@ -36,6 +40,7 @@ class Pedido extends Entity
     const STATUS_AGUARDANDO_COLETA_CLIENTE = 8;
     const STATUS_ENTREGUE = 9;
     const STATUS_REJEITADO = 10;
+    const STATUS_CANCELADO_CLIENTE = 11;
 
     //Status para Lists pedidos tipo Comanda
     const  STATUS_ABERTA = 11;
@@ -60,6 +65,7 @@ class Pedido extends Entity
             self::STATUS_AGUARDANDO_COLETA_CLIENTE => 'Aguardando Coleta Cliente',
             self::STATUS_ENTREGUE => 'Entregue',
             self::STATUS_REJEITADO => 'Rejeitado',
+            self::STATUS_CANCELADO_CLIENTE => 'Cancelado',
         ];
     }
 
@@ -102,6 +108,8 @@ class Pedido extends Entity
         'pedidos_entregas' => true,
         'produtos' => true,
         'cupom_usado' => true,
+        'valor_desconto' => true,
+        'valor_acrescimo' => true,
         'formas_pagamento_id' => true,
         'formas_pagamentos' => true
     ];

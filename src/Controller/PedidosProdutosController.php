@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Model\Entity\PedidosProduto;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 
 /**
  * PedidosProdutos Controller
@@ -13,6 +15,12 @@ use App\Model\Entity\PedidosProduto;
  */
 class PedidosProdutosController extends AppController
 {
+
+    public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
+    {
+        parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->validateActions();
+    }
 
     /**
      * Index method

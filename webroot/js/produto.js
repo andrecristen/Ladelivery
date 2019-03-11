@@ -180,9 +180,10 @@ function enviteToCart(data) {
         dataType: "json",
         success: function (data) {
             if (data.itemGravado) {
+                alertify.success('Item adicionado ao carrinho');
                 closeModal();
             } else {
-                alert('NÃO FOI POSSIVEL ADICIONAR O ITEM AO CARRINHO');
+                alertify.error('Não foi possivel adicionar o item ao carrinho');
             }
         },
         error: function (data) {

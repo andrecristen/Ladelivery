@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $empresa_id
  * @property string $nome
+ * @property float $aumenta_valor
  * @property bool $necesista_maquina_cartao
  * @property bool $necessita_troco
  *

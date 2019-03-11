@@ -85,6 +85,16 @@ class PedidosTable extends Table
             ->allowEmptyString('troco_para', false);
 
         $validator
+            ->numeric('valor_desconto')
+            ->requirePresence('valor_desconto', 'create')
+            ->allowEmptyString('valor_desconto', false);
+
+         $validator
+             ->numeric('valor_acrescimo')
+             ->requirePresence('valor_acrescimo', 'create')
+             ->allowEmptyString('valor_acrescimo', false);
+
+        $validator
             ->integer('tipo_pedido')
             ->requirePresence('tipo_pedido', 'create')
             ->allowEmptyString('tipo_pedido', false);

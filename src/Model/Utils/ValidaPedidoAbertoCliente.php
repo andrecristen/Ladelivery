@@ -19,10 +19,12 @@ class ValidaPedidoAbertoCliente
         $this->tableLocator = new TableLocator();
     }
 
-    public function existsPedidoEmAberto($clienteId){
+    public function existsPedidoEmAberto($clienteId, $returnModel = false){
         $pedidoAberto = $this->getTableLocator()->get('Pedidos')->find()->where(['user_id' => $clienteId, 'status_pedido' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE])->first();
-        if($pedidoAberto){
+        if($pedidoAberto && !$returnModel){
             return $pedidoAberto->id;
+        }elseif($pedidoAberto && $returnModel){
+            return $pedidoAberto;
         }
         return false;
     }

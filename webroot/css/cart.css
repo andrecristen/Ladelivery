@@ -2,42 +2,42 @@
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,600);
 
-html,
-html a {
+.main-cart html,
+.main-cart html a {
     -webkit-font-smoothing: antialiased;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
 }
 
 
-a {
+.main-cart a {
     border: 0 none;
     outline: 0;
     text-decoration: none;
 }
 
-strong {
+.main-cart strong {
     font-weight: bold;
 }
 
-p {
+.main-cart p {
     margin: 0.75rem 0 0;
 }
 
-h1 {
+.main-cart h1 {
     font-size: 0.75rem;
     font-weight: normal;
     margin: 0;
     padding: 0;
 }
 
-input,
-button {
+.main-cart input,
+.main-cart button {
     border: 0 none;
     outline: 0 none;
+    margin-bottom: 3px;
 }
 
-button {
-    background-color: #666;
+.main-cart button {
     color: #fff;
 }
 
@@ -45,15 +45,15 @@ button {
     width: 100%;
 }
 
-img,
+.main-cart img,
 .basket-module,
 .basket-labels,
 .basket-product {
     width: 100%;
 }
 
-input,
-button,
+.main-cart input,
+.main-cart button,
 .basket,
 .basket-module,
 .basket-labels,
@@ -79,7 +79,7 @@ button,
     display: none;
 }
 
-main {
+.main-cart main {
     clear: both;
     font-size: 0.75rem;
     margin: 0 auto;
@@ -89,7 +89,7 @@ main {
 }
 
 .basket,
-aside {
+.main-cart aside {
     padding: 0 1rem;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -104,13 +104,13 @@ aside {
     color: #111;
 }
 
-label {
+.main-cart label {
     display: block;
     margin-bottom: 0.3125rem;
 }
 
 .promo-code-field {
-    border: 1px solid #ccc;
+    border: 1px solid #999!important;
     padding: 0.5rem;
     text-transform: uppercase;
     transition: all 0.2s linear;
@@ -139,20 +139,20 @@ label {
     margin-top: 1.625rem;
 }
 
-ul {
+.main-cart ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-li {
+.main-cart li {
     color: #111;
     display: inline-block;
     padding: 0.625rem 0;
 }
 
-li.price:before,
-li.subtotal:before {
+.main-cart li.price:before,
+.main-cart li.subtotal:before {
     content: '';
 }
 
@@ -224,7 +224,7 @@ li.subtotal:before {
     width: 3.75rem;
 }
 
-aside {
+.main-cart aside {
     float: right;
     position: relative;
     width: 30%;
@@ -301,6 +301,9 @@ aside {
     text-transform: uppercase;
 }
 
+.max-option{
+    font-size: 20px;
+}
 .summary-checkout {
     display: block;
 }
@@ -326,7 +329,7 @@ aside {
 }
 
 @media screen and (max-width: 640px) {
-    aside,
+    .main-cart aside,
     .basket,
     .summary,
     .item,
@@ -380,7 +383,7 @@ aside {
     height: 28px;
 }
 @media screen and (min-width: 641px) and (max-width: 960px) {
-    aside {
+    .main-cart aside {
         padding: 0 1rem 0 0;
     }
     .summary {
@@ -389,7 +392,7 @@ aside {
 }
 
 @media screen and (max-width: 960px) {
-    main {
+    .main-cart main {
         width: 100%;
     }
     .product-details {

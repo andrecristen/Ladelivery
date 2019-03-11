@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 
 /**
  * TemposMedios Controller
@@ -12,6 +14,11 @@ use App\Controller\AppController;
  */
 class TemposMediosController extends AppController
 {
+    public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
+    {
+        parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->validateActions();
+    }
 
     /**
      * Index method

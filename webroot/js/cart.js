@@ -6,15 +6,18 @@ function removeItemCarrinho(idItemCarrinho) {
         dataType: "json",
         success: function (data) {
             if (data.itemExcluido) {
-                alert('Item excluído do carrinho');
-                setTimeout("location.reload(true);",0);
+                alertify.warning('Item excluído do carrinho');
+                alertify.notify('Recarregando carrinho');
+                setTimeout(
+                    location.reload(true),
+                    2000
+                );
             } else {
-                alert('NÃO FOI POSSIVEL EXCLUIR O ITEM DO CARRINHO');
+                alertify.error('NÃO FOI POSSIVEL EXCLUIR O ITEM DO CARRINHO');
             }
         },
         error: function (data) {
-
-            alert('NÃO FOI POSSIVEL EXCLUIR O ITEM DO CARRINHO');
+            alertify.error('NÃO FOI POSSIVEL EXCLUIR O ITEM DO CARRINHO');
         }
     });
 }
@@ -27,16 +30,15 @@ function fecharCarrinho() {
         async: false,
         dataType: "json",
         success: function (data) {
-            console.log(data);
             if(data.success){
-                alert('Confirmacao de itens concluida com sucesso');
+                alertify.success('Confirmacao de itens concluida com sucesso');
                 $(location).attr('href', '/pages/confirmar?pedido='+data.pedido);
             }else{
-                alert('Nao foi possivel confirmar os itens do pedido');
+                alertify.error('Nao foi possivel confirmar os itens do pedido');
             }
         },
         error: function (data) {
-            alert('NÃO FOI POSSIVEL GERAR UM NOVO PEDIDO COM SEU CARRINHO');
+            alertify.error('NÃO FOI POSSIVEL GERAR UM NOVO PEDIDO COM SEU CARRINHO');
         }
     });
 }

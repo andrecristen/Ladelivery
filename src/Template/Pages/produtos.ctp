@@ -1,12 +1,4 @@
 <?php
-
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Http\Exception\NotFoundException;
-
 $cacheControl = new \App\Model\Utils\CacheControl();
 $this->layout = false;
 $tableLocator = new \Cake\ORM\Locator\TableLocator();
@@ -44,7 +36,9 @@ if (isset($_SESSION['Auth']['User']['id'])){
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/css/bootstrap-select.min.css<?= h($cacheControl->getCacheVersion()) ?>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/js/bootstrap-select.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
-
+    <script src="/ladev/alert/alertify.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
+    <link rel="stylesheet" href="/ladev/alert/css/alertify.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
+    <link rel="stylesheet" href="/ladev/alert/css/themes/bootstrap.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
     <?php echo $this->Html->script('produto.js'); ?>
     <?php echo $this->Html->script('tabs.js'); ?>
     <?php echo $this->Html->css('tabs.css'); ?>

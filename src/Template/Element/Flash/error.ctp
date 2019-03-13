@@ -9,8 +9,8 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
 <div class="modal" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog alert alert-danger" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div style="background-color: #fff0;" class="modal-content">
+            <div style="border-bottom: 0px;" class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Atenção</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

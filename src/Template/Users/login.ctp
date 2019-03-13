@@ -27,7 +27,7 @@
             <div id="formFooter">
                 <span>Ainda não possui conta?&nbsp;<?= $this->Html->link(__('Registrar-se'), ['controller' => 'Users', 'action' => 'registrar']) ?></span>
                 <br/>
-                <span>Esqueceu sua senha?&nbsp;<?= $this->Html->link(__('Recuperar'), ['controller' => 'Users', 'action' => 'registrar']) ?></span>
+                <span>Esqueceu sua senha?&nbsp;<?= $this->Html->link(__('Recuperar'), ['controller' => 'AlteracaoSenhas', 'action' => 'solicitar']) ?></span>
             </div>
         </div>
     <?= $this->Form->end() ?>

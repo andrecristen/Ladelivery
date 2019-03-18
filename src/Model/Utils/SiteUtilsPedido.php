@@ -10,7 +10,7 @@ namespace App\Model\Utils;
 use App\Model\Entity\Pedido;
 use Cake\ORM\Locator\TableLocator;
 
-class ValidaPedidoAbertoCliente
+class SiteUtilsPedido
 {
     protected $tableLocator;
 

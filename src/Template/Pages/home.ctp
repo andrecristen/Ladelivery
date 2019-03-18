@@ -3,7 +3,7 @@ $cacheControl = new \App\Model\Utils\CacheControl();
 $this->layout = false;
 
 $cakeDescription = 'LaDelivery';
-$controllerPedido = new \App\Model\Utils\ValidaPedidoAbertoCliente();
+$controllerPedido = new \App\Model\Utils\SiteUtilsPedido();
 $existstPedidoAberto = false;
 if (isset($_SESSION['Auth']['User']['id'])){
     $existstPedidoAberto = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);

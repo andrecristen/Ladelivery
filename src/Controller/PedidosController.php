@@ -16,7 +16,7 @@ use App\Model\Entity\TaxasEntregasCotacao;
 use App\Model\Entity\TemposMedio;
 use App\Model\Table\PedidosProdutosTable;
 use App\Model\Table\PedidosTable;
-use App\Model\Utils\ValidaPedidoAbertoCliente;
+use App\Model\Utils\SiteUtilsPedido;
 use Aura\Intl\Exception;
 use Cake\Database\Connection;
 use Cake\Http\Response;
@@ -419,7 +419,7 @@ class PedidosController extends AppController
         $tableLocator = new TableLocator();
         /** @var $tablePedidos PedidosTable*/
         $tablePedidos = $tableLocator->get('Pedidos');
-        $validator = new ValidaPedidoAbertoCliente();
+        $validator = new SiteUtilsPedido();
         /** @var $pedido Pedido*/
         $pedido = $validator->existsPedidoEmAberto($this->Auth->user('id'), true);
         if($pedido){
@@ -435,7 +435,7 @@ class PedidosController extends AppController
     public function saveTrocoPara($trocoPara){
         $this->render(false);
         $success = false;
-        $validator = new ValidaPedidoAbertoCliente();
+        $validator = new SiteUtilsPedido();
         /** @var $pedido Pedido*/
         $pedido = $validator->existsPedidoEmAberto($this->Auth->user('id'), true);
         $pedido->troco_para = floatval($trocoPara);
@@ -450,7 +450,7 @@ class PedidosController extends AppController
         $success = false;
         $reload = true;
         $tableLocator = new TableLocator();
-        $validator = new ValidaPedidoAbertoCliente();
+        $validator = new SiteUtilsPedido();
         $formaPagamentoTable = $tableLocator->get('FormasPagamentos');
         /** @var $formaPagamento FormasPagamento*/
         $formaPagamento = $formaPagamentoTable->find()->where(['id' => $formaPagamentoId])->first();
@@ -484,7 +484,7 @@ class PedidosController extends AppController
 
     public function aplicarCupom($cupom = null){
         $tableLocator = new TableLocator();
-        $validator = new ValidaPedidoAbertoCliente();
+        $validator = new SiteUtilsPedido();
         $this->render(false);
         $success = false;
         if($cupom){

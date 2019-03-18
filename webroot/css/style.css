@@ -183,6 +183,7 @@ input[type=radio] {
     display: inline;
     width: auto;
     margin-right: 10px;
+    min-width: 55px!important;
 }
 
 .error label,

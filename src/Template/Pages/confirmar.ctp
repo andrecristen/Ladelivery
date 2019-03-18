@@ -4,7 +4,7 @@ $this->layout = false;
 $tableLocator = new \Cake\ORM\Locator\TableLocator();
 $params = ($this->getRequest()->getAttribute('params'));
 $pedido = false;
-$controllerPedido = new \App\Model\Utils\ValidaPedidoAbertoCliente();
+$controllerPedido = new \App\Model\Utils\SiteUtilsPedido();
 if (isset($_SESSION['Auth']['User']['id'])){
     $pedido = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);
 }

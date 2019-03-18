@@ -14,6 +14,7 @@
     $dataGrid->bloqActionDelete();
     $dataGrid->bloqActionEdit();
     $dataGrid->setPaginator($this->Paginator);
+    $dataGrid->addAction('Pedidos', 'abrirComanda', ' Abrir', 'btn btn-primary');
     $dataGrid->addField('Cliente', 'user/nome_completo', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
     $dataGrid->addField('Valor Total', 'valor_total_cobrado', \App\Model\Utils\DataGridLaDev::TYPE_NUMBER);
     $dataGrid->addField('Tempo de Producao', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridLaDev::TYPE_NUMBER);

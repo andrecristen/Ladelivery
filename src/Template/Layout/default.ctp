@@ -123,6 +123,8 @@ $cacheControl = '?v=06-02-2019-01'
                 <li><?= $this->Html->link(__('Taxas Entregas'), ['controller' => 'TaxasEntregasCotacao', 'action' => 'index']) ?></li>
                 <li><?= $this->Html->link(__('Tempo Produção'), ['controller' => 'TemposMedios', 'action' => 'index']) ?></li>
                 <li><?= $this->Html->link(__('Formas Pagamento'), ['controller' => 'FormasPagamentos', 'action' => 'index']) ?></li>
+                <li><?= $this->Html->link(__('Horários Atendimento'), ['controller' => 'HorariosAtendimentos', 'action' => 'index']) ?></li>
+                <li><?= $this->Html->link(__('Dias Fechados'), ['controller' => 'DiasFechados', 'action' => 'index']) ?></li>
             </ul>
             <br>
             <li>

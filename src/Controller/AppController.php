@@ -75,7 +75,7 @@ class AppController extends Controller
     {
         $this->set('login', $this->Auth->user('login'));
         //Funcoes permitidas para quem nao estiver logado.
-        $this->Auth->allow(['registrar', 'display', 'getProduto', 'solicitar']);
+        $this->Auth->allow(['registrar', 'display', 'getProduto', 'solicitar', 'novaSenha']);
         //Limite de registros por pagina.
         $this->paginate['limit'] = 10;
     }

@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property string $token
+ * @property boolean $usado
  * @property \Cake\I18n\FrozenTime $validade
  *
  * @property \App\Model\Entity\User $user
@@ -29,6 +30,7 @@ class AlteracaoSenha extends Entity
         'user_id' => true,
         'token' => true,
         'validade' => true,
+        'usado' => true,
         'user' => true
     ];
 

@@ -66,6 +66,10 @@ class AlteracaoSenhasTable extends Table
             ->requirePresence('validade', 'create')
             ->allowEmptyDateTime('validade', false);
 
+        $validator
+            ->boolean('usado')
+            ->allowEmptyString('usado');
+
         return $validator;
     }
 

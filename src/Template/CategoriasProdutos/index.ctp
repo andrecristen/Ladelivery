@@ -7,13 +7,13 @@
 <div class="col-sm-12">
     <h3><?= __('Categorias Produtos') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridLaDev();
+    $dataGrid = new \App\Model\Utils\DataGridUtils();
     $dataGrid->setModel($categoriasProdutos);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
-    $dataGrid->addField('Nome', 'nome_categoria', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
-    $dataGrid->addField('Criado', 'created', \App\Model\Utils\DataGridLaDev::TYPE_DATE);
-    $dataGrid->addField('Editado', 'modified', \App\Model\Utils\DataGridLaDev::TYPE_DATE);
+    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField('Nome', 'nome_categoria', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField('Criado', 'created', \App\Model\Utils\DataGridUtils::TYPE_DATE);
+    $dataGrid->addField('Editado', 'modified', \App\Model\Utils\DataGridUtils::TYPE_DATE);
     $dataGrid->display();
     ?>
 </div>

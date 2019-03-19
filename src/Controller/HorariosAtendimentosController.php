@@ -61,7 +61,7 @@ class HorariosAtendimentosController extends AppController
             }
             $this->Flash->error(__('The horarios atendimento could not be saved. Please, try again.'));
         }
-        $empresas = $this->HorariosAtendimentos->Empresas->find('list', ['limit' => 200]);
+        $empresas = $this->HorariosAtendimentos->Empresas->find('list');
         $this->set(compact('horariosAtendimento', 'empresas'));
     }
 
@@ -86,7 +86,7 @@ class HorariosAtendimentosController extends AppController
             }
             $this->Flash->error(__('The horarios atendimento could not be saved. Please, try again.'));
         }
-        $empresas = $this->HorariosAtendimentos->Empresas->find('list', ['limit' => 200]);
+        $empresas = $this->HorariosAtendimentos->Empresas->find('list');
         $this->set(compact('horariosAtendimento', 'empresas'));
     }
 

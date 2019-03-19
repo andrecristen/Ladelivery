@@ -20,8 +20,10 @@ class DiasFechadosController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Empresas']
+        ];
         $diasFechados = $this->paginate($this->DiasFechados);
-
         $this->set(compact('diasFechados'));
     }
 
@@ -58,7 +60,8 @@ class DiasFechadosController extends AppController
             }
             $this->Flash->error(__('The dias fechado could not be saved. Please, try again.'));
         }
-        $this->set(compact('diasFechado'));
+        $empresas = $this->DiasFechados->Empresas->find('list');
+        $this->set(compact('diasFechado','empresas'));
     }
 
     /**
@@ -82,7 +85,8 @@ class DiasFechadosController extends AppController
             }
             $this->Flash->error(__('The dias fechado could not be saved. Please, try again.'));
         }
-        $this->set(compact('diasFechado'));
+        $empresas = $this->DiasFechados->Empresas->find('list');
+        $this->set(compact('diasFechado', 'empresas'));
     }
 
     /**

@@ -7,11 +7,11 @@
 <div class="col-sm-12">
     <h3><?= __('Produtos Imagens') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridLaDev();
+    $dataGrid = new \App\Model\Utils\DataGridUtils();
     $dataGrid->setModel($produtosImagens);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('Produto', 'produto_id', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
-    $dataGrid->addField('Imagem', 'nome_imagem', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
+    $dataGrid->addField('Produto', 'produto_id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField('Imagem', 'nome_imagem', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
     $dataGrid->bloqActionAdd();
     $dataGrid->hiddeActionsRows();
     $dataGrid->addAction('Produtos', 'addImage', 'Adicionar Imagem', 'btn btn-success');

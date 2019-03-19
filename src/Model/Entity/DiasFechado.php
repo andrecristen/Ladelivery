@@ -9,6 +9,8 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property \Cake\I18n\FrozenDate $dia_fechado
  * @property string|null $motivo_fechado
+ * @property int $empresa_id
+ * @property \App\Model\Entity\Empresa $empresa
  */
 class DiasFechado extends Entity
 {
@@ -24,6 +26,8 @@ class DiasFechado extends Entity
      */
     protected $_accessible = [
         'dia_fechado' => true,
-        'motivo_fechado' => true
+        'motivo_fechado' => true,
+        'empresa_id' => true,
+        'empresa' => true,
     ];
 }

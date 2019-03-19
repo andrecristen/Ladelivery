@@ -10,7 +10,7 @@
         <legend><?= __('Adicionar Usuário') ?></legend>
         <?php
         echo $this->Form->control('nome_completo');
-        echo $this->Form->control('tipo', ['options'=>[1=>'Cliente', 2 => 'Administrador', 3 => 'Empresa']]);
+        echo $this->Form->control('tipo', ['options'=> $list]);
         echo $this->Form->control('apelido');
         ?>
     </fieldset>

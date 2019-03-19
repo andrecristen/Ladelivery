@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * DiasFechados Model
  *
+ * @property \App\Model\Table\EmpresasTable|\Cake\ORM\Association\BelongsTo $Empresas
+ *
  * @method \App\Model\Entity\DiasFechado get($primaryKey, $options = [])
  * @method \App\Model\Entity\DiasFechado newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\DiasFechado[] newEntities(array $data, array $options = [])
@@ -34,6 +36,11 @@ class DiasFechadosTable extends Table
         $this->setTable('dias_fechados');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->belongsTo('Empresas', [
+            'foreignKey' => 'empresa_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -59,5 +66,11 @@ class DiasFechadosTable extends Table
             ->allowEmptyString('motivo_fechado');
 
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['empresa_id'], 'Empresas'));
+        return $rules;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Model\Entity\User;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -16,12 +17,15 @@ use Cake\Http\ServerRequest;
  */
 class UsersController extends AppController
 {
+    protected $empresaUtils;
+
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->pertmiteAction('login');
         $this->pertmiteAction('profile', $this->Auth->user('id'));
         $this->validateActions();
+        $this->empresaUtils = new EmpresaUtils();
     }
 
     /**
@@ -31,8 +35,10 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $users = $this->paginate($this->Users);
-
+        $users = $this->paginate($this->Users->find()->where(['empresa_id' => $this->empresaUtils->getEmpresaBase()]));
+        if($this->empresaUtils->isEmpresaSoftware()){
+            $users = $this->paginate($this->Users);
+        }
         $this->set(compact('users'));
     }
 
@@ -78,6 +84,7 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            $user->empresa_id = $this->empresaUtils->getEmpresaBase();
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Usuário adicionado com sucesso.'));
 
@@ -85,7 +92,11 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('Não foi possível adicionar um novo usuário, tente novamente!'));
         }
-        $this->set(compact('user'));
+        $list = User::getTipoListCRUD();
+        if($this->empresaUtils->isEmpresaSoftware()){
+            $list = User::getTipoListAll();
+        }
+        $this->set(compact('user', 'list'));
     }
 
     public function registrar()
@@ -94,6 +105,7 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             $user->tipo = User::TIPO_CLIENTE;
+            $user->empresa_id = $this->empresaUtils->getEmpresaSoftware();
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Usuário adicionado com sucesso.'));
 
@@ -125,7 +137,11 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('Não foi possivel editar usuário, tente novamente.'));
         }
-        $this->set(compact('user'));
+        $list = User::getTipoListCRUD();
+        if($this->empresaUtils->isEmpresaSoftware()){
+            $list = User::getTipoListAll();
+        }
+        $this->set(compact('user', 'list'));
     }
 
     /**
@@ -158,6 +174,13 @@ class UsersController extends AppController
                     return;
                 }
                 $this->Auth->setUser($user);
+                $redirect = ($this->Auth->redirectUrl());
+                //Quer dizer que é um admin entrando a primeira vez
+                if($user['tipo'] == User::TIPO_ADMINISTRADOR){
+                    if($redirect == '/pages'){
+                        return $this->redirect('/users');
+                    }
+                }
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->default(__('Login ou Senha incorretos!'), ['class'=>'"alert alert-danger']);

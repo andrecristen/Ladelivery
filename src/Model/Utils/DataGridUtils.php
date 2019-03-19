@@ -11,7 +11,7 @@ namespace App\Model\Utils;
 use Cake\Datasource\Paginator;
 use Cake\View\View;
 
-class DataGridLaDev extends View
+class DataGridUtils extends View
 {
     //Para campos de tipo numerico
     const TYPE_NUMBER = 0;

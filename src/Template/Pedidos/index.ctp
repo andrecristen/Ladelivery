@@ -8,19 +8,19 @@
     <h3><?= __('Pedidos') ?></h3>
     <?php
     $pedidoModel = new \App\Model\Entity\Pedido();
-    $dataGrid = new \App\Model\Utils\DataGridLaDev();
+    $dataGrid = new \App\Model\Utils\DataGridUtils();
     $dataGrid->setModel($pedidos);
     $dataGrid->bloqActionAdd();
     $dataGrid->bloqActionDelete();
     $dataGrid->bloqActionEdit();
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('Cliente', 'user/nome_completo', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
-    $dataGrid->addField('Pagamento', 'formas_pagamento/nome', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
-    $dataGrid->addField('Valor Total', 'valor_total_cobrado', \App\Model\Utils\DataGridLaDev::TYPE_NUMBER);
-    $dataGrid->addField('Tempo', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridLaDev::TYPE_NUMBER);
-    $dataGrid->addField('Data', 'data_pedido', \App\Model\Utils\DataGridLaDev::TYPE_DATE_TIME);
-    $dataGrid->addField('Troco Para', 'troco_para', \App\Model\Utils\DataGridLaDev::TYPE_NUMBER);
-    $dataGrid->addField('Status', 'status_pedido', \App\Model\Utils\DataGridLaDev::TYPE_LIST, $pedidoModel->getDeliveryStatusList());
+    $dataGrid->addField('Cliente', 'user/nome_completo', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField('Pagamento', 'formas_pagamento/nome', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField('Valor Total', 'valor_total_cobrado', \App\Model\Utils\DataGridUtils::TYPE_NUMBER);
+    $dataGrid->addField('Tempo', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridUtils::TYPE_NUMBER);
+    $dataGrid->addField('Data', 'data_pedido', \App\Model\Utils\DataGridUtils::TYPE_DATE_TIME);
+    $dataGrid->addField('Troco Para', 'troco_para', \App\Model\Utils\DataGridUtils::TYPE_NUMBER);
+    $dataGrid->addField('Status', 'status_pedido', \App\Model\Utils\DataGridUtils::TYPE_LIST, $pedidoModel->getDeliveryStatusList());
     $dataGrid->addActionRow('', ['action' => 'confirmar'], ['class' => 'far fa-check-square btn btn-primary btn-sm', 'title' => 'Confirmar/Rejeitar Recebimento do Pedido'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Pedido'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'imprimir'], ['class' => 'fa fa-print btn btn-info btn-sm', 'title' => 'Imprimir Guias de Pedido'], false, 'id');

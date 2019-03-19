@@ -7,15 +7,15 @@
 <div class="col-sm-12">
     <h3><?= __('Produtos') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridLaDev();
+    $dataGrid = new \App\Model\Utils\DataGridUtils();
     $dataGrid->setModel($produtos);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
-    $dataGrid->addField('Nome', 'nome_produto', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
-    $dataGrid->addField('Categoria', 'categorias_produto/nome_categoria', \App\Model\Utils\DataGridLaDev::TYPE_TEXT);
-    $dataGrid->addField('Ativo', 'ativo_produto', \App\Model\Utils\DataGridLaDev::TYPE_BOOLEAN);
-    $dataGrid->addField('Criado', 'created', \App\Model\Utils\DataGridLaDev::TYPE_DATE);
-    $dataGrid->addField('Editado', 'modified', \App\Model\Utils\DataGridLaDev::TYPE_DATE);
+    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField('Nome', 'nome_produto', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField('Categoria', 'categorias_produto/nome_categoria', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField('Ativo', 'ativo_produto', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN);
+    $dataGrid->addField('Criado', 'created', \App\Model\Utils\DataGridUtils::TYPE_DATE);
+    $dataGrid->addField('Editado', 'modified', \App\Model\Utils\DataGridUtils::TYPE_DATE);
     $dataGrid->display();
     ?>
 </div>

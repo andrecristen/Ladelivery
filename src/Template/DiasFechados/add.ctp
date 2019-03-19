@@ -14,8 +14,10 @@
         </div>
         <?php
             echo $this->Form->control('motivo_fechado');
+            echo $this->Form->control('empresa_id', ['options' => $empresas]);
         ?>
     </fieldset>
+    <br/>
     <?= $this->Form->button(__('Adicionar')) ?>
     <?= $this->Form->end() ?>
 </div>

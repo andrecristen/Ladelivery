@@ -13,9 +13,11 @@
             <input name="dia_fechado" id="dia_fechado" type="date">
         </div>
         <?php
-        echo $this->Form->control('motivo_fechado');
+            echo $this->Form->control('motivo_fechado');
+            echo $this->Form->control('empresa_id', ['options' => $empresas]);
         ?>
     </fieldset>
+    <br/>
     <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

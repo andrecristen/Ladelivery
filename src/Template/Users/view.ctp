@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  */
+$listTipo = \App\Model\Entity\User::getTipoListCRUD();
 ?>
 <div class="col-sm-12">
     <h3>Usuário #<?= h($user->id) ?></h3>
@@ -25,7 +26,7 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Tipo') ?></th>
-            <td><?= $this->Number->format($user->tipo) ?></td>
+            <td><?= $listTipo[$user->tipo] ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Dia Nascimento') ?></th>

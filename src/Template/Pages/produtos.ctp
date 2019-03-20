@@ -8,10 +8,14 @@ $controllerPedido = new \App\Model\Utils\SiteUtilsPedido();
 $existstPedidoAberto = false;
 if (isset($_SESSION['Auth']['User']['id'])){
     $existstPedidoAberto = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);
-}if(!$existstPedidoAberto){
+}
+$empresaAberta = $controllerPedido->empresaAberta();
+if(!$existstPedidoAberto || !$empresaAberta){
     $categoria = $params['?']['categoria'];
     $categoriaNome = $params['?']['categoriaNome'];
     $query->where(['categorias_produto_id' => intval($categoria), 'ativo_produto' => true]);
+}else{
+    $query = [];
 }
 ?>
 <head>
@@ -87,6 +91,15 @@ if (isset($_SESSION['Auth']['User']['id'])){
 </nav>
 
 <div class="container">
+    <?php if(!$empresaAberta){?>
+        <div class="row">
+            <div style="width: 100%" class="alert alert-danger">
+                <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos novos...<i class="fas fa-sad-cry fa-2x"></i></h4>
+            </div>
+        </div>
+    <?php $existstPedidoAberto = false;
+    }
+    ?>
     <?php if($existstPedidoAberto){?>
         <div class="row">
             <div style="width: 100%" class="alert alert-info">
@@ -105,7 +118,16 @@ if (isset($_SESSION['Auth']['User']['id'])){
         <div class="modal-dialog" role="document">
             <div style="min-height: 70%" class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Adicionar ao carrinho</h5>
+                    <?php
+                    if(isset($_SESSION['Auth']['User']['id']) && $empresaAberta){?>
+                        <h5 class="modal-title" id="exampleModalLabel">Adicionar ao carrinho</h5>
+                    <?php } ?>
+                    <?php
+                    if(!isset($_SESSION['Auth']['User']['id']) || !$empresaAberta){?>
+                        <h5 class="modal-title" id="exampleModalLabel">Visualizar Produto</h5>
+                    <?php } ?>
+
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -142,11 +164,13 @@ if (isset($_SESSION['Auth']['User']['id'])){
                                 <label for="exampleFormControlInput1">Quantidade</label>
                                 <input class="form-control" type="number" onchange="verificaQuantidadeIsInt()" id="quantidadeProduto" min="1" max="100" step="1" value="1">
                             </div>
-                            <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Observação</label>
-                                <textarea placeholder="Digite observações, por exemplo, retirar pepino."
-                                          class="form-control" id="observacaoDigitada" rows="2"></textarea>
-                            </div>
+                            <?php if(isset($_SESSION['Auth']['User']['id']) && $empresaAberta){?>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Observação</label>
+                                    <textarea placeholder="Digite observações, por exemplo, retirar pepino."
+                                              class="form-control" id="observacaoDigitada" rows="2"></textarea>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
 
@@ -156,15 +180,18 @@ if (isset($_SESSION['Auth']['User']['id'])){
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="button" onclick="addItemToCart(<?= $_SESSION['Auth']['User']['id'] ?>)" class="btn btn-primary">Confirmar</button>
-                </div>
+
+                <?php
+                if(isset($_SESSION['Auth']['User']['id']) && $empresaAberta){?>
+                    <div class="modal-footer">
+                        <button type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" onclick="addItemToCart(<?= $_SESSION['Auth']['User']['id'] ?>)" class="btn btn-primary">Confirmar</button>
+                    </div>
+               <?php } ?>
             </div>
         </div>
     </div>
-    <h4 class="my-4">Produtos da Categoria: <?= strtoupper($categoriaNome) ?>
-    </h4>
+    <h4 class="my-4">Produtos da Categoria: <?= strtoupper($categoriaNome) ?></h4>
     <?php if (!isset($_SESSION['Auth']['User']['id'])) { ?>
         <div class="row">
             <div style="width: 100%" class="alert alert-info">
@@ -185,7 +212,7 @@ if (isset($_SESSION['Auth']['User']['id'])){
             ?>
             <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
                 <div class="card" style="margin-bottom: 5px">
-                    <a href="">
+                    <a  href="#" onclick="openModalAddCart(<?= $produto->id ?>, <?= $_SESSION['Auth']['User']['id'] ?>)">
                         <?php if ($existImage !== null) { ?>
                             <?php echo $this->Html->image('produtos/' . $existImage->nome_imagem, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40')); ?>
                         <?php } else { ?>
@@ -202,7 +229,7 @@ if (isset($_SESSION['Auth']['User']['id'])){
                            class="card-text"><?= $produto->descricao_produto ?></p>
                     </div>
                     <div class="card-footer">
-                        <?php if (isset($_SESSION['Auth']['User']['id'])) { ?>
+                        <?php if (isset($_SESSION['Auth']['User']['id']) && $empresaAberta) { ?>
                             <button class="btn btn-success" style="width: 100%"
                                     onclick="openModalAddCart(<?= $produto->id ?>, <?= $_SESSION['Auth']['User']['id'] ?>)">
                                 Adicionar ao carrinho <i style="display: none" id="loading-<?= $produto->id?>" class="fa fa-spinner fa-spin"></i>

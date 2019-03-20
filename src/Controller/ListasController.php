@@ -26,7 +26,6 @@ class ListasController extends AppController
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->pertmiteAction('getListas');
         $this->validateActions();
-
     }
 
     /**

@@ -17,13 +17,13 @@ use Cake\ORM\Entity;
  */
 class HorariosAtendimento extends Entity
 {
-    const DOMINGO = 1;
-    const SEGUNDA_FEIRA = 2;
-    const TERCA_FEIRA = 3;
-    const QUARTA_FEIRA = 4;
-    const QUINTA_FEIRA = 5;
-    const SEXTA_FEIRA = 6;
-    const SABADO = 7;
+    const DOMINGO = 0;
+    const SEGUNDA_FEIRA = 1;
+    const TERCA_FEIRA = 2;
+    const QUARTA_FEIRA = 3;
+    const QUINTA_FEIRA = 4;
+    const SEXTA_FEIRA = 5;
+    const SABADO = 6;
 
     const MANHA = 1;
     const TARDE = 2;

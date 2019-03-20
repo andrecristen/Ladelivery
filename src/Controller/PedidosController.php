@@ -16,6 +16,7 @@ use App\Model\Entity\TaxasEntregasCotacao;
 use App\Model\Entity\TemposMedio;
 use App\Model\Table\PedidosProdutosTable;
 use App\Model\Table\PedidosTable;
+use App\Model\Utils\EmpresaUtils;
 use App\Model\Utils\SiteUtilsPedido;
 use Aura\Intl\Exception;
 use Cake\Database\Connection;
@@ -35,6 +36,8 @@ class PedidosController extends AppController
     /** @var  $pedidoSession Pedido*/
     protected $pedidoSession;
 
+    protected $empresaUtils;
+
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
@@ -43,7 +46,9 @@ class PedidosController extends AppController
         $this->pertmiteAction('calcularAcrescimo');
         $this->pertmiteAction('rejeitarPedidoAberto');
         $this->pertmiteAction('confirmarPedidoAberto');
+        $this->pertmiteAction('saveTrocoPara');
         $this->validateActions();
+        $this->empresaUtils = new EmpresaUtils();
     }
 
     /**
@@ -253,6 +258,7 @@ class PedidosController extends AppController
             $newPedido->valor_total_cobrado = 0;
             $newPedido->status_pedido = Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE;
             $newPedido->data_pedido = new  \DateTime();
+            $newPedido->empresa_id = $this->empresaUtils->getEmpresaBase();
             $tempoMedido = $tableLocator->get('TemposMedios')->find()->where(['ativo' => true]);
             if ($tempoMedido->first()) {
                 /** @var $tempoFinal TemposMedio */

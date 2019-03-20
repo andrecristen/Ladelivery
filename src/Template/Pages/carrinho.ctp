@@ -9,6 +9,7 @@ if (isset($_SESSION['Auth']['User']['id'])){
 }if(!$existstPedidoAberto){
     $query = $tableLocator->get('ItensCarrinhos')->find()->where(['user_id' => intval($_SESSION['Auth']['User']['id'])]);
 }
+$empresaAberta = $controllerPedido->empresaAberta();
 ?>
 <head>
     <meta charset="utf-8">
@@ -76,6 +77,16 @@ if (isset($_SESSION['Auth']['User']['id'])){
 </nav>
 <div class="container main-cart">
     <main>
+        <?php if(!$empresaAberta){?>
+            <div class="row">
+                <div style="width: 100%" class="alert alert-danger">
+                    <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos...<i class="fas fa-sad-cry fa-2x"></i></h4>
+                </div>
+            </div>
+        <?php
+            return;
+        }
+        ?>
         <?php if($existstPedidoAberto){?>
             <div class="row">
                 <div style="width: 100%" class="alert alert-info">

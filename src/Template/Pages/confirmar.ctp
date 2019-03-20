@@ -12,6 +12,7 @@ if (isset($_SESSION['Auth']['User']['id'])){
 $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
     'status_pedido'=> \App\Model\Entity\Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE,
     'user_id' => $_SESSION['Auth']['User']['id'] ])->first();
+$empresaAberta = $controllerPedido->empresaAberta();
 ?>
 <head>
     <meta charset="utf-8">
@@ -86,7 +87,6 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
 <button id="openModal" style="display: none" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" data-backdrop="static" data-keyboard="false">
     abrir modal
 </button>
-
 <!-- Modal -->
 <div class="modal" id="modal" tabindex="-1">
     <div class="modal-dialog" role="document">
@@ -105,6 +105,15 @@ $pedidoModel = $tableLocator->get('Pedidos')->find()->where(['id' => $pedido,
     </div>
 </div>
 <div class="container main-cart">
+    <?php if(!$empresaAberta){?>
+        <div class="row">
+            <div style="width: 100%" class="alert alert-danger">
+                <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos...<i class="fas fa-sad-cry fa-2x"></i></h4>
+            </div>
+        </div>
+        <?php return;
+    }
+    ?>
     <br/>
     <h2>Fechar Pedido</h2>
     <main>

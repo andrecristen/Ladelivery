@@ -6,9 +6,9 @@ $controllerPedido = new \App\Model\Utils\SiteUtilsPedido();
 $existstPedidoAberto = false;
 if (isset($_SESSION['Auth']['User']['id'])){
     $existstPedidoAberto = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);
-}if(!$existstPedidoAberto){
-    $query = $tableLocator->get('CategoriasProdutos')->find();
 }
+$empresaAberta = $controllerPedido->empresaAberta();
+$query = $tableLocator->get('CategoriasProdutos')->find();
 ?>
 <head>
     <meta charset="utf-8">
@@ -74,6 +74,15 @@ if (isset($_SESSION['Auth']['User']['id'])){
 
 <!-- Page Content -->
 <div class="container">
+    <?php if(!$empresaAberta){?>
+        <div class="row">
+            <div style="width: 100%" class="alert alert-danger">
+                <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos novos...<i class="fas fa-sad-cry fa-2x"></i></h4>
+            </div>
+        </div>
+    <?php $existstPedidoAberto = false;
+    }
+    ?>
     <?php if($existstPedidoAberto){?>
         <div class="row">
             <div style="width: 100%" class="alert alert-info">
@@ -95,7 +104,7 @@ if (isset($_SESSION['Auth']['User']['id'])){
         ?>
         <div style="margin-bottom: 10px;" class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
             <div class="card">
-                <a href="">
+                <a href="produtos?categoria=<?= $categoria->id?>&categoriaNome=<?=$categoria->nome_categoria?>">
                     <?php if($existImage !== null){?>
                         <?php echo $this->Html->image('categorias/'.$existImage->nome_imagem, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40')); ?>
                     <?php }else{?>

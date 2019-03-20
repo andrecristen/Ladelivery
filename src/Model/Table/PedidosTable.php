@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\PedidosEntregasTable|\Cake\ORM\Association\HasMany $PedidosEntregas
  * @property \App\Model\Table\ProdutosTable|\Cake\ORM\Association\BelongsToMany $Produtos
+ * @property \App\Model\Table\EmpresasTable|\Cake\ORM\Association\BelongsTo $Empresas
  *
  * @method \App\Model\Entity\Pedido get($primaryKey, $options = [])
  * @method \App\Model\Entity\Pedido newEntity($data = null, array $options = [])
@@ -55,6 +56,11 @@ class PedidosTable extends Table
             'foreignKey' => 'pedido_id',
             'targetForeignKey' => 'produto_id',
             'joinTable' => 'pedidos_produtos'
+        ]);
+
+        $this->belongsTo('Empresas', [
+            'foreignKey' => 'empresa_id',
+            'joinType' => 'INNER'
         ]);
     }
 
@@ -127,6 +133,7 @@ class PedidosTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['formas_pagamento_id'], 'FormasPagamentos'));
+        $rules->add($rules->existsIn(['empresa_id'], 'Empresas'));
 
         return $rules;
     }

@@ -16,12 +16,14 @@ use Cake\ORM\Entity;
  * @property int $tipo_pedido
  * @property int $status_pedido
  * @property int $formas_pagamento_id
+ * @property int $empresa_id
  * @property string $cupom_usado
  * @property \Cake\I18n\FrozenTime $data_pedido
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\PedidosEntrega[] $pedidos_entregas
  * @property \App\Model\Entity\Produto[] $produtos
+ * @property \App\Model\Entity\Empresa $empresa
  */
 class Pedido extends Entity
 {
@@ -111,6 +113,8 @@ class Pedido extends Entity
         'valor_desconto' => true,
         'valor_acrescimo' => true,
         'formas_pagamento_id' => true,
-        'formas_pagamentos' => true
+        'formas_pagamentos' => true,
+        'empresa_id' => true,
+        'empresa' => true,
     ];
 }

@@ -14,10 +14,14 @@
  */
 namespace App\Controller;
 
+use App\View\AppView;
+use Cake\Controller\Component\FlashComponent;
 use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use Cake\View\Helper\FlashHelper;
+use Cake\View\Helper\HtmlHelper;
 
 /**
  * Static content controller
@@ -55,8 +59,10 @@ class PagesController extends AppController
         if (!empty($path[1])) {
             $subpage = $path[1];
         }
-        $this->set(compact('page', 'subpage'));
-
+        $appView = new AppView();
+        $html = new HtmlHelper($appView, []);
+        $flash = new FlashHelper($appView, []);
+        $this->set(compact('page', 'subpage', 'html', 'flash'));
         try {
             $this->render(implode('/', $path));
         } catch (MissingTemplateException $exception) {

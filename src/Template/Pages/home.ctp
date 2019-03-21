@@ -70,7 +70,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
         </div>
     </div>
 </nav>
-
+<?= $flash->render() ?>
 <!-- Page Content -->
 <div style="margin-top: 70px;" class="container">
     <?php if(!$empresaAberta){?>

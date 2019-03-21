@@ -195,8 +195,9 @@ $empresaAberta = $controllerPedido->empresaAberta();
                         <select onchange="calcularAcrecimo()" class="select-endereco" name="pagamentoSelect">
                             <option disabled selected value="false">Selecione a forma de pagamento</option>
                             <?php
+                            $empresaUtils = new \App\Model\Utils\EmpresaUtils();
                             /** @var $formasPagamento \App\Model\Entity\FormasPagamento[]*/
-                            $formasPagamento = $tableLocator->get('FormasPagamentos')->find();
+                            $formasPagamento = $tableLocator->get('FormasPagamentos')->find()->where(['empresa_id' => $empresaUtils->getEmpresaBase()]);
                             foreach ($formasPagamento as $formaPagamento) {
                                 if ($formaPagamento->id == $pedidoModel->formas_pagamento_id) {
                                     echo '<option selected value="'.$formaPagamento->id.'" troco="'.$formaPagamento->necessita_troco.'">'.$formaPagamento->nome.'</option>';

@@ -109,6 +109,7 @@ class AppController extends Controller
                 $invalid = true;
             }
             if ($invalid) {
+                $this->Flash->error('Você não tem acesso a está parte do sistema');
                 return $this->redirect('/');
             }
         }

@@ -50,7 +50,14 @@ class SiteUtilsPedido
                      'hora_inicio <=' => $horaAtual,
                      'hora_fim >= ' => $horaAtual,
             ])->first();
-        if($horario){
+
+        $feriado = $this->tableLocator->get('DiasFechados')
+            ->find()
+            ->where(['empresa_id' => $empresaId,
+                     'dia_fechado' => $data,
+            ])
+            ->first();
+        if($horario && !$feriado){
             return true;
         }
         return false;

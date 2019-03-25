@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 18-Mar-2019 às 20:28
+-- Generation Time: 25-Mar-2019 às 20:58
 -- Versão do servidor: 5.7.21
 -- PHP Version: 7.2.4
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `alteracao_senhas` (
   `validade` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usado` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `cupom_site` (
   `valor_desconto` int(11) NOT NULL,
   `porcentagem` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -95,10 +95,11 @@ CREATE TABLE IF NOT EXISTS `cupom_site` (
 DROP TABLE IF EXISTS `dias_fechados`;
 CREATE TABLE IF NOT EXISTS `dias_fechados` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
   `dia_fechado` date NOT NULL,
   `motivo_fechado` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -113,11 +114,17 @@ CREATE TABLE IF NOT EXISTS `empresas` (
   `cnpj` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `ie` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `ativa` tinyint(1) NOT NULL,
-  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uq_empresa_user_id` (`user_id`) USING BTREE,
   UNIQUE KEY `uq_empresa_cnpj` (`cnpj`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `empresas`
+--
+
+INSERT INTO `empresas` (`id`, `nome_fantasia`, `cnpj`, `ie`, `ativa`) VALUES
+(1, 'Baiucas Lanches', '05.700.549/0001-02', '795.636.423', 1),
+(2, 'LaDelivery', '1234546789', '123456709', 1);
 
 -- --------------------------------------------------------
 
@@ -158,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `formas_pagamentos` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_nome_forma_pagamento` (`nome`),
   KEY `empresa_id` (`empresa_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -173,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `google_maps_api_key` (
   `api_key` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `ativa` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -190,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `horarios_atendimentos` (
   `hora_inicio` time NOT NULL,
   `hora_fim` time NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -208,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `itens_carrinhos` (
   `observacao` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `opicionais` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -286,18 +293,19 @@ DROP TABLE IF EXISTS `pedidos`;
 CREATE TABLE IF NOT EXISTS `pedidos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
+  `empresa_id` int(11) NOT NULL,
   `valor_total_cobrado` decimal(10,2) NOT NULL,
   `formas_pagamento_id` int(11) DEFAULT NULL,
   `valor_acrescimo` decimal(10,2) NOT NULL DEFAULT '0.00',
   `tempo_producao_aproximado_minutos` int(11) DEFAULT NULL,
-  `troco_para` float NOT NULL DEFAULT '0',
+  `troco_para` decimal(10,2) NOT NULL DEFAULT '0.00',
   `tipo_pedido` int(11) NOT NULL DEFAULT '1',
   `status_pedido` int(11) NOT NULL,
   `data_pedido` datetime NOT NULL,
   `cupom_usado` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `valor_desconto` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -314,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_entregas` (
   `endereco_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_pedido_entrega` (`pedido_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -334,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_produtos` (
   `ambiente_producao_responsavel` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -367,7 +375,7 @@ CREATE TABLE IF NOT EXISTS `produtos_imagens` (
   `produto_id` int(11) NOT NULL,
   `nome_imagem` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
   UNIQUE KEY `produto_id` (`produto_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -413,6 +421,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome_completo` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `tipo` smallint(6) NOT NULL DEFAULT '1',
+  `empresa_id` int(11) NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime DEFAULT NULL,
   `apelido` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -423,17 +432,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `ano_nascimento` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `users`
 --
 
-INSERT INTO `users` (`id`, `nome_completo`, `tipo`, `created`, `modified`, `apelido`, `login`, `password`, `dia_nascimento`, `mes_nascimento`, `ano_nascimento`) VALUES
-(8, 'André Cristen', 2, '2019-01-28 23:59:32', '2019-03-18 16:39:25', 'Dezinh', 'andrecristenibirama@gmail.com', '$2y$10$rPg6wXHcnEDbEY5IIkQ4t./Qpb/qrDmK7UJw4x8yZzMWJ3fzs2V/y', 3, 9, 2000),
-(16, 'André Cristen Cliente', 1, '2019-02-05 22:14:18', '2019-02-15 21:39:25', 'TESTE LADEV CLIENTE', 'andre.cristen@ladev.com', '$2y$10$NNNttUN6hZNz9NBWPXB2AOe4nacaYwnR0QkiZEy/LznND2TxGkMem', 3, 9, 2000),
-(20, 'Baiucas Lanches', 3, '2019-02-14 21:40:09', '2019-02-22 19:15:57', 'Baiucas Lanches e Delivery', 'baiucas.admin@gmail.com', '$2y$10$xL/DkDmDdVeZsX6ccQPnmOa7i0YyQxsgMLr41A96WdTHQ4ws4jZaG', 3, 9, 2000),
-(21, 'Maresia Pizza', 3, '2019-02-28 16:30:38', '2019-02-28 16:30:38', 'O MAIS PIKA DO LADEV', 'maresia.pizza@hotmail.com', '$2y$10$RcrpWZi7np6wn1qV..Nn.OqoGbCTvY9IfbC.wVaQKmL61eRfp34VO', 1, 1, 1);
+INSERT INTO `users` (`id`, `nome_completo`, `tipo`, `empresa_id`, `created`, `modified`, `apelido`, `login`, `password`, `dia_nascimento`, `mes_nascimento`, `ano_nascimento`) VALUES
+(8, 'André Cristen', 2, 2, '2019-01-28 23:59:32', '2019-03-18 16:39:25', 'Dezinh', 'andrecristenibirama@gmail.com', '$2y$10$rPg6wXHcnEDbEY5IIkQ4t./Qpb/qrDmK7UJw4x8yZzMWJ3fzs2V/y', 3, 9, 2000),
+(16, 'André Cristen Cliente', 1, 2, '2019-02-05 22:14:18', '2019-02-15 21:39:25', 'TESTE LADEV CLIENTE', 'andre.cristen@ladev.com', '$2y$10$NNNttUN6hZNz9NBWPXB2AOe4nacaYwnR0QkiZEy/LznND2TxGkMem', 3, 9, 2000),
+(20, 'Baiucas Lanches', 3, 1, '2019-02-14 21:40:09', '2019-02-22 19:15:57', 'Baiucas Lanches e Delivery', 'baiucas.admin@gmail.com', '$2y$10$xL/DkDmDdVeZsX6ccQPnmOa7i0YyQxsgMLr41A96WdTHQ4ws4jZaG', 3, 9, 2000),
+(21, 'LaDev - Software', 3, 2, '2019-02-28 16:30:38', '2019-03-19 16:44:32', 'Ladelivery', 'ladev.sistemas@gmail.com', '$2y$10$RcrpWZi7np6wn1qV..Nn.OqoGbCTvY9IfbC.wVaQKmL61eRfp34VO', 3, 9, 2000),
+(22, 'André Cristen', 2, 1, '2019-03-19 17:04:53', '2019-03-19 17:04:53', '123', 'andrecristenibirama@gmail.com1', '$2y$10$nepDfgLtK4hWc9Ndib/Tr.h5/0iEmflnv7C3BPl7tmGo8kwJizCr6', 1, 1, 1),
+(23, 'André Cristen', 1, 2, '2019-03-19 17:05:20', '2019-03-19 17:05:20', 'Dezinh do funk', 'de@de.com', '$2y$10$kL2mVxabAH2RoqorZJmOdehZ4/NN0BvstQpHr3Zbxhq3MXj9GT.A6', 132, 12, 12);
 
 --
 -- Constraints for dumped tables

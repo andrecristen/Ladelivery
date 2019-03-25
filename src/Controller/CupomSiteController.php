@@ -28,8 +28,7 @@ class CupomSiteController extends AppController
      */
     public function index()
     {
-        $cupomSite = $this->paginate($this->CupomSite);
-
+        $cupomSite = $this->paginate($this->CupomSite->find()->where($this->generateConditionsFind(false)));
         $this->set(compact('cupomSite'));
     }
 

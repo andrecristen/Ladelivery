@@ -34,7 +34,7 @@ class EnderecosController extends AppController
         $this->paginate = [
             'contain' => ['Users']
         ];
-        $enderecos = $this->paginate($this->Enderecos);
+        $enderecos = $this->paginate($this->Enderecos->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('enderecos'));
     }

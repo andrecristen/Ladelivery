@@ -7,14 +7,16 @@
 <div class="col-sm-12">
     <h3><?= __('Usúarios') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridUtils();
+    $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setModel($users);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Nome', 'nome_completo', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Tipo', 'tipo', \App\Model\Utils\DataGridUtils::TYPE_LIST, [1=> 'Cliente', 2=> 'Administrador', 3 => 'Empresa']);
-    $dataGrid->addField('Apelido', 'apelido', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Login', 'login', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Nome', 'nome_completo', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $fieldTipoUsers = new \App\Model\Utils\GridField('Tipo', 'tipo', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
+    $fieldTipoUsers->setList(\App\Model\Entity\User::getTipoListAll());
+    $dataGrid->addField($fieldTipoUsers);
+    $dataGrid->addField(new \App\Model\Utils\GridField('Apelido', 'apelido', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Login', 'login', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->display();
     ?>
 </div>

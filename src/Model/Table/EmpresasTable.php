@@ -9,7 +9,6 @@ use Cake\Validation\Validator;
 /**
  * Empresas Model
  *
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\TemposMediosTable|\Cake\ORM\Association\HasMany $TemposMedios
  *
  * @method \App\Model\Entity\Empresa get($primaryKey, $options = [])
@@ -38,10 +37,6 @@ class EmpresasTable extends Table
         $this->setDisplayField('nome_fantasia');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
-        ]);
         $this->hasMany('TemposMedios', [
             'foreignKey' => 'empresa_id'
         ]);
@@ -93,7 +88,6 @@ class EmpresasTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->isUnique(['cnpj']));
 
         return $rules;

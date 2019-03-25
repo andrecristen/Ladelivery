@@ -6,7 +6,8 @@ $(document).ready(function () {
         clickable.click();
     }
     $("select").select2({
-        minimumInputLength: 0
+        minimumInputLength: 0,
+        placeholder: 'Selecione uma opção'
     });
 });
 

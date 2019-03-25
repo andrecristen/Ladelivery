@@ -47,11 +47,13 @@ class PedidosProdutosController extends AppController
         $this->paginate = [
             'contain' => ['Pedidos', 'Produtos']
         ];
-        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where([
+
+        $filtersFixed = [
             0 => ['ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_COZINHA],
             1 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
             2 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
-        ]));
+        ];
+        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(false, $filtersFixed)))->sortBy('id', SORT_DESC);
 
         $this->set(compact('pedidosProdutos'));
     }
@@ -62,12 +64,12 @@ class PedidosProdutosController extends AppController
         $this->paginate = [
             'contain' => ['Pedidos', 'Produtos']
         ];
-        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where([
+        $filtersFixed = [
             0 => ['ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_BAR],
             1 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
             2 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
-        ]));
-
+        ];
+        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(false, $filtersFixed)))->sortBy('id', SORT_DESC);
         $this->set(compact('pedidosProdutos'));
     }
     /**

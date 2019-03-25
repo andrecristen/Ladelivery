@@ -30,7 +30,6 @@ class EmpresasController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users']
         ];
         $empresas = $this->paginate($this->Empresas);
 
@@ -47,7 +46,7 @@ class EmpresasController extends AppController
     public function view($id = null)
     {
         $empresa = $this->Empresas->get($id, [
-            'contain' => ['Users', 'TemposMedios']
+            'contain' => ['TemposMedios']
         ]);
 
         $this->set('empresa', $empresa);
@@ -70,8 +69,7 @@ class EmpresasController extends AppController
             }
             $this->Flash->error(__('The empresa could not be saved. Please, try again.'));
         }
-        $users = $this->Empresas->Users->find('list')->where(['tipo' => User::TIPO_EMPRESA]);
-        $this->set(compact('empresa', 'users'));
+        $this->set(compact('empresa'));
     }
 
     /**
@@ -95,8 +93,7 @@ class EmpresasController extends AppController
             }
             $this->Flash->error(__('The empresa could not be saved. Please, try again.'));
         }
-        $users = $this->Empresas->Users->find('list')->where(['tipo' => User::TIPO_EMPRESA]);
-        $this->set(compact('empresa', 'users'));
+        $this->set(compact('empresa'));
     }
 
     /**

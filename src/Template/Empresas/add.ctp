@@ -13,7 +13,6 @@
             echo $this->Form->control('cnpj');
             echo $this->Form->control('ie');
             echo $this->Form->control('ativa');
-            echo $this->Form->control('user_id', ['options' => $users, 'required'=>'required']);
         ?>
         <br/>
     </fieldset>

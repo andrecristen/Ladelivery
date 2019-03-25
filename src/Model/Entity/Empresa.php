@@ -33,8 +33,6 @@ class Empresa extends Entity
         'cnpj' => true,
         'ie' => true,
         'ativa' => true,
-        'user_id' => true,
-        'user' => true,
         'tempos_medios' => true
     ];
 }

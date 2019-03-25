@@ -7,15 +7,15 @@
 <div class="col-sm-12">
     <h3><?= __('Cupom Site') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridUtils();
+    $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setModel($cupomSite);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Nome', 'nome_cupom', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Vezes Usado', 'vezes_usado', \App\Model\Utils\DataGridUtils::TYPE_NUMBER);
-    $dataGrid->addField('Usos Maximos', 'maximo_vezes_usar', \App\Model\Utils\DataGridUtils::TYPE_NUMBER);
-    $dataGrid->addField('Valor Desconto', 'valor_desconto', \App\Model\Utils\DataGridUtils::TYPE_NUMBER);
-    $dataGrid->addField('Porcentagem', 'porcentagem', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN);
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Nome', 'nome_cupom', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Vezes Usado', 'vezes_usado', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Usos Maximos', 'maximo_vezes_usar', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Valor Desconto', 'valor_desconto', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Porcentagem', 'porcentagem', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN, true, false));
     $dataGrid->display();
     ?>
 </div>

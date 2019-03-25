@@ -61,10 +61,9 @@ class PedidosController extends AppController
         $this->paginate = [
             'contain' => ['Users', 'FormasPagamentos']
         ];
-        $pedidos = $this->paginate($this->Pedidos->find()->where(
-            ['tipo_pedido' => Pedido::TIPO_PEDIDO_DELIVERY,
-            'status_pedido <> ' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE]
-        ))->sortBy('id', SORT_DESC);
+        $filtersFixed = ['tipo_pedido' => Pedido::TIPO_PEDIDO_DELIVERY,
+                         'status_pedido <> ' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE];
+        $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(false, $filtersFixed)))->sortBy('id', SORT_DESC);
 
         $this->set(compact('pedidos'));
     }
@@ -74,8 +73,8 @@ class PedidosController extends AppController
         $this->paginate = [
             'contain' => ['Users']
         ];
-        $pedidos = $this->paginate($this->Pedidos->find()->where(['tipo_pedido' => Pedido::TIPO_PEDIDO_COMANDA]))->sortBy('id', SORT_DESC);
-
+        $filtersFixed = ['tipo_pedido' => Pedido::TIPO_PEDIDO_COMANDA];
+        $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(false, $filtersFixed)))->sortBy('id', SORT_DESC);
         $this->set(compact('pedidos'));
     }
 

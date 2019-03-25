@@ -25,7 +25,14 @@ class Endereco extends Entity
     const TIPO_ENDERECO_CLIENTE = 1;
     const TIPO_ENDERECO_EMPRESA = 2;
 
-    public function getEstados(){
+    public static function getListTipo(){
+        [
+            self::TIPO_ENDERECO_CLIENTE => 'Cliente',
+            self::TIPO_ENDERECO_EMPRESA => 'Empresa'
+        ];
+    }
+
+    public static function getEstados(){
         return [
             'AC'=>'Acre',
             'AL'=>'Alagoas',

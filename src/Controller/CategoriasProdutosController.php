@@ -31,8 +31,7 @@ class CategoriasProdutosController extends AppController
      */
     public function index()
     {
-        $categoriasProdutos = $this->paginate($this->CategoriasProdutos);
-
+        $categoriasProdutos = $this->paginate($this->CategoriasProdutos->find()->where($this->generateConditionsFind(false)));
         $this->set(compact('categoriasProdutos'));
     }
 

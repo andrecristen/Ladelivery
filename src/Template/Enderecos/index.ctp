@@ -7,19 +7,22 @@
 <div class="col-sm-12">
     <h3><?= __('Enderecos') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridUtils();
+    $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setModel($enderecos);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Usuário', 'user/nome_completo', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Tipo', 'tipo_endereco', \App\Model\Utils\DataGridUtils::TYPE_LIST, [1=> 'Cliente', 2=> 'Empresa']);
-    $dataGrid->addField('Rua', 'rua', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Número', 'numero', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Bairro', 'bairro', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Cidade', 'cidade', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Cep', 'cep', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Complemento', 'complemento', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Estado', 'estado', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, 'auto', 'endereco/id'));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Usuário', 'user/nome_completo', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $tipoEndereco = new \App\Model\Utils\GridField('Tipo', 'tipo_endereco', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
+    $tipoEndereco->setList(\App\Model\Entity\Endereco::getListTipo());
+    $dataGrid->addField(new \App\Model\Utils\GridField('Rua', 'rua', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Número', 'numero', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Bairro', 'bairro', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Cidade', 'cidade', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Cep', 'cep', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Complemento', 'complemento', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $estado = new \App\Model\Utils\GridField('Estado', 'estado', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
+    $estado->setList(\App\Model\Entity\Endereco::getEstados());
+    $dataGrid->addField($estado);
     $dataGrid->display();
     ?>
 </div>

@@ -11,6 +11,12 @@ namespace App\Model\Utils;
 use Cake\Datasource\Paginator;
 use Cake\View\View;
 
+/**
+ * Class DataGridUtils
+ * @package App\Model\Utils
+ * @deprecated
+ * Usar DataGridGenerator and GridField
+ */
 class DataGridUtils extends View
 {
     //Para campos de tipo numerico
@@ -145,9 +151,9 @@ class DataGridUtils extends View
      * $arrayList = ['tipo_produto' => 'PRODUTO', 'tipo_item' => 'ITEM', 'tipo_bem' => 'BEM'];
      *
      */
-    public function addField($titulo, $path, $type, $list = null)
+    public function addField($titulo, $path, $type, $list = null, $filter = false)
     {
-        $this->fields[] = ['titulo' => $titulo, 'path' => $path, 'type' => $type, 'list' => $list];
+        $this->fields[] = ['titulo' => $titulo, 'path' => $path, 'type' => $type, 'list' => $list, 'filter'];
     }
 
     /**

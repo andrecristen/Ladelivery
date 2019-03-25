@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Model\Entity\User;
 use App\Model\Utils\EmpresaUtils;
+use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -35,10 +36,7 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $users = $this->paginate($this->Users->find()->where(['empresa_id' => $this->empresaUtils->getEmpresaBase()]));
-        if($this->empresaUtils->isEmpresaSoftware()){
-            $users = $this->paginate($this->Users);
-        }
+        $users = $this->paginate($this->Users->find()->where($this->generateConditionsFind()));
         $this->set(compact('users'));
     }
 

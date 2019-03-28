@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 25-Mar-2019 às 20:58
+-- Generation Time: 28-Mar-2019 às 20:16
 -- Versão do servidor: 5.7.21
 -- PHP Version: 7.2.4
 
@@ -40,6 +40,32 @@ CREATE TABLE IF NOT EXISTS `alteracao_senhas` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `alteracao_senhas`
+--
+
+INSERT INTO `alteracao_senhas` (`id`, `user_id`, `token`, `validade`, `usado`) VALUES
+(1, 8, 'LA201903130420170426812001552504817DEV54851054', '2019-03-13 19:20:18', 0),
+(2, 8, 'LA201903130428520913905001552505332DEV87135530', '2019-03-16 16:28:53', 0),
+(3, 8, 'LA201903130431390881918001552505499DEV98718359', '2019-03-16 16:31:40', 0),
+(4, 16, 'LA201903130432270193464001552505547DEV83064079', '2019-03-16 16:32:27', 0),
+(5, 8, 'LA201903130433120701996001552505592DEV81203759', '2019-03-16 16:33:12', 0),
+(6, 8, 'LA201903130523410625990001552508621DEV12508884', '2019-03-16 17:23:42', 0),
+(7, 8, 'LA201903130524040380986001552508644DEV77282234', '2019-03-16 17:24:04', 0),
+(8, 8, 'LA201903130525190666554001552508719DEV14147486', '2019-03-16 17:25:19', 0),
+(9, 8, 'LA201903130526290968416001552508789DEV76921375', '2019-03-16 17:26:30', 0),
+(10, 8, 'LA201903130527440376391001552508864DEV73528013', '2019-03-16 17:27:44', 0),
+(11, 8, 'LA201903130529370800914001552508977DEV26731828', '2019-03-16 17:29:38', 0),
+(12, 8, 'LA201903130531130748392001552509073DEV64116838', '2019-03-16 17:31:13', 0),
+(13, 8, 'LA201903130532030913003001552509123DEV43152506', '2019-03-16 17:32:03', 0),
+(14, 8, 'LA201903130533240041654001552509204DEV31955176', '2019-03-16 17:33:24', 0),
+(15, 8, 'LA201903130533570579593001552509237DEV80232391', '2019-03-16 17:33:57', 0),
+(16, 8, 'LA201903130539200244099001552509560DEV82635612', '2019-03-16 17:39:20', 0),
+(17, 8, 'LA201903130608320663834001552511312DEV63116775', '2019-03-16 18:08:32', 0),
+(18, 8, 'LA201903130609430531140001552511383DEV94312641', '2019-03-16 18:09:43', 0),
+(19, 16, 'LA201903150717550233957001552688275DEV52052338', '2019-03-18 19:17:55', 0),
+(20, 8, 'LA201903150718100136836001552688290DEV77973543', '2019-03-18 16:39:10', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -56,6 +82,17 @@ CREATE TABLE IF NOT EXISTS `categorias_produtos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `categorias_produtos`
+--
+
+INSERT INTO `categorias_produtos` (`id`, `nome_categoria`, `descricao_categoria`, `created`, `modified`) VALUES
+(20, 'Bebidas', 'Bebidas Geladinhas', '2019-03-08 17:20:14', '2019-03-08 17:20:14'),
+(21, 'Lanches Assados', 'Lanches assados como pasteis, mini pizzas  e afins.', '2019-03-08 17:20:42', '2019-03-08 17:20:42'),
+(22, 'Pizzas', 'Pizzas do Bonna', '2019-03-08 17:20:52', '2019-03-08 17:20:52'),
+(23, 'Doces', 'Doces', '2019-03-08 17:21:05', '2019-03-08 17:21:05'),
+(24, 'Hambúrgueres', 'Hambúrgueres', '2019-03-08 17:28:11', '2019-03-08 17:28:11');
+
 -- --------------------------------------------------------
 
 --
@@ -69,6 +106,17 @@ CREATE TABLE IF NOT EXISTS `categorias_produtos_imagens` (
   UNIQUE KEY `categoria_id` (`categorias_produto_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `categorias_produtos_imagens`
+--
+
+INSERT INTO `categorias_produtos_imagens` (`categorias_produto_id`, `nome_imagem`) VALUES
+(20, '20_bebidas.jpg'),
+(21, '21_assados.jpg'),
+(22, '22_pizza.png'),
+(23, '23_doces.jpg'),
+(24, '24_hamburguer.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -78,13 +126,14 @@ CREATE TABLE IF NOT EXISTS `categorias_produtos_imagens` (
 DROP TABLE IF EXISTS `cupom_site`;
 CREATE TABLE IF NOT EXISTS `cupom_site` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
   `nome_cupom` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `vezes_usado` int(11) DEFAULT NULL,
   `maximo_vezes_usar` int(11) NOT NULL,
   `valor_desconto` int(11) NOT NULL,
   `porcentagem` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -136,7 +185,6 @@ DROP TABLE IF EXISTS `enderecos`;
 CREATE TABLE IF NOT EXISTS `enderecos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `tipo_endereco` smallint(6) NOT NULL,
   `rua` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `numero` int(11) DEFAULT NULL,
   `bairro` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -146,7 +194,46 @@ CREATE TABLE IF NOT EXISTS `enderecos` (
   `complemento` varchar(600) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `enderecos`
+--
+
+INSERT INTO `enderecos` (`id`, `user_id`, `rua`, `numero`, `bairro`, `cidade`, `estado`, `cep`, `complemento`) VALUES
+(15, 20, 'Dr. Getulio Vargas', 2875, 'Bela Vista', 'Ibirama', 'SC', '89140000', 'Em frente a UDESC'),
+(16, 16, 'Luiz rigo', 143, 'Ponto chic', 'Ibirama', 'SC', '89140-000', 'Casa com muro de pedra bruta na frente'),
+(17, 8, 'Luiz rigo', 143, 'Ponto Chic', 'Ibirama', 'SC', '89140-000', 'Casa com muro de pedra bruta na frente'),
+(18, 8, '13 de Maio', 896, 'Centro', 'Jose Boiteux', 'SC', '89145000', 'Casa '),
+(19, 16, 'Luiz rigo', 143, 'Ponto chic', 'Ibirama', 'SC', '89140-000', '1234sdcsac');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `enderecos_empresas`
+--
+
+DROP TABLE IF EXISTS `enderecos_empresas`;
+CREATE TABLE IF NOT EXISTS `enderecos_empresas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
+  `rua` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `numero` int(11) NOT NULL,
+  `bairro` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `cidade` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `estado` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `cep` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_empresa_id_endereco` (`empresa_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `enderecos_empresas`
+--
+
+INSERT INTO `enderecos_empresas` (`id`, `empresa_id`, `rua`, `numero`, `bairro`, `cidade`, `estado`, `cep`) VALUES
+(1, 2, 'Luiz Rigo', 143, 'Ponto chic', 'Ibirama', 'SC', '89140000'),
+(2, 1, 'Dr. Getulio Vargas', 2875, 'Bela Vista', 'Ibirama', 'SC', '89140000');
 
 -- --------------------------------------------------------
 
@@ -167,6 +254,15 @@ CREATE TABLE IF NOT EXISTS `formas_pagamentos` (
   KEY `empresa_id` (`empresa_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `formas_pagamentos`
+--
+
+INSERT INTO `formas_pagamentos` (`id`, `empresa_id`, `nome`, `necesista_maquina_cartao`, `necessita_troco`, `aumenta_valor`) VALUES
+(1, 1, 'Dinheiro', 0, 1, '0.00'),
+(2, 1, 'Cartão Crédito', 1, 0, '5.00'),
+(4, 1, 'Cartão Débito', 1, 0, '2.00');
+
 -- --------------------------------------------------------
 
 --
@@ -176,11 +272,18 @@ CREATE TABLE IF NOT EXISTS `formas_pagamentos` (
 DROP TABLE IF EXISTS `google_maps_api_key`;
 CREATE TABLE IF NOT EXISTS `google_maps_api_key` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `empresa_id` int(11) NOT NULL,
   `api_key` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `ativa` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `google_maps_api_key`
+--
+
+INSERT INTO `google_maps_api_key` (`id`, `empresa_id`, `api_key`, `ativa`) VALUES
+(1, 1, 'AIzaSyBOfZCfy02ny8dk3LMcXOWtFuiDpqX1Qdw', 1);
 
 -- --------------------------------------------------------
 
@@ -199,6 +302,19 @@ CREATE TABLE IF NOT EXISTS `horarios_atendimentos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `horarios_atendimentos`
+--
+
+INSERT INTO `horarios_atendimentos` (`id`, `empresa_id`, `dia_semana`, `turno`, `hora_inicio`, `hora_fim`) VALUES
+(5, 1, 0, 1, '01:00:00', '23:59:00'),
+(6, 1, 1, 1, '00:00:00', '23:59:00'),
+(7, 1, 2, 1, '00:00:00', '23:59:00'),
+(8, 1, 3, 1, '00:00:00', '23:59:00'),
+(9, 1, 4, 1, '00:00:00', '23:59:00'),
+(10, 1, 5, 1, '00:00:00', '23:59:00'),
+(11, 1, 6, 1, '00:00:00', '23:59:00');
+
 -- --------------------------------------------------------
 
 --
@@ -215,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `itens_carrinhos` (
   `observacao` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `opicionais` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -234,6 +350,14 @@ CREATE TABLE IF NOT EXISTS `listas` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `listas`
+--
+
+INSERT INTO `listas` (`id`, `nome_lista`, `descricao_lista`, `titulo_lista`, `max_opcoes_selecionadas_lista`, `min_opcoes_selecionadas_lista`) VALUES
+(115, 'Adicionais De Lanches', 'Adicionais Usados Nos Lanches Hamburgueres', 'Adicionais', 0, 0),
+(116, 'Sabores pizzas', 'Sabores para pizzas', 'Sabores', 3, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -250,7 +374,17 @@ CREATE TABLE IF NOT EXISTS `listas_opcoes_extras` (
   UNIQUE KEY `unique_lista_id_opcoes` (`lista_id`,`opcoes_extra_id`) USING BTREE,
   KEY `opcoes_extra_id` (`opcoes_extra_id`),
   KEY `fk_lista_id_opcao_extra` (`lista_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `listas_opcoes_extras`
+--
+
+INSERT INTO `listas_opcoes_extras` (`id`, `lista_id`, `opcoes_extra_id`, `ativa`) VALUES
+(43, 115, 12, 1),
+(44, 115, 13, 1),
+(45, 115, 14, 1),
+(46, 116, 13, 1);
 
 -- --------------------------------------------------------
 
@@ -268,6 +402,17 @@ CREATE TABLE IF NOT EXISTS `listas_produtos` (
   UNIQUE KEY `unique_produto_lista` (`produto_id`,`lista_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `listas_produtos`
+--
+
+INSERT INTO `listas_produtos` (`id`, `produto_id`, `lista_id`) VALUES
+(22, 46, 115),
+(23, 47, 115),
+(24, 48, 115),
+(25, 54, 115),
+(26, 54, 116);
+
 -- --------------------------------------------------------
 
 --
@@ -282,6 +427,15 @@ CREATE TABLE IF NOT EXISTS `opcoes_extras` (
   `valor_adicional` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `opcoes_extras`
+--
+
+INSERT INTO `opcoes_extras` (`id`, `nome_adicional`, `descricao_adicional`, `valor_adicional`) VALUES
+(12, 'Calabresa', '300gr Calabresa', '6.00'),
+(13, 'Bacon', '250gr Bacon', '6.50'),
+(14, 'Frango', '400gr Frango na chapa', '8.20');
 
 -- --------------------------------------------------------
 
@@ -305,7 +459,50 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `cupom_usado` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `valor_desconto` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `pedidos`
+--
+
+INSERT INTO `pedidos` (`id`, `user_id`, `empresa_id`, `valor_total_cobrado`, `formas_pagamento_id`, `valor_acrescimo`, `tempo_producao_aproximado_minutos`, `troco_para`, `tipo_pedido`, `status_pedido`, `data_pedido`, `cupom_usado`, `valor_desconto`) VALUES
+(1, 16, 1, '6.50', NULL, '0.00', 45, '0.00', 2, 11, '2019-03-09 11:14:17', NULL, '0.00'),
+(2, 8, 2, '6.50', 1, '0.00', 45, '0.00', 2, 12, '2019-03-09 11:23:50', NULL, '0.00'),
+(3, 8, 2, '6.50', 1, '0.00', 45, '0.00', 1, 4, '2019-03-11 00:15:31', NULL, '0.00'),
+(4, 8, 1, '6.50', 1, '0.00', 45, '0.00', 1, 4, '2019-03-11 00:23:57', NULL, '0.00'),
+(5, 8, 2, '19.00', 2, '0.00', 45, '0.00', 1, 3, '2019-03-11 00:25:08', NULL, '0.00'),
+(6, 8, 1, '25.00', 1, '0.00', 45, '0.00', 1, 4, '2019-03-11 00:28:46', NULL, '0.00'),
+(7, 8, 1, '6.50', 1, '0.00', 45, '0.00', 1, 4, '2019-03-11 00:32:39', NULL, '0.00'),
+(8, 8, 1, '6.50', 1, '0.00', 45, '0.00', 1, 4, '2019-03-11 00:36:03', NULL, '0.00'),
+(9, 16, 1, '39.70', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-11 00:41:21', NULL, '0.00'),
+(10, 16, 2, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-11 00:44:31', NULL, '0.00'),
+(11, 16, 1, '19.00', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-11 00:54:00', NULL, '0.00'),
+(12, 16, 1, '0.00', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-11 00:54:04', NULL, '0.00'),
+(13, 16, 1, '6.50', 1, '0.00', 45, '0.00', 1, 4, '2019-03-11 00:55:31', NULL, '0.00'),
+(14, 16, 1, '19.00', 1, '0.00', 45, '0.00', 1, 4, '2019-03-11 01:11:41', 'DESCONTODE10', '2.85'),
+(15, 16, 2, '19.00', 2, '0.95', 45, '0.00', 1, 4, '2019-03-11 02:32:51', 'DESCONTODE10', '2.85'),
+(16, 8, 2, '58.20', 1, '0.00', 45, '15.60', 1, 4, '2019-03-11 13:53:59', 'DESCONTODE10', '8.73'),
+(17, 8, 1, '33.20', 1, '0.00', 45, '50.00', 1, 4, '2019-03-11 15:04:06', 'DESCONTODE10', '4.98'),
+(18, 8, 2, '59.20', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-11 15:08:38', NULL, '0.00'),
+(19, 8, 1, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-17 19:01:14', NULL, '0.00'),
+(20, 16, 1, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-19 18:23:44', NULL, '0.00'),
+(21, 16, 1, '6.50', 2, '0.33', 45, '0.00', 1, 4, '2019-03-19 18:31:14', NULL, '0.00'),
+(22, 16, 1, '6.50', 1, '0.00', 45, '10.20', 1, 11, '2019-03-19 22:58:04', NULL, '0.00'),
+(23, 16, 1, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-19 23:04:15', NULL, '0.00'),
+(24, 16, 1, '33.20', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-19 23:19:20', NULL, '0.00'),
+(25, 16, 1, '6.50', 1, '0.00', 45, '10.00', 1, 11, '2019-03-21 16:44:17', NULL, '0.00'),
+(26, 16, 1, '39.70', 1, '0.00', 45, '50.00', 1, 11, '2019-03-21 18:02:32', NULL, '0.00'),
+(27, 16, 1, '6.50', 1, '0.00', 45, '100.00', 1, 4, '2019-03-22 19:23:44', 'DESCONTODE10', '0.98'),
+(28, 16, 1, '6.50', 1, '0.00', 45, '150.00', 1, 5, '2019-03-22 19:28:39', 'DESCONTODE10', '0.98'),
+(29, 16, 1, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-26 18:20:06', NULL, '0.00'),
+(33, 8, 1, '19.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-26 21:19:11', NULL, '0.00'),
+(34, 8, 1, '6.50', 1, '0.00', 45, '15.20', 1, 2, '2019-03-27 16:11:44', NULL, '0.00'),
+(36, 8, 1, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-27 16:25:26', NULL, '0.00'),
+(37, 8, 1, '18.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-27 16:26:09', NULL, '0.00'),
+(38, 8, 1, '18.50', 2, '0.93', 45, '0.00', 1, 4, '2019-03-27 16:34:16', NULL, '0.00'),
+(39, 8, 1, '183.40', 1, '0.00', 45, '200.00', 1, 4, '2019-03-27 16:44:49', NULL, '0.00'),
+(40, 8, 1, '19.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-27 17:09:34', 'LADEV', '15.00'),
+(41, 8, 1, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-27 17:34:32', NULL, '0.00');
 
 -- --------------------------------------------------------
 
@@ -322,7 +519,27 @@ CREATE TABLE IF NOT EXISTS `pedidos_entregas` (
   `endereco_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_pedido_entrega` (`pedido_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `pedidos_entregas`
+--
+
+INSERT INTO `pedidos_entregas` (`id`, `pedido_id`, `valor_entrega`, `cotacao_maps`, `endereco_id`) VALUES
+(1, 1, '8.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4241},\"duration\":{\"text\":\"8 minutos\",\"value\":490},\"status\":\"OK\"}', 16),
+(2, 11, '8.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4241},\"duration\":{\"text\":\"8 minutos\",\"value\":490},\"status\":\"OK\"}', 16),
+(3, 12, '8.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4241},\"duration\":{\"text\":\"8 minutos\",\"value\":490},\"status\":\"OK\"}', 16),
+(4, 14, '8.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4241},\"duration\":{\"text\":\"8 minutos\",\"value\":490},\"status\":\"OK\"}', 16),
+(6, 15, '8.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4241},\"duration\":{\"text\":\"8 minutos\",\"value\":490},\"status\":\"OK\"}', 16),
+(7, 18, '41.00', '{\"distance\":{\"text\":\"21,2 km\",\"value\":21162},\"duration\":{\"text\":\"29 minutos\",\"value\":1764},\"status\":\"OK\"}', 18),
+(8, 23, '8.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4241},\"duration\":{\"text\":\"8 minutos\",\"value\":490},\"status\":\"OK\"}', 16),
+(9, 26, '8.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4241},\"duration\":{\"text\":\"8 minutos\",\"value\":489},\"status\":\"OK\"}', 16),
+(10, 28, '8.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4241},\"duration\":{\"text\":\"8 minutos\",\"value\":489},\"status\":\"OK\"}', 16),
+(11, 33, '10.00', '{\"status\":\"ZERO_RESULTS\"}', 17),
+(12, 34, '6.00', '{\"distance\":{\"text\":\"3,5 km\",\"value\":3547},\"duration\":{\"text\":\"7 minutos\",\"value\":416},\"status\":\"OK\"}', 17),
+(13, 36, '10.00', NULL, 17),
+(14, 37, '6.00', '{\"distance\":{\"text\":\"3,5 km\",\"value\":3547},\"duration\":{\"text\":\"7 minutos\",\"value\":416},\"status\":\"OK\"}', 17),
+(15, 38, '6.00', '{\"distance\":{\"text\":\"3,5 km\",\"value\":3547},\"duration\":{\"text\":\"7 minutos\",\"value\":416},\"status\":\"OK\"}', 17);
 
 -- --------------------------------------------------------
 
@@ -342,7 +559,61 @@ CREATE TABLE IF NOT EXISTS `pedidos_produtos` (
   `ambiente_producao_responsavel` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `pedidos_produtos`
+--
+
+INSERT INTO `pedidos_produtos` (`id`, `pedido_id`, `produto_id`, `quantidade`, `valor_total_cobrado`, `observacao`, `opcionais`, `ambiente_producao_responsavel`, `status`) VALUES
+(2, 2, 45, 1, '6.50', '', '\"[]\"', 2, 3),
+(3, 3, 45, 1, '6.50', '', '\"[]\"', 2, 3),
+(4, 4, 45, 1, '6.50', '', '\"[]\"', 2, 3),
+(5, 5, 45, 1, '6.50', '', '\"[]\"', 2, 3),
+(6, 5, 46, 1, '12.50', '', '\"[]\"', 2, 3),
+(7, 6, 46, 1, '12.50', '', '\"[]\"', 2, 3),
+(8, 6, 47, 1, '12.50', '', '\"[]\"', 2, 3),
+(9, 7, 45, 1, '6.50', '', '\"[]\"', 2, 3),
+(10, 8, 45, 1, '6.50', '', '\"[]\"', 2, 3),
+(11, 9, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(12, 9, 46, 1, '33.20', '', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"]}\"', 1, 1),
+(13, 10, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(14, 11, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(15, 11, 46, 1, '12.50', '', '\"[]\"', 1, 1),
+(16, 13, 45, 1, '6.50', '', '\"[]\"', 2, 3),
+(17, 14, 45, 1, '6.50', '', '\"[]\"', 1, 3),
+(18, 14, 46, 1, '12.50', '', '\"[]\"', 1, 3),
+(19, 15, 45, 1, '6.50', '', '\"[]\"', 1, 3),
+(20, 15, 46, 1, '12.50', '', '\"[]\"', 1, 3),
+(21, 16, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(22, 16, 46, 1, '18.50', '', '\"{\\\"115\\\":[\\\"12\\\"]}\"', 1, 1),
+(23, 16, 47, 1, '33.20', '', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"]}\"', 1, 1),
+(24, 17, 46, 1, '33.20', '', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"]}\"', 2, 3),
+(25, 18, 45, 4, '26.00', 'gelada', '\"[]\"', 1, 1),
+(26, 18, 46, 1, '33.20', 'Tira pepino', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"]}\"', 1, 1),
+(27, 19, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(28, 20, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(29, 21, 45, 1, '6.50', '', '\"[]\"', 1, 3),
+(30, 22, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(31, 23, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(32, 24, 46, 1, '33.20', 'Tira o pentelho dessa vez', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"]}\"', 1, 1),
+(33, 25, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(34, 26, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(35, 26, 46, 1, '33.20', '', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"]}\"', 1, 1),
+(36, 27, 45, 1, '6.50', '', '\"[]\"', 1, 3),
+(37, 28, 45, 1, '6.50', '', '\"[]\"', 1, 3),
+(38, 29, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(48, 33, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(49, 33, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(50, 33, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(51, 34, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(53, 36, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(54, 37, 46, 1, '18.50', '', '\"{\\\"115\\\":[\\\"12\\\"]}\"', 1, 1),
+(55, 38, 46, 1, '18.50', '', '\"{\\\"115\\\":[\\\"12\\\"]}\"', 2, 3),
+(56, 39, 46, 1, '33.20', '', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"]}\"', 1, 3),
+(57, 39, 54, 1, '150.20', '', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"],\\\"116\\\":[\\\"13\\\"]}\"', 1, 3),
+(58, 40, 45, 3, '19.50', '', '\"[]\"', 1, 1),
+(59, 41, 45, 1, '6.50', '', '\"[]\"', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -364,6 +635,17 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   KEY `categorias_produto_id` (`categorias_produto_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `produtos`
+--
+
+INSERT INTO `produtos` (`id`, `nome_produto`, `categorias_produto_id`, `descricao_produto`, `preco_produto`, `ativo_produto`, `created`, `modified`) VALUES
+(45, 'Coca-cola 600', 20, 'Coca-cola 600 ml', '6.50', 1, '2019-03-08 17:21:46', '2019-03-27 16:53:30'),
+(46, 'X - Calabresa', 24, 'Hambúrguer, Alface, Tomate, Pepino, Milho, Ervilha, Calabresa', '12.50', 1, '2019-03-08 17:30:18', '2019-03-08 17:30:34'),
+(47, 'X - Frango', 24, '................', '12.50', 1, '2019-03-08 17:35:41', '2019-03-08 17:35:41'),
+(48, 'X - Bacon', 24, 'lwekfioewjkfiopwerkjfiowefkiowerf', '13.50', 1, '2019-03-08 17:36:32', '2019-03-08 17:36:32'),
+(54, 'Frango', 22, '123456', '123.00', 1, '2019-03-11 22:42:38', '2019-03-11 22:42:38');
+
 -- --------------------------------------------------------
 
 --
@@ -377,6 +659,13 @@ CREATE TABLE IF NOT EXISTS `produtos_imagens` (
   UNIQUE KEY `produto_id` (`produto_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Extraindo dados da tabela `produtos_imagens`
+--
+
+INSERT INTO `produtos_imagens` (`produto_id`, `nome_imagem`) VALUES
+(45, '45_coca.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -386,12 +675,20 @@ CREATE TABLE IF NOT EXISTS `produtos_imagens` (
 DROP TABLE IF EXISTS `taxas_entregas_cotacao`;
 CREATE TABLE IF NOT EXISTS `taxas_entregas_cotacao` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
   `valor_km` decimal(10,2) NOT NULL,
   `arredondamento_tipo` int(11) DEFAULT NULL,
   `ativo` tinyint(1) NOT NULL,
   `valor_base_erro` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `taxas_entregas_cotacao`
+--
+
+INSERT INTO `taxas_entregas_cotacao` (`id`, `empresa_id`, `valor_km`, `arredondamento_tipo`, `ativo`, `valor_base_erro`) VALUES
+(6, 1, '1.95', 2, 1, '10.00');
 
 -- --------------------------------------------------------
 
@@ -409,6 +706,13 @@ CREATE TABLE IF NOT EXISTS `tempos_medios` (
   PRIMARY KEY (`id`),
   KEY `empresa_id` (`empresa_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `tempos_medios`
+--
+
+INSERT INTO `tempos_medios` (`id`, `empresa_id`, `nome`, `tempo_medio_producao_minutos`, `ativo`) VALUES
+(3, 1, 'Tempo Produção dias da semana', 45, 1);
 
 -- --------------------------------------------------------
 
@@ -441,8 +745,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `nome_completo`, `tipo`, `empresa_id`, `created`, `modified`, `apelido`, `login`, `password`, `dia_nascimento`, `mes_nascimento`, `ano_nascimento`) VALUES
 (8, 'André Cristen', 2, 2, '2019-01-28 23:59:32', '2019-03-18 16:39:25', 'Dezinh', 'andrecristenibirama@gmail.com', '$2y$10$rPg6wXHcnEDbEY5IIkQ4t./Qpb/qrDmK7UJw4x8yZzMWJ3fzs2V/y', 3, 9, 2000),
 (16, 'André Cristen Cliente', 1, 2, '2019-02-05 22:14:18', '2019-02-15 21:39:25', 'TESTE LADEV CLIENTE', 'andre.cristen@ladev.com', '$2y$10$NNNttUN6hZNz9NBWPXB2AOe4nacaYwnR0QkiZEy/LznND2TxGkMem', 3, 9, 2000),
-(20, 'Baiucas Lanches', 3, 1, '2019-02-14 21:40:09', '2019-02-22 19:15:57', 'Baiucas Lanches e Delivery', 'baiucas.admin@gmail.com', '$2y$10$xL/DkDmDdVeZsX6ccQPnmOa7i0YyQxsgMLr41A96WdTHQ4ws4jZaG', 3, 9, 2000),
-(21, 'LaDev - Software', 3, 2, '2019-02-28 16:30:38', '2019-03-19 16:44:32', 'Ladelivery', 'ladev.sistemas@gmail.com', '$2y$10$RcrpWZi7np6wn1qV..Nn.OqoGbCTvY9IfbC.wVaQKmL61eRfp34VO', 3, 9, 2000),
+(20, 'Baiucas Lanches', 2, 1, '2019-02-14 21:40:09', '2019-03-27 16:14:25', 'Baiucas Lanches e Delivery', 'baiucas.admin@gmail.com', '$2y$10$xL/DkDmDdVeZsX6ccQPnmOa7i0YyQxsgMLr41A96WdTHQ4ws4jZaG', 3, 9, 2000),
+(21, 'LaDev - Software', 2, 2, '2019-02-28 16:30:38', '2019-03-27 16:14:19', 'Ladelivery', 'ladev.sistemas@gmail.com', '$2y$10$RcrpWZi7np6wn1qV..Nn.OqoGbCTvY9IfbC.wVaQKmL61eRfp34VO', 3, 9, 2000),
 (22, 'André Cristen', 2, 1, '2019-03-19 17:04:53', '2019-03-19 17:04:53', '123', 'andrecristenibirama@gmail.com1', '$2y$10$nepDfgLtK4hWc9Ndib/Tr.h5/0iEmflnv7C3BPl7tmGo8kwJizCr6', 1, 1, 1),
 (23, 'André Cristen', 1, 2, '2019-03-19 17:05:20', '2019-03-19 17:05:20', 'Dezinh do funk', 'de@de.com', '$2y$10$kL2mVxabAH2RoqorZJmOdehZ4/NN0BvstQpHr3Zbxhq3MXj9GT.A6', 132, 12, 12);
 

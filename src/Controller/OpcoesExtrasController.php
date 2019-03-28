@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -14,9 +15,12 @@ use Cake\Http\ServerRequest;
  */
 class OpcoesExtrasController extends AppController
 {
+
+    protected $empresaUtils;
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
         $this->validateActions();
     }
 
@@ -27,7 +31,10 @@ class OpcoesExtrasController extends AppController
      */
     public function index()
     {
-        $opcoesExtras = $this->paginate($this->OpcoesExtras);
+        $this->paginate = [
+            'contain' => ['Empresas']
+        ];
+        $opcoesExtras = $this->paginate($this->OpcoesExtras->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('opcoesExtras'));
     }
@@ -58,6 +65,7 @@ class OpcoesExtrasController extends AppController
         $opcoesExtra = $this->OpcoesExtras->newEntity();
         if ($this->request->is('post')) {
             $opcoesExtra = $this->OpcoesExtras->patchEntity($opcoesExtra, $this->request->getData());
+            $opcoesExtra->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->OpcoesExtras->save($opcoesExtra)) {
                 $this->Flash->success(__('Adicional adicionado com sucesso.'));
 
@@ -83,6 +91,7 @@ class OpcoesExtrasController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $opcoesExtra = $this->OpcoesExtras->patchEntity($opcoesExtra, $this->request->getData());
+            $opcoesExtra->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->OpcoesExtras->save($opcoesExtra)) {
                 $this->Flash->success(__('Adicional salvo com sucesso.'));
 

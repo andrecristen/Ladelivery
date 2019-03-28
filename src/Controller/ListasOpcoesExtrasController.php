@@ -31,7 +31,7 @@ class ListasOpcoesExtrasController extends AppController
         $this->paginate = [
             'contain' => ['Listas', 'OpcoesExtras']
         ];
-        $listasOpcoesExtras = $this->paginate($this->ListasOpcoesExtras);
+        $listasOpcoesExtras = $this->paginate($this->ListasOpcoesExtras->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('listasOpcoesExtras'));
     }

@@ -32,7 +32,7 @@ class ListasProdutosController extends AppController
         $this->paginate = [
             'contain' => ['Produtos', 'Listas']
         ];
-        $listasProdutos = $this->paginate($this->ListasProdutos);
+        $listasProdutos = $this->paginate($this->ListasProdutos->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('listasProdutos'));
     }

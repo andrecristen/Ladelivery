@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * Produtos Model
  *
  * @property \App\Model\Table\CategoriasProdutosTable|\Cake\ORM\Association\BelongsTo $CategoriasProdutos
+ * @property \App\Model\Table\EmpresasTable|\Cake\ORM\Association\BelongsTo $Empresas
  *
  * @method \App\Model\Entity\Produto get($primaryKey, $options = [])
  * @method \App\Model\Entity\Produto newEntity($data = null, array $options = [])
@@ -43,6 +44,11 @@ class ProdutosTable extends Table
 
         $this->belongsTo('CategoriasProdutos', [
             'foreignKey' => 'categorias_produto_id',
+            'joinType' => 'INNER'
+        ]);
+
+        $this->belongsTo('Empresas', [
+            'foreignKey' => 'empresa_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -90,6 +96,7 @@ class ProdutosTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['categorias_produto_id'], 'CategoriasProdutos'));
+        $rules->add($rules->existsIn(['empresa_id'], 'Empresas'));
 
         return $rules;
     }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Model\Entity\ProdutosImagen;
 use App\Model\Table\ProdutosImagensTable;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Controller\ComponentRegistry;
 use Cake\Event\Event;
 use Cake\Http\Response;
@@ -21,9 +22,12 @@ use Cake\ORM\TableRegistry;
  */
 class ProdutosController extends AppController
 {
+    protected $empresaUtils;
+
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
         $this->pertmiteAction('getProduto');
         $this->validateActions();
     }
@@ -37,9 +41,9 @@ class ProdutosController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['CategoriasProdutos']
+            'contain' => ['CategoriasProdutos', 'Empresas']
         ];
-        $produtos = $this->paginate($this->Produtos);
+        $produtos = $this->paginate($this->Produtos->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('produtos'));
     }
@@ -70,6 +74,7 @@ class ProdutosController extends AppController
         $produto = $this->Produtos->newEntity();
         if ($this->request->is('post')) {
             $produto = $this->Produtos->patchEntity($produto, $this->request->getData());
+            $produto->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->Produtos->save($produto)) {
                 $this->Flash->success(__('Produto adicionado com sucesso.'));
 
@@ -137,6 +142,7 @@ class ProdutosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $produto = $this->Produtos->patchEntity($produto, $this->request->getData());
+            $produto->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->Produtos->save($produto)) {
                 $this->Flash->success(__('Produto salvo com sucesso.'));
 

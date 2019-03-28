@@ -7,12 +7,14 @@ use Cake\ORM\Entity;
  * CategoriasProduto Entity
  *
  * @property int $id
+ * @property int $empresa_id
  * @property string $nome_categoria
  * @property string|null $descricao_categoria
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  *
  * @property \App\Model\Entity\Produto[] $produtos
+ * @property \App\Model\Entity\Empresa $empresa
  */
 class CategoriasProduto extends Entity
 {
@@ -28,9 +30,11 @@ class CategoriasProduto extends Entity
      */
     protected $_accessible = [
         'nome_categoria' => true,
+        'empresa_id' => true,
         'descricao_categoria' => true,
         'created' => true,
         'modified' => true,
-        'produtos' => true
+        'produtos' => true,
+        'empresa' => true,
     ];
 }

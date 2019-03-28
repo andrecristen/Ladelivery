@@ -7,12 +7,14 @@ use Cake\ORM\Entity;
  * Lista Entity
  *
  * @property int $id
+ * @property int $empresa_id
  * @property string $nome_lista
  * @property string $descricao_lista
  * @property string $titulo_lista
  * @property int|null $max_opcoes_selecionadas_lista
  *
  * @property \App\Model\Entity\OpcoesExtra[] $opcoes_extras
+ * @property \App\Model\Entity\Empresa $empresa
  */
 class Lista extends Entity
 {
@@ -28,10 +30,12 @@ class Lista extends Entity
      */
     protected $_accessible = [
         'nome_lista' => true,
+        'empresa_id' => true,
         'descricao_lista' => true,
         'titulo_lista' => true,
         'max_opcoes_selecionadas_lista' => true,
         'min_opcoes_selecionadas_lista' => true,
-        'opcoes_extras' => true
+        'opcoes_extras' => true,
+        'empresa' => true,
     ];
 }

@@ -7,11 +7,13 @@ use Cake\ORM\Entity;
  * OpcoesExtra Entity
  *
  * @property int $id
+ * @property int $empresa_id
  * @property string $nome_adicional
  * @property string $descricao_adicional
  * @property float $valor_adicional
  *
  * @property \App\Model\Entity\Lista[] $listas
+ * @property \App\Model\Entity\Empresa $empresa
  */
 class OpcoesExtra extends Entity
 {
@@ -27,6 +29,8 @@ class OpcoesExtra extends Entity
      */
     protected $_accessible = [
         'nome_adicional' => true,
+        'empresa_id' => true,
+        'empresa' => true,
         'descricao_adicional' => true,
         'valor_adicional' => true,
         'listas' => true

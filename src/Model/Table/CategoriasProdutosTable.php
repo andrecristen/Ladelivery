@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * CategoriasProdutos Model
  *
  * @property \App\Model\Table\ProdutosTable|\Cake\ORM\Association\HasMany $Produtos
+ * @property \App\Model\Table\EmpresasTable|\Cake\ORM\Association\BelongsTo $Empresas
  *
  * @method \App\Model\Entity\CategoriasProduto get($primaryKey, $options = [])
  * @method \App\Model\Entity\CategoriasProduto newEntity($data = null, array $options = [])
@@ -41,6 +42,11 @@ class CategoriasProdutosTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->belongsTo('Empresas', [
+            'foreignKey' => 'empresa_id',
+            'joinType' => 'INNER'
+        ]);
+
         $this->hasMany('Produtos', [
             'foreignKey' => 'categorias_produto_id'
         ]);
@@ -69,5 +75,12 @@ class CategoriasProdutosTable extends Table
             ->allowEmptyString('descricao_categoria');
 
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['empresa_id'], 'Empresas'));
+
+        return $rules;
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 28-Mar-2019 às 20:16
+-- Generation Time: 28-Mar-2019 às 21:28
 -- Versão do servidor: 5.7.21
 -- PHP Version: 7.2.4
 
@@ -75,23 +75,23 @@ INSERT INTO `alteracao_senhas` (`id`, `user_id`, `token`, `validade`, `usado`) V
 DROP TABLE IF EXISTS `categorias_produtos`;
 CREATE TABLE IF NOT EXISTS `categorias_produtos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
   `nome_categoria` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `descricao_categoria` text COLLATE utf8_unicode_ci,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `categorias_produtos`
 --
 
-INSERT INTO `categorias_produtos` (`id`, `nome_categoria`, `descricao_categoria`, `created`, `modified`) VALUES
-(20, 'Bebidas', 'Bebidas Geladinhas', '2019-03-08 17:20:14', '2019-03-08 17:20:14'),
-(21, 'Lanches Assados', 'Lanches assados como pasteis, mini pizzas  e afins.', '2019-03-08 17:20:42', '2019-03-08 17:20:42'),
-(22, 'Pizzas', 'Pizzas do Bonna', '2019-03-08 17:20:52', '2019-03-08 17:20:52'),
-(23, 'Doces', 'Doces', '2019-03-08 17:21:05', '2019-03-08 17:21:05'),
-(24, 'Hambúrgueres', 'Hambúrgueres', '2019-03-08 17:28:11', '2019-03-08 17:28:11');
+INSERT INTO `categorias_produtos` (`id`, `empresa_id`, `nome_categoria`, `descricao_categoria`, `created`, `modified`) VALUES
+(20, 1, 'Bebidas', 'Bebidas Geladinhas', '2019-03-08 17:20:14', '2019-03-28 17:26:51'),
+(22, 1, 'Pizzas', 'Pizzas do Bonna', '2019-03-08 17:20:52', '2019-03-08 17:20:52'),
+(23, 1, 'Doces', 'Doces', '2019-03-08 17:21:05', '2019-03-08 17:21:05'),
+(24, 1, 'Hambúrgueres', 'Hambúrgueres', '2019-03-08 17:28:11', '2019-03-08 17:28:11');
 
 -- --------------------------------------------------------
 
@@ -342,6 +342,7 @@ CREATE TABLE IF NOT EXISTS `itens_carrinhos` (
 DROP TABLE IF EXISTS `listas`;
 CREATE TABLE IF NOT EXISTS `listas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
   `nome_lista` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `descricao_lista` text COLLATE utf8_unicode_ci NOT NULL,
   `titulo_lista` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -354,9 +355,9 @@ CREATE TABLE IF NOT EXISTS `listas` (
 -- Extraindo dados da tabela `listas`
 --
 
-INSERT INTO `listas` (`id`, `nome_lista`, `descricao_lista`, `titulo_lista`, `max_opcoes_selecionadas_lista`, `min_opcoes_selecionadas_lista`) VALUES
-(115, 'Adicionais De Lanches', 'Adicionais Usados Nos Lanches Hamburgueres', 'Adicionais', 0, 0),
-(116, 'Sabores pizzas', 'Sabores para pizzas', 'Sabores', 3, 1);
+INSERT INTO `listas` (`id`, `empresa_id`, `nome_lista`, `descricao_lista`, `titulo_lista`, `max_opcoes_selecionadas_lista`, `min_opcoes_selecionadas_lista`) VALUES
+(115, 1, 'Adicionais De Lanches', 'Adicionais Usados Nos Lanches Hamburgueres', 'Adicionais', 0, 0),
+(116, 1, 'Sabores pizzas', 'Sabores para pizzas', 'Sabores', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -422,20 +423,21 @@ INSERT INTO `listas_produtos` (`id`, `produto_id`, `lista_id`) VALUES
 DROP TABLE IF EXISTS `opcoes_extras`;
 CREATE TABLE IF NOT EXISTS `opcoes_extras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
   `nome_adicional` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `descricao_adicional` text COLLATE utf8_unicode_ci NOT NULL,
   `valor_adicional` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `opcoes_extras`
 --
 
-INSERT INTO `opcoes_extras` (`id`, `nome_adicional`, `descricao_adicional`, `valor_adicional`) VALUES
-(12, 'Calabresa', '300gr Calabresa', '6.00'),
-(13, 'Bacon', '250gr Bacon', '6.50'),
-(14, 'Frango', '400gr Frango na chapa', '8.20');
+INSERT INTO `opcoes_extras` (`id`, `empresa_id`, `nome_adicional`, `descricao_adicional`, `valor_adicional`) VALUES
+(12, 1, 'Calabresa', '300gr Calabresa', '6.00'),
+(13, 1, 'Bacon', '250gr Bacon', '6.50'),
+(14, 1, 'Frango', '400gr Frango na chapa', '8.20');
 
 -- --------------------------------------------------------
 
@@ -624,6 +626,7 @@ INSERT INTO `pedidos_produtos` (`id`, `pedido_id`, `produto_id`, `quantidade`, `
 DROP TABLE IF EXISTS `produtos`;
 CREATE TABLE IF NOT EXISTS `produtos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
   `nome_produto` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `categorias_produto_id` int(11) NOT NULL,
   `descricao_produto` text COLLATE utf8_unicode_ci,
@@ -633,18 +636,18 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `categorias_produto_id` (`categorias_produto_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `produtos`
 --
 
-INSERT INTO `produtos` (`id`, `nome_produto`, `categorias_produto_id`, `descricao_produto`, `preco_produto`, `ativo_produto`, `created`, `modified`) VALUES
-(45, 'Coca-cola 600', 20, 'Coca-cola 600 ml', '6.50', 1, '2019-03-08 17:21:46', '2019-03-27 16:53:30'),
-(46, 'X - Calabresa', 24, 'Hambúrguer, Alface, Tomate, Pepino, Milho, Ervilha, Calabresa', '12.50', 1, '2019-03-08 17:30:18', '2019-03-08 17:30:34'),
-(47, 'X - Frango', 24, '................', '12.50', 1, '2019-03-08 17:35:41', '2019-03-08 17:35:41'),
-(48, 'X - Bacon', 24, 'lwekfioewjkfiopwerkjfiowefkiowerf', '13.50', 1, '2019-03-08 17:36:32', '2019-03-08 17:36:32'),
-(54, 'Frango', 22, '123456', '123.00', 1, '2019-03-11 22:42:38', '2019-03-11 22:42:38');
+INSERT INTO `produtos` (`id`, `empresa_id`, `nome_produto`, `categorias_produto_id`, `descricao_produto`, `preco_produto`, `ativo_produto`, `created`, `modified`) VALUES
+(45, 1, 'Coca-cola 600ml', 20, 'Coca-cola 600 ml', '6.50', 1, '2019-03-08 17:21:46', '2019-03-28 17:45:18'),
+(46, 1, 'X - Calabresa', 24, 'Hambúrguer, Alface, Tomate, Pepino, Milho, Ervilha, Calabresa', '12.50', 1, '2019-03-08 17:30:18', '2019-03-08 17:30:34'),
+(47, 1, 'X - Frango', 24, '................', '12.50', 1, '2019-03-08 17:35:41', '2019-03-08 17:35:41'),
+(48, 1, 'X - Bacon', 24, 'lwekfioewjkfiopwerkjfiowefkiowerf', '13.50', 1, '2019-03-08 17:36:32', '2019-03-28 17:42:53'),
+(54, 1, 'Frango', 22, '123456', '123.00', 1, '2019-03-11 22:42:38', '2019-03-11 22:42:38');
 
 -- --------------------------------------------------------
 

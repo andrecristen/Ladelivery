@@ -7,13 +7,13 @@
 <div class="col-sm-12">
     <h3><?= __('Listas X Adicionais') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridUtils();
+    $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setModel($listasOpcoesExtras);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Lista', 'lista/nome_lista', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Opcional', 'opcoes_extra/nome_adicional', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Ativo', 'ativa', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN);
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Lista', 'lista/nome_lista', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Opcional', 'opcoes_extra/nome_adicional', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativa', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN));
     $dataGrid->display();
     ?>
 </div>

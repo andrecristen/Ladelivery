@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Model\ExceptionSQLMessage;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Locator\TableLocator;
@@ -17,10 +18,12 @@ use Cake\ORM\TableRegistry;
  */
 class CategoriasProdutosController extends AppController
 {
+    protected $empresaUtils;
 
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
         $this->validateActions();
     }
 
@@ -31,6 +34,10 @@ class CategoriasProdutosController extends AppController
      */
     public function index()
     {
+
+        $this->paginate = [
+            'contain' => ['Empresas']
+        ];
         $categoriasProdutos = $this->paginate($this->CategoriasProdutos->find()->where($this->generateConditionsFind(false)));
         $this->set(compact('categoriasProdutos'));
     }
@@ -61,6 +68,7 @@ class CategoriasProdutosController extends AppController
         $categoriasProduto = $this->CategoriasProdutos->newEntity();
         if ($this->request->is('post')) {
             $categoriasProduto = $this->CategoriasProdutos->patchEntity($categoriasProduto, $this->request->getData());
+            $categoriasProduto->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->CategoriasProdutos->save($categoriasProduto)) {
                 $this->Flash->success(__('Categoria adicionada com sucesso.'));
 
@@ -126,6 +134,7 @@ class CategoriasProdutosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $categoriasProduto = $this->CategoriasProdutos->patchEntity($categoriasProduto, $this->request->getData());
+            $categoriasProduto->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->CategoriasProdutos->save($categoriasProduto)) {
                 $this->Flash->success(__('Categoria salva com sucesso.'));
 

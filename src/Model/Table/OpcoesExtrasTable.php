@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * OpcoesExtras Model
  *
  * @property \App\Model\Table\ListasTable|\Cake\ORM\Association\BelongsToMany $Listas
+ * @property \App\Model\Table\EmpresasTable|\Cake\ORM\Association\BelongsTo $Empresas
  *
  * @method \App\Model\Entity\OpcoesExtra get($primaryKey, $options = [])
  * @method \App\Model\Entity\OpcoesExtra newEntity($data = null, array $options = [])
@@ -42,6 +43,11 @@ class OpcoesExtrasTable extends Table
             'targetForeignKey' => 'lista_id',
             'joinTable' => 'listas_opcoes_extras'
         ]);
+
+        $this->belongsTo('Empresas', [
+            'foreignKey' => 'empresa_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -73,5 +79,12 @@ class OpcoesExtrasTable extends Table
             ->allowEmptyString('valor_adicional', false);
 
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['empresa_id'], 'Empresas'));
+
+        return $rules;
     }
 }

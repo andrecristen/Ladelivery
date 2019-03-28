@@ -10,9 +10,10 @@ namespace App\Model;
 class ExceptionSQLMessage
 {
     private $exceptions = [
-            "unique_lista_id_opcoes"=>'Está lista já está associada a este adicional.',
-            "unique_lista_produto"=>'Está lista já está associada a este produto.',
-            "listas_produtos_ibfk_2"=>'Está lista possui associação a um ou mais produtos, portanto não é possivel exclui-la.',
+            "unique_lista_id_opcoes"=>'Esta lista já está associada a este adicional.',
+            "unique_lista_produto"=>'Esta lista já está associada a este produto.',
+            "listas_produtos_ibfk_2"=>'Esta lista possui associação a um ou mais produtos, portanto não é possivel exclui-la.',
+            "categorias_produto_id"=>'Esta categoria possui um ou mais produtos nela, certifique-se de mudar esses produtos de categoria antes de excluir esta categoria.',
         ];
 
     public function getMessage(\Exception $exception)

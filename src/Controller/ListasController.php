@@ -6,6 +6,7 @@ use App\Controller\AppController;
 use App\Model\Entity\ListasOpcoesExtra;
 use App\Model\ExceptionSQLMessage;
 use App\Model\Table\ListasOpcoesExtrasTable;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -21,9 +22,12 @@ use Cake\ORM\TableRegistry;
  */
 class ListasController extends AppController
 {
+    protected $empresaUtils;
+
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
         $this->pertmiteAction('getListas');
         $this->validateActions();
     }
@@ -35,6 +39,9 @@ class ListasController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Empresas']
+        ];
         $listas = $this->paginate($this->Listas);
 
         $this->set(compact('listas'));
@@ -66,6 +73,7 @@ class ListasController extends AppController
         $lista = $this->Listas->newEntity();
         if ($this->request->is('post')) {
             $lista = $this->Listas->patchEntity($lista, $this->request->getData());
+            $lista->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->Listas->save($lista)) {
                 $this->Flash->success(__('Lista adicionada com sucesso.'));
 
@@ -91,6 +99,7 @@ class ListasController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $lista = $this->Listas->patchEntity($lista, $this->request->getData());
+            $lista->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->Listas->save($lista)) {
                 $this->Flash->success(__('Lista salva com sucesso.'));
 

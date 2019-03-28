@@ -28,6 +28,10 @@ class TaxasEntregasCotacaoController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Empresas']
+        ];
+
         $taxasEntregasCotacao = $this->paginate($this->TaxasEntregasCotacao);
 
         $this->set(compact('taxasEntregasCotacao'));
@@ -66,7 +70,8 @@ class TaxasEntregasCotacaoController extends AppController
             }
             $this->Flash->error(__('The taxas entregas cotacao could not be saved. Please, try again.'));
         }
-        $this->set(compact('taxasEntregasCotacao'));
+        $empresas = $this->TaxasEntregasCotacao->Empresas->find('list');
+        $this->set(compact('taxasEntregasCotacao', 'empresas'));
     }
 
     /**
@@ -90,7 +95,8 @@ class TaxasEntregasCotacaoController extends AppController
             }
             $this->Flash->error(__('The taxas entregas cotacao could not be saved. Please, try again.'));
         }
-        $this->set(compact('taxasEntregasCotacao'));
+        $empresas = $this->TaxasEntregasCotacao->Empresas->find('list');
+        $this->set(compact('taxasEntregasCotacao', 'empresas'));
     }
 
     /**

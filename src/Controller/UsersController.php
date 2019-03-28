@@ -165,6 +165,7 @@ class UsersController extends AppController
     public function login()
     {
         if ($this->request->is('post')) {
+            /** @var $user User*/
             $user = $this->Auth->identify();
             if ($user) {
                 if($user['tipo'] == User::TIPO_EMPRESA){
@@ -172,6 +173,7 @@ class UsersController extends AppController
                     return;
                 }
                 $this->Auth->setUser($user);
+                $_SESSION["empresa"] = $this->Auth->user('empresa_id');
                 $redirect = ($this->Auth->redirectUrl());
                 //Quer dizer que é um admin entrando a primeira vez
                 if($user['tipo'] == User::TIPO_ADMINISTRADOR){

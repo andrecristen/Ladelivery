@@ -9,6 +9,8 @@ namespace App\Model\Utils;
 
 
 use App\Controller\AppController;
+use App\Model\Entity\Empresa;
+use Cake\ORM\Locator\TableLocator;
 
 class EmpresaUtils extends AppController
 {
@@ -54,6 +56,21 @@ class EmpresaUtils extends AppController
      */
     public function validaPrivilegioEmpresa($empresaId){
 
+    }
+
+    public function getUserEmpresaId(){
+        return $this->Auth->user('empresa_id');
+    }
+
+    /**
+     * @return Empresa|null
+     */
+    public function getUserEmpresaModel(){
+        $empresaId = $this->Auth->user('empresa_id');
+        $tableLocator = new TableLocator();
+        /** @var $empresa Empresa*/
+        $empresa = $tableLocator->get('Empresas')->find()->where(['id' => $empresaId])->first();
+        return $empresa;
     }
 
     public function isEmpresaBase(){

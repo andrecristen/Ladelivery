@@ -15,7 +15,15 @@ a:hover {
 .content-filter .select2-container .select2-selection--single{
     height: 25px!important;
 }
-
+.container-max-options select{
+    max-width: 65px!important;
+}
+.container-max-options{
+    text-align: end;
+}
+.container-max-options label{
+    margin-right: 10px!important;
+}
 .content-filter .select2-container--default .select2-selection--single .select2-selection__rendered{
     line-height: 20px!important;
 }
@@ -84,7 +92,7 @@ table tbody tr:hover{
 }
 
 table {
-    border: 1px solid #ddd !important;
+    border: 1px solid #49505782 !important;
     border-radius: 3px!important;
 }
 table thead tr{
@@ -92,6 +100,20 @@ table thead tr{
 }
 table thead tr th{
     color: #000000;!important;
+}
+
+table td {
+    border-right: 0.5px solid #49505782;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+table th{
+    border-right: 0.5px solid #49505782;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .actions a{
     margin-bottom: 2px;

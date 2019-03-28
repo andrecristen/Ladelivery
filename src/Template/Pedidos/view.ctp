@@ -96,13 +96,16 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
         </table>
     <?php } ?>
 
-    <h3>Itens</h3>
 
+    <fieldset>
+        <legend><h3>Itens</h3></legend>
+    </fieldset>
     <?php
     /** @var $item \App\Model\Entity\PedidosProduto */
     $listaStatus = \App\Model\Entity\PedidosProduto::getStatusList();
     $listaAmbiente = \App\Model\Entity\PedidosProduto::getAmbienteResponsavel();
     foreach ($itens as $item) { ?>
+        <h5>Item <?= $item->id?></h5>
         <table class="vertical-table">
             <tr>
                 <th scope="row"><?= __('Produto') ?></th>
@@ -129,7 +132,7 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
                 <td><?= h($item->observacao) ?></td>
             </tr>
             <tr>
-                <th scope="row"><?= __('Observacao') ?></th>
+                <th scope="row"><?= __('Ambiente Produção') ?></th>
                 <td><?= h($listaAmbiente[$item->ambiente_producao_responsavel]) ?></td>
             </tr>
             <tr>

@@ -31,10 +31,10 @@
                     <fieldset>
                         <legend></legend>
                         <div class="form-group">
-                            <span>Lista: <?= $adicional['lista'] ?></span>
+                            <span>Lista: <?= $this->Html->link($adicional['lista'], ['controller' => 'Listas', 'action' => 'view', $adicional['lista_id']]) ?></span>
                         </div>
                         <div class="form-group">
-                            <span>Adicional: <?= $adicional['nomeAdicional'] ?></span>
+                            <span>Adicional: <?= $this->Html->link($adicional['nomeAdicional'] , ['controller' => 'OpcoesExtras', 'action' => 'view', $adicional['adicional_id']]) ?></span>
                         </div>
                         <div class="form-group">
                             <span>Desc.: <?= $adicional['descricaoAdicional'] ?></span>

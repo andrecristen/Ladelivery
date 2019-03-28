@@ -10,7 +10,6 @@
         <legend><?= __('Editar Endereço') ?></legend>
         <?php
             echo $this->Form->control('user_id', ['options' => $users, 'required'=>'required']);
-            echo $this->Form->control('tipo_endereco', ['options' => [1 => 'Endereço Cliente', 2 => 'Endereço Empresa']]);
             echo $this->Form->control('rua');
             echo $this->Form->control('numero');
             echo $this->Form->control('bairro');

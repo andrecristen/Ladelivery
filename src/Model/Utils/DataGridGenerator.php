@@ -218,6 +218,11 @@ class DataGridGenerator extends View implements TypeFields
         //Para limitar a exibicao de 10 registros por pagina, ja que o padrao e 20.
         echo '<tbody>';
         echo '</table>';
+        if(count($this->model) == 0){
+            echo '<div class="paginator">';
+             echo '<span style="text-align: center">Não localizado nenhum registro</span>';
+            echo '</div>';
+        }
         echo '<div class="paginator">';
         echo '<ul class="pagination">';
         echo $this->paginator->first(__('<< '));
@@ -228,8 +233,10 @@ class DataGridGenerator extends View implements TypeFields
         echo '</ul>';
         echo '<p>';
         echo $this->paginator->counter(['format' => __('Página {{page}} de {{pages}}, Exibindo {{current}} registro(s) de {{count}}')]);
-        echo '</p>';
+        echo '<div class="container-max-options">';
+        echo $this->paginator ->limitControl ([ 10  =>  10 ,  15  =>  15, 20 => 20, 50 => 50 , 100 => 100 ], null, ['label' => 'Registros por página:']);
         echo '</div>';
+        echo '</p>';
     }
 
 

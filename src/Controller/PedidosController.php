@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Model\Entity\CupomSite;
 use App\Model\Entity\Endereco;
+use App\Model\Entity\EnderecosEmpresa;
 use App\Model\Entity\FormasPagamento;
+use App\Model\Entity\GoogleMapsApiKey;
 use App\Model\Entity\ItensCarrinho;
 use App\Model\Entity\Lista;
 use App\Model\Entity\OpcoesExtra;
@@ -63,7 +65,7 @@ class PedidosController extends AppController
         ];
         $filtersFixed = ['tipo_pedido' => Pedido::TIPO_PEDIDO_DELIVERY,
                          'status_pedido <> ' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE];
-        $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(false, $filtersFixed)))->sortBy('id', SORT_DESC);
+        $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
 
         $this->set(compact('pedidos'));
     }
@@ -74,7 +76,7 @@ class PedidosController extends AppController
             'contain' => ['Users']
         ];
         $filtersFixed = ['tipo_pedido' => Pedido::TIPO_PEDIDO_COMANDA];
-        $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(false, $filtersFixed)))->sortBy('id', SORT_DESC);
+        $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
         $this->set(compact('pedidos'));
     }
 
@@ -137,7 +139,9 @@ class PedidosController extends AppController
                     $opcionalModel = $tableLocator->get('OpcoesExtras')->find()->where(['id'=>$opcional])->first();
                     $opcaoAtual = [];
                     $opcaoAtual['lista'] = $listaModel->nome_lista;
+                    $opcaoAtual['lista_id'] = $listaModel->id;
                     $opcaoAtual['nomeAdicional'] = $opcionalModel->nome_adicional;
+                    $opcaoAtual['adicional_id'] = $opcionalModel->id;
                     $opcaoAtual['descricaoAdicional'] = $opcionalModel->descricao_adicional;
                     $opcaoAtual['idAdicional'] = $opcionalModel->id;
                     $adicionais[] = $opcaoAtual;
@@ -306,19 +310,23 @@ class PedidosController extends AppController
             }
             //Realiza cotacao de frete
             if ($endereco != 'retirar-no-local') {
+                /** @var $enderecoClienteModel Endereco*/
                 $enderecoClienteModel = $tableLocator->get('Enderecos')->find()->where(['id' => $endereco])->first();
                 $ruaFinal = str_replace(' ', '%20', $enderecoClienteModel->rua);
                 $numeroFinal = str_replace(' ', '%20', $enderecoClienteModel->numero);
                 $bairroFinal = str_replace(' ', '%20', $enderecoClienteModel->bairro);
                 $cidadeFinal = str_replace(' ', '%20', $enderecoClienteModel->cidade);
                 $estadoFinal = str_replace(' ', '%20', $enderecoClienteModel->estado);
-                $enderecoEmpresaModel = $tableLocator->get('Enderecos')->find()->where(['tipo_endereco' => Endereco::TIPO_ENDERECO_EMPRESA])->first();
+                /** @var $enderecoEmpresaModel EnderecosEmpresa*/
+                $enderecoEmpresaModel = $tableLocator->get('EnderecosEmpresas')->find()->where(['empresa_id' => $newPedido->empresa_id])->first();
                 $ruaEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->rua);
                 $numeroEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->numero);
                 $bairroEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->bairro);
                 $cidadeEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->cidade);
                 $estadoEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->estado);
-                $cotacao = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?&origins=Rua%20' . $ruaFinal . '%20' . $numeroFinal . ',%20' . $bairroFinal . ',%20' . $cidadeFinal . '-' . $estadoFinal . '&destinations=Rua%20' . $ruaEmpresaFinal . '%20' . $numeroEmpresaFinal . ',%20' . $bairroEmpresaFinal . ',%20' . $cidadeEmpresaFinal . '-' . $estadoEmpresaFinal . '&language=pt-BR&key=AIzaSyBOfZCfy02ny8dk3LMcXOWtFuiDpqX1Qdw');
+                /** @var $key GoogleMapsApiKey*/
+                $key = $tableLocator->get('GoogleMapsApiKey')->find()->where(['empresa_id' => $newPedido->empresa_id])->first();
+                $cotacao = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?&origins=Rua%20' . $ruaFinal . '%20' . $numeroFinal . ',%20' . $bairroFinal . ',%20' . $cidadeFinal . '-' . $estadoFinal . '&destinations=Rua%20' . $ruaEmpresaFinal . '%20' . $numeroEmpresaFinal . ',%20' . $bairroEmpresaFinal . ',%20' . $cidadeEmpresaFinal . '-' . $estadoEmpresaFinal . '&language=pt-BR&key='.$key->api_key);
                 $cotacao = json_decode($cotacao, true);
                 $cotacaoSuccess = false;
                 $cotacaoKms = false;
@@ -338,7 +346,7 @@ class PedidosController extends AppController
                 $pedidoEntregaTable = $tableLocator->get('PedidosEntregas');
                 $pedidoEntregaTable->getConnection()->begin();
                 /** @var $cotacaoEntrega TaxasEntregasCotacao */
-                $cotacaoEntrega = $tableLocator->get('TaxasEntregasCotacao')->find()->where(['ativo' => 1])->first();
+                $cotacaoEntrega = $tableLocator->get('TaxasEntregasCotacao')->find()->where(['empresa_id' => $newPedido->empresa_id,'ativo' => 1])->first();
                 /** @var $newPedidoEntrega PedidosEntrega */
                 $newPedidoEntrega = $pedidoEntregaTable->newEntity();
                 $newPedidoEntrega->pedido_id = $newPedido->id;
@@ -492,18 +500,18 @@ class PedidosController extends AppController
         $validator = new SiteUtilsPedido();
         $this->render(false);
         $success = false;
+        /** @var $pedido Pedido*/
+        $pedido = $validator->existsPedidoEmAberto($this->Auth->user('id'), true);
         if($cupom){
             $cupom = strtoupper($cupom);
             /** @var $cupomModel CupomSite*/
             $cupomTable = $tableLocator->get('CupomSite');
-            $cupomModel = $cupomTable->find()->where(['nome_cupom' => $cupom ,'maximo_vezes_usar' => 0])->first();
+            $cupomModel = $cupomTable->find()->where(['nome_cupom' => $cupom ,'maximo_vezes_usar' => 0, 'empresa_id' => $pedido->empresa_id])->first();
             if(!$cupomModel){
-                $cupomModel = $cupomTable->find()->where(['nome_cupom' => $cupom,'vezes_usado < maximo_vezes_usar'])->first();
+                $cupomModel = $cupomTable->find()->where(['nome_cupom' => $cupom,'vezes_usado < maximo_vezes_usar', 'empresa_id' => $pedido->empresa_id])->first();
             }
             if($cupomModel){
                 $cupomModel->vezes_usado++;
-                /** @var $pedido Pedido*/
-                $pedido = $validator->existsPedidoEmAberto($this->Auth->user('id'), true);
                 if($pedido){
                     $valorDesconto = 0;
                     if ($cupomModel->porcentagem){

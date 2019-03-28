@@ -29,7 +29,7 @@ class GoogleMapsApiKeyController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users']
+            'contain' => ['Empresas']
         ];
         $googleMapsApiKey = $this->paginate($this->GoogleMapsApiKey);
 
@@ -69,8 +69,8 @@ class GoogleMapsApiKeyController extends AppController
             }
             $this->Flash->error(__('The google maps api key could not be saved. Please, try again.'));
         }
-        $users = $this->GoogleMapsApiKey->Users->find('list', ['limit' => 200]);
-        $this->set(compact('googleMapsApiKey', 'users'));
+        $empresas = $this->GoogleMapsApiKey->Empresas->find('list');
+        $this->set(compact('googleMapsApiKey', 'empresas'));
     }
 
     /**
@@ -94,8 +94,8 @@ class GoogleMapsApiKeyController extends AppController
             }
             $this->Flash->error(__('The google maps api key could not be saved. Please, try again.'));
         }
-        $users = $this->GoogleMapsApiKey->Users->find('list', ['limit' => 200]);
-        $this->set(compact('googleMapsApiKey', 'users'));
+        $empresas = $this->GoogleMapsApiKey->Empresas->find('list');
+        $this->set(compact('googleMapsApiKey', 'empresas'));
     }
 
     /**

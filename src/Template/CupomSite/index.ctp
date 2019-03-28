@@ -10,7 +10,8 @@
     $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setModel($cupomSite);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true));
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Nome', 'nome_cupom', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Vezes Usado', 'vezes_usado', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->addField(new \App\Model\Utils\GridField('Usos Maximos', 'maximo_vezes_usar', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));

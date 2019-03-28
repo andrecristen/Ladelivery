@@ -60,10 +60,6 @@ class EnderecosTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
-            ->requirePresence('tipo_endereco', 'create')
-            ->allowEmptyString('tipo_endereco', false);
-
-        $validator
             ->scalar('rua')
             ->maxLength('rua', 500)
             ->requirePresence('rua', 'create')

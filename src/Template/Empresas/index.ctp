@@ -15,6 +15,7 @@
     $dataGrid->addField('CNPJ', 'cnpj', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
     $dataGrid->addField('Inscrição Estadual', 'ie', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
     $dataGrid->addField('Ativo', 'ativa', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN);
+    $dataGrid->addAction('EnderecosEmpresas', 'index', 'Endereços Empresa', 'btn btn-success');
     $dataGrid->display();
     ?>
 </div>

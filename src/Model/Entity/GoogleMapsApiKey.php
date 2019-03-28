@@ -7,11 +7,11 @@ use Cake\ORM\Entity;
  * GoogleMapsApiKey Entity
  *
  * @property int $id
- * @property int $user_id
+ * @property int empresa_id
  * @property string $api_key
  * @property int $ativa
  *
- * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Empresa empresa
  */
 class GoogleMapsApiKey extends Entity
 {
@@ -26,9 +26,9 @@ class GoogleMapsApiKey extends Entity
      * @var array
      */
     protected $_accessible = [
-        'user_id' => true,
+        'empresa_id' => true,
         'api_key' => true,
         'ativa' => true,
-        'user' => true
+        'empresa' => true
     ];
 }

@@ -12,6 +12,7 @@
     $dataGrid->setModel($taxasEntregasCotacao);
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_NUMBER);
+    $dataGrid->addField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
     $dataGrid->addField('Valor por KM', 'valor_km', \App\Model\Utils\DataGridUtils::TYPE_NUMBER);
     $dataGrid->addField('Tipo Arredondamento', 'arredondamento_tipo', \App\Model\Utils\DataGridUtils::TYPE_LIST, $listArredondamento->getListTipoArredondamento());
     $dataGrid->addField('Ativo', 'ativo', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN);

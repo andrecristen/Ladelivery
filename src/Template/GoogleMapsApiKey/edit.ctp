@@ -9,7 +9,7 @@
     <fieldset>
         <legend><?= __('Editar Google Maps Api Key - Não alterar sem ajuda do suporte') ?></legend>
         <?php
-        echo $this->Form->control('user_id', ['options' => $users]);
+        echo $this->Form->control('empresa_id', ['options' => $empresas]);
         echo $this->Form->control('api_key');
         echo $this->Form->control('ativa', ['options' => [1 => 'Sim', 2 => 'Não']]);
         ?>

@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * TaxasEntregasCotacao Model
  *
+ * @property \App\Model\Table\EmpresasTable|\Cake\ORM\Association\BelongsTo $Empresas
+ *
  * @method \App\Model\Entity\TaxasEntregasCotacao get($primaryKey, $options = [])
  * @method \App\Model\Entity\TaxasEntregasCotacao newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\TaxasEntregasCotacao[] newEntities(array $data, array $options = [])
@@ -34,6 +36,11 @@ class TaxasEntregasCotacaoTable extends Table
         $this->setTable('taxas_entregas_cotacao');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->belongsTo('Empresas', [
+            'foreignKey' => 'empresa_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -67,5 +74,12 @@ class TaxasEntregasCotacaoTable extends Table
             ->allowEmptyString('valor_base_erro');
 
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['empresa_id'], 'Empresas'));
+
+        return $rules;
     }
 }

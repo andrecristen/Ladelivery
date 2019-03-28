@@ -57,6 +57,8 @@ $cacheControl = '?v=06-02-2019-01'
           integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <?= $this->Html->css('menu.css') ?>
     <?= $this->Html->script('menu.js') ?>
+    <script src="/ladev/colresizable/colResizable-1.6.js<?= h($cacheControl) ?>"></script>
+    <?= $this->Html->script('resizetable.js') ?>
 </head>
 <body>
 <?= $this->Flash->render() ?>

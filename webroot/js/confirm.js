@@ -31,7 +31,7 @@ function confirmar() {
                         $(location).attr('href', '/pages/');
                     });
                 } else {
-                    alertify.error('Não foi possivel cancelar este pedido, tente novamente! Se o problema persistir, contate a empresa');
+                    alertify.error('Não foi possivel confirmar este pedido, tente novamente! Se o problema persistir, contate a empresa');
                 }
             },
             error: function (data) {
@@ -120,7 +120,7 @@ function cancelar() {
         dataType: "json",
         success: function (data) {
             if (data.success) {
-                alertify.alert('Pedido Cancelado com sucesso', function () {
+                alertify.alert('Pedido Cancelado','Pedido Cancelado com sucesso', function () {
                     $(location).attr('href', '/pages/');
                 });
             } else {

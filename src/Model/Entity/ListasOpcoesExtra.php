@@ -26,6 +26,7 @@ class ListasOpcoesExtra extends Entity
      * @var array
      */
     protected $_accessible = [
+        'id' => true,
         'lista_id' => true,
         'opcoes_extra_id' => true,
         'lista' => true,

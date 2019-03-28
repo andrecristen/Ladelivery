@@ -23,6 +23,7 @@ use Cake\Core\App;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use Cake\ORM\Locator\TableLocator;
 
 /**
  * Application Controller
@@ -119,27 +120,28 @@ class AppController extends Controller
         }
     }
 
-    protected function generateConditionsFind($forceFilterEmpresa = true, $filtersFixed = []){
+    protected function generateConditionsFind($forceFilterEmpresa = true, $filtersFixed = [])
+    {
         $empresaUtils = new EmpresaUtils();
         $finalSearch = [];
-        if($this->getRequest()->getQuery()){
+        if ($this->getRequest()->getQuery()) {
             $search = $this->getRequest()->getQuery();
-            if($search){
-                foreach ($search as $key => $field){
-                    if ($field !== '' && $key !== 'page'){
+            if ($search) {
+                foreach ($search as $key => $field) {
+                    if ($field !== '' && $key !== 'page' && $key !== 'limit') {
                         //Caso no alias ja tiver o s da entidade
-                        if(strpos($key, 's/')){
+                        if (strpos($key, 's/')) {
                             $key = str_replace('/', '.', $key);
-                        }else{
+                        } else {
                             $key = str_replace('/', 's.', $key);
                         }
-                        if(intval($field) || $field == '0' || floatval($field)){
+                        if (intval($field) || $field == '0' || floatval($field)) {
                             $finalSearch[$key] = $field;
-                        }else{
-                            if($field == 'false' || $field == 'true'){
+                        } else {
+                            if ($field == 'false' || $field == 'true') {
                                 $finalSearch[$key] = boolval($field);
-                            }else{
-                                $finalSearch[$key.' LIKE'] = '%'.$field.'%';
+                            } else {
+                                $finalSearch[$key . ' LIKE'] = '%' . $field . '%';
                             }
                         }
 
@@ -147,8 +149,29 @@ class AppController extends Controller
                 }
             }
         }
-        if(!$empresaUtils->isEmpresaSoftware() || $forceFilterEmpresa){
-            $finalSearch['empresa_id'] = $empresaUtils->getEmpresaBase();
+        if ($forceFilterEmpresa) {
+            if (!$empresaUtils->isEmpresaSoftware()) {
+                $tableLocalor = new TableLocator();
+                $tableModel = $tableLocalor->get($this->name);
+                $schema = $tableModel->getSchema();
+                if ($schema->getColumn('empresa_id')) {
+                    $finalSearch[$tableModel->getTable() . '.empresa_id'] = $this->Auth->user('empresa_id');
+                } else {
+                    $break = false;
+                    foreach ($tableModel->associations() as $association) {
+                        if($break){
+                            continue;
+                        }
+                        $tableAssociation = $tableLocalor->get($association->getName());
+                        $schema = $tableAssociation->getSchema();
+                        if (($schema->getColumn('empresa_id') && !$empresaUtils->isEmpresaSoftware()) || $forceFilterEmpresa) {
+                            $finalSearch[$tableAssociation->getTable() . '.empresa_id'] = $this->Auth->user('empresa_id');
+                            $break = true;
+                            continue;
+                        }
+                    }
+                }
+            }
         }
         $finalSearch = array_merge($finalSearch, $filtersFixed);
         return $finalSearch;

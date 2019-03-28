@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * GoogleMapsApiKey Model
  *
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\EmpresasTable|\Cake\ORM\Association\BelongsTo $Empresas
  *
  * @method \App\Model\Entity\GoogleMapsApiKey get($primaryKey, $options = [])
  * @method \App\Model\Entity\GoogleMapsApiKey newEntity($data = null, array $options = [])
@@ -37,8 +37,8 @@ class GoogleMapsApiKeyTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
+        $this->belongsTo('Empresas', [
+            'foreignKey' => 'empresa_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -78,7 +78,7 @@ class GoogleMapsApiKeyTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->existsIn(['empresa_id'], 'Empresas'));
 
         return $rules;
     }

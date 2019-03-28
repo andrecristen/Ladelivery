@@ -10,6 +10,7 @@
         <legend><?= __('Editar Taxas Entregas Cotacao') ?></legend>
         <?php
         echo $this->Form->control('valor_km');
+        echo $this->Form->control('empresa_id', ['options' => $empresas]);
         echo $this->Form->control('arredondamento_tipo', ['options' => $taxasEntregasCotacao->getListTipoArredondamento(), 'required'=>'required']);
         echo $this->Form->control('ativo');
         echo $this->Form->control('valor_base_erro', ['required'=>'required']);

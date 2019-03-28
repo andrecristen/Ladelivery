@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -14,10 +15,13 @@ use Cake\Http\ServerRequest;
  */
 class CupomSiteController extends AppController
 {
+    /** @var EmpresaUtils */
+    protected  $empresaUtils;
 
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
         $this->validateActions();
     }
 
@@ -28,6 +32,9 @@ class CupomSiteController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Empresas']
+        ];
         $cupomSite = $this->paginate($this->CupomSite->find()->where($this->generateConditionsFind(false)));
         $this->set(compact('cupomSite'));
     }
@@ -58,6 +65,7 @@ class CupomSiteController extends AppController
         $cupomSite = $this->CupomSite->newEntity();
         if ($this->request->is('post')) {
             $cupomSite = $this->CupomSite->patchEntity($cupomSite, $this->request->getData());
+            $cupomSite->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->CupomSite->save($cupomSite)) {
                 $this->Flash->success(__('The cupom site has been saved.'));
 
@@ -82,6 +90,7 @@ class CupomSiteController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $cupomSite = $this->CupomSite->patchEntity($cupomSite, $this->request->getData());
+            $cupomSite->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->CupomSite->save($cupomSite)) {
                 $this->Flash->success(__('The cupom site has been saved.'));
 

@@ -4,16 +4,7 @@
  * @var \App\Model\Entity\CupomSite $cupomSite
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Cupom Site'), ['action' => 'edit', $cupomSite->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Cupom Site'), ['action' => 'delete', $cupomSite->id], ['confirm' => __('Are you sure you want to delete # {0}?', $cupomSite->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Cupom Site'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Cupom Site'), ['action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="cupomSite view large-9 medium-8 columns content">
+<div class="col-sm-12">
     <h3><?= h($cupomSite->id) ?></h3>
     <table class="vertical-table">
         <tr>

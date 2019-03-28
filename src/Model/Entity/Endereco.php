@@ -8,7 +8,6 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $user_id
- * @property int $tipo_endereco
  * @property string $rua
  * @property int|null $numero
  * @property string $bairro
@@ -75,7 +74,6 @@ class Endereco extends Entity
      */
     protected $_accessible = [
         'user_id' => true,
-        'tipo_endereco' => true,
         'rua' => true,
         'numero' => true,
         'bairro' => true,

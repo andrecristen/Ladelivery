@@ -7,11 +7,14 @@ use Cake\ORM\Entity;
  * CupomSite Entity
  *
  * @property int $id
+ * @property int $empresa_id
  * @property string $nome_cupom
  * @property int|null $vezes_usado
  * @property int $maximo_vezes_usar
  * @property int $valor_desconto
  * @property bool $porcentagem
+ *
+ * @property \App\Model\Entity\Empresa empresa
  */
 class CupomSite extends Entity
 {
@@ -30,6 +33,8 @@ class CupomSite extends Entity
         'vezes_usado' => true,
         'maximo_vezes_usar' => true,
         'valor_desconto' => true,
-        'porcentagem' => true
+        'porcentagem' => true,
+        'empresa_id' => true,
+        'empresa' => true,
     ];
 }

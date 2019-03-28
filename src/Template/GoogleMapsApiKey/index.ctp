@@ -11,7 +11,7 @@
     $dataGrid->setModel($googleMapsApiKey);
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Usuário', 'user/nome_completo', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
     $dataGrid->addField('KEY', 'api_key', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
     $dataGrid->addField('Ativo', 'ativa', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN);
     $dataGrid->display();

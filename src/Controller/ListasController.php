@@ -42,7 +42,7 @@ class ListasController extends AppController
         $this->paginate = [
             'contain' => ['Empresas']
         ];
-        $listas = $this->paginate($this->Listas);
+        $listas = $this->paginate($this->Listas->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('listas'));
     }

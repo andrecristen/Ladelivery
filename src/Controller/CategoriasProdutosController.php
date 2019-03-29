@@ -38,7 +38,7 @@ class CategoriasProdutosController extends AppController
         $this->paginate = [
             'contain' => ['Empresas']
         ];
-        $categoriasProdutos = $this->paginate($this->CategoriasProdutos->find()->where($this->generateConditionsFind(false)));
+        $categoriasProdutos = $this->paginate($this->CategoriasProdutos->find()->where($this->generateConditionsFind()));
         $this->set(compact('categoriasProdutos'));
     }
 

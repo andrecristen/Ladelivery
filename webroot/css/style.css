@@ -98,8 +98,12 @@ table {
 table thead tr{
     background-color: #ddd;!important;
 }
+.actions{
+    text-align: center!important;
+}
 table thead tr th{
     color: #000000;!important;
+    text-align: center!important;
 }
 
 table td {

@@ -28,7 +28,10 @@ class ProdutosImagensController extends AppController
      */
     public function index()
     {
-        $produtosImagens = $this->paginate($this->ProdutosImagens);
+        $this->paginate = [
+            'contain' => ['Produtos']
+        ];
+        $produtosImagens = $this->paginate($this->ProdutosImagens->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('produtosImagens'));
     }

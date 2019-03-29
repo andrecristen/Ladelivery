@@ -31,7 +31,7 @@ class CategoriasProdutosImagensController extends AppController
         $this->paginate = [
             'contain' => ['CategoriasProdutos']
         ];
-        $categoriasProdutosImagens = $this->paginate($this->CategoriasProdutosImagens);
+        $categoriasProdutosImagens = $this->paginate($this->CategoriasProdutosImagens->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('categoriasProdutosImagens'));
     }

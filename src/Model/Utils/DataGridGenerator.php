@@ -79,7 +79,7 @@ class DataGridGenerator extends View implements TypeFields
                         echo '<br/>';
                     }else{
                         if($field->getType() == self::TYPE_BOOLEAN){
-                            echo $this->Form->select($field->getAlias(), ['' => 'Selecione uma opção para o filtro '.$field->getTitulo(), 'true' => 'Sim', 'false' => 'Não'] ,['label' => false, 'value' => $this->request->getQuery($field->getAlias())]);
+                            echo $this->Form->select($field->getAlias(), ['' => 'Selecione uma opção para o filtro '.$field->getTitulo(), 1 => 'Sim', 0 => 'Não'] ,['label' => false, 'value' => $this->request->getQuery($field->getAlias())]);
                         }
                     }
                 }

@@ -130,10 +130,23 @@ class AppController extends Controller
                 foreach ($search as $key => $field) {
                     if ($field !== '' && $key !== 'page' && $key !== 'limit') {
                         //Caso no alias ja tiver o s da entidade
+                        $toCamelCase = false;
                         if (strpos($key, 's/')) {
                             $key = str_replace('/', '.', $key);
-                        } else {
+                            $toCamelCase = true;
+                        } elseif (strpos($key, '/')){
                             $key = str_replace('/', 's.', $key);
+                            $toCamelCase = true;
+                        }
+                        if($toCamelCase){
+                            //Se precisamos de camel case vamos tranformar so o modelo ou seja primeira parte
+                            $model = explode('.', $key);
+                            $modelCamelCase = $this->snakeToCamelCase($model[0]);
+                            unset($model[0]);
+                            $key = $modelCamelCase;
+                            foreach ($model as $part){
+                                $key .= '.'.$part;
+                            }
                         }
                         if (intval($field) || $field == '0' || floatval($field)) {
                             $finalSearch[$key] = $field;
@@ -155,19 +168,15 @@ class AppController extends Controller
                 $tableModel = $tableLocalor->get($this->name);
                 $schema = $tableModel->getSchema();
                 if ($schema->getColumn('empresa_id')) {
-                    $finalSearch[$tableModel->getTable() . '.empresa_id'] = $this->Auth->user('empresa_id');
+                    $nameTable = $this->snakeToCamelCase($tableModel->getTable());
+                    $finalSearch[$nameTable . '.empresa_id'] = $this->Auth->user('empresa_id');
                 } else {
-                    $break = false;
                     foreach ($tableModel->associations() as $association) {
-                        if($break){
-                            continue;
-                        }
                         $tableAssociation = $tableLocalor->get($association->getName());
                         $schema = $tableAssociation->getSchema();
                         if (($schema->getColumn('empresa_id') && !$empresaUtils->isEmpresaSoftware()) || $forceFilterEmpresa) {
-                            $finalSearch[$tableAssociation->getTable() . '.empresa_id'] = $this->Auth->user('empresa_id');
-                            $break = true;
-                            continue;
+                            $nameTable = $this->snakeToCamelCase($tableAssociation->getTable());
+                            $finalSearch[$nameTable. '.empresa_id'] = $this->Auth->user('empresa_id');
                         }
                     }
                 }
@@ -175,5 +184,10 @@ class AppController extends Controller
         }
         $finalSearch = array_merge($finalSearch, $filtersFixed);
         return $finalSearch;
+    }
+
+    private function snakeToCamelCase($snakeString){
+        $camelString = str_replace('_', '', ucwords($snakeString, '_'));
+        return $camelString;
     }
 }

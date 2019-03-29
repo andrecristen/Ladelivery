@@ -10,10 +10,10 @@
     $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setModel($listasOpcoesExtras);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_TEXT, true, true, 'auto', 'listasOpcoesExtras/id'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Lista', 'lista/nome_lista', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Opcional', 'opcoes_extra/nome_adicional', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativa', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativa', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
     $dataGrid->display();
     ?>
 </div>

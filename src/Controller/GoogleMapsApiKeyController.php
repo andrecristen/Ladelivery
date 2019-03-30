@@ -31,7 +31,7 @@ class GoogleMapsApiKeyController extends AppController
         $this->paginate = [
             'contain' => ['Empresas']
         ];
-        $googleMapsApiKey = $this->paginate($this->GoogleMapsApiKey);
+        $googleMapsApiKey = $this->paginate($this->GoogleMapsApiKey->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('googleMapsApiKey'));
     }

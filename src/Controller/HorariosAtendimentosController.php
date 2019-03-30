@@ -2,6 +2,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Utils\EmpresaUtils;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 
 /**
  * HorariosAtendimentos Controller
@@ -12,6 +15,14 @@ use App\Controller\AppController;
  */
 class HorariosAtendimentosController extends AppController
 {
+    protected $empresaUtils;
+
+    public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
+    {
+        parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
+        $this->validateActions();
+    }
 
     /**
      * Index method
@@ -23,7 +34,7 @@ class HorariosAtendimentosController extends AppController
         $this->paginate = [
             'contain' => ['Empresas']
         ];
-        $horariosAtendimentos = $this->paginate($this->HorariosAtendimentos);
+        $horariosAtendimentos = $this->paginate($this->HorariosAtendimentos->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('horariosAtendimentos'));
     }
@@ -54,15 +65,15 @@ class HorariosAtendimentosController extends AppController
         $horariosAtendimento = $this->HorariosAtendimentos->newEntity();
         if ($this->request->is('post')) {
             $horariosAtendimento = $this->HorariosAtendimentos->patchEntity($horariosAtendimento, $this->request->getData());
+            $horariosAtendimento->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->HorariosAtendimentos->save($horariosAtendimento)) {
-                $this->Flash->success(__('The horarios atendimento has been saved.'));
+                $this->Flash->success(__('Hora Atendimento salvo com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The horarios atendimento could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
-        $empresas = $this->HorariosAtendimentos->Empresas->find('list');
-        $this->set(compact('horariosAtendimento', 'empresas'));
+        $this->set(compact('horariosAtendimento'));
     }
 
     /**
@@ -79,15 +90,15 @@ class HorariosAtendimentosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $horariosAtendimento = $this->HorariosAtendimentos->patchEntity($horariosAtendimento, $this->request->getData());
+            $horariosAtendimento->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->HorariosAtendimentos->save($horariosAtendimento)) {
-                $this->Flash->success(__('The horarios atendimento has been saved.'));
+                $this->Flash->success(__('Hora Atendimento salvo com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The horarios atendimento could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
-        $empresas = $this->HorariosAtendimentos->Empresas->find('list');
-        $this->set(compact('horariosAtendimento', 'empresas'));
+        $this->set(compact('horariosAtendimento'));
     }
 
     /**
@@ -102,9 +113,9 @@ class HorariosAtendimentosController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $horariosAtendimento = $this->HorariosAtendimentos->get($id);
         if ($this->HorariosAtendimentos->delete($horariosAtendimento)) {
-            $this->Flash->success(__('The horarios atendimento has been deleted.'));
+            $this->Flash->success(__('Excluido com sucesso.'));
         } else {
-            $this->Flash->error(__('The horarios atendimento could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
 
         return $this->redirect(['action' => 'index']);

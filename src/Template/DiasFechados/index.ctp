@@ -7,13 +7,13 @@
 <div class="col-sm-12">
     <h3><?= __('Dias Fechados') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridUtils();
+    $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->setModel($diasFechados);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Dia', 'dia_fechado', \App\Model\Utils\DataGridUtils::TYPE_DATE);
-    $dataGrid->addField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Motivo', 'motivo_fechado', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, 'auto', 'DiasFechados/id'));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Dia', 'dia_fechado', \App\Model\Utils\DataGridGenerator::TYPE_DATE));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Motivo', 'motivo_fechado', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->display();
     ?>
 </div>

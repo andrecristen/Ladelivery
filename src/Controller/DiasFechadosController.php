@@ -2,6 +2,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Utils\EmpresaUtils;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 
 /**
  * DiasFechados Controller
@@ -12,6 +15,14 @@ use App\Controller\AppController;
  */
 class DiasFechadosController extends AppController
 {
+    protected $empresaUtils;
+
+    public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
+    {
+        parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
+        $this->validateActions();
+    }
 
     /**
      * Index method
@@ -23,7 +34,7 @@ class DiasFechadosController extends AppController
         $this->paginate = [
             'contain' => ['Empresas']
         ];
-        $diasFechados = $this->paginate($this->DiasFechados);
+        $diasFechados = $this->paginate($this->DiasFechados->find()->where($this->generateConditionsFind()));
         $this->set(compact('diasFechados'));
     }
 
@@ -53,15 +64,15 @@ class DiasFechadosController extends AppController
         $diasFechado = $this->DiasFechados->newEntity();
         if ($this->request->is('post')) {
             $diasFechado = $this->DiasFechados->patchEntity($diasFechado, $this->request->getData());
+            $diasFechado->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->DiasFechados->save($diasFechado)) {
-                $this->Flash->success(__('The dias fechado has been saved.'));
+                $this->Flash->success(__('Dia Fechado salvo com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The dias fechado could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
-        $empresas = $this->DiasFechados->Empresas->find('list');
-        $this->set(compact('diasFechado','empresas'));
+        $this->set(compact('diasFechado'));
     }
 
     /**
@@ -78,15 +89,15 @@ class DiasFechadosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $diasFechado = $this->DiasFechados->patchEntity($diasFechado, $this->request->getData());
+            $diasFechado->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->DiasFechados->save($diasFechado)) {
-                $this->Flash->success(__('The dias fechado has been saved.'));
+                $this->Flash->success(__('Dia Fechado salvo com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The dias fechado could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
-        $empresas = $this->DiasFechados->Empresas->find('list');
-        $this->set(compact('diasFechado', 'empresas'));
+        $this->set(compact('diasFechado'));
     }
 
     /**
@@ -101,9 +112,9 @@ class DiasFechadosController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $diasFechado = $this->DiasFechados->get($id);
         if ($this->DiasFechados->delete($diasFechado)) {
-            $this->Flash->success(__('The dias fechado has been deleted.'));
+            $this->Flash->success(__('Dia Fechado excluido com sucesso.'));
         } else {
-            $this->Flash->error(__('The dias fechado could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
 
         return $this->redirect(['action' => 'index']);

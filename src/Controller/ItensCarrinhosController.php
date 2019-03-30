@@ -34,7 +34,7 @@ class ItensCarrinhosController extends AppController
         $this->paginate = [
             'contain' => ['Users', 'Produtos']
         ];
-        $itensCarrinhos = $this->paginate($this->ItensCarrinhos);
+        $itensCarrinhos = $this->paginate($this->ItensCarrinhos->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('itensCarrinhos'));
     }

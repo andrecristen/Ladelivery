@@ -7,15 +7,19 @@
 <div class="col-sm-12">
     <h3><?= __('Horarios Atendimentos') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridUtils();
+    $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->setModel($horariosAtendimentos);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_NUMBER);
-    $dataGrid->addField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Dia Semana', 'dia_semana', \App\Model\Utils\DataGridUtils::TYPE_LIST , \App\Model\Entity\HorariosAtendimento::getDiaSemanaList());
-    $dataGrid->addField('Turno', 'turno', \App\Model\Utils\DataGridUtils::TYPE_LIST, \App\Model\Entity\HorariosAtendimento::getTurnoList());
-    $dataGrid->addField('Inicio', 'hora_inicio', \App\Model\Utils\DataGridUtils::TYPE_DATE_TIME);
-    $dataGrid->addField('Fim', 'hora_fim', \App\Model\Utils\DataGridUtils::TYPE_DATE_TIME);
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, 'auto', 'HorariosAtendimentos/id'));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $diaSemana = new \App\Model\Utils\GridField('Dia Semana', 'dia_semana', \App\Model\Utils\DataGridGenerator::TYPE_LIST );
+    $diaSemana->setList(\App\Model\Entity\HorariosAtendimento::getDiaSemanaList());
+    $dataGrid->addField($diaSemana);
+    $turno = new \App\Model\Utils\GridField('Turno', 'turno', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
+    $turno->setList(\App\Model\Entity\HorariosAtendimento::getTurnoList());
+    $dataGrid->addField($turno);
+    $dataGrid->addField(new \App\Model\Utils\GridField('Inicio', 'hora_inicio', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Fim', 'hora_fim', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME));
     $dataGrid->display();
     ?>
 </div>

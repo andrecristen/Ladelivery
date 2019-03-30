@@ -22,7 +22,7 @@ class TaxasEntregasCotacao extends Entity
     const TIPO_INFERIOR = 2;
     const TIPO_SUPERIOR = 3;
 
-    public function getListTipoArredondamento()
+    public static function getListTipoArredondamento()
     {
         return [1 => 'Central (Exemplo: 2,3 = 2,5)', 2 => 'Inferior (Exemplo: 2,3 = 2)', 3 => 'Superior (Exemplo: 2,3 = 3)'];
     }

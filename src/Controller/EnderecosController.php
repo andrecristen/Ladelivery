@@ -18,7 +18,7 @@ class EnderecosController extends AppController
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
-        $this->pertmiteAction('meusEnderecos', $this->Auth->user('id'));
+        $this->pertmiteAction('meusEnderecos');
         $this->pertmiteAction('addEnderecoCliente');
         $this->pertmiteAction('excluirEnderecoCliente');
         $this->validateActions();
@@ -122,19 +122,21 @@ class EnderecosController extends AppController
     }
 
     public function meusEnderecos($id = null){
-        $enderecos = $this->Enderecos->find()->where(['user_id'=>$id]);
+        $enderecos = $this->Enderecos->find()->where(['user_id'=>$this->Auth->user('id')]);
         $this->set('enderecos', $enderecos);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $endereco = $this->Enderecos->get($id, [
                 'contain' => []
             ]);
-            $endereco->user_id = $this->Auth->user('id');
+            if($endereco->user_id != $this->Auth->user('id')){
+                $this->Flash->error(__('O endereço qual você tentou editar não está relacionado com seu usuário, então você não pode altera-lo.'));
+                return $this->redirect(['action' => 'meusEnderecos']);
+            }
             $endereco->tipo_endereco = Endereco::TIPO_ENDERECO_CLIENTE;
             $endereco = $this->Enderecos->patchEntity($endereco, $this->request->getData());
             if ($this->Enderecos->save($endereco)) {
                 $this->Flash->success(__('Endereco salvo.'));
-
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'meusEnderecos']);
             }
             $this->Flash->error(__('Tente novamente.'));
         }
@@ -149,7 +151,7 @@ class EnderecosController extends AppController
             if ($this->Enderecos->save($endereco)) {
                 $this->Flash->success(__('Endereco salvo.'));
 
-                return $this->redirect(['action' => 'meusEnderecos/'.$this->Auth->user('id')]);
+                return $this->redirect(['action' => 'meusEnderecos']);
             }
             $this->Flash->error(__('Erro ao adicionar endereco.'));
         }

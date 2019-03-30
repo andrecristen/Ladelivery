@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -14,10 +15,12 @@ use Cake\Http\ServerRequest;
  */
 class FormasPagamentosController extends AppController
 {
+    protected $empresaUtils;
 
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
         $this->validateActions();
     }
 
@@ -31,7 +34,7 @@ class FormasPagamentosController extends AppController
         $this->paginate = [
             'contain' => ['Empresas']
         ];
-        $formasPagamentos = $this->paginate($this->FormasPagamentos);
+        $formasPagamentos = $this->paginate($this->FormasPagamentos->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('formasPagamentos'));
     }
@@ -62,15 +65,15 @@ class FormasPagamentosController extends AppController
         $formasPagamento = $this->FormasPagamentos->newEntity();
         if ($this->request->is('post')) {
             $formasPagamento = $this->FormasPagamentos->patchEntity($formasPagamento, $this->request->getData());
+            $formasPagamento->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->FormasPagamentos->save($formasPagamento)) {
-                $this->Flash->success(__('The formas pagamento has been saved.'));
+                $this->Flash->success(__('Forma de pagamento salva com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The formas pagamento could not be saved. Please, try again.'));
+                $this->Flash->error(__('Erro, tente novamente.'));
         }
-        $empresas = $this->FormasPagamentos->Empresas->find('list', ['limit' => 200]);
-        $this->set(compact('formasPagamento', 'empresas'));
+        $this->set(compact('formasPagamento'));
     }
 
     /**
@@ -87,15 +90,15 @@ class FormasPagamentosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $formasPagamento = $this->FormasPagamentos->patchEntity($formasPagamento, $this->request->getData());
+            $formasPagamento->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->FormasPagamentos->save($formasPagamento)) {
-                $this->Flash->success(__('The formas pagamento has been saved.'));
+                $this->Flash->success(__('Forma de pagamento salva com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The formas pagamento could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
-        $empresas = $this->FormasPagamentos->Empresas->find('list', ['limit' => 200]);
-        $this->set(compact('formasPagamento', 'empresas'));
+        $this->set(compact('formasPagamento'));
     }
 
     /**
@@ -110,9 +113,9 @@ class FormasPagamentosController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $formasPagamento = $this->FormasPagamentos->get($id);
         if ($this->FormasPagamentos->delete($formasPagamento)) {
-            $this->Flash->success(__('The formas pagamento has been deleted.'));
+            $this->Flash->success(__('Excluido com sucesso.'));
         } else {
-            $this->Flash->error(__('The formas pagamento could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
 
         return $this->redirect(['action' => 'index']);

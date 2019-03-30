@@ -9,7 +9,6 @@
     <fieldset>
         <legend><?= __('Adicionar Formas Pagamento') ?></legend>
         <?php
-            echo $this->Form->control('empresa_id', ['options' => $empresas]);
             echo $this->Form->control('nome');
             echo $this->Form->control('necesista_maquina_cartao');
             echo $this->Form->control('necessita_troco');

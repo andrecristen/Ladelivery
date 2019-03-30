@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -14,9 +15,11 @@ use Cake\Http\ServerRequest;
  */
 class TemposMediosController extends AppController
 {
+    protected $empresaUtils;
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
         $this->validateActions();
     }
 
@@ -27,7 +30,10 @@ class TemposMediosController extends AppController
      */
     public function index()
     {
-        $temposMedios = $this->paginate($this->TemposMedios);
+        $this->paginate = [
+            'contain' => ['Empresas']
+        ];
+        $temposMedios = $this->paginate($this->TemposMedios->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('temposMedios'));
     }
@@ -58,15 +64,15 @@ class TemposMediosController extends AppController
         $temposMedio = $this->TemposMedios->newEntity();
         if ($this->request->is('post')) {
             $temposMedio = $this->TemposMedios->patchEntity($temposMedio, $this->request->getData());
+            $temposMedio->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->TemposMedios->save($temposMedio)) {
-                $this->Flash->success(__('The tempos medio has been saved.'));
+                $this->Flash->success(__('Salvo com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The tempos medio could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
-        $empresas = $this->TemposMedios->Empresas->find('list');
-        $this->set(compact('temposMedio', 'empresas'));
+        $this->set(compact('temposMedio'));
     }
 
     /**
@@ -83,15 +89,15 @@ class TemposMediosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $temposMedio = $this->TemposMedios->patchEntity($temposMedio, $this->request->getData());
+            $temposMedio->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->TemposMedios->save($temposMedio)) {
-                $this->Flash->success(__('The tempos medio has been saved.'));
+                $this->Flash->success(__('Editado com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The tempos medio could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
-        $empresas = $this->TemposMedios->Empresas->find('list');
-        $this->set(compact('temposMedio', 'empresas'));
+        $this->set(compact('temposMedio'));
     }
 
     /**

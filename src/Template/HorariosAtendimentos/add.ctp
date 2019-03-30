@@ -9,7 +9,6 @@
     <fieldset>
         <legend><?= __('Adicionar Horarios Atendimento') ?></legend>
         <?php
-        echo $this->Form->control('empresa_id', ['options' => $empresas]);
         echo $this->Form->control('dia_semana', ['options' => \App\Model\Entity\HorariosAtendimento::getDiaSemanaList()]);
         echo $this->Form->control('turno', ['options' => \App\Model\Entity\HorariosAtendimento::getTurnoList()]);
         echo $this->Form->control('hora_inicio', ['label' => 'Inicio: ']);

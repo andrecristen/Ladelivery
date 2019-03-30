@@ -31,7 +31,7 @@ class EmpresasController extends AppController
     {
         $this->paginate = [
         ];
-        $empresas = $this->paginate($this->Empresas);
+        $empresas = $this->paginate($this->Empresas->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('empresas'));
     }

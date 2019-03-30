@@ -116,6 +116,9 @@ class DataGridGenerator extends View implements TypeFields
         echo '</colgroup>';
         echo '<thead>';
         foreach ($this->fields as $th) {
+            if(!$th->getVisible()){
+                continue;
+            }
             echo '<th scope="col"><span>' . $th->getTitulo() . '</span></th>';
         }
         if (!$this->hiddenActionsColumn) {
@@ -127,6 +130,9 @@ class DataGridGenerator extends View implements TypeFields
             $this->setIdRow($entidade['id']);
             echo '<tr>';
             foreach ($this->fields as $td) {
+                if(!$td->getVisible()){
+                    continue;
+                }
                 $entidadeWithPath = '';
                 $parts = explode('/', $td->getPath(), 100);
                 if ($parts) {

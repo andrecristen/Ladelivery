@@ -7,14 +7,14 @@
 <div class="col-sm-12">
     <h3><?= __('Empresas') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridUtils();
+    $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setModel($empresas);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Nome', 'nome_fantasia', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('CNPJ', 'cnpj', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Inscrição Estadual', 'ie', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Ativo', 'ativa', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN);
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Nome', 'nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('CNPJ', 'cnpj', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Inscrição Estadual', 'ie', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativa', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
     $dataGrid->addAction('EnderecosEmpresas', 'index', 'Endereços Empresa', 'btn btn-success');
     $dataGrid->display();
     ?>

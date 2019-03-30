@@ -14,7 +14,6 @@
         </div>
         <?php
             echo $this->Form->control('motivo_fechado');
-            echo $this->Form->control('empresa_id', ['options' => $empresas]);
         ?>
     </fieldset>
     <br/>

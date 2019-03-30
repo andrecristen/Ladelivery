@@ -44,29 +44,26 @@ $empresaAberta = $controllerPedido->empresaAberta();
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="pages"><i class="fas fa-home"></i> Inicio
-                        <span class="sr-only">(current)</span>
-                    </a>
+                    <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-home')).' Início', array('controller' => 'pages', 'action' => ''), array('escape' => false , 'class' => 'nav-link')) ?>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="pages/categorias"><i class="fas fa-th-list"></i> Categorias</a>
+                    <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-th-list')).' Categorias', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false , 'class' => 'nav-link')) ?>
                 </li>
                 <?php if (!isset($_SESSION['Auth']['User']['id'])) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="users/login"><i class="fas fa-sign-in-alt"></i> Entrar</a>
+                        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')).' Entrar', array('controller' => 'users', 'action' => 'login'), array('escape' => false , 'class' => 'nav-link')) ?>
                     </li>
                 <?php }else{ ?>
-                    <li style="padding-right: 4px;" class="nav-item">
-                        <a class="nav-link" href="users/profile/<?=$_SESSION['Auth']['User']['id']?>"><i class="fas fa-user-circle"></i> Minha Conta</a>
-                    </li>
-                    <li style="padding-right: 4px;" class="nav-item">
-                        <a class="nav-link" href="pages/carrinho?<?=$_SESSION['Auth']['User']['id']?>"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+                    <li class="nav-item">
+                        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-circle')).' Minha Conta', array('controller' => 'users', 'action' => 'profile/'.$_SESSION['Auth']['User']['id']), array('escape' => false , 'class' => 'nav-link')) ?>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="users/logout"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-cart')).' Carrinho', array('controller' => 'pages', 'action' => 'carrinho?'.$_SESSION['Auth']['User']['id']), array('escape' => false , 'class' => 'nav-link')) ?>
+                    </li>
+                    <li class="nav-item">
+                        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-out-alt')).' Sair', array('controller' => 'users', 'action' => 'logout'), array('escape' => false , 'class' => 'nav-link')) ?>
                     </li>
                 <?php } ?>
-            </ul>
         </div>
     </div>
 </nav>

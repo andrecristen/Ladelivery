@@ -19,6 +19,16 @@ use Cake\ORM\Entity;
 class Empresa extends Entity
 {
 
+    const TIPO_EMPRESA_SOFTWARE = 1;
+    const TIPO_EMPRESA_PARCEIRA = 2;
+
+    public static function getTipoList(){
+        return [
+            self::TIPO_EMPRESA_SOFTWARE => 'Software',
+            self::TIPO_EMPRESA_PARCEIRA => 'Loja Parceira',
+        ];
+    }
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

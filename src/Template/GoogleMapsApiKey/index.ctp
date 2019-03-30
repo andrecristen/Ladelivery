@@ -7,13 +7,13 @@
 <div class="col-sm-12">
     <h3><?= __('Google Maps Api Keys') ?></h3>
     <?php
-    $dataGrid = new \App\Model\Utils\DataGridUtils();
+    $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setModel($googleMapsApiKey);
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField('#', 'id', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('KEY', 'api_key', \App\Model\Utils\DataGridUtils::TYPE_TEXT);
-    $dataGrid->addField('Ativo', 'ativa', \App\Model\Utils\DataGridUtils::TYPE_BOOLEAN);
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_TEXT, false, false));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('KEY', 'api_key', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativa', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
     $dataGrid->display();
     ?>
 </div>

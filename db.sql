@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 28-Mar-2019 às 21:28
+-- Generation Time: 02-Abr-2019 às 21:03
 -- Versão do servidor: 5.7.21
 -- PHP Version: 7.2.4
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `alteracao_senhas` (
   `validade` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usado` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `alteracao_senhas`
@@ -64,7 +64,31 @@ INSERT INTO `alteracao_senhas` (`id`, `user_id`, `token`, `validade`, `usado`) V
 (17, 8, 'LA201903130608320663834001552511312DEV63116775', '2019-03-16 18:08:32', 0),
 (18, 8, 'LA201903130609430531140001552511383DEV94312641', '2019-03-16 18:09:43', 0),
 (19, 16, 'LA201903150717550233957001552688275DEV52052338', '2019-03-18 19:17:55', 0),
-(20, 8, 'LA201903150718100136836001552688290DEV77973543', '2019-03-18 16:39:10', 0);
+(20, 8, 'LA201903150718100136836001552688290DEV77973543', '2019-03-18 16:39:10', 0),
+(21, 8, 'LA201903281039050539801001553823545DEV42160703', '2019-03-31 22:39:05', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `banners`
+--
+
+DROP TABLE IF EXISTS `banners`;
+CREATE TABLE IF NOT EXISTS `banners` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `midia_id` int(11) DEFAULT NULL,
+  `ativo` tinyint(1) NOT NULL,
+  `nome_banner` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `midia_id` (`midia_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `banners`
+--
+
+INSERT INTO `banners` (`id`, `midia_id`, `ativo`, `nome_banner`) VALUES
+(1, 34, 0, 'Promo natal');
 
 -- --------------------------------------------------------
 
@@ -76,46 +100,24 @@ DROP TABLE IF EXISTS `categorias_produtos`;
 CREATE TABLE IF NOT EXISTS `categorias_produtos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `empresa_id` int(11) NOT NULL,
+  `midia_id` int(11) DEFAULT NULL,
   `nome_categoria` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `descricao_categoria` text COLLATE utf8_unicode_ci,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `midia_id` (`midia_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `categorias_produtos`
 --
 
-INSERT INTO `categorias_produtos` (`id`, `empresa_id`, `nome_categoria`, `descricao_categoria`, `created`, `modified`) VALUES
-(20, 1, 'Bebidas', 'Bebidas Geladinhas', '2019-03-08 17:20:14', '2019-03-28 17:26:51'),
-(22, 1, 'Pizzas', 'Pizzas do Bonna', '2019-03-08 17:20:52', '2019-03-08 17:20:52'),
-(23, 1, 'Doces', 'Doces', '2019-03-08 17:21:05', '2019-03-08 17:21:05'),
-(24, 1, 'Hambúrgueres', 'Hambúrgueres', '2019-03-08 17:28:11', '2019-03-08 17:28:11');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `categorias_produtos_imagens`
---
-
-DROP TABLE IF EXISTS `categorias_produtos_imagens`;
-CREATE TABLE IF NOT EXISTS `categorias_produtos_imagens` (
-  `categorias_produto_id` int(11) NOT NULL,
-  `nome_imagem` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-  UNIQUE KEY `categoria_id` (`categorias_produto_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Extraindo dados da tabela `categorias_produtos_imagens`
---
-
-INSERT INTO `categorias_produtos_imagens` (`categorias_produto_id`, `nome_imagem`) VALUES
-(20, '20_bebidas.jpg'),
-(21, '21_assados.jpg'),
-(22, '22_pizza.png'),
-(23, '23_doces.jpg'),
-(24, '24_hamburguer.jpg');
+INSERT INTO `categorias_produtos` (`id`, `empresa_id`, `midia_id`, `nome_categoria`, `descricao_categoria`, `created`, `modified`) VALUES
+(20, 2, NULL, 'Bebidas', 'Bebidas Geladinhas', '2019-03-08 17:20:14', '2019-04-02 17:27:28'),
+(22, 2, NULL, 'Pizzas', 'Pizzas do Bonna', '2019-03-08 17:20:52', '2019-04-02 17:27:34'),
+(23, 2, NULL, 'Doces', 'Doces', '2019-03-08 17:21:05', '2019-04-02 17:30:54'),
+(24, 2, NULL, 'Hambúrgueres', 'Hambúrgueres', '2019-03-08 17:28:11', '2019-04-02 17:27:45');
 
 -- --------------------------------------------------------
 
@@ -133,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `cupom_site` (
   `valor_desconto` int(11) NOT NULL,
   `porcentagem` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -148,7 +150,14 @@ CREATE TABLE IF NOT EXISTS `dias_fechados` (
   `dia_fechado` date NOT NULL,
   `motivo_fechado` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `dias_fechados`
+--
+
+INSERT INTO `dias_fechados` (`id`, `empresa_id`, `dia_fechado`, `motivo_fechado`) VALUES
+(1, 2, '2019-03-30', 'caguei quero dormir');
 
 -- --------------------------------------------------------
 
@@ -194,18 +203,19 @@ CREATE TABLE IF NOT EXISTS `enderecos` (
   `complemento` varchar(600) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `enderecos`
 --
 
 INSERT INTO `enderecos` (`id`, `user_id`, `rua`, `numero`, `bairro`, `cidade`, `estado`, `cep`, `complemento`) VALUES
-(15, 20, 'Dr. Getulio Vargas', 2875, 'Bela Vista', 'Ibirama', 'SC', '89140000', 'Em frente a UDESC'),
+(15, 20, 'Luiz rigo', 143, 'Ponto chic', 'Ibirama', 'SC', '89140-000', 'Casa com muro de pedra bruta na frente'),
 (16, 16, 'Luiz rigo', 143, 'Ponto chic', 'Ibirama', 'SC', '89140-000', 'Casa com muro de pedra bruta na frente'),
 (17, 8, 'Luiz rigo', 143, 'Ponto Chic', 'Ibirama', 'SC', '89140-000', 'Casa com muro de pedra bruta na frente'),
 (18, 8, '13 de Maio', 896, 'Centro', 'Jose Boiteux', 'SC', '89145000', 'Casa '),
-(19, 16, 'Luiz rigo', 143, 'Ponto chic', 'Ibirama', 'SC', '89140-000', '1234sdcsac');
+(21, 16, 'Dr. Getulio Vargas', 2875, 'Bela Vista', 'Ibirama', 'SC', '89140000', 'Em frente a UDESC'),
+(22, 16, 'Dr. Getulio Vargas', 112, 'aassdsd', 'Ibiramaas', 'SC', '89140000', 'sdsad');
 
 -- --------------------------------------------------------
 
@@ -225,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `enderecos_empresas` (
   `cep` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_empresa_id_endereco` (`empresa_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `enderecos_empresas`
@@ -252,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `formas_pagamentos` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_nome_forma_pagamento` (`nome`),
   KEY `empresa_id` (`empresa_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `formas_pagamentos`
@@ -276,7 +286,7 @@ CREATE TABLE IF NOT EXISTS `google_maps_api_key` (
   `api_key` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `ativa` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `google_maps_api_key`
@@ -300,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `horarios_atendimentos` (
   `hora_inicio` time NOT NULL,
   `hora_fim` time NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `horarios_atendimentos`
@@ -313,7 +323,8 @@ INSERT INTO `horarios_atendimentos` (`id`, `empresa_id`, `dia_semana`, `turno`, 
 (8, 1, 3, 1, '00:00:00', '23:59:00'),
 (9, 1, 4, 1, '00:00:00', '23:59:00'),
 (10, 1, 5, 1, '00:00:00', '23:59:00'),
-(11, 1, 6, 1, '00:00:00', '23:59:00');
+(11, 1, 6, 1, '00:00:00', '23:59:00'),
+(12, 2, 0, 1, '09:42:00', '09:42:00');
 
 -- --------------------------------------------------------
 
@@ -331,7 +342,14 @@ CREATE TABLE IF NOT EXISTS `itens_carrinhos` (
   `observacao` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `opicionais` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `itens_carrinhos`
+--
+
+INSERT INTO `itens_carrinhos` (`id`, `user_id`, `produto_id`, `quantidades`, `valor_total_cobrado`, `observacao`, `opicionais`) VALUES
+(16, 8, 62, 1, '55.00', '', '\"[]\"');
 
 -- --------------------------------------------------------
 
@@ -403,16 +421,31 @@ CREATE TABLE IF NOT EXISTS `listas_produtos` (
   UNIQUE KEY `unique_produto_lista` (`produto_id`,`lista_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Extraindo dados da tabela `listas_produtos`
+-- Estrutura da tabela `midias`
 --
 
-INSERT INTO `listas_produtos` (`id`, `produto_id`, `lista_id`) VALUES
-(22, 46, 115),
-(23, 47, 115),
-(24, 48, 115),
-(25, 54, 115),
-(26, 54, 116);
+DROP TABLE IF EXISTS `midias`;
+CREATE TABLE IF NOT EXISTS `midias` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
+  `tipo_midia` int(11) NOT NULL,
+  `path_midia` varchar(600) COLLATE utf8_unicode_ci NOT NULL,
+  `nome_midia` varchar(600) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_path_midia` (`path_midia`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `midias`
+--
+
+INSERT INTO `midias` (`id`, `empresa_id`, `tipo_midia`, `path_midia`, `nome_midia`) VALUES
+(31, 2, 1, 'produtos/teste_assados.jpg', 'teste'),
+(33, 2, 3, 'banners/upload_02_04_19_18_04_25_assados.jpg_assados.jpg', 'upload_02_04_19_18_04_25_assados.jpg'),
+(34, 2, 3, 'banners/upload_02_04_19_18_04_34_bebidas.jpg_bebidas.jpg', 'upload_02_04_19_18_04_34_bebidas.jpg');
 
 -- --------------------------------------------------------
 
@@ -428,7 +461,7 @@ CREATE TABLE IF NOT EXISTS `opcoes_extras` (
   `descricao_adicional` text COLLATE utf8_unicode_ci NOT NULL,
   `valor_adicional` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `opcoes_extras`
@@ -461,7 +494,7 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `cupom_usado` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `valor_desconto` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `pedidos`
@@ -504,7 +537,8 @@ INSERT INTO `pedidos` (`id`, `user_id`, `empresa_id`, `valor_total_cobrado`, `fo
 (38, 8, 1, '18.50', 2, '0.93', 45, '0.00', 1, 4, '2019-03-27 16:34:16', NULL, '0.00'),
 (39, 8, 1, '183.40', 1, '0.00', 45, '200.00', 1, 4, '2019-03-27 16:44:49', NULL, '0.00'),
 (40, 8, 1, '19.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-27 17:09:34', 'LADEV', '15.00'),
-(41, 8, 1, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-27 17:34:32', NULL, '0.00');
+(41, 8, 1, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-27 17:34:32', NULL, '0.00'),
+(42, 8, 1, '6.50', NULL, '0.00', 45, '0.00', 1, 11, '2019-03-28 23:57:13', NULL, '0.00');
 
 -- --------------------------------------------------------
 
@@ -561,7 +595,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_produtos` (
   `ambiente_producao_responsavel` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `pedidos_produtos`
@@ -615,7 +649,8 @@ INSERT INTO `pedidos_produtos` (`id`, `pedido_id`, `produto_id`, `quantidade`, `
 (56, 39, 46, 1, '33.20', '', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"]}\"', 1, 3),
 (57, 39, 54, 1, '150.20', '', '\"{\\\"115\\\":[\\\"12\\\",\\\"13\\\",\\\"14\\\"],\\\"116\\\":[\\\"13\\\"]}\"', 1, 3),
 (58, 40, 45, 3, '19.50', '', '\"[]\"', 1, 1),
-(59, 41, 45, 1, '6.50', '', '\"[]\"', 1, 1);
+(59, 41, 45, 1, '6.50', '', '\"[]\"', 1, 1),
+(60, 42, 45, 1, '6.50', '', '\"[]\"', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -627,6 +662,7 @@ DROP TABLE IF EXISTS `produtos`;
 CREATE TABLE IF NOT EXISTS `produtos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `empresa_id` int(11) NOT NULL,
+  `midia_id` int(11) DEFAULT NULL,
   `nome_produto` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `categorias_produto_id` int(11) NOT NULL,
   `descricao_produto` text COLLATE utf8_unicode_ci,
@@ -635,39 +671,17 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `categorias_produto_id` (`categorias_produto_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  KEY `categorias_produto_id` (`categorias_produto_id`),
+  KEY `midia_id` (`midia_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `produtos`
 --
 
-INSERT INTO `produtos` (`id`, `empresa_id`, `nome_produto`, `categorias_produto_id`, `descricao_produto`, `preco_produto`, `ativo_produto`, `created`, `modified`) VALUES
-(45, 1, 'Coca-cola 600ml', 20, 'Coca-cola 600 ml', '6.50', 1, '2019-03-08 17:21:46', '2019-03-28 17:45:18'),
-(46, 1, 'X - Calabresa', 24, 'Hambúrguer, Alface, Tomate, Pepino, Milho, Ervilha, Calabresa', '12.50', 1, '2019-03-08 17:30:18', '2019-03-08 17:30:34'),
-(47, 1, 'X - Frango', 24, '................', '12.50', 1, '2019-03-08 17:35:41', '2019-03-08 17:35:41'),
-(48, 1, 'X - Bacon', 24, 'lwekfioewjkfiopwerkjfiowefkiowerf', '13.50', 1, '2019-03-08 17:36:32', '2019-03-28 17:42:53'),
-(54, 1, 'Frango', 22, '123456', '123.00', 1, '2019-03-11 22:42:38', '2019-03-11 22:42:38');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `produtos_imagens`
---
-
-DROP TABLE IF EXISTS `produtos_imagens`;
-CREATE TABLE IF NOT EXISTS `produtos_imagens` (
-  `produto_id` int(11) NOT NULL,
-  `nome_imagem` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
-  UNIQUE KEY `produto_id` (`produto_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Extraindo dados da tabela `produtos_imagens`
---
-
-INSERT INTO `produtos_imagens` (`produto_id`, `nome_imagem`) VALUES
-(45, '45_coca.jpg');
+INSERT INTO `produtos` (`id`, `empresa_id`, `midia_id`, `nome_produto`, `categorias_produto_id`, `descricao_produto`, `preco_produto`, `ativo_produto`, `created`, `modified`) VALUES
+(62, 2, NULL, 'Grande', 22, 'Pizza grande ate 3 sabores', '55.00', 1, '2019-04-02 16:47:08', '2019-04-02 17:08:26'),
+(63, 2, NULL, 'Media', 22, 'Pizza media ate 2 sabores', '45.00', 1, '2019-04-02 17:07:54', '2019-04-02 17:09:36');
 
 -- --------------------------------------------------------
 
@@ -684,14 +698,16 @@ CREATE TABLE IF NOT EXISTS `taxas_entregas_cotacao` (
   `ativo` tinyint(1) NOT NULL,
   `valor_base_erro` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `taxas_entregas_cotacao`
 --
 
 INSERT INTO `taxas_entregas_cotacao` (`id`, `empresa_id`, `valor_km`, `arredondamento_tipo`, `ativo`, `valor_base_erro`) VALUES
-(6, 1, '1.95', 2, 1, '10.00');
+(6, 1, '1.95', 2, 1, '10.00'),
+(7, 2, '154.00', 1, 1, '10.00'),
+(8, 2, '55.00', 3, 1, '10.00');
 
 -- --------------------------------------------------------
 
@@ -708,14 +724,15 @@ CREATE TABLE IF NOT EXISTS `tempos_medios` (
   `ativo` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `empresa_id` (`empresa_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `tempos_medios`
 --
 
 INSERT INTO `tempos_medios` (`id`, `empresa_id`, `nome`, `tempo_medio_producao_minutos`, `ativo`) VALUES
-(3, 1, 'Tempo Produção dias da semana', 45, 1);
+(3, 1, 'Tempo Produção dias da semana', 45, 1),
+(5, 2, 'André Cristen', 123, 1);
 
 -- --------------------------------------------------------
 
@@ -758,6 +775,18 @@ INSERT INTO `users` (`id`, `nome_completo`, `tipo`, `empresa_id`, `created`, `mo
 --
 
 --
+-- Limitadores para a tabela `banners`
+--
+ALTER TABLE `banners`
+  ADD CONSTRAINT `banners_ibfk_1` FOREIGN KEY (`midia_id`) REFERENCES `midias` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `categorias_produtos`
+--
+ALTER TABLE `categorias_produtos`
+  ADD CONSTRAINT `categorias_produtos_ibfk_1` FOREIGN KEY (`midia_id`) REFERENCES `midias` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
 -- Limitadores para a tabela `enderecos`
 --
 ALTER TABLE `enderecos`
@@ -787,7 +816,8 @@ ALTER TABLE `listas_produtos`
 -- Limitadores para a tabela `produtos`
 --
 ALTER TABLE `produtos`
-  ADD CONSTRAINT `produtos_ibfk_1` FOREIGN KEY (`categorias_produto_id`) REFERENCES `categorias_produtos` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `produtos_ibfk_1` FOREIGN KEY (`categorias_produto_id`) REFERENCES `categorias_produtos` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `produtos_ibfk_2` FOREIGN KEY (`midia_id`) REFERENCES `midias` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `tempos_medios`

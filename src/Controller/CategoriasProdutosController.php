@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\Midia;
 use App\Model\ExceptionSQLMessage;
 use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
@@ -69,6 +70,18 @@ class CategoriasProdutosController extends AppController
         if ($this->request->is('post')) {
             $categoriasProduto = $this->CategoriasProdutos->patchEntity($categoriasProduto, $this->request->getData());
             $categoriasProduto->empresa_id = $this->empresaUtils->getUserEmpresaId();
+            if($this->request->getData('uploadfile')){
+                $midiaController = new MidiasController();
+                $file = $_FILES['uploadfile'];
+                if($file['name'] != ""){
+                    $midia = $midiaController->newMidiaByUpload($file, Midia::TIPO_CATEGORIA);
+                    if(!$midia){
+                        $this->Flash->error(__('Erro ao gravar imagem.'));
+                        return;
+                    }
+                    $categoriasProduto->midia_id = $midia->id;
+                }
+            }
             if ($this->CategoriasProdutos->save($categoriasProduto)) {
                 $this->Flash->success(__('Categoria adicionada com sucesso.'));
 
@@ -77,47 +90,6 @@ class CategoriasProdutosController extends AppController
             $this->Flash->error(__('Não foi possível adicionar a categoria, tente novamente.'));
         }
         $this->set(compact('categoriasProduto'));
-    }
-
-    /**
-     * AddImage method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful addImage, renders view otherwise.
-     */
-    public function addImage(){
-        if(!$this->getRequest()->is('post')){
-            $categoria = $this->CategoriasProdutos->newEntity();
-            $categorias = $this->CategoriasProdutos->find('list');
-            $this->set(compact('categoria', 'categorias'));
-        }else{
-            try{
-                $tableLocator = new TableLocator();
-                $catId = $this->getRequest()->getData('categorias_produto_id');
-                $categoriasImagensTable = $tableLocator->get('CategoriasProdutosImagens');
-                $existImage = $categoriasImagensTable->query();
-                $existImage->where(['categorias_produto_id'=>$catId]);
-                $existImage = $existImage->first();
-                if($existImage !== null){
-                    unlink(WWW_ROOT . 'img' .DS. 'categorias' .DS.$existImage->nome_imagem);
-                }
-                $file =  $_FILES;
-                $file =  $file['uploadfile'];
-                move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img' .DS. 'categorias' .DS. $catId.'_'.$file['name']);
-                $produtoImagem = $categoriasImagensTable->newEntity();
-                $produtoImagem->nome_imagem = $catId.'_'.$file['name'];
-                $produtoImagem->categorias_produto_id = $catId;
-                if ($categoriasImagensTable->save($produtoImagem)) {
-                    $this->Flash->success(__('Imagem vinculada a categoria com sucesso.'));
-                }else{
-                    throw new \Exception('Não foi possível vincular imagem a categoria');
-                }
-
-                return $this->redirect(['controller' => 'CategoriasProdutosImagens', 'action' => 'index']);
-            }catch (\Exception $e){
-                $this->Flash->error(__('Não foi possível adicionar imagem a categoria erro recebido: '.$e->getMessage()));
-            }
-
-        }
     }
 
     /**
@@ -135,6 +107,18 @@ class CategoriasProdutosController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $categoriasProduto = $this->CategoriasProdutos->patchEntity($categoriasProduto, $this->request->getData());
             $categoriasProduto->empresa_id = $this->empresaUtils->getUserEmpresaId();
+            if($this->request->getData('uploadfile')){
+                $midiaController = new MidiasController();
+                $file = $_FILES['uploadfile'];
+                if($file['name'] != ""){
+                    $midia = $midiaController->newMidiaByUpload($file, Midia::TIPO_CATEGORIA);
+                    if(!$midia){
+                        $this->Flash->error(__('Erro ao gravar imagem.'));
+                        return;
+                    }
+                    $categoriasProduto->midia_id = $midia->id;
+                }
+            }
             if ($this->CategoriasProdutos->save($categoriasProduto)) {
                 $this->Flash->success(__('Categoria salva com sucesso.'));
 

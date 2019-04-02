@@ -198,17 +198,17 @@ if(!$existstPedidoAberto || !$empresaAberta){
         $produtoscount = 0;
         foreach ($query as $produto) {
 //            Buscamos a imagem do produto
-            $produtosImagensTable = $tableLocator->get('ProdutosImagens');
-            $existImage = $produtosImagensTable->find();
-            $existImage->where(['produto_id' => $produto->id]);
-            /** @var $existImage \App\Model\Entity\ProdutosImagen*/
-            $existImage = $existImage->first();
+            $midiaTable = $tableLocator->get('Midias');
+            $existMidia = $midiaTable->find();
+            $existMidia->where(['id' => $produto->midia_id]);
+            /** @var $existMidia \App\Model\Entity\Midia*/
+            $existMidia = $existMidia->first();
             ?>
             <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
                 <div class="card" style="margin-bottom: 5px">
                     <a  href="#" onclick="openModalAddCart(<?= $produto->id ?>, <?= $_SESSION['Auth']['User']['id'] ?>)">
-                        <?php if ($existImage !== null) { ?>
-                            <?php echo $this->Html->image('produtos/' . $existImage->nome_imagem, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40')); ?>
+                        <?php if ($existMidia !== null) { ?>
+                            <?php echo $this->Html->image($existMidia->path_midia, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40')); ?>
                         <?php } else { ?>
                             <?php echo $this->Html->image('empresa/padrao.jpeg', array('width' => '100%', 'height' => '22%')); ?>
                         <?php } ?>

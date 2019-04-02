@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\Midia;
 use App\Model\Entity\ProdutosImagen;
 use App\Model\Table\ProdutosImagensTable;
 use App\Model\Utils\EmpresaUtils;
@@ -75,6 +76,18 @@ class ProdutosController extends AppController
         if ($this->request->is('post')) {
             $produto = $this->Produtos->patchEntity($produto, $this->request->getData());
             $produto->empresa_id = $this->empresaUtils->getUserEmpresaId();
+            if($this->request->getData('uploadfile')){
+                $midiaController = new MidiasController();
+                $file = $_FILES['uploadfile'];
+                if($file['name'] != ""){
+                    $midia = $midiaController->newMidiaByUpload($file, Midia::TIPO_PRODUTO);
+                    if(!$midia){
+                        $this->Flash->error(__('Erro ao gravar imagem.'));
+                        return;
+                    }
+                    $produto->midia_id = $midia->id;
+                }
+            }
             if ($this->Produtos->save($produto)) {
                 $this->Flash->success(__('Produto adicionado com sucesso.'));
 
@@ -84,48 +97,6 @@ class ProdutosController extends AppController
         }
         $categoriasProdutos = $this->Produtos->CategoriasProdutos->find('list');
         $this->set(compact('produto', 'categoriasProdutos'));
-    }
-
-    /**
-     * AddImage method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful addImage, renders view otherwise.
-     */
-    public function addImage()
-    {
-        if (!$this->getRequest()->is('post')) {
-            $produto = $this->Produtos->newEntity();
-            $produtos = $this->Produtos->find('list');
-            $this->set(compact('produto', 'produtos'));
-        } else {
-            try {
-                $tableLocator = new TableLocator();
-                $prodId = $this->getRequest()->getData('produto_id');
-                $produtosImagensTable = $tableLocator->get('ProdutosImagens');
-                $existImage = $produtosImagensTable->query();
-                $existImage->where(['produto_id' => $prodId]);
-                $existImage = $existImage->first();
-                if ($existImage !== null) {
-                    unlink(WWW_ROOT . 'img' . DS . 'produtos' . DS . $existImage->nome_imagem);
-                }
-                $file = $_FILES;
-                $file = $file['uploadfile'];
-                move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img' . DS . 'produtos' . DS . $prodId . '_' . $file['name']);
-                $produtoImagem = $produtosImagensTable->newEntity();
-                $produtoImagem->nome_imagem = $prodId . '_' . $file['name'];
-                $produtoImagem->produto_id = $prodId;
-                if ($produtosImagensTable->save($produtoImagem)) {
-                    $this->Flash->success(__('Imagem vinculada ao produto com sucesso.'));
-                } else {
-                    throw new \Exception('Não foi possível vincular imagem ao produto');
-                }
-
-                return $this->redirect(['controller' => 'ProdutosImagens', 'action' => 'index']);
-            } catch (\Exception $e) {
-                $this->Flash->error(__('Não foi possível adicionar imagem ao produto erro recebido: ' . $e->getMessage()));
-            }
-
-        }
     }
 
     /**
@@ -143,6 +114,18 @@ class ProdutosController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $produto = $this->Produtos->patchEntity($produto, $this->request->getData());
             $produto->empresa_id = $this->empresaUtils->getUserEmpresaId();
+            if($this->request->getData('uploadfile')){
+                $midiaController = new MidiasController();
+                $file = $_FILES['uploadfile'];
+                if($file['name'] != ""){
+                    $midia = $midiaController->newMidiaByUpload($file, Midia::TIPO_PRODUTO);
+                    if(!$midia){
+                        $this->Flash->error(__('Erro ao gravar imagem.'));
+                        return;
+                    }
+                    $produto->midia_id = $midia->id;
+                }
+            }
             if ($this->Produtos->save($produto)) {
                 $this->Flash->success(__('Produto salvo com sucesso.'));
 

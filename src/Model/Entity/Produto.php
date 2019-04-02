@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $empresa_id
+ * @property int $midia_id
  * @property string $nome_produto
  * @property int $categorias_produto_id
  * @property string|null $descricao_produto
@@ -18,6 +19,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\CategoriasProduto $categorias_produto
  * @property \App\Model\Entity\Empresa $empresa
+ * @property \App\Model\Entity\Midia $midia
  */
 class Produto extends Entity
 {
@@ -33,6 +35,7 @@ class Produto extends Entity
      */
     protected $_accessible = [
         'nome_produto' => true,
+        'midia_id' => true,
         'empresa_id' => true,
         'categorias_produto_id' => true,
         'descricao_produto' => true,
@@ -41,6 +44,7 @@ class Produto extends Entity
         'created' => true,
         'modified' => true,
         'empresa' => true,
+        'midia' => true,
         'categorias_produto' => true
     ];
 }

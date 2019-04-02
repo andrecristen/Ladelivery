@@ -1,0 +1,21 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Banner $banner
+ */
+?>
+<div class="col-sm-12">
+    <?= $this->Form->create($banner,  ['type'=>'file']) ?>
+    <fieldset>
+        <legend><?= __('Adicionar Banner') ?></legend>
+        <?php
+        echo $this->Form->control('nome_banner');
+        echo $this->Form->control('ativo');
+        echo '<br />';
+        echo '<label for="uploadfile">Imagem</label>';
+        echo $this->Form->file('uploadfile', ['required' => 'required']);
+        ?>
+    </fieldset>
+    <?= $this->Form->button(__('Adicionar')) ?>
+    <?= $this->Form->end() ?>
+</div>

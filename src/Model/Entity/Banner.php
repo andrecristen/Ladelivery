@@ -4,12 +4,16 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * ProdutosImagen Entity
+ * Banner Entity
  *
- * @property int $produto_id
- * @property string $nome_imagem
+ * @property int $id
+ * @property int|null $midia_id
+ * @property bool $ativo
+ * @property string $nome_banner
+ *
+ * @property \App\Model\Entity\Midia $midia
  */
-class ProdutosImagen extends Entity
+class Banner extends Entity
 {
 
     /**
@@ -22,7 +26,9 @@ class ProdutosImagen extends Entity
      * @var array
      */
     protected $_accessible = [
-        'produto_id' => true,
-        'nome_imagem' => true
+        'midia_id' => true,
+        'ativo' => true,
+        'nome_banner' => true,
+        'midia' => true
     ];
 }

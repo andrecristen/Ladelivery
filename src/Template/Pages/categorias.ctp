@@ -3,9 +3,9 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
 $cacheControl = new \App\Model\Utils\CacheControl();
 $this->layout = false;
 $controllerPedido = new \App\Model\Utils\SiteUtilsPedido();
-$existstPedidoAberto = false;
+$existsPedidoAberto = false;
 if (isset($_SESSION['Auth']['User']['id'])){
-    $existstPedidoAberto = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);
+    $existsPedidoAberto = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);
 }
 $empresaAberta = $controllerPedido->empresaAberta();
 $query = $tableLocator->get('CategoriasProdutos')->find();
@@ -77,10 +77,10 @@ $query = $tableLocator->get('CategoriasProdutos')->find();
                 <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos novos...<i class="fas fa-sad-cry fa-2x"></i></h4>
             </div>
         </div>
-    <?php $existstPedidoAberto = false;
+    <?php $existsPedidoAberto = false;
     }
     ?>
-    <?php if($existstPedidoAberto){?>
+    <?php if($existsPedidoAberto){?>
         <div class="row">
             <div style="width: 100%" class="alert alert-info">
                 <h4>Você possui pedidos aguardando sua confirmação ou rejeição, certifique-se de concluir primeiro este pedido antes de iniciar um novo!<a href="../pages/confirmar">Para ver o pedido clique aqui</a></h4>
@@ -94,16 +94,18 @@ $query = $tableLocator->get('CategoriasProdutos')->find();
     <div class="row">
     <?php
     foreach ($query as $categoria) {
-        $produtosImagensTable = \Cake\ORM\TableRegistry::get('CategoriasProdutosImagens');
-        $existImage = $produtosImagensTable->query();
-        $existImage->where(['categorias_produto_id'=>$categoria->id]);
-        $existImage = $existImage->first();
+        $tableLocator = new \Cake\ORM\Locator\TableLocator();
+        $midiasTable = $tableLocator->get('Midias');
+        $existMidia = $midiasTable->query();
+        $existMidia->where(['id'=>$categoria->midia_id]);
+        /** @var $existMidia \App\Model\Entity\Midia*/
+        $existMidia = $existMidia->first();
         ?>
         <div style="margin-bottom: 10px;" class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
             <div class="card">
                 <a href="produtos?categoria=<?= $categoria->id?>&categoriaNome=<?=$categoria->nome_categoria?>">
-                    <?php if($existImage !== null){?>
-                        <?php echo $this->Html->image('categorias/'.$existImage->nome_imagem, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40')); ?>
+                    <?php if($existMidia !== null){?>
+                        <?php echo $this->Html->image($existMidia->path_midia, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40')); ?>
                     <?php }else{?>
                         <?php echo $this->Html->image('empresa/padrao.jpeg', array('width' => '100%', 'height' => '22%')); ?>
                     <?php } ?>

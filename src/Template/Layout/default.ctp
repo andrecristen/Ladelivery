@@ -113,8 +113,8 @@ $cacheControl = '?v=06-02-2019-01'
                 <a href="#"><i class="fas fa-images"></i> Mídias</a>
             </li>
             <ul class="sub-menu collapse" id="midia">
-                <li><?= $this->Html->link(__('Imagens Categorias'), ['controller' => 'CategoriasProdutosImagens', 'action' => 'index']) ?></li>
-                <li><?= $this->Html->link(__('Imagens Produtos'), ['controller' => 'ProdutosImagens', 'action' => 'index']) ?></li>
+                <li><?= $this->Html->link(__('Midias'), ['controller' => 'Midias', 'action' => 'index']) ?></li>
+                <li><?= $this->Html->link(__('Banners'), ['controller' => 'Banners', 'action' => 'index']) ?></li>
             </ul>
             <li data-toggle="collapse" data-target="#sistema" class="collapsed">
                 <a href="#"><i class="fab fa-windows"></i> Administrador</a>

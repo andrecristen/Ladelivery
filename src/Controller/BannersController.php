@@ -59,6 +59,10 @@ class BannersController extends AppController
                 $midiaController = new MidiasController();
                 $file = $_FILES['uploadfile'];
                 if($file['name'] != ""){
+                    if(!$this->verificaDimensionsBanner($file)){
+                        $this->Flash->error(__('Atenção, para banners forneça uma imagem com os tamanhos entre 1200x400 a 1300X500 pixels.'));
+                        return;
+                    }
                     $midia = $midiaController->newMidiaByUpload($file, Midia::TIPO_BANNER);
                     if(!$midia){
                         $this->Flash->error(__('Erro ao gravar imagem.'));
@@ -95,6 +99,10 @@ class BannersController extends AppController
                 $midiaController = new MidiasController();
                 $file = $_FILES['uploadfile'];
                 if($file['name'] != ""){
+                    if(!$this->verificaDimensionsBanner($file)){
+                        $this->Flash->error(__('Atenção, para banners forneça uma imagem com os tamanhos entre 1200x400 a 1300X500 pixels.'));
+                        return;
+                    }
                     $midia = $midiaController->newMidiaByUpload($file, Midia::TIPO_BANNER);
                     if(!$midia){
                         $this->Flash->error(__('Erro ao gravar imagem.'));
@@ -114,6 +122,16 @@ class BannersController extends AppController
         $this->set(compact('banner', 'midias'));
     }
 
+    private function verificaDimensionsBanner($file){
+        $fileinfo = @getimagesize ($file["tmp_name"]);
+        if($fileinfo[0] < 1200 || $fileinfo[0] > 1300){
+            return false;
+        }
+        if($fileinfo[1] < 400 || $fileinfo[1] > 500){
+            return false;
+        }
+        return true;
+    }
     /**
      * Delete method
      *

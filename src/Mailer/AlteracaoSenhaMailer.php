@@ -22,7 +22,7 @@ class AlteracaoSenhaMailer extends Mailer
             ->setProfile(['gmail'])
             ->setEmailFormat('html')
             ->setTemplate('alteracao_senha')
-            ->setViewVars(['token' => $alteracaoSenha->token])
-            ->setSubject('Alteracao De Senha LaDelivery');
+            ->setViewVars(['token' => $alteracaoSenha->token , 'userName' => $alteracaoSenha->user->nome_completo])
+            ->setSubject('Alteração de Senha LaDelivery');
     }
 }

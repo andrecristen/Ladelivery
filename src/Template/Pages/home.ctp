@@ -29,6 +29,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js<?= h($cacheControl->getCacheVersion()) ?>"
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
             crossorigin="anonymous"></script>
+    <?= $this->Html->css('banner.css') ?>
     <title>LADev - LaDelivery</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -86,23 +87,39 @@ $empresaAberta = $controllerPedido->empresaAberta();
                 <h4>Você possui pedidos aguardando sua confirmação ou rejeição, certifique-se de concluir primeiro este pedido antes de iniciar um novo!<a href="pages/confirmar">Para ver o pedido clique aqui</a></h4>
             </div>
         </div>
-    <?php } ?>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <?php }
+    $tableLocator = new \Cake\ORM\Locator\TableLocator();
+    /** @var $banners \App\Model\Entity\Banner[]*/
+    $banners = $tableLocator->get('Banners')->find()->where(['ativo' => true]);
+    ?>
+    <div id="carouselExampleIndicators" class="carousel slide height-size" data-ride="carousel">
         <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <?php
+            $count = 0;
+            foreach ($banners as $banner){
+                if($count == 0){
+                    echo  '<li data-target="#carouselExampleIndicators" data-slide-to="'.$count.'" class="active"></li>';
+                }else{
+                    echo  '<li data-target="#carouselExampleIndicators" data-slide-to="'.$count.'"></li>';
+                }
+                $count++;
+            }?>
         </ol>
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block w-100" src="img/home/pizza.jpg" alt="First slide">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="img/home/hamburguer.jpg" alt="Second slide">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="img/home/calzone.jpg" alt="Third slide">
-            </div>
+            <?php
+            $count = 0;
+            foreach ($banners as $banner){
+                /** @var $midia \App\Model\Entity\Midia*/
+                $midia = $tableLocator->get('Midias')->find()->where(['id' => $banner->midia_id])->first();
+                if($count == 0){
+                    echo '<div class="carousel-item height-size active">';
+                }else{
+                    echo '<div class="carousel-item height-size">';
+                }
+                echo '<img class="height-size" src="img/'.$midia->path_midia.'" alt="'.$banner->nome_banner.'">';
+                $count++;
+                echo '</div>';
+            }?>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -114,26 +131,35 @@ $empresaAberta = $controllerPedido->empresaAberta();
         </a>
     </div>
     <!-- Page Heading -->
-    <h1 class="my-4">Só no LaDelivery!
+    <h1 class="my-4">Bem Vindo ao LaDelivery!
         <br>
-        <small>Você encontra as melhores comidas, afinal de contas, comida une as pessoas!</small>
-        <small>E degustar um comida saborosa, prática e rápida é com a gente mesmo, então ta esperando o que ai?</small>
+        <small>Só aqui você encontra as melhores comidas, afinal de contas, comida une as pessoas!</small>
+        <small>E degustar um comida saborosa, prática e rápida é com a gente mesmo, então ta esperando o que?</small>
         <br>
         <small>Vai logo dar um conferida nas nossas categorias de lanches saborosos, aposto que algum vai agradar seu paladar...</small>
     </h1>
 </div>
-
 <!-- Footer -->
-<footer style="background-color: #343a40!important; margin-top: 45px;" class="page-footer font-small blue">
-
+<footer style="background-color: #343a40!important; margin-top: 45px;" class="page-footer font-small blue footer">
     <!-- Copyright -->
-    <div style="color: white" class="footer-copyright text-center py-3">© 2018 Copyright
-        <a href=""> LaDev</a>
+    <div style="color: white" class="footer-copyright text-center py-3">© 2019 Copyright <a href=""> LaDev</a>
     </div>
     <div class="footer-copyright text-center py-3">
-        <a class="btn btn-sm btn-info" href="users">Painel Administrador</a>
+        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-shield')).' Painel Administrador', array('controller' => 'users', 'action' => 'index'), array('escape' => false , 'class' => 'btn btn-sm btn-info')) ?>
     </div>
 </footer>
+<style>
+    html, body {
+        height: 100%;
+    }
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+    .footer {
+        flex-shrink: 0;
+    }
+</style>
 <!-- Footer -->
 </body>
 </html>

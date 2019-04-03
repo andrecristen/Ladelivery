@@ -134,7 +134,6 @@ $cacheControl = '?v=06-02-2019-01'
                     <i class="fas fa-sign-out-alt"></i> <?= $this->Html->link(__('Sair'), ['controller' => 'Users', 'action' => 'logout']) ?>
                 </a>
             </li>
-            <?php endif; ?>
         </ul>
     </div>
 </div>
@@ -143,6 +142,7 @@ $cacheControl = '?v=06-02-2019-01'
     <b>Usuário: </b><span><?= $empresaUtils->getUserName()?></span>
     <b> Empresa: </b><span><?= $empresaUtils->getUserEmpresaModel()->nome_fantasia?></span>
 </div>
+<?php endif; ?>
 <?php if ($login && $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR) : ?>
 <div class="content-next-menu content">
     <?php else:; ?>

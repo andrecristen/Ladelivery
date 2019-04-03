@@ -85,7 +85,7 @@ class DataGridGenerator extends View implements TypeFields
                 }
             }
         }
-        echo $this->Form->button('Pesquisar', ['class' => 'btn btn-sm btn-success']);
+        echo $this->Form->button('Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
         if(!$this->getCallBackActionLimpar()){
             echo $this->Html->link('Limpar', ['action' => 'index'], ['class' => 'btn btn-sm btn-danger']);
         }else{

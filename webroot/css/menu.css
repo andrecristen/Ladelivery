@@ -11,10 +11,15 @@
     color: #e1ffff;
 }
 
+.system-info{
+    margin-left: 300px;
+}
+
 .content-next-menu{
     margin-left: 300px;
     overflow-y: scroll;
     height:auto;
+    padding-top: 67px;
 }
 .nav-side-menu .brand {
     background-color: #23282e;
@@ -130,11 +135,13 @@
     transition: all 1s ease;
 }
 @media (max-width: 767px) {
+    .system-info{
+        margin-left: 0px;
+    }
     .nav-side-menu {
         position: relative;
         width: 100%;
         height: auto;
-        margin-bottom: 10px;
     }
     .nav-side-menu .toggle-btn-pc{
         display: none;
@@ -238,6 +245,7 @@ body {
 @media (max-width: 767px) {
     .content-next-menu{
         margin-left: 0px;
+        margin-top: 67px;
     }
 
     .content{

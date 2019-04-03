@@ -604,3 +604,15 @@ table td {
     vertical-align: top;
     word-break: break-all;
 }
+
+.system-info{
+    padding: 15px;
+    position: fixed;
+    margin-bottom: 20px;
+    width: 100%!important;
+    height: 50px!important;
+    background-color: #23282e;
+    align-content: right;
+    color: #ffffff;
+    z-index: 10000;
+}

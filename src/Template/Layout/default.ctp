@@ -138,6 +138,11 @@ $cacheControl = '?v=06-02-2019-01'
         </ul>
     </div>
 </div>
+<?php $empresaUtils = new \App\Model\Utils\EmpresaUtils()?>
+<div class="system-info">
+    <b>Usuário: </b><span><?= $empresaUtils->getUserName()?></span>
+    <b> Empresa: </b><span><?= $empresaUtils->getUserEmpresaModel()->nome_fantasia?></span>
+</div>
 <?php if ($login && $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR) : ?>
 <div class="content-next-menu content">
     <?php else:; ?>

@@ -24,12 +24,14 @@ function closeMenu() {
         $(".menu-content").show();
         $(".nav-side-menu").width('300px');
         $(".content-next-menu").css('margin-left', '300px');
+        $(".system-info").css('margin-left', '300px');
 
     //Esta aberto entao vamos fechar
     }else{
         $(".brand").hide();
         $(".menu-content").hide();
         $(".nav-side-menu").width('58px');
+        $(".system-info").css('margin-left', '58px');
         $(".content-next-menu").css('margin-left', '58px');
     }
 }

@@ -36,7 +36,7 @@ class AlteracaoSenhasController extends AppController
             $alteracaoSenha->validade =  $date;;
             if($this->AlteracaoSenhas->save($alteracaoSenha)){
                 $this->sendEmailNotification($alteracaoSenha);
-                $this->Flash->default(__('Foi enviado um link para redefinição de senha ao seu email, por favor verifique. Este link é válido por 3 dias.'));
+                $this->Flash->default(__('Foi enviado um link para redefinição de senha ao seu email.'));
                 return $this->redirect(['controller' => 'Users', 'action' => 'login']);
             }else{
                 $this->Flash->error(__('Ocorreu um erro ao processar a operação, tente novamente!.'));
@@ -58,6 +58,7 @@ class AlteracaoSenhasController extends AppController
         $token = 'LA'.$date->format('Ymdhis').microtime().'DEV'.rand(11111111,99999999);
         $token = str_replace(' ', '', $token);
         $token = str_replace('.', '', $token);
+        $token = md5($token);
         return $token;
     }
 

@@ -20,18 +20,20 @@ function onClickSaveLastSistem(index, element) {
 function closeMenu() {
     //Esta fechado entao vamos abrir
     if($(".nav-side-menu").width() < 300){
-        $(".brand").show();
-        $(".menu-content").show();
-        $(".nav-side-menu").width('300px');
-        $(".content-next-menu").css('margin-left', '300px');
-        $(".system-info").css('margin-left', '300px');
+        // $(".nav-side-menu").width('300px');
+        $(".nav-side-menu").animate({width:"300px"},{queue:false, duration:250});
+        $(".system-info").animate({"margin-left":"300px"},{queue:false, duration:250});
+        $(".content-next-menu").animate({"margin-left":"300px"},{queue:false, duration:250});
+        $(".brand").show(10);
+        $(".menu-content").show(10);
 
     //Esta aberto entao vamos fechar
     }else{
-        $(".brand").hide();
-        $(".menu-content").hide();
-        $(".nav-side-menu").width('58px');
-        $(".system-info").css('margin-left', '58px');
-        $(".content-next-menu").css('margin-left', '58px');
+        $(".brand").hide(250);
+        $(".menu-content").hide(250);
+        // $(".nav-side-menu").width('58px');
+        $(".nav-side-menu").animate({width:"58px"},{queue:false, duration:250});
+        $(".system-info").animate({"margin-left":"58px"},{queue:false, duration:250});
+        $(".content-next-menu").animate({"margin-left":"58px"},{queue:false, duration:250});
     }
 }

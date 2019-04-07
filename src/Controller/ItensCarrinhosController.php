@@ -19,8 +19,8 @@ class ItensCarrinhosController extends AppController
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
-        $this->pertmiteAction('addProduto');
-        $this->pertmiteAction('removeItemCarrinho');
+        $this->setPublicAction('addProduto');
+        $this->setPublicAction('removeItemCarrinho');
         $this->validateActions();
     }
 

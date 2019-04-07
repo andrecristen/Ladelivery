@@ -85,6 +85,7 @@ class DataGridGenerator extends View implements TypeFields
                 }
             }
         }
+        echo '<br>';
         echo $this->Form->button('Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
         if(!$this->getCallBackActionLimpar()){
             echo $this->Html->link('Limpar', ['action' => 'index'], ['class' => 'btn btn-sm btn-danger']);
@@ -240,7 +241,7 @@ class DataGridGenerator extends View implements TypeFields
         echo '<p>';
         echo $this->paginator->counter(['format' => __('Página {{page}} de {{pages}}, Exibindo {{current}} registro(s) de {{count}}')]);
         echo '<div class="container-max-options">';
-        echo $this->paginator ->limitControl ([ 10  =>  10 ,  15  =>  15, 20 => 20, 50 => 50 , 100 => 100 ], null, ['label' => 'Registros por página:']);
+        echo $this->paginator ->limitControl ([ 10  =>  10 ,  15  =>  15, 20 => 20, 50 => 50 , 100 => 100 ], null, ['label' => 'Registros por página:', 'style']);
         echo '</div>';
         echo '</p>';
     }

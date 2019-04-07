@@ -12,6 +12,9 @@
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Nome', 'nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $tipoEmpresa = new \App\Model\Utils\GridField('Tipo', 'tipo_empresa', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
+    $tipoEmpresa->setList(\App\Model\Entity\Empresa::getTipoList());
+    $dataGrid->addField($tipoEmpresa);
     $dataGrid->addField(new \App\Model\Utils\GridField('CNPJ', 'cnpj', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Inscrição Estadual', 'ie', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativa', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));

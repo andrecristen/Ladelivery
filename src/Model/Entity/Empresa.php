@@ -12,8 +12,8 @@ use Cake\ORM\Entity;
  * @property string|null $ie
  * @property bool $ativa
  * @property int $user_id
+ * @property int $tipo_empresa
  *
- * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\TemposMedio[] $tempos_medios
  */
 class Empresa extends Entity
@@ -42,6 +42,7 @@ class Empresa extends Entity
         'nome_fantasia' => true,
         'cnpj' => true,
         'ie' => true,
+        'tipo_empresa' => true,
         'ativa' => true,
         'tempos_medios' => true
     ];

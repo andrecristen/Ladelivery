@@ -3,7 +3,7 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
     $message = h($message);
 }
 ?>
-<div id="success-div" style="position: absolute;right: 5px; width: 400px; top: 10px; z-index: 1000" class="alert alert-success alert-dismissible fade show">
+<div id="success-div" style="position: absolute;right: 5px; width: 400px; top: 10px; z-index: 99999" class="alert alert-success alert-dismissible fade show">
     <span><?= $message ?></span>
 <button type="button" onclick="onClose()" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>

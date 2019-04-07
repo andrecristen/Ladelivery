@@ -46,7 +46,7 @@ class GoogleMapsApiKeyController extends AppController
     public function view($id = null)
     {
         $googleMapsApiKey = $this->GoogleMapsApiKey->get($id, [
-            'contain' => ['Users']
+            'contain' => ['Empresas']
         ]);
 
         $this->set('googleMapsApiKey', $googleMapsApiKey);

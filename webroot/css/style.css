@@ -606,13 +606,30 @@ table td {
 }
 
 .system-info{
-    padding: 15px;
+    padding: 10px;
     position: fixed;
     margin-bottom: 20px;
-    width: 100%!important;
+    width: calc(100% - 300px)!important;
     height: 50px!important;
     background-color: #23282e;
     align-content: right;
     color: #ffffff;
-    z-index: 10000;
+    z-index: 1000;
+}
+
+.actions-system-info{
+    float: right;
+}
+
+.system-info-menu-aberto{
+    width: calc(100% - 300px)!important;
+}
+
+.system-info-menu-fechado{
+    width: calc(100% - 58px)!important;
+}
+
+.checkbox{
+    padding-top: 15px;
+    font-size: 16px;
 }

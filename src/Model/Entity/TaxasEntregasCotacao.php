@@ -24,7 +24,20 @@ class TaxasEntregasCotacao extends Entity
 
     public static function getListTipoArredondamento()
     {
-        return [1 => 'Central (Exemplo: 2,3 = 2,5)', 2 => 'Inferior (Exemplo: 2,3 = 2)', 3 => 'Superior (Exemplo: 2,3 = 3)'];
+        return [
+            self::TIPO_CENTRAL => 'Central (Exemplo: 2,3 = 2,5)',
+            self::TIPO_INFERIOR => 'Inferior (Exemplo: 2,3 = 2)',
+            self::TIPO_SUPERIOR => 'Superior (Exemplo: 2,3 = 3)'
+        ];
+    }
+
+    public static function getListTipoArredondamentoConsulta()
+    {
+        return [
+            self::TIPO_CENTRAL => 'Central',
+            self::TIPO_INFERIOR => 'Inferior',
+            self::TIPO_SUPERIOR => 'Superior'
+        ];
     }
 
     /**

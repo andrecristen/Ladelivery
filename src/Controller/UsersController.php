@@ -23,8 +23,8 @@ class UsersController extends AppController
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
-        $this->pertmiteAction('login');
-        $this->pertmiteAction('profile', $this->Auth->user('id'));
+        $this->setPublicAction('login');
+        $this->setPublicAction('profile', $this->Auth->user('id'));
         $this->validateActions();
         $this->empresaUtils = new EmpresaUtils();
     }
@@ -168,17 +168,13 @@ class UsersController extends AppController
             /** @var $user User*/
             $user = $this->Auth->identify();
             if ($user) {
-                if($user['tipo'] == User::TIPO_EMPRESA){
-                    $this->Flash->default(__('Usuario do tipo empresa, nao serve para login e acesso ao sistema apenas para configuracoes internas do sistema!'), ['class'=>'"alert alert-danger']);
-                    return;
-                }
                 $this->Auth->setUser($user);
                 $_SESSION["empresa"] = $this->Auth->user('empresa_id');
                 $redirect = ($this->Auth->redirectUrl());
                 //Quer dizer que é um admin entrando a primeira vez
                 if($user['tipo'] == User::TIPO_ADMINISTRADOR){
                     if($redirect == '/pages'){
-                        return $this->redirect('/users');
+                        return $this->redirect('/financeiro/painel');
                     }
                 }
                 return $this->redirect($this->Auth->redirectUrl());
@@ -190,6 +186,7 @@ class UsersController extends AppController
 
     public function logout()
     {
+        $this->render(false);
         return $this->redirect($this->Auth->logout());
     }
 

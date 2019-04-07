@@ -43,12 +43,12 @@ class PedidosController extends AppController
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
-        $this->pertmiteAction('generatePedido');
-        $this->pertmiteAction('aplicarCupom');
-        $this->pertmiteAction('calcularAcrescimo');
-        $this->pertmiteAction('rejeitarPedidoAberto');
-        $this->pertmiteAction('confirmarPedidoAberto');
-        $this->pertmiteAction('saveTrocoPara');
+        $this->setPublicAction('generatePedido');
+        $this->setPublicAction('aplicarCupom');
+        $this->setPublicAction('calcularAcrescimo');
+        $this->setPublicAction('rejeitarPedidoAberto');
+        $this->setPublicAction('confirmarPedidoAberto');
+        $this->setPublicAction('saveTrocoPara');
         $this->validateActions();
         $this->empresaUtils = new EmpresaUtils();
     }

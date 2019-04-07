@@ -140,9 +140,9 @@ class MidiasController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $midia = $this->Midias->get($id);
-        //Remove o arquivo
-        unlink(WWW_ROOT . 'img'. DS .$midia->path_midia);
         if ($this->Midias->delete($midia)) {
+            //Remove o arquivo
+            unlink(WWW_ROOT . 'img'. DS .$midia->path_midia);
             $this->Flash->success(__('Midia excluida com sucesso.'));
         } else {
             $this->Flash->error(__('Erro ao excluir Midia.'));

@@ -3,10 +3,15 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Empresa $empresa
  */
+$listTipo = \App\Model\Entity\Empresa::getTipoList();
 ?>
 <div class="col-sm-12">
     <h3><?= h($empresa->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('Id') ?></th>
+            <td><?= $this->Number->format($empresa->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('Nome Fantasia') ?></th>
             <td><?= h($empresa->nome_fantasia) ?></td>
@@ -20,21 +25,17 @@
             <td><?= h($empresa->ie) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('User') ?></th>
-            <td><?= $empresa->has('user') ? $this->Html->link($empresa->user->nome_completo, ['controller' => 'Users', 'action' => 'view', $empresa->user->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($empresa->id) ?></td>
+            <th scope="row"><?= __('Tipo') ?></th>
+            <td><?= $listTipo[$empresa->tipo_empresa] ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Ativa') ?></th>
-            <td><?= $empresa->ativa ? __('Yes') : __('No'); ?></td>
+            <td><?= $empresa->ativa ? __('Sim') : __('Não'); ?></td>
         </tr>
     </table>
     <div class="related">
-        <h4><?= __('Tempos de Producao Relacionados') ?></h4>
         <?php if (!empty($empresa->tempos_medios)): ?>
+        <h4><?= __('Tempos de Producao Relacionados') ?></h4>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th scope="col"><?= __('Id') ?></th>

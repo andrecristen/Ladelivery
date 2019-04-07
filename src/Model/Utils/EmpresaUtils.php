@@ -77,6 +77,10 @@ class EmpresaUtils extends AppController
         return $this->Auth->user('nome_completo');
     }
 
+    public function getUserId(){
+        return $this->Auth->user('id');
+    }
+
     public function isEmpresaBase(){
         if($this->Auth->user('empresa_id')){
             if($this->Auth->user('empresa_id') == $this->getEmpresaBase()){

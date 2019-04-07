@@ -29,7 +29,7 @@ class ProdutosController extends AppController
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->empresaUtils = new EmpresaUtils();
-        $this->pertmiteAction('getProduto');
+        $this->setPublicAction('getProduto');
         $this->validateActions();
     }
 

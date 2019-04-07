@@ -28,7 +28,7 @@ class ListasController extends AppController
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->empresaUtils = new EmpresaUtils();
-        $this->pertmiteAction('getListas');
+        $this->setPublicAction('getListas');
         $this->validateActions();
     }
 

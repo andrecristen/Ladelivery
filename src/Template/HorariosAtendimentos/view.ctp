@@ -25,11 +25,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Hora Inicio') ?></th>
-            <td><?= h($horariosAtendimento->hora_inicio) ?></td>
+            <td><?= h($horariosAtendimento->hora_inicio->format('H:i:s')) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Hora Fim') ?></th>
-            <td><?= h($horariosAtendimento->hora_fim) ?></td>
+            <td><?= h($horariosAtendimento->hora_fim->format('H:i:s')) ?></td>
         </tr>
     </table>
 </div>

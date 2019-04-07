@@ -20,7 +20,8 @@ function onClickSaveLastSistem(index, element) {
 function closeMenu() {
     //Esta fechado entao vamos abrir
     if($(".nav-side-menu").width() < 300){
-        // $(".nav-side-menu").width('300px');
+        $(".system-info").addClass('system-info-menu-aberto');
+        $(".system-info").removeClass('system-info-menu-fechado');
         $(".nav-side-menu").animate({width:"300px"},{queue:false, duration:250});
         $(".system-info").animate({"margin-left":"300px"},{queue:false, duration:250});
         $(".content-next-menu").animate({"margin-left":"300px"},{queue:false, duration:250});
@@ -29,9 +30,10 @@ function closeMenu() {
 
     //Esta aberto entao vamos fechar
     }else{
+        $(".system-info").removeClass('system-info-menu-aberto');
+        $(".system-info").addClass('system-info-menu-fechado');
         $(".brand").hide(250);
         $(".menu-content").hide(250);
-        // $(".nav-side-menu").width('58px');
         $(".nav-side-menu").animate({width:"58px"},{queue:false, duration:250});
         $(".system-info").animate({"margin-left":"58px"},{queue:false, duration:250});
         $(".content-next-menu").animate({"margin-left":"58px"},{queue:false, duration:250});

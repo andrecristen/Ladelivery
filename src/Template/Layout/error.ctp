@@ -34,16 +34,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 text-center">
-                <div id="header">
-                    <h1><?= __('ÓH NÃO Marinheiro! algo nada legal aconteceu!') ?></h1>
-                </div>
                 <div id="content">
                     <?= $this->Flash->render() ?>
-
                     <?= $this->fetch('content') ?>
                 </div>
                 <div id="footer">
-                    <?= $this->Html->link(__('Back'), 'javascript:history.back()') ?>
+                    <?= $this->Html->link(__('← Voltar'), 'javascript:history.back()') ?>
                 </div>
             </div>
         </div>

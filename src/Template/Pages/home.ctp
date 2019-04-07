@@ -145,7 +145,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
     <div style="color: white" class="footer-copyright text-center py-3">© 2019 Copyright <a href=""> LaDev</a>
     </div>
     <div class="footer-copyright text-center py-3">
-        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-shield')).' Painel Administrador', array('controller' => 'users', 'action' => 'index'), array('escape' => false , 'class' => 'btn btn-sm btn-info')) ?>
+        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-shield')).' Painel Administrador', array('controller' => 'Financeiro', 'action' => 'painel'), array('escape' => false , 'class' => 'btn btn-sm btn-info')) ?>
     </div>
 </footer>
 <style>

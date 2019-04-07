@@ -18,9 +18,9 @@ class EnderecosController extends AppController
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
-        $this->pertmiteAction('meusEnderecos');
-        $this->pertmiteAction('addEnderecoCliente');
-        $this->pertmiteAction('excluirEnderecoCliente');
+        $this->setPublicAction('meusEnderecos');
+        $this->setPublicAction('addEnderecoCliente');
+        $this->setPublicAction('excluirEnderecoCliente');
         $this->validateActions();
     }
 

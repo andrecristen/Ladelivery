@@ -72,6 +72,11 @@ class EmpresasTable extends Table
             ->allowEmptyString('ie');
 
         $validator
+            ->integer('tipo_empresa')
+            ->requirePresence('tipo_empresa', 'create')
+            ->allowEmptyString('tipo_empresa', false);
+
+        $validator
             ->boolean('ativa')
             ->requirePresence('ativa', 'create')
             ->allowEmptyString('ativa', false);

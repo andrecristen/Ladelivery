@@ -15,6 +15,8 @@
 
 namespace App\Controller;
 
+use App\Model\Entity\Action;
+use App\Model\Entity\PerfilsUser;
 use App\Model\Entity\User;
 use App\Model\Utils\EmpresaUtils;
 use Cake\Controller\ComponentRegistry;
@@ -37,9 +39,15 @@ class AppController extends Controller
 {
     protected $validActions = [];
 
-    public function pertmiteAction($action, $actionValue = false)
+    /**
+     * Seta acoes como publicas permitindo que os clientes tambem acessem,
+     * usado em poucos casos de funcoes ajax do site que refletem nos controladores
+     * dos modelos, acoes nao autorizadas como publicas sao validadas por nivel de
+     * acesso do usuario.
+     */
+    public function setPublicAction($actionName, $actionValue = false)
     {
-        $this->validActions[$action] = $actionValue;
+        $this->validActions[$actionName] = $actionValue;
     }
 
     public $components = array('RequestHandler');
@@ -60,7 +68,7 @@ class AppController extends Controller
         $this->loadComponent('Auth', [
             'authenticate' => [
                 'Form' => [
-                    'fields' => ['username' => 'login', 'password' => 'password', 'tipo' => 2]
+                    'fields' => ['username' => 'login', 'password' => 'password']
                 ],
             ],
             'authError' => __d('cake', 'Você precisa estar logado para ter acesso as funções do sistema.'),
@@ -91,10 +99,44 @@ class AppController extends Controller
      */
     public function validateActions()
     {
+        //Acoes como login, registrar e logout devem ser ignoradas.
         $invalid = false;
-        if ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR) {
+        //Master acesso total ao sistema
+        if ($this->Auth->user('tipo') == User::TIPO_MASTER) {
             return;
-        } else if ($this->Auth->user('tipo') == User::TIPO_CLIENTE) {
+        //Administrador acesso somente as rotas dos perfis dele
+        }elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR){
+            $params = ($this->getRequest()->getAttribute('params'));
+            $action = $params['action'];
+            if (!$action){
+                return;
+            }
+            $tableLocator = new TableLocator();
+            /** @var $controller \App\Model\Entity\Controller*/
+            $controller = $tableLocator->get('Controllers')->find()->where(['nome_controlador' => $this->name])->first();
+            /** @var $actionModel Action*/
+            $actionModel = $tableLocator->get('Actions')->find()->where(['nome_action' => $action, 'controller_id' => $controller->id])->first();
+            /** @var $perfilsUser PerfilsUser[]*/
+            $perfilsUser = $tableLocator->get('PerfilsUsers')->find()->where(['user_id' => $this->Auth->user('id')]);
+            $perfilAction = false;
+            $encontrou = false;
+            foreach ($perfilsUser as $perfilUser){
+                if (!$encontrou){
+                    $perfilAction = $tableLocator->get('PerfilsActions')->find()->where(['perfil_id' => $perfilUser->perfil_id, 'action_id' => $actionModel->id])->first();
+                    if($perfilAction){
+                        $encontrou = true;
+                    }
+                }
+            }
+            if($perfilAction){
+                return;
+            }else{
+                $this->Flash->error('Você não possui acesso a ação "'.$actionModel->descricao_action.'", caso necessite desta ação contate suporte para liberar acesso.');
+                $anterior = $this->referer();
+                return $this->redirect($this->referer());
+            }
+        //Cliente acesso apenas as rotas publicas
+        }elseif ($this->Auth->user('tipo') == User::TIPO_CLIENTE) {
             $params = ($this->getRequest()->getAttribute('params'));
             //Temos essa acao valida pra cliente
             if (isset($this->validActions[$params['action']])) {

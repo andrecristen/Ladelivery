@@ -158,6 +158,8 @@
 @media (max-width: 767px) {
     .system-info{
         margin-left: 0px;
+        width: 100%!important;
+        height: 70px!important;
     }
     .nav-side-menu {
         position: relative;
@@ -249,6 +251,15 @@ body {
     left: 1px;
     min-width: 299px;
 }
+
+.collapsed .active li a {
+    text-decoration: none;
+    color: #e1ffff;
+    position: absolute;
+    left: 1px;
+    min-width: 299px;
+}
+
 .sub-menu li a i {
     padding-left: 10px;
     width: 20px;

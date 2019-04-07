@@ -11,7 +11,7 @@
             <!-- Tabs Titles -->
 
             <!-- Icon -->
-            <div class="fadeIn first">
+            <div style="padding: 15px" class="fadeIn first">
                <?php echo $this->Html->image('empresa/logologin', ['width' => '50%']) ?>
             </div>
 

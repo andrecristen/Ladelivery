@@ -17,7 +17,7 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Dia Fechado') ?></th>
-            <td><?= h($diasFechado->dia_fechado) ?></td>
+            <td><?= h($diasFechado->dia_fechado->format('d/m/Y')) ?></td>
         </tr>
     </table>
 </div>

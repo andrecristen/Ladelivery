@@ -84,8 +84,8 @@ class Pedido extends Entity
 
     public static function getComandaStatusList(){
         return [
-            self::STATUS_ABERTA => 'Aberta',
-            self::STATUS_FECHADA=> 'Fechada',
+            self::STATUS_ABERTA  => 'Aberta',
+            self::STATUS_FECHADA => 'Paga',
         ];
     }
 

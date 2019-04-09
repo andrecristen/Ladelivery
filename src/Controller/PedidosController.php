@@ -53,6 +53,15 @@ class PedidosController extends AppController
         $this->empresaUtils = new EmpresaUtils();
     }
 
+    public function add($isComanda = false){
+        if($isComanda){
+
+        }else{
+
+        }
+        $this->set(compact('pedidos'));
+    }
+
     /**
      * Index method
      *

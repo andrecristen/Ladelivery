@@ -77,6 +77,12 @@ class PedidosTable extends Table
             ->allowEmptyString('id', 'create');
 
         $validator
+            ->scalar('cliente')
+            ->maxLength('cliente', 450)
+            ->allowEmptyString('cliente');
+
+
+        $validator
             ->decimal('valor_total_cobrado')
             ->requirePresence('valor_total_cobrado', 'create')
             ->allowEmptyString('valor_total_cobrado', false);

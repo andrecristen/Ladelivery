@@ -8,7 +8,7 @@
         if($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_DELIVERY){
             echo $this->Form->control('status_pedido', ['options' => \App\Model\Entity\Pedido::getDeliveryAlterStatusList()]);
         }else{
-            echo $this->Form->control('status_pedido', ['options' => \App\Model\Entity\Pedido::getComandaStatusList()]);
+            echo $this->Form->control('status_pedido', ['options' => \App\Model\Entity\Pedido::getComandaAlterStatusList()]);
         }
 
         ?>

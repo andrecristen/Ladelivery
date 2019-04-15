@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\Perfil;
+use App\Model\Entity\PerfilsUser;
 use App\Model\Entity\User;
+use App\Model\Table\PerfilsTable;
 use App\Model\Utils\EmpresaUtils;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
@@ -84,6 +87,16 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
             $user->empresa_id = $this->empresaUtils->getEmpresaBase();
             if ($this->Users->save($user)) {
+                /** @var $perilsIniciaisTable PerfilsTable*/
+                $perilsIniciaisTable = $this->getTableLocator()->get('Perfils');
+                /** @var $perilsIniciais Perfil[]*/
+                $perilsIniciais = $perilsIniciaisTable->find()->where(['padrao_novos_users' => true]);
+                foreach ($perilsIniciais as $perfilInicial){
+                    $userPerfil = new PerfilsUser();
+                    $userPerfil->user_id = $this->empresaUtils->getUserId();
+                    $userPerfil->perfil_id = $perfilInicial->id;
+                    $this->getTableLocator()->get('PerfilsUser')->save($userPerfil);
+                }
                 $this->Flash->success(__('Usuário adicionado com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);

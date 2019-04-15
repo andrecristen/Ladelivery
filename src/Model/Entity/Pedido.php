@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property int $formas_pagamento_id
  * @property int $empresa_id
  * @property string $cupom_usado
+ * @property string $cliente
  * @property \Cake\I18n\FrozenTime $data_pedido
  *
  * @property \App\Model\Entity\User $user
@@ -43,6 +44,7 @@ class Pedido extends Entity
     const STATUS_ENTREGUE = 9;
     const STATUS_REJEITADO = 10;
     const STATUS_CANCELADO_CLIENTE = 11;
+    const STATUS_EM_ABERTURA = 12;
 
     //Status para Lists pedidos tipo Comanda
     const  STATUS_ABERTA = 11;
@@ -68,6 +70,7 @@ class Pedido extends Entity
             self::STATUS_ENTREGUE => 'Entregue',
             self::STATUS_REJEITADO => 'Rejeitado',
             self::STATUS_CANCELADO_CLIENTE => 'Cancelado',
+            self::STATUS_EM_ABERTURA => 'Em Abertura',
         ];
     }
 
@@ -83,6 +86,14 @@ class Pedido extends Entity
     }
 
     public static function getComandaStatusList(){
+        return [
+            self::STATUS_ABERTA  => 'Aberta',
+            self::STATUS_FECHADA => 'Paga',
+            self::STATUS_EM_ABERTURA => 'Em Abertura',
+        ];
+    }
+
+    public static function getComandaAlterStatusList(){
         return [
             self::STATUS_ABERTA  => 'Aberta',
             self::STATUS_FECHADA => 'Paga',
@@ -116,5 +127,6 @@ class Pedido extends Entity
         'formas_pagamentos' => true,
         'empresa_id' => true,
         'empresa' => true,
+        'cliente' => true,
     ];
 }

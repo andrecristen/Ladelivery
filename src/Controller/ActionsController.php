@@ -31,7 +31,7 @@ class ActionsController extends AppController
         $this->paginate = [
             'contain' => ['Controllers']
         ];
-        $actions = $this->paginate($this->Actions);
+        $actions = $this->paginate($this->Actions->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('actions'));
     }

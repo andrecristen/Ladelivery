@@ -31,7 +31,7 @@ class PerfilsActionsController extends AppController
         $this->paginate = [
             'contain' => ['Actions', 'Perfils']
         ];
-        $perfilsActions = $this->paginate($this->PerfilsActions);
+        $perfilsActions = $this->paginate($this->PerfilsActions->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('perfilsActions'));
     }

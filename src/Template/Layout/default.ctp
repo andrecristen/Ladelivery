@@ -71,7 +71,7 @@ $cacheControl = $cacheControl->getCacheVersion();
     <div class="nav-side-menu">
         <div class="brand">LADelivery - LADev</div>
         <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
-        <i class="fa fa-bars fa-2x toggle-btn-pc" onclick="closeMenu()"></i>
+        <i class="fa fa-bars fa-fw toggle-btn-pc" onclick="closeMenu()"></i>
         <div class="menu-list">
             <ul id="menu-content" class="menu-content collapse out">
                 <li data-toggle="collapse" data-target="#financeiro" class="collapsed">
@@ -147,8 +147,9 @@ $cacheControl = $cacheControl->getCacheVersion();
     </div>
     <?php $empresaUtils = new \App\Model\Utils\EmpresaUtils() ?>
     <div class="system-info">
-        <b>Usuário: </b><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'edit', $empresaUtils->getUserId()]) ?></span>
-        <b> Empresa: </b><span><?= $this->Html->link(__($empresaUtils->getUserEmpresaModel()->nome_fantasia), ['controller' => 'Empresas', 'action' => 'view', $empresaUtils->getUserEmpresaId()]) ?></span>
+        <i title="Usuário" class="fas fa-user-circle">&nbsp;</i><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'edit', $empresaUtils->getUserId()]) ?></span>
+        &nbsp;
+        <i title="Empresa" class="fas fa-building"></i>&nbsp;<span><?= $this->Html->link(__($empresaUtils->getUserEmpresaModel()->nome_fantasia), ['controller' => 'Empresas', 'action' => 'view', $empresaUtils->getUserEmpresaId()]) ?></span>
         <div class="actions-system-info">
             <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-cart-plus')) . ' Abrir Pedido', array('controller' => 'Pedidos', 'action' => 'add'), array('escape' => false, 'class' => 'btn btn-sm btn-success')) ?>
             <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sticky-note')) . ' Abrir Comanda', array('controller' => 'Pedidos', 'action' => 'add/true'), array('escape' => false, 'class' => 'btn btn-sm btn-primary')) ?>

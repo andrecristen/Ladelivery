@@ -23,6 +23,7 @@ class FinanceiroController extends AppController
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->empresaUtils = new EmpresaUtils();
+        $this->validateActions();
     }
 
     public function painel()

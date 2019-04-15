@@ -626,7 +626,7 @@ table td {
 }
 
 .system-info-menu-fechado{
-    width: calc(100% - 58px)!important;
+    width: calc(100% - 45px)!important;
 }
 
 .checkbox{

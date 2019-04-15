@@ -16,6 +16,7 @@ use App\Model\Entity\PedidosEntrega;
 use App\Model\Entity\PedidosProduto;
 use App\Model\Entity\TaxasEntregasCotacao;
 use App\Model\Entity\TemposMedio;
+use App\Model\Entity\User;
 use App\Model\Table\PedidosProdutosTable;
 use App\Model\Table\PedidosTable;
 use App\Model\Utils\EmpresaUtils;
@@ -54,12 +55,59 @@ class PedidosController extends AppController
     }
 
     public function add($isComanda = false){
-        if($isComanda){
+        $pedido = $this->instanceNewPedido($isComanda);
+        if ($this->request->is('post')) {
+            if($isComanda){
+                $pedido = $this->beanModelComanda($pedido, $this->request->getData());
+            }else{
+                $pedido = $this->beanModelPedido($pedido, $this->request->getData());
+            }
 
-        }else{
-
+            if($this->Pedidos->save($pedido)){
+                $this->Flash->success(__('Pedido aberto com sucesso.'));
+                if($isComanda){
+                    $this->Flash->success(__('Comanda aberta com sucesso.'));
+                }
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('Não foi possível abrir, tente novamente.'));
         }
-        $this->set(compact('pedidos'));
+
+        if($isComanda){
+            $users = null;
+        }else{
+            $users = $this->getTableLocator()->get('Users')->find('list')->where(['tipo' => User::TIPO_CLIENTE]);
+            $formasPagamento = $this->getTableLocator()->get('FormasPagamentos')->find('list')->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId()]);
+        }
+        $this->set(compact('pedido', 'isComanda', 'users', 'formasPagamento'));
+    }
+
+    private function instanceNewPedido($isComanda){
+        $pedido = new Pedido();
+        $pedido->empresa_id = $this->empresaUtils->getUserEmpresaId();
+        $pedido->status_pedido = Pedido::STATUS_EM_ABERTURA;
+        $pedido->tipo_pedido = Pedido::TIPO_PEDIDO_DELIVERY;
+        $pedido->data_pedido = new \DateTime();
+        $pedido->valor_total_cobrado = 0;
+        $pedido->valor_desconto = 0;
+        $pedido->valor_acrescimo = 0;
+        $pedido->troco_para = 0;
+        if($isComanda){
+            $pedido->tipo_pedido = Pedido::TIPO_PEDIDO_COMANDA;
+        }
+        return $pedido;
+    }
+
+    private function beanModelPedido($pedido, $data){
+        $pedido->user_id = $data['user_id'];
+        $pedido->formas_pagamento_id = $data['formas_pagamento_id'];
+        return $pedido;
+    }
+
+    private function beanModelComanda($pedido, $data){
+        $pedido->user_id = $this->empresaUtils->getUserId();
+        $pedido->cliente = $data['cliente'];
+        return $pedido;
     }
 
     /**

@@ -34,8 +34,8 @@ function closeMenu() {
         $(".system-info").addClass('system-info-menu-fechado');
         $(".brand").hide(250);
         $(".menu-content").hide(250);
-        $(".nav-side-menu").animate({width:"58px"},{queue:false, duration:250});
-        $(".system-info").animate({"margin-left":"58px"},{queue:false, duration:250});
-        $(".content-next-menu").animate({"margin-left":"58px"},{queue:false, duration:250});
+        $(".nav-side-menu").animate({width:"45px"},{queue:false, duration:250});
+        $(".system-info").animate({"margin-left":"45px"},{queue:false, duration:250});
+        $(".content-next-menu").animate({"margin-left":"45px"},{queue:false, duration:250});
     }
 }

@@ -206,7 +206,7 @@ if(!$existstPedidoAberto || !$empresaAberta){
             ?>
             <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
                 <div class="card" style="margin-bottom: 5px">
-                    <a  href="#" onclick="openModalAddCart(<?= $produto->id ?>, <?= $_SESSION['Auth']['User']['id'] ?>)">
+                    <a onclick="openModalAddCart(<?= $produto->id ?>, <?= $_SESSION['Auth']['User']['id'] ?>)">
                         <?php if ($existMidia !== null) { ?>
                             <?php echo $this->Html->image($existMidia->path_midia, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40')); ?>
                         <?php } else { ?>

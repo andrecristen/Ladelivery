@@ -8,13 +8,17 @@ a.disabled {
 a:hover {
     color: #15848F;
 }
-.content-filter .select2-container{
-     margin-bottom: 5px!important;
+
+.select2{
+    width: 100%!important;
+}
+.content-filter select{
+    margin-bottom: 5px!important;
+    padding: 0px 5px!important;
+    height: 25px!important;
+    font-size: 13px!important;
 }
 
-.content-filter .select2-container .select2-selection--single{
-    height: 25px!important;
-}
 .container-max-options select{
     max-width: 65px!important;
 }
@@ -220,6 +224,9 @@ ul.pagination li a:hover{
 select[multiple] {
     min-height:150px;
     background: none;
+}
+select{
+    padding: 3px 5px!important;
 }
 input[type=checkbox],
 input[type=radio] {
@@ -632,4 +639,25 @@ table td {
 .checkbox{
     padding-top: 15px;
     font-size: 16px;
+}
+
+.panel{
+    background: #f2f2f200!important;
+}
+
+.panel-actions{
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.btn-remove-row{
+    color: white!important;
+    border: 1px solid #393939 !important;
+    background-color: rgba(104, 23, 34, 0.55) !important;
+}
+
+.btn-add-row{
+    color: white!important;
+    border: 1px solid #393939 !important;
+    background-color: rgba(15, 104, 72, 0.53) !important;
 }

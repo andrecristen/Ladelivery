@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Model\ExceptionSQLMessage;
+use Cake\Datasource\ConnectionManager;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -128,5 +129,20 @@ class ListasProdutosController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function newListaProduto($produtoId, $listaId){
+        $listaProduto = $this->ListasProdutos->newEntity();
+        $listaProduto->produto_id = $produtoId;
+        $listaProduto->lista_id = $listaId;
+        if($this->ListasProdutos->save($listaProduto)){
+            return true;
+        }
+        return false;
+    }
+    public function deleteAllListasProduto($produtoId){
+        $connection = ConnectionManager::get('default');
+        $result = $connection->execute('DELETE FROM listas_produtos WHERE produto_id = '.$produtoId);
+        return $result;
     }
 }

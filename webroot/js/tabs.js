@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    $('#initialTabModal').click();
+});
+
 function openTab(evt, cityName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");

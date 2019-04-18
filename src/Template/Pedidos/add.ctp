@@ -16,12 +16,8 @@
             echo $this->Form->control('formas_pagamento_id', ['label'=> 'Forma Pagamento', 'options' => $formasPagamento]);
         } ?>
 
-        <?php
-//        echo $this->Form->control('descricao_adicional', ['label'=> 'Descrição']);
-//        echo $this->Form->control('valor_adicional', ['label'=> 'Valor']);
-        ?>
     </fieldset>
     <br />
-    <?= $this->Form->button(__('Abrir e Ir Para Adicionar Itens ao Pedido')) ?>
+    <?= $this->Form->button(__('Abrir')) ?>
     <?= $this->Form->end() ?>
 </div>

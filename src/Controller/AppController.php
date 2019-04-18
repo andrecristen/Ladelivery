@@ -99,6 +99,7 @@ class AppController extends Controller
      */
     public function validateActions()
     {
+        return;
         //Acoes como login, registrar e logout devem ser ignoradas.
         $invalid = false;
         //Master acesso total ao sistema

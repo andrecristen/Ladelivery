@@ -1,40 +1,42 @@
 /* Style the tab */
 .tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
+    overflow: hidden!important;
+    border: 1px solid #ccc!important;
+    background-color: rgb(221, 221, 221);!important;
 }
 
 /* Style the buttons that are used to open the tab content */
 .tab button {
-    background-color: #0075a194;
-    color: #ffffff;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
+    background: rgb(221, 221, 221);!important;
+    color: #000000 !important;
+    float: left!important;
+    border: none!important;
+    outline: none!important;
+    cursor: pointer!important;
+    padding: 5px 15px!important;
+    transition: 0.3s!important;
+    border-radius: 0px!important;
 }
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-    background-color: rgba(0, 117, 161, 0.73);
+    background-color: rgb(130, 130, 130); !important;
 }
 
 /* Create an active/current tablink class */
 .tab button.active {
-    background-color: #0075a1;
+    background: white!important;
+    box-shadow: inset 0px 0px 5px 0px #00baff94;
 }
 
 /* Style the tab content */
 .tabcontent {
-    max-height: 100%;
-    overflow-y: auto;
+    max-height: 100%!important;
+    overflow-y: auto!important;
     display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
+    padding: 6px 12px!important;
+    border: 1px solid #ccc!important;
+    border-top: none!important;
 }
 
 .dropdown-toggle{

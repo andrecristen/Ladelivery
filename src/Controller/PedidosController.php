@@ -82,6 +82,10 @@ class PedidosController extends AppController
         $this->set(compact('pedido', 'isComanda', 'users', 'formasPagamento'));
     }
 
+    public function edit($id){
+
+    }
+
     private function instanceNewPedido($isComanda){
         $pedido = new Pedido();
         $pedido->empresa_id = $this->empresaUtils->getUserEmpresaId();

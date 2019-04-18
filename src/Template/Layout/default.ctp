@@ -37,9 +37,6 @@ $cacheControl = $cacheControl->getCacheVersion();
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css<?= h($cacheControl) ?>"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!--    JQUERY JS -->
-    <!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js--><? //= h($cacheControl) ?><!--"-->
-    <!--            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
-    <!--            crossorigin="anonymous"></script>-->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js<?= h($cacheControl) ?>"></script>
     <!--    AJAX JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js<?= h($cacheControl) ?>9"
@@ -49,14 +46,14 @@ $cacheControl = $cacheControl->getCacheVersion();
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js<?= h($cacheControl) ?>"
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
             crossorigin="anonymous"></script>
-    <!--    SELECT 2 CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css<?= h($cacheControl) ?>"
-          rel="stylesheet"/>
-    <!--    SELECT 2 JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js<?= h($cacheControl) ?>"></script>
+    <!--    ANGULARJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js<?= h($cacheControl) ?>"></script>
     <!--    FONTAWESOME CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css<?= h($cacheControl) ?>"
           integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <!--  BOOTSTRAP SELECT  -->
+    <script src="/ladev/bootstrap-select/dist/js/bootstrap-select.min.js<?= h($cacheControl) ?>"></script>
+    <link rel="stylesheet" href="/ladev/bootstrap-select/dist/css/bootstrap-select.min.css<?= h($cacheControl) ?>">
     <!--  MENU  -->
     <link rel="stylesheet" href="/css/menu.css<?= h($cacheControl) ?>">
     <script src="/js/menu.js<?= h($cacheControl) ?>"></script>
@@ -64,6 +61,10 @@ $cacheControl = $cacheControl->getCacheVersion();
     <script src="/ladev/colresizable/colResizable-1.6.js<?= h($cacheControl) ?>"></script>
     <!--  INICIA RESIZE  -->
     <?= $this->Html->script('resizetable.js') ?>
+    <!--  ANGULAR DIRECTIVES  -->
+    <script src="/js/web-app/directives/ui-grid-form.js<?= h($cacheControl) ?>"></script>
+    <?php echo $this->Html->script('tabs.js'); ?>
+    <?php echo $this->Html->css('tabs.css'); ?>
 </head>
 <body>
 <?= $this->Flash->render() ?>

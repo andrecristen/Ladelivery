@@ -5,10 +5,6 @@ $(document).ready(function () {
         var clickable = $(document).find('[data-target="'+sessionStorage.getItem("sistemaSelecionado")+'"]');
         clickable.click();
     }
-    $("select").select2({
-        minimumInputLength: 0,
-        placeholder: 'Selecione uma opção'
-    });
 });
 
 function onClickSaveLastSistem(index, element) {

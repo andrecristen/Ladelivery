@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\Lista;
+use App\Model\Entity\ListasProduto;
 use App\Model\Entity\Midia;
 use App\Model\Entity\ProdutosImagen;
 use App\Model\Table\ProdutosImagensTable;
@@ -90,13 +92,20 @@ class ProdutosController extends AppController
             }
             if ($this->Produtos->save($produto)) {
                 $this->Flash->success(__('Produto adicionado com sucesso.'));
-
+                foreach ($this->request->getData('listas') as $lista){
+                    $controller = new ListasProdutosController();
+                    $controller->newListaProduto($produto->id, intval(str_replace('number:','',$lista)));
+                }
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Não foi possível adicionar o produto, tente novamente.'));
         }
         $categoriasProdutos = $this->Produtos->CategoriasProdutos->find('list');
-        $this->set(compact('produto', 'categoriasProdutos'));
+        $listasModels = $this->getTableLocator()->get('Listas')->find()->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId()]);
+        foreach ($listasModels as $listasModel){
+            $listas[$listasModel->id] = $listasModel->nome_lista;
+        }
+        $this->set(compact('produto', 'categoriasProdutos', 'listas'));
     }
 
     /**
@@ -128,13 +137,29 @@ class ProdutosController extends AppController
             }
             if ($this->Produtos->save($produto)) {
                 $this->Flash->success(__('Produto salvo com sucesso.'));
-
+                $controller = new ListasProdutosController();
+                $controller->deleteAllListasProduto($produto->id);
+                foreach ($this->request->getData('listas') as $lista){
+                    $controller->newListaProduto($produto->id, intval(str_replace('number:','',$lista)));
+                }
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Não foi possível editar o produto, tente novamente.'));
         }
         $categoriasProdutos = $this->Produtos->CategoriasProdutos->find('list');
-        $this->set(compact('produto', 'categoriasProdutos'));
+        /** @var $listasModels Lista[]*/
+        $listasModels = $this->getTableLocator()->get('Listas')->find()->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId()]);
+        foreach ($listasModels as $listasModel){
+            $listas[$listasModel->id] = $listasModel->nome_lista;
+        }
+        /** @var $listasProduto ListasProduto[]*/
+        $listasProduto = $this->getTableLocator()->get('ListasProdutos')->find()->where(['produto_id' => $produto->id]);
+        $listasProdutoArray = [];
+        foreach ($listasProduto as $listaProduto){
+            $listasProdutoArray[]['lista'] = $listaProduto->lista_id;
+        }
+        $produto->listas = $listasProdutoArray;
+        $this->set(compact('produto', 'categoriasProdutos', 'listas'));
     }
 
     /**

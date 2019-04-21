@@ -14,6 +14,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Nome', 'nome_adicional', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Valor', 'valor_adicional', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
+    $dataGrid->bloqActionDelete();
     $dataGrid->display();
     ?>
 </div>

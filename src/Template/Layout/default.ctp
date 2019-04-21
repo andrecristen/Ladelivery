@@ -113,8 +113,6 @@ $cacheControl = $cacheControl->getCacheVersion();
                     <li><?= $this->Html->link(__('Produtos'), ['controller' => 'Produtos', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('Listas'), ['controller' => 'Listas', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('Adicionais'), ['controller' => 'OpcoesExtras', 'action' => 'index']) ?></li>
-                    <li><?= $this->Html->link(__('Listas X Adicionais'), ['controller' => 'ListasOpcoesExtras', 'action' => 'index']) ?></li>
-                    <li><?= $this->Html->link(__('Listas X Produtos'), ['controller' => 'ListasProdutos', 'action' => 'index']) ?></li>
                 </ul>
                 <li data-toggle="collapse" data-target="#midia" class="collapsed">
                     <a href="#"><i class="fas fa-images"></i> Mídias</a>

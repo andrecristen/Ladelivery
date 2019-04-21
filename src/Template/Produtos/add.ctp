@@ -6,13 +6,15 @@
 ?>
 <div class="col-sm-12">
     <?= $this->Form->create($produto, ['type' => 'file']) ?>
+    <fieldset>
+        <legend><?= __('Adicionar Produto') ?></legend>
+    </fieldset>
     <div class="tab">
         <button type="button" id="initialTabModal" class="tablinks" onclick="openTab(event, 'geral')">Geral</button>
         <button type="button" class="tablinks" onclick="openTab(event, 'listas')">Listas</button>
     </div>
     <div id="geral" class="tabcontent">
-        <fieldset>
-            <legend><?= __('Adicionar Produto') ?></legend>
+
             <?php
             echo $this->Form->control('nome_produto', ['label' => 'Nome']);
             echo $this->Form->control('categorias_produto_id', ['options' => $categoriasProdutos, 'label' => 'Categoria', 'required' => 'required']);
@@ -23,8 +25,6 @@
             echo '<label for="uploadfile">Imagem</label>';
             echo $this->Form->file('uploadfile');
             ?>
-        </fieldset>
-        <br/>
     </div>
 
     <div id="listas" style="height: 550px" class="tabcontent">

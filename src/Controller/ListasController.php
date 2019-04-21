@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Model\Entity\ListasOpcoesExtra;
+use App\Model\Entity\OpcoesExtra;
 use App\Model\ExceptionSQLMessage;
 use App\Model\Table\ListasOpcoesExtrasTable;
 use App\Model\Utils\EmpresaUtils;
@@ -76,12 +77,24 @@ class ListasController extends AppController
             $lista->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->Listas->save($lista)) {
                 $this->Flash->success(__('Lista adicionada com sucesso.'));
-
+                $controller = new ListasOpcoesExtrasController();
+                foreach ($this->request->getData('adicionais') as $opcao){
+                    $ativo = false;
+                    if(isset($opcao['ativo']) && $opcao['ativo'] != '0' ){
+                        $ativo = true;
+                    }
+                    $controller->newListaOpcaoExtra($lista->id, intval(str_replace('number:','',$opcao['adicional'])), $ativo);
+                }
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Não foi possível adicionar a lista, tente novamente.'));
         }
-        $opcoesExtras = $this->Listas->OpcoesExtras->find('list');
+        /** @var $opcoesExtrasModel OpcoesExtra[]*/
+        $opcoesExtras =[];
+        $opcoesExtrasModel = $this->Listas->OpcoesExtras->find()->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId()]);
+        foreach ($opcoesExtrasModel as $opcaoExtra){
+            $opcoesExtras[$opcaoExtra->id] = $opcaoExtra->nome_adicional;
+        }
         $this->set(compact('lista', 'opcoesExtras'));
     }
 
@@ -102,12 +115,32 @@ class ListasController extends AppController
             $lista->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->Listas->save($lista)) {
                 $this->Flash->success(__('Lista salva com sucesso.'));
-
+                $controller = new ListasOpcoesExtrasController();
+                $controller->deleteAllListasAdicionais($lista->id);
+                foreach ($this->request->getData('adicionais') as $opcao){
+                    $ativo = false;
+                    if(isset($opcao['ativo']) && $opcao['ativo'] != '0' ){
+                        $ativo = true;
+                    }
+                    $controller->newListaOpcaoExtra($lista->id, intval(str_replace('number:','',$opcao['adicional'])), $ativo);
+                }
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Não foi possível editar a lista, tente novamente.'));
         }
-        $opcoesExtras = $this->Listas->OpcoesExtras->find('list');
+        /** @var $opcoesExtrasModel OpcoesExtra[]*/
+        $opcoesExtras =[];
+        $opcoesExtrasModel = $this->Listas->OpcoesExtras->find()->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId()]);
+        foreach ($opcoesExtrasModel as $opcaoExtra){
+            $opcoesExtras[$opcaoExtra->id] = $opcaoExtra->nome_adicional;
+        }
+        /** @var $listasAdicionais ListasOpcoesExtra[]*/
+        $listasAdicionais = $this->getTableLocator()->get('ListasOpcoesExtras')->find()->where(['lista_id' => $lista->id]);
+        $listasAdicionaisArray = [];
+        foreach ($listasAdicionais as $listaAdicional){
+            $listasAdicionaisArray[] = ['adicional' =>  $listaAdicional->opcoes_extra_id, 'ativo' => $listaAdicional->ativa] ;
+        }
+        $lista->adicionais = $listasAdicionaisArray;
         $this->set(compact('lista', 'opcoesExtras'));
     }
 

@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $lista_id
  * @property int $opcoes_extra_id
+ * @property boolean $ativa
  *
  * @property \App\Model\Entity\Lista $lista
  * @property \App\Model\Entity\OpcoesExtra $opcoes_extra

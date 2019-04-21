@@ -94,7 +94,7 @@ class ProdutosController extends AppController
                 $this->Flash->success(__('Produto adicionado com sucesso.'));
                 foreach ($this->request->getData('listas') as $lista){
                     $controller = new ListasProdutosController();
-                    $controller->newListaProduto($produto->id, intval(str_replace('number:','',$lista)));
+                    $controller->newListaProduto($produto->id, intval(str_replace('number:','',$lista['listas'])));
                 }
                 return $this->redirect(['action' => 'index']);
             }
@@ -102,6 +102,7 @@ class ProdutosController extends AppController
         }
         $categoriasProdutos = $this->Produtos->CategoriasProdutos->find('list');
         $listasModels = $this->getTableLocator()->get('Listas')->find()->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId()]);
+        $listas = [];
         foreach ($listasModels as $listasModel){
             $listas[$listasModel->id] = $listasModel->nome_lista;
         }
@@ -140,7 +141,7 @@ class ProdutosController extends AppController
                 $controller = new ListasProdutosController();
                 $controller->deleteAllListasProduto($produto->id);
                 foreach ($this->request->getData('listas') as $lista){
-                    $controller->newListaProduto($produto->id, intval(str_replace('number:','',$lista)));
+                    $controller->newListaProduto($produto->id, intval(str_replace('number:','',$lista['listas'])));
                 }
                 return $this->redirect(['action' => 'index']);
             }
@@ -149,6 +150,7 @@ class ProdutosController extends AppController
         $categoriasProdutos = $this->Produtos->CategoriasProdutos->find('list');
         /** @var $listasModels Lista[]*/
         $listasModels = $this->getTableLocator()->get('Listas')->find()->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId()]);
+        $listas = [];
         foreach ($listasModels as $listasModel){
             $listas[$listasModel->id] = $listasModel->nome_lista;
         }

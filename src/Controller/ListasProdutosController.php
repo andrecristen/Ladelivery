@@ -132,13 +132,17 @@ class ListasProdutosController extends AppController
     }
 
     public function newListaProduto($produtoId, $listaId){
-        $listaProduto = $this->ListasProdutos->newEntity();
-        $listaProduto->produto_id = $produtoId;
-        $listaProduto->lista_id = $listaId;
-        if($this->ListasProdutos->save($listaProduto)){
-            return true;
+        try{
+            $listaProduto = $this->ListasProdutos->newEntity();
+            $listaProduto->produto_id = $produtoId;
+            $listaProduto->lista_id = $listaId;
+            if($this->ListasProdutos->save($listaProduto)){
+                return true;
+            }
+            return false;
+        }catch (\Exception $exception){
+            return false;
         }
-        return false;
     }
     public function deleteAllListasProduto($produtoId){
         $connection = ConnectionManager::get('default');

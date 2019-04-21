@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Model\ExceptionSQLMessage;
+use Cake\Datasource\ConnectionManager;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -129,5 +130,26 @@ class ListasOpcoesExtrasController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function newListaOpcaoExtra($listId, $opcaoId, $ativo = true){
+        try{
+            $listaOpcaoExtra = $this->ListasOpcoesExtras->newEntity();
+            $listaOpcaoExtra->lista_id = $listId;
+            $listaOpcaoExtra->opcoes_extra_id = $opcaoId;
+            $listaOpcaoExtra->ativa = $ativo;
+            if($this->ListasOpcoesExtras->save($listaOpcaoExtra)){
+                return true;
+            }
+            return false;
+        }catch (\Exception $exception){
+            return false;
+        }
+    }
+
+    public function deleteAllListasAdicionais($listaId){
+        $connection = ConnectionManager::get('default');
+        $result = $connection->execute('DELETE FROM listas_opcoes_extras WHERE lista_id = '.$listaId);
+        return $result;
     }
 }

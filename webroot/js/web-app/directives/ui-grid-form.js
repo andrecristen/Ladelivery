@@ -29,7 +29,7 @@ app.directive('uiGridForm', function($templateCache) {
             );
 
             temp = temp.replace(/name="(.*?)"/g,function(name, nameField){
-                var retorno = 'name="'+attrs.ngModel+'[{{$index}}].'+nameField+'"';
+                var retorno = 'name="'+attrs.ngModel+'[{{$index}}]['+nameField+']"';
                 return retorno;
             });
 
@@ -42,7 +42,7 @@ app.directive('uiGridForm', function($templateCache) {
                 '<div class="panel panel-default ui-grid-form">' +
                 '  <div class="panel-heading" ng-show="title"><strong>&nbsp;{{title}}</strong></div>'+
                 '  <div class="panel-body">'+
-                '    <div ng-repeat="row in rowsGridForm track by $index" class="ui-grid-form-item">'+
+                '    <div ng-repeat="row in rows track by $index" class="ui-grid-form-item">'+
                 '    <div class="form-grid">'+
                 temp +
                 '    </div>'+
@@ -74,17 +74,17 @@ app.directive('uiGridForm', function($templateCache) {
                 scope.hide_button = attrs.hideButtons || false;
 
                 scope.rows = attrs.rows   || 1;
-                var ngModelName = attrs.ngModel;
-                scope.ngModelParent = ngModelName;
-                scope.rowsGridForm = [];
+                var modelName = attrs.ngModel;
+                scope.ngModelParent = modelName;
+                scope.rows = [];
                 if(!scope.data){
                     scope.data = {};
                 }
-                if(!scope['data'][ngModelName]){
-                    scope['data'][ngModelName] = [];
+                if(!scope['data'][modelName]){
+                    scope['data'][modelName] = [];
                 }
                 scope.add = function(){
-                    scope.rowsGridForm.push(1);
+                    scope.rows.push(1);
                 };
 
                 scope.getFormName = function(){
@@ -100,42 +100,43 @@ app.directive('uiGridForm', function($templateCache) {
 
                 scope.remove = function(row){
                     //Exclui da view a linha
-                    scope.rowsGridForm.splice(row, 1);
+                    scope.rows.splice(row, 1);
                     //Exclui do data a linha
-                    delete scope['data'][ngModelName][row];
+                    delete scope['data'][modelName][row];
                     //Vamos refatorar as posicoes;
                     var position = 0;
-                    var reindex = {};
-                    angular.forEach(scope['data'][ngModelName], function (value, row) {
+                    var reindex = [];
+                    angular.forEach(scope['data'][modelName], function (value, row) {
                         reindex[position] = value;
                         position++;
                     });
-                    scope['data'][ngModelName] = {};
-                    scope['data'][ngModelName] = reindex;
+                    scope['data'][modelName] = [];
+                    scope['data'][modelName] = reindex;
                     //se foi removido tudo, adicionado uma linha
-                    if(scope.rowsGridForm.length === 0){
+                    if(scope.rows.length === 0){
                         setTimeout(function(){
-                            scope['data'][ngModelName] = [];
-                            scope.rowsGridForm.push(1);
+                            scope['data'][modelName] = [];
+                            scope.rows.push(1);
                             scope.$apply();
                         },0);
                     }
                 };
                 if(attrs.list !== undefined){
-                    scope.data[ngModelName] = $.extend({},JSON.parse(attrs.list));
+                    var list = $.extend({},JSON.parse(attrs.list));
+                    scope.data[modelName] = Object.values(list);
                 }
 
                 var adicionados = 0;
-                angular.forEach(scope['data'][ngModelName], function (value, row) {
+                angular.forEach(scope['data'][modelName], function (value, row) {
                     adicionados++;
                     scope.add();
                 });
                 if(adicionados === 0){
                     scope.add();
                 }
-                // scope.$watch(function(){
-                //     console.log(scope.data);
-                // });
+                scope.$watch(function(){
+                    console.log(scope.data);
+                });
             }
         }
     });

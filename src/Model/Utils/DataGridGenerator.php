@@ -97,10 +97,10 @@ class DataGridGenerator extends View implements TypeFields
         ?>
         <br>
         <?php if (!$this->noAdd) { ?>
-        <?= $this->Html->link('Adicionar', ['action' => 'add'], array('class' => 'btn btn-primary')); ?>
+        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-plus-square')).' Adicionar', ['action' => 'add'], array('escape' => false , 'class' => 'btn btn-primary')) ?>
     <?php } ?>
         <?php foreach ($this->actions as $action) { ?>
-        <?= $this->Html->link($action['titulo'], ['controller' => $action['controller'], 'action' => $action['action']], ['class' => $action['class']]) ?>
+        <?= $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])).' '.$action['titulo'], ['controller' => $action['controller'], 'action' => $action['action']] , array('escape' => false , 'class' => $action['class'])) ?>
     <?php } ?>
         <?php
         echo '<br/>';
@@ -250,9 +250,9 @@ class DataGridGenerator extends View implements TypeFields
     /**
      * @param array $fields
      */
-    public function addAction($controller, $action, $titulo, $class = 'btn btn-primary')
+    public function addAction($controller, $action, $titulo, $class = 'btn btn-primary', $icon = ' ')
     {
-        $this->actions[] = ['titulo' => $titulo, 'action' => $action, 'controller' => $controller, 'class' => $class];
+        $this->actions[] = ['titulo' => $titulo, 'action' => $action, 'controller' => $controller, 'class' => $class , 'icon' => $icon];
     }
 
     /**

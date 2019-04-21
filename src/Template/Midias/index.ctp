@@ -20,6 +20,7 @@
         $dataGrid->addField(new \App\Model\Utils\GridField('Path', 'path_midia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     }
     $dataGrid->addField(new \App\Model\Utils\GridField('Nome', 'nome_midia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->setController($this->name);
     $dataGrid->display()
     ?>
 </div>

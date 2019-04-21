@@ -15,6 +15,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Nome', 'nome_categoria', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Criado', 'created', \App\Model\Utils\DataGridGenerator::TYPE_DATE));
     $dataGrid->addField(new \App\Model\Utils\GridField('Editado', 'modified', \App\Model\Utils\DataGridGenerator::TYPE_DATE));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

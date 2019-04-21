@@ -19,6 +19,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Inscrição Estadual', 'ie', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativa', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
     $dataGrid->addAction('EnderecosEmpresas', 'index', 'Endereços Empresa', 'btn btn-success', 'fas fa-map-marked-alt');
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

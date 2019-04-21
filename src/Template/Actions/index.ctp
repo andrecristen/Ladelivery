@@ -16,6 +16,7 @@
         $dataGrid->addField(new \App\Model\Utils\GridField('Descricao', 'descricao_action', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
         $dataGrid->addField(new \App\Model\Utils\GridField('#Controller', 'controller/id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
         $dataGrid->addField(new \App\Model\Utils\GridField('Nome Controller', 'controller/nome_controlador', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+        $dataGrid->setController($this->name);
         $dataGrid->display();
         ?>
 </div>

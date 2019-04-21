@@ -21,6 +21,7 @@
     $estado = new \App\Model\Utils\GridField('Estado', 'estado', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
     $estado->setList(\App\Model\Entity\Endereco::getEstados());
     $dataGrid->addField($estado);
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

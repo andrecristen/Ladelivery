@@ -18,6 +18,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativo_produto', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
     $dataGrid->addField(new \App\Model\Utils\GridField('Criado', 'created', \App\Model\Utils\DataGridGenerator::TYPE_DATE));
     $dataGrid->addField(new \App\Model\Utils\GridField('Editado', 'modified', \App\Model\Utils\DataGridGenerator::TYPE_DATE));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

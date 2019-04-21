@@ -21,6 +21,7 @@
     $dataGrid->bloqActionDelete();
     $dataGrid->bloqActionEdit();
     $dataGrid->bloqActionAdd();
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

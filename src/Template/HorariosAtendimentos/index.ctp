@@ -20,6 +20,7 @@
     $dataGrid->addField($turno);
     $dataGrid->addField(new \App\Model\Utils\GridField('Inicio', 'hora_inicio', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME));
     $dataGrid->addField(new \App\Model\Utils\GridField('Fim', 'hora_fim', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

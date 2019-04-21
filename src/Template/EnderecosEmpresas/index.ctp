@@ -20,6 +20,7 @@
     $estado->setList(\App\Model\Entity\Endereco::getEstados());
     $dataGrid->addField($estado);
     $dataGrid->addField(new \App\Model\Utils\GridField('Cep', 'cep', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

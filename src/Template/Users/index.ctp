@@ -17,6 +17,7 @@
     $dataGrid->addField($fieldTipoUsers);
     $dataGrid->addField(new \App\Model\Utils\GridField('Apelido', 'apelido', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Login', 'login', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

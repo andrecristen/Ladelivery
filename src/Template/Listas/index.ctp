@@ -17,6 +17,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Máximo selecionar', 'max_opcoes_selecionadas_lista', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->addField(new \App\Model\Utils\GridField('Minimo selecionar', 'min_opcoes_selecionadas_lista', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->bloqActionDelete();
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

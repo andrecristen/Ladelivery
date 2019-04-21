@@ -14,6 +14,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Lista', 'lista/nome_lista', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Opcional', 'opcoes_extra/nome_adicional', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativa', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

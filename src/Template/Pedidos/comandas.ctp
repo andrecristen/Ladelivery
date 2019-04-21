@@ -24,6 +24,7 @@
     $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Pedido'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'imprimir'], ['class' => 'fa fa-print btn btn-info btn-sm', 'title' => 'Imprimir Guias de Pedido'], false, 'id');
     $dataGrid->setCallBackActionLimpar('comandas');
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

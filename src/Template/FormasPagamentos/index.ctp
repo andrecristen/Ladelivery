@@ -16,6 +16,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Maquina Cartao', 'necesista_maquina_cartao', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
     $dataGrid->addField(new \App\Model\Utils\GridField('Troco', 'necessita_troco', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
     $dataGrid->addField(new \App\Model\Utils\GridField('Porcentagem Juros', 'aumenta_valor', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

@@ -7,6 +7,7 @@
 namespace App\Model\Utils;
 
 
+use App\Controller\AppController;
 use Cake\Datasource\Paginator;
 use Cake\Event\EventManager;
 use Cake\Http\Response;
@@ -16,8 +17,11 @@ use Cake\View\View;
 class DataGridGenerator extends View implements TypeFields
 {
 
+    protected $appController;
+
     protected $filtersValues = [];
 
+    protected $controller;
 
     protected $callBackActionLimpar = false;
 
@@ -54,6 +58,7 @@ class DataGridGenerator extends View implements TypeFields
 
     public function display()
     {
+        $this->appController = new AppController();
         if ($this->debbugMode) {
             echo 'MODEL TABLE CONTENT TO RENDER FIELDS:';
             var_dump($this->model);
@@ -65,42 +70,44 @@ class DataGridGenerator extends View implements TypeFields
 
         echo '<div class="content-filter">';
         echo $this->Form->create(null, ['type' => 'get']);
-        foreach ($this->fields as $field){
-            if($field->getFilter()){
-                if($field->getType() == self::TYPE_TEXT || $field->getType() == self::TYPE_NUMBER){
-                    echo $this->Form->input($field->getAlias(), ['class' => 'form-control' , 'autocomplete' => 'off', 'label' => false,'placeholder' => 'Pesquisar '.$field->getTitulo(), 'value' => $this->request->getQuery($field->getAlias())]);
-                }else{
-                    if($field->getType() == self::TYPE_LIST){
+        foreach ($this->fields as $field) {
+            if ($field->getFilter()) {
+                if ($field->getType() == self::TYPE_TEXT || $field->getType() == self::TYPE_NUMBER) {
+                    echo $this->Form->input($field->getAlias(), ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'value' => $this->request->getQuery($field->getAlias())]);
+                } else {
+                    if ($field->getType() == self::TYPE_LIST) {
                         $list[''] = 'Selecione uma opção';
-                        foreach ($field->getList() as $key => $option){
+                        foreach ($field->getList() as $key => $option) {
                             $list[$key] = $option;
                         }
-                        echo $this->Form->select($field->getAlias(), $list ,['label' => false, 'value' => $this->request->getQuery($field->getAlias())]);
+                        echo $this->Form->select($field->getAlias(), $list, ['label' => false, 'value' => $this->request->getQuery($field->getAlias())]);
                         echo '<br/>';
-                    }else{
-                        if($field->getType() == self::TYPE_BOOLEAN){
-                            echo $this->Form->select($field->getAlias(), ['' => 'Selecione uma opção para o filtro '.$field->getTitulo(), 1 => 'Sim', 0 => 'Não'] ,['label' => false, 'value' => $this->request->getQuery($field->getAlias())]);
+                    } else {
+                        if ($field->getType() == self::TYPE_BOOLEAN) {
+                            echo $this->Form->select($field->getAlias(), ['' => 'Selecione uma opção para o filtro ' . $field->getTitulo(), 1 => 'Sim', 0 => 'Não'], ['label' => false, 'value' => $this->request->getQuery($field->getAlias())]);
                         }
                     }
                 }
             }
         }
         echo '<br>';
-        echo $this->Form->button('Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
-        if(!$this->getCallBackActionLimpar()){
-            echo $this->Html->link('Limpar', ['action' => 'index'], ['class' => 'btn btn-sm btn-danger']);
-        }else{
-            echo $this->Html->link('Limpar', ['action' => $this->getCallBackActionLimpar()], ['class' => 'btn btn-sm btn-danger']);
+        echo $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-search')) . ' Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
+        $action = 'index';
+        if ($this->getCallBackActionLimpar()) {
+            $action = $this->getCallBackActionLimpar();
         }
+        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-trash-alt')) . ' Limpar', ['action' => $action], array('escape' => false, 'class' => 'btn btn-sm btn-danger'));
         echo $this->Form->end();
         echo '</div>';
         ?>
         <br>
-        <?php if (!$this->noAdd) { ?>
-        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-plus-square')).' Adicionar', ['action' => 'add'], array('escape' => false , 'class' => 'btn btn-primary')) ?>
+        <?php if (!$this->noAdd && $this->appController->validateActionView($this->getController(), 'add')) { ?>
+        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-plus-square')) . ' Adicionar', ['action' => 'add'], array('escape' => false, 'class' => 'btn btn-primary')) ?>
     <?php } ?>
-        <?php foreach ($this->actions as $action) { ?>
-        <?= $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])).' '.$action['titulo'], ['controller' => $action['controller'], 'action' => $action['action']] , array('escape' => false , 'class' => $action['class'])) ?>
+        <?php foreach ($this->actions as $action) {
+        if ($this->appController->validateActionView($action['controller'], $action['action'])) {
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])) . ' ' . $action['titulo'], ['controller' => $action['controller'], 'action' => $action['action']], array('escape' => false, 'class' => $action['class']));
+        } ?>
     <?php } ?>
         <?php
         echo '<br/>';
@@ -108,16 +115,16 @@ class DataGridGenerator extends View implements TypeFields
         echo '<table cellpadding="0" cellspacing="0">';
         echo '<colgroup>';
         foreach ($this->fields as $col) {
-            if($col->getWidth()){
-                echo '<col width="'.$col->getWidth().'">';
-            }else{
+            if ($col->getWidth()) {
+                echo '<col width="' . $col->getWidth() . '">';
+            } else {
                 echo '<col width="auto">';
             }
         }
         echo '</colgroup>';
         echo '<thead>';
         foreach ($this->fields as $th) {
-            if(!$th->getVisible()){
+            if (!$th->getVisible()) {
                 continue;
             }
             echo '<th scope="col"><span>' . $th->getTitulo() . '</span></th>';
@@ -131,7 +138,7 @@ class DataGridGenerator extends View implements TypeFields
             $this->setIdRow($entidade['id']);
             echo '<tr>';
             foreach ($this->fields as $td) {
-                if(!$td->getVisible()){
+                if (!$td->getVisible()) {
                     continue;
                 }
                 $entidadeWithPath = '';
@@ -192,28 +199,34 @@ class DataGridGenerator extends View implements TypeFields
             if (!$this->hiddenActionsColumn) {
                 echo '<td class="actions">';
                 ?>
-                <?php if (!$this->noView) { ?>
+                <?php if (!$this->noView && $this->appController->validateActionView($this->getController(), 'view')) { ?>
                     <?= $this->Html->link(__(''), ['action' => 'view', $entidade->id], ['class' => 'fas fa-eye btn btn-info btn-sm', 'title' => 'Visualizar']) ?>
                 <?php } ?>
 
-                <?php if (!$this->noEdit) { ?>
+                <?php if (!$this->noEdit && $this->appController->validateActionView($this->getController(), 'edit')) { ?>
                     <?= $this->Html->link(__(''), ['action' => 'edit', $entidade->id], ['class' => 'far fa-edit btn btn-success btn-sm', 'title' => 'Editar']) ?>
                 <?php } ?>
 
-                <?php if (!$this->noDelete) { ?>
+                <?php if (!$this->noDelete && $this->appController->validateActionView($this->getController(), 'delete')) { ?>
                     <?= $this->Form->postLink(__(''), ['action' => 'delete', $entidade->id], ['class' => 'fas fa-trash-alt btn btn-danger btn-sm', 'title' => 'Excluir', 'confirm' => __('Tem certeza que deseja excluir este registro?')]) ?>
                 <?php } ?>
                 <?php foreach ($this->actionsTable as $actionTable) {
-                    if($actionTable['id']){
+                    if ($actionTable['id']) {
                         $actionTable['url'][] = $entidade[$actionTable['id']];
                     }
+                    $actionController = $this->getController();
+                    if(isset($actionTable['url']['controller'])){
+                        $actionController = $actionTable['url']['controller'];
+                    }
                     if (!$actionTable['isPost']) {
-                        ?>
-                        <?= $this->Html->link($actionTable['titulo'], $actionTable['url'], $actionTable['options']) ?>
-                    <?php } else {
-                        ?>
-                        <?= $this->Form->postLink($actionTable['titulo'], $actionTable['url'], $actionTable['options']) ?>
-                    <?php } ?>
+                        if ($this->appController->validateActionView($actionController, $actionTable['url']['action'])) {
+                            echo $this->Html->link($actionTable['titulo'], $actionTable['url'], $actionTable['options']);
+                        }
+                    } else {
+                        if ($this->appController->validateActionView($actionController, $actionTable['url']['action'])) {
+                            $this->Form->postLink($actionTable['titulo'], $actionTable['url'], $actionTable['options']);
+                        }
+                    } ?>
                 <?php } ?>
             <?php } ?>
             <?php
@@ -225,9 +238,9 @@ class DataGridGenerator extends View implements TypeFields
         //Para limitar a exibicao de 10 registros por pagina, ja que o padrao e 20.
         echo '<tbody>';
         echo '</table>';
-        if(count($this->model) == 0){
+        if (count($this->model) == 0) {
             echo '<div class="paginator">';
-             echo '<span style="text-align: center">Não localizado nenhum registro</span>';
+            echo '<span style="text-align: center">Não localizado nenhum registro</span>';
             echo '</div>';
         }
         echo '<div class="paginator">';
@@ -241,7 +254,7 @@ class DataGridGenerator extends View implements TypeFields
         echo '<p>';
         echo $this->paginator->counter(['format' => __('Página {{page}} de {{pages}}, Exibindo {{current}} registro(s) de {{count}}')]);
         echo '<div class="container-max-options">';
-        echo $this->paginator ->limitControl ([ 10  =>  10 ,  15  =>  15, 20 => 20, 50 => 50 , 100 => 100 ], null, ['label' => 'Registros por página:', 'style']);
+        echo $this->paginator->limitControl([10 => 10, 15 => 15, 20 => 20, 50 => 50, 100 => 100], null, ['label' => 'Registros por página:', 'style']);
         echo '</div>';
         echo '</p>';
     }
@@ -252,7 +265,7 @@ class DataGridGenerator extends View implements TypeFields
      */
     public function addAction($controller, $action, $titulo, $class = 'btn btn-primary', $icon = ' ')
     {
-        $this->actions[] = ['titulo' => $titulo, 'action' => $action, 'controller' => $controller, 'class' => $class , 'icon' => $icon];
+        $this->actions[] = ['titulo' => $titulo, 'action' => $action, 'controller' => $controller, 'class' => $class, 'icon' => $icon];
     }
 
     /**
@@ -524,6 +537,22 @@ class DataGridGenerator extends View implements TypeFields
     public function setCallBackActionLimpar($callBackActionLimpar)
     {
         $this->callBackActionLimpar = $callBackActionLimpar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    /**
+     * @param mixed $controller
+     */
+    public function setController($controller)
+    {
+        $this->controller = $controller;
     }
 
 }

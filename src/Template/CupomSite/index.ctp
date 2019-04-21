@@ -17,6 +17,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Usos Maximos', 'maximo_vezes_usar', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->addField(new \App\Model\Utils\GridField('Valor Desconto', 'valor_desconto', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->addField(new \App\Model\Utils\GridField('Porcentagem', 'porcentagem', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN, true, false));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

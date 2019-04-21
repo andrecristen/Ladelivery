@@ -15,5 +15,6 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('#Midia', 'midia/id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->addField(new \App\Model\Utils\GridField('Midia', 'midia/nome_midia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativo', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>

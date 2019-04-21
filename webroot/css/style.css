@@ -104,6 +104,7 @@ table thead tr{
 }
 .actions{
     text-align: center!important;
+    width: auto!important;
 }
 table thead tr th{
     color: #000000;!important;

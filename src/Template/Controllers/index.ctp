@@ -12,6 +12,7 @@
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Nome', 'nome_controlador', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

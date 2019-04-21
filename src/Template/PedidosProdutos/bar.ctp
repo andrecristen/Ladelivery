@@ -21,6 +21,7 @@
     $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Item'], false, 'id');
     $dataGrid->addActionRow('', ['controller' => 'Pedidos','action' => 'view'], ['class' => 'fa fa-search-plus btn btn-dark btn-sm', 'title' => 'Visualizar Pedido/Comanda'], false, 'pedido_id');
     $dataGrid->setCallBackActionLimpar('bar');
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

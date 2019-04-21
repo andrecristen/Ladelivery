@@ -14,6 +14,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Dia', 'dia_fechado', \App\Model\Utils\DataGridGenerator::TYPE_DATE));
     $dataGrid->addField(new \App\Model\Utils\GridField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Motivo', 'motivo_fechado', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

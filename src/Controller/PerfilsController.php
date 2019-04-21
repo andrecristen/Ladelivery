@@ -27,7 +27,7 @@ class PerfilsController extends AppController
      */
     public function index()
     {
-        $perfils = $this->paginate($this->Perfils);
+        $perfils = $this->paginate($this->Perfils->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('perfils'));
     }

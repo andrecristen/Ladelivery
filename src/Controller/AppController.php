@@ -99,7 +99,6 @@ class AppController extends Controller
      */
     public function validateActions()
     {
-        return;
         //Acoes como login, registrar e logout devem ser ignoradas.
         $invalid = false;
         //Master acesso total ao sistema
@@ -160,6 +159,38 @@ class AppController extends Controller
                 $this->Flash->error('Você não tem acesso a está parte do sistema');
                 return $this->redirect('/');
             }
+        }
+    }
+
+    public function validateActionView($controller, $action){
+        if ($this->Auth->user('tipo') == User::TIPO_MASTER) {
+            return true;
+            //Administrador acesso somente as rotas dos perfis dele
+        }elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR){
+            $tableLocator = new TableLocator();
+            /** @var $controller \App\Model\Entity\Controller*/
+            $controller = $tableLocator->get('Controllers')->find()->where(['nome_controlador' => $controller])->first();
+            /** @var $actionModel Action*/
+            $actionModel = $tableLocator->get('Actions')->find()->where(['nome_action' => $action, 'controller_id' => $controller->id])->first();
+            /** @var $perfilsUser PerfilsUser[]*/
+            $perfilsUser = $tableLocator->get('PerfilsUsers')->find()->where(['user_id' => $this->Auth->user('id')]);
+            $perfilAction = false;
+            $encontrou = false;
+            foreach ($perfilsUser as $perfilUser){
+                if (!$encontrou){
+                    $perfilAction = $tableLocator->get('PerfilsActions')->find()->where(['perfil_id' => $perfilUser->perfil_id, 'action_id' => $actionModel->id])->first();
+                    if($perfilAction){
+                        $encontrou = true;
+                    }
+                }
+            }
+            if($perfilAction){
+               return true;
+            }else{
+                return false;
+            }
+        }elseif ($this->Auth->user('tipo') == User::TIPO_CLIENTE){
+            return false;
         }
     }
 

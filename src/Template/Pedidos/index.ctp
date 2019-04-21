@@ -14,11 +14,11 @@
     $dataGrid->bloqActionDelete();
     $dataGrid->bloqActionEdit();
     $dataGrid->setPaginator($this->Paginator);
-    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px', 'pedido/id'));
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '60px', 'pedido/id'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Cliente', 'user/nome_completo', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Pagamento', 'formas_pagamento/nome', \App\Model\Utils\DataGridGenerator::TYPE_TEXT, true, true, '100px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Valor Total', 'valor_total_cobrado', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Tempo', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
+    //$dataGrid->addField(new \App\Model\Utils\GridField('Tempo', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Data', 'data_pedido', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME, true, true, '150px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Troco Para', 'troco_para', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
     $status = new \App\Model\Utils\GridField('Status', 'status_pedido', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
@@ -27,6 +27,7 @@
     $dataGrid->addActionRow('', ['action' => 'confirmar'], ['class' => 'far fa-check-square btn btn-primary btn-sm', 'title' => 'Confirmar/Rejeitar Recebimento do Pedido'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Pedido'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'imprimir'], ['class' => 'fa fa-print btn btn-info btn-sm', 'title' => 'Imprimir Guias de Pedido'], false, 'id');
+    $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>
 </div>

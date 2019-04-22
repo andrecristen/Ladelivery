@@ -10,7 +10,7 @@
         <div id="formContent">
             <!-- Icon -->
             <div style="padding: 15px" class="fadeIn first">
-               <?php echo $this->Html->image('empresa/logologin', ['width' => '50%']) ?>
+               <?php echo $this->Html->image('empresa/logologin.png', ['width' => '50%']) ?>
             </div>
 
             <!-- Login Form -->

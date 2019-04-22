@@ -77,6 +77,10 @@ class EmpresaUtils extends AppController
         return $this->Auth->user('nome_completo');
     }
 
+    public function getUserTipo(){
+        return $this->Auth->user('tipo');
+    }
+
     public function getUserId(){
         return $this->Auth->user('id');
     }

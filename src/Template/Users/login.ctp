@@ -19,8 +19,8 @@
                 echo $this->Form->control('login', ['label'=>'', 'class'=>"fadeIn second", 'placeholder'=>'E-mail']);
                 echo $this->Form->control('password', ['label'=>'', 'class'=>"fadeIn second", 'placeholder'=>'Senha']);
             ?>
-            <?= $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')).' Entrar', ['class' => 'btn btn-sm btn-primary']) ?>
             <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-home')).' Cancelar', '/', array('escape' => false , 'class' => 'btn btn-sm btn-danger')) ?>
+            <?= $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')).' Entrar', ['class' => 'btn btn-sm btn-primary']) ?>
             <br/>
             <!-- Acoes -->
             <div id="formFooter">

@@ -68,7 +68,7 @@ $cacheControl = $cacheControl->getCacheVersion();
 </head>
 <body>
 <?= $this->Flash->render() ?>
-<?php if ($login && $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR) : ?>
+<?php if ($login && ($_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR || $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_MASTER)) : ?>
     <div class="nav-side-menu">
         <div class="brand">LADelivery - LADev</div>
         <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
@@ -149,6 +149,8 @@ $cacheControl = $cacheControl->getCacheVersion();
         <i title="Usuário" class="fas fa-user-circle">&nbsp;</i><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'edit', $empresaUtils->getUserId()]) ?></span>
         &nbsp;
         <i title="Empresa" class="fas fa-building"></i>&nbsp;<span><?= $this->Html->link(__($empresaUtils->getUserEmpresaModel()->nome_fantasia), ['controller' => 'Empresas', 'action' => 'view', $empresaUtils->getUserEmpresaId()]) ?></span>
+        &nbsp;
+        <i title="Tipo Privilegios" class="fas fa-crown">&nbsp;</i><span><?= $this->Html->link(__(\App\Model\Entity\User::getTipoListAll()[$empresaUtils->getUserTipo()]), '#') ?></span>
         <div class="actions-system-info">
             <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-cart-plus')) . ' Abrir Pedido', array('controller' => 'Pedidos', 'action' => 'add'), array('escape' => false, 'class' => 'btn btn-sm btn-success')) ?>
             <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sticky-note')) . ' Abrir Comanda', array('controller' => 'Pedidos', 'action' => 'add/true'), array('escape' => false, 'class' => 'btn btn-sm btn-primary')) ?>
@@ -156,7 +158,7 @@ $cacheControl = $cacheControl->getCacheVersion();
         </div>
     </div>
 <?php endif; ?>
-<?php if ($login && $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR) : ?>
+<?php if ($login && ($_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR || $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_MASTER)) : ?>
 <div class="content-next-menu content">
     <?php else:; ?>
     <div style="height:auto; padding-bottom: 0px!important;" class="content">

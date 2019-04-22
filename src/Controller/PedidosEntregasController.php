@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -15,9 +16,12 @@ use Cake\Http\ServerRequest;
 class PedidosEntregasController extends AppController
 {
 
+    protected $empresaUtils;
+
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
         $this->validateActions();
     }
 
@@ -31,7 +35,8 @@ class PedidosEntregasController extends AppController
         $this->paginate = [
             'contain' => ['Pedidos', 'Enderecos']
         ];
-        $pedidosEntregas = $this->paginate($this->PedidosEntregas);
+        $filterFixed = ['pedidos.empresa_id' => $this->empresaUtils->getUserEmpresaId()];
+        $pedidosEntregas = $this->paginate($this->PedidosEntregas->find()->where($this->generateConditionsFind(false, $filterFixed)));
 
         $this->set(compact('pedidosEntregas'));
     }

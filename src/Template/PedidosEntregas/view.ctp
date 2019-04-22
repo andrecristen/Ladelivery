@@ -4,20 +4,7 @@
  * @var \App\Model\Entity\PedidosEntrega $pedidosEntrega
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Pedidos Entrega'), ['action' => 'edit', $pedidosEntrega->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Pedidos Entrega'), ['action' => 'delete', $pedidosEntrega->id], ['confirm' => __('Are you sure you want to delete # {0}?', $pedidosEntrega->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Pedidos Entregas'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Pedidos Entrega'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Pedidos'), ['controller' => 'Pedidos', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Pedido'), ['controller' => 'Pedidos', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Enderecos'), ['controller' => 'Enderecos', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Endereco'), ['controller' => 'Enderecos', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="pedidosEntregas view large-9 medium-8 columns content">
+<div class="col-sm-12">
     <h3><?= h($pedidosEntrega->id) ?></h3>
     <table class="vertical-table">
         <tr>

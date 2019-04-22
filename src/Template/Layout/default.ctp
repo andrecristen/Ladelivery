@@ -96,6 +96,7 @@ $cacheControl = $cacheControl->getCacheVersion();
                 </li>
                 <ul class="sub-menu collapse" id="delivery">
                     <li><?= $this->Html->link(__('Pedidos'), ['controller' => 'Pedidos', 'action' => 'index']) ?></li>
+                    <li><?= $this->Html->link(__('Entregas'), ['controller' => 'PedidosEntregas', 'action' => 'index']) ?></li>
                 </ul>
                 <li data-toggle="collapse" data-target="#interno" class="collapsed">
                     <a href="#"><i class="fas fa-home"></i> Interno</a>

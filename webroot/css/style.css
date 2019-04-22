@@ -666,3 +666,6 @@ table td {
 form{
     padding-bottom: 20px!important;
 }
+fieldset{
+    padding-bottom: 15px!important;
+}

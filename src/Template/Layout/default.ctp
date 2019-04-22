@@ -159,7 +159,7 @@ $cacheControl = $cacheControl->getCacheVersion();
 <?php if ($login && $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR) : ?>
 <div class="content-next-menu content">
     <?php else:; ?>
-    <div style="overflow-y: scroll; height:auto;" class="content">
+    <div style="height:auto; padding-bottom: 0px!important;" class="content">
         <?php endif; ?>
         <?= $this->fetch('content') ?>
     </div>

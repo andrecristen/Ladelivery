@@ -662,3 +662,7 @@ table td {
     border: 1px solid #393939 !important;
     background-color: rgba(15, 104, 72, 0.53) !important;
 }
+
+form{
+    padding-bottom: 20px!important;
+}

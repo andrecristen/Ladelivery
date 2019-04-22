@@ -8,8 +8,6 @@
     <?= $this->Html->css('login.css') ?>
     <div class="wrapper fadeInDown">
         <div id="formContent">
-            <!-- Tabs Titles -->
-
             <!-- Icon -->
             <div style="padding: 15px" class="fadeIn first">
                <?php echo $this->Html->image('empresa/logologin', ['width' => '50%']) ?>
@@ -21,13 +19,15 @@
                 echo $this->Form->control('login', ['label'=>'', 'class'=>"fadeIn second", 'placeholder'=>'E-mail']);
                 echo $this->Form->control('password', ['label'=>'', 'class'=>"fadeIn second", 'placeholder'=>'Senha']);
             ?>
-            <?= $this->Form->button(__('Entrar')) ?>
-
-            <!-- Remind Passowrd -->
+            <?= $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')).' Entrar', ['class' => 'btn btn-sm btn-primary']) ?>
+            <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-home')).' Cancelar', '/', array('escape' => false , 'class' => 'btn btn-sm btn-danger')) ?>
+            <br/>
+            <!-- Acoes -->
             <div id="formFooter">
                 <span>Ainda não possui conta?&nbsp;<?= $this->Html->link(__('Registrar-se'), ['controller' => 'Users', 'action' => 'registrar']) ?></span>
                 <br/>
                 <span>Esqueceu sua senha?&nbsp;<?= $this->Html->link(__('Recuperar'), ['controller' => 'AlteracaoSenhas', 'action' => 'solicitar']) ?></span>
+                <br/>
             </div>
         </div>
     <?= $this->Form->end() ?>

@@ -134,6 +134,19 @@ class DataGridGenerator extends View implements TypeFields
         }
         echo '</thead>';
         echo '<tbody>';
+        $isValidView = $this->appController->validateActionView($this->getController(), 'view');
+        $isValidEdit = $this->appController->validateActionView($this->getController(), 'edit');
+        $isValidDelete = $this->appController->validateActionView($this->getController(), 'delete');
+        $actionsRowValid = [];
+        foreach ($this->actionsTable as $actionTable) {
+            $actionController = $this->getController();
+            if(isset($actionTable['url']['controller'])){
+                $actionController = $actionTable['url']['controller'];
+            }
+            if($this->appController->validateActionView($actionController, $actionTable['url']['action'])){
+                $actionsRowValid[] = $actionTable;
+            }
+        }
         foreach ($this->model as $entidade) {
             $this->setIdRow($entidade['id']);
             echo '<tr>';
@@ -199,33 +212,25 @@ class DataGridGenerator extends View implements TypeFields
             if (!$this->hiddenActionsColumn) {
                 echo '<td class="actions">';
                 ?>
-                <?php if (!$this->noView && $this->appController->validateActionView($this->getController(), 'view')) { ?>
+                <?php if (!$this->noView && $isValidView) { ?>
                     <?= $this->Html->link(__(''), ['action' => 'view', $entidade->id], ['class' => 'fas fa-eye btn btn-info btn-sm', 'title' => 'Visualizar']) ?>
                 <?php } ?>
 
-                <?php if (!$this->noEdit && $this->appController->validateActionView($this->getController(), 'edit')) { ?>
+                <?php if (!$this->noEdit && $isValidEdit) { ?>
                     <?= $this->Html->link(__(''), ['action' => 'edit', $entidade->id], ['class' => 'far fa-edit btn btn-success btn-sm', 'title' => 'Editar']) ?>
                 <?php } ?>
 
-                <?php if (!$this->noDelete && $this->appController->validateActionView($this->getController(), 'delete')) { ?>
+                <?php if (!$this->noDelete && $isValidDelete) { ?>
                     <?= $this->Form->postLink(__(''), ['action' => 'delete', $entidade->id], ['class' => 'fas fa-trash-alt btn btn-danger btn-sm', 'title' => 'Excluir', 'confirm' => __('Tem certeza que deseja excluir este registro?')]) ?>
                 <?php } ?>
-                <?php foreach ($this->actionsTable as $actionTable) {
+                <?php foreach ($actionsRowValid as $actionTable) {
                     if ($actionTable['id']) {
                         $actionTable['url'][] = $entidade[$actionTable['id']];
                     }
-                    $actionController = $this->getController();
-                    if(isset($actionTable['url']['controller'])){
-                        $actionController = $actionTable['url']['controller'];
-                    }
                     if (!$actionTable['isPost']) {
-                        if ($this->appController->validateActionView($actionController, $actionTable['url']['action'])) {
-                            echo $this->Html->link($actionTable['titulo'], $actionTable['url'], $actionTable['options']);
-                        }
+                        echo $this->Html->link($actionTable['titulo'], $actionTable['url'], $actionTable['options']);
                     } else {
-                        if ($this->appController->validateActionView($actionController, $actionTable['url']['action'])) {
-                            $this->Form->postLink($actionTable['titulo'], $actionTable['url'], $actionTable['options']);
-                        }
+                        $this->Form->postLink($actionTable['titulo'], $actionTable['url'], $actionTable['options']);
                     } ?>
                 <?php } ?>
             <?php } ?>

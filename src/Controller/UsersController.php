@@ -185,7 +185,7 @@ class UsersController extends AppController
                 $_SESSION["empresa"] = $this->Auth->user('empresa_id');
                 $redirect = ($this->Auth->redirectUrl());
                 //Quer dizer que é um admin entrando a primeira vez
-                if($user['tipo'] == User::TIPO_ADMINISTRADOR){
+                if($user['tipo'] == User::TIPO_ADMINISTRADOR || $user['tipo'] == User::TIPO_MASTER){
                     if($redirect == '/pages'){
                         return $this->redirect('/financeiro/painel');
                     }

@@ -156,7 +156,7 @@ if(!$existstPedidoAberto || !$empresaAberta){
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Quantidade</label>
-                                <input class="form-control" type="number" onchange="verificaQuantidadeIsInt()" id="quantidadeProduto" min="1" max="100" step="1" value="1">
+                                <input class="form-control" type="number" onkeyup="verificaQuantidadeIsInt(event)" id="quantidadeProduto" min="1" max="100" step="1" value="1">
                             </div>
                             <?php if(isset($_SESSION['Auth']['User']['id']) && $empresaAberta){?>
                                 <div class="form-group">

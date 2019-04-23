@@ -109,9 +109,20 @@ function findLists(produtoId) {
     });
 }
 
-function verificaQuantidadeIsInt() {
+function verificaQuantidadeIsInt(event) {
+    if (event.keyCode == 8){
+        return;
+    }
     var valor = $("#quantidadeProduto").val();
+    var invalid = false;
+    if(valor == "" || valor <= 0){
+        invalid = true;
+        valor = 1;
+    }
     $("#quantidadeProduto").val(parseInt(valor));
+    if(invalid){
+        alertify.alert('Atenção!','Informe um valor maior que zero para o campo quantidade do produto');
+    }
     readequaValorProduto();
 }
 
@@ -132,6 +143,11 @@ function readequaValorProduto() {
 function addItemToCart(userId) {
     var success = verificaMinimoOpcoes();
     if(success){
+        var quantidade = parseInt($("#quantidadeProduto").val());
+        if(quantidade <= 0 || isNaN(quantidade)){
+            alertify.alert('Atenção!','Informe um valor maior que zero para o campo quantidade do produto');
+            return;
+        }
         var data = {};
         data.userId = userId;
         data.idProduto = $("#idProduto").val();
@@ -177,7 +193,7 @@ function certificaMinimoPreechido(index, element) {
         if(minOptions > 1){
             opcao = 'opções';
         }
-        alert('A lista: '+title+', precisa que você selecione ao menos '+minOptions+' '+opcao);
+        alertify.alert('Atenção!','A lista: '+title+', precisa que você selecione ao menos '+minOptions+' '+opcao);
         throw new Error('A lista: '+title+' precisa que selecione ao menos '+minOptions+' opções');
         return;
     }
@@ -199,7 +215,7 @@ function enviteToCart(data) {
             }
         },
         error: function (data) {
-            alert('NÃO FOI POSSIVEL ADICIONAR O ITEM AO CARRINHO');
+            alertify.error('Não foi possivel adicionar o item ao carrinho');
         }
     });
 }

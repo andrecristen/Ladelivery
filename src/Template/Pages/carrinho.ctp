@@ -119,7 +119,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
                         </div>
                         <div class="price"><?= $carrinhoProduto->valor_total_cobrado / $carrinhoProduto->quantidades ?></div>
                         <div class="quantity">
-                            <input type="number" value="<?= $carrinhoProduto->quantidades ?>" min="1" class="quantity-field">
+                            <input disabled type="number" value="<?= $carrinhoProduto->quantidades ?>" min="1" class="quantity-field">
                         </div>
                         <div class="subtotal"><?= $carrinhoProduto->valor_total_cobrado ?></div>
                         <br/>

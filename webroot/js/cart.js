@@ -31,10 +31,10 @@ function fecharCarrinho() {
         dataType: "json",
         success: function (data) {
             if(data.success){
-                alertify.success('Confirmacao de itens concluida com sucesso');
+                alertify.success('Confirmação de itens concluida com sucesso');
                 $(location).attr('href', '/pages/confirmar?pedido='+data.pedido);
             }else{
-                alertify.error('Nao foi possivel confirmar os itens do pedido');
+                alertify.error('Não foi possivel confirmar os itens do pedido');
             }
         },
         error: function (data) {

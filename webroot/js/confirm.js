@@ -7,7 +7,7 @@ function aplicarCupom() {
         dataType: "json",
         success: function (data) {
             if (data.success) {
-                alertify.alert('Sucesso', 'Cupom Aplicado com sucesso', function () {
+                alertify.alert('Sucesso', 'Cupom aplicado com sucesso', function () {
                     $(location).attr('href', '/pages/confirmar');
                 });
             } else {
@@ -120,7 +120,7 @@ function cancelar() {
         dataType: "json",
         success: function (data) {
             if (data.success) {
-                alertify.alert('Pedido Cancelado','Pedido Cancelado com sucesso', function () {
+                alertify.alert('Pedido Cancelado','Pedido cancelado com sucesso', function () {
                     $(location).attr('href', '/pages/');
                 });
             } else {

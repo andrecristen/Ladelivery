@@ -38,7 +38,7 @@
     </div>
 </nav>
 <div style="margin-top: 67px;" class="container bootstrap snippet">
-    <div class="row">
+    <div style="margin: 0px!important;" class="row">
         <div class="col-sm-4"><!--left col-->
             <div class="text-center">
                 <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">

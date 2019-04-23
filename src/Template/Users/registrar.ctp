@@ -38,7 +38,7 @@
         </div>
     </div>
 </nav>
-<div style="margin-top: 35px;" class="col-sm-12">
+<div style="margin-top: 67px;" class="col-sm-12">
     <?= $this->Form->create($user) ?>
     <fieldset>
         <legend><?= __('Registrar-se') ?></legend>

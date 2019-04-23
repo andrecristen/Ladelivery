@@ -10,7 +10,7 @@
         <legend><?= __('Editar Formas Pagamento') ?></legend>
         <?php
             echo $this->Form->control('nome');
-            echo $this->Form->control('necesista_maquina_cartao');
+            echo $this->Form->control('necesista_maquina_cartao', ['label' => 'Necessita máquina de cartão']);
             echo $this->Form->control('necessita_troco');
             echo $this->Form->control('aumenta_valor', ['label' => 'Porcentagem Juros']);
         ?>

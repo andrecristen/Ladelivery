@@ -44,7 +44,9 @@
     <br/>
     <br/>
     <div class="alert alert-primary" role="alert">
-        Atenção! Edite um endereço de cada vez e salve antes de editar o próximo.
+        <i class="fas fa-exclamation-triangle"></i> <span style="font-weight: bold">Atenção!</span>
+        <br>
+        Caso você possua mais de um endereço, edite um endereço de cada vez e salve antes de editar o próximo.
     </div>
     <?php
     $enderecoModel = new \App\Model\Entity\Endereco();
@@ -54,7 +56,7 @@
         ?>
         <?= $this->Form->create($endereco, ['action' => '/meus-enderecos/']) ?>
         <fieldset>
-            <legend><?= 'Endereço #' . $endereco->id ?> - <a style="margin-bottom: 2px;" href="/enderecos/excluir-endereco-cliente/<?= $endereco->id ?>" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a></legend>
+            <legend><?= 'Endereço Nº' . $enderecosCount ?> - <a style="margin-bottom: 2px;" href="/enderecos/excluir-endereco-cliente/<?= $endereco->id ?>" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></a></legend>
             <?php
             echo $this->Form->control('rua');
             echo $this->Form->control('numero', ['required' => 'required']);

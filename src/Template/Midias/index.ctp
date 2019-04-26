@@ -11,7 +11,7 @@
     $dataGrid->setModel($midias);
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, 'auto', 'midias/id'));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+//    $dataGrid->addField(new \App\Model\Utils\GridField('Empresa', 'empresa/nome_fantasia', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $tipo = new \App\Model\Utils\GridField('Tipo', 'tipo_midia', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
     $tipo->setList(\App\Model\Entity\Midia::getTipoList());
     $dataGrid->addField($tipo);

@@ -77,10 +77,9 @@ class Pedido extends Entity
     public static function getDeliveryAlterStatusList(){
         return [
             self::STATUS_EM_PRODUCAO => 'Em Produção',
-            self::STATUS_EM_PRODUCAO_CONCLUIDA => 'Produção Concluida',
+            self::STATUS_AGUARDANDO_COLETA_CLIENTE => 'Aguardando Coleta Cliente',
             self::STATUS_AGUARDANDO_ENTREGADOR => 'Aguardando Entregador',
             self::STATUS_SAIU_PARA_ENTREGA => 'Saiu para entrega',
-            self::STATUS_AGUARDANDO_COLETA_CLIENTE => 'Aguardando Coleta Cliente',
             self::STATUS_ENTREGUE => 'Entregue',
         ];
     }

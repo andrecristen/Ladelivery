@@ -12,6 +12,10 @@ use App\Controller\AppController;
 use App\Model\Entity\Empresa;
 use Cake\ORM\Locator\TableLocator;
 
+/*
+ * Classe usada para minimizar buscas ao banco de dados
+ * trata-se de uma configuracao para o sistema
+ */
 class EmpresaUtils extends AppController
 {
     /*

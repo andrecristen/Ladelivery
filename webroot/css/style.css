@@ -669,3 +669,32 @@ form{
 fieldset{
     padding-bottom: 15px!important;
 }
+
+.card-text{
+    min-height: 90px!important;
+}
+.card-success{
+    background-color: #28a74554;
+}
+
+.card-danger{
+    background-color: #dc354545;
+}
+
+.card-info{
+    background-color: #17a2b859;
+}
+
+.card-primary{
+    background-color: #007bff3d;
+}
+.card-warning{
+    background-color: #ffc10742;
+}
+.card-default{
+    background-color: #e055b74f;
+}
+.btn-rosa{
+    background-color: #e055b7!important;
+    color: #ffffff!important;
+}

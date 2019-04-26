@@ -80,6 +80,52 @@ $cacheControl = $cacheControl->getCacheVersion();
                 </li>
                 <ul class="sub-menu collapse" id="financeiro">
                     <li><?= $this->Html->link(__('Painel'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
+                    <li><?= $this->Html->link(__('Caixa'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
+                    <li><?= $this->Html->link(__('Produtos'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
+                    <li><?= $this->Html->link(__('Pagamentos'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
+                    <li><?= $this->Html->link(__('Entregas'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
+                </ul>
+
+                <li data-toggle="collapse" data-target="#delivery" class="collapsed">
+                    <a href="#"><i class="fas fa-motorcycle"></i> Delivery</a>
+                </li>
+                <ul class="sub-menu collapse" id="delivery">
+                    <li><?= $this->Html->link(__('Pedidos'), ['controller' => 'Pedidos', 'action' => 'listAll']) ?></li>
+                    <li><?= $this->Html->link(__('Entregas'), ['controller' => 'PedidosEntregas', 'action' => 'index']) ?></li>
+                </ul>
+                <li data-toggle="collapse" data-target="#interno" class="collapsed">
+                    <a href="#"><i class="fas fa-home"></i> Interno</a>
+                </li>
+                <ul class="sub-menu collapse" id="interno">
+                    <li><?= $this->Html->link(__('Comandas'), ['controller' => 'Pedidos', 'action' => 'comandas']) ?></li>
+                    <li><?= $this->Html->link(__('Bar'), ['controller' => 'PedidosProdutos', 'action' => 'bar']) ?></li>
+                    <li><?= $this->Html->link(__('Cozinha'), ['controller' => 'PedidosProdutos', 'action' => 'cozinha']) ?></li>
+                </ul>
+
+                <li data-toggle="collapse" data-target="#produto" class="collapsed">
+                    <a href="#"><i class="fas fa-box"></i> Produto</a>
+                </li>
+                <ul class="sub-menu collapse" id="produto">
+                    <li><?= $this->Html->link(__('Categorias'), ['controller' => 'CategoriasProdutos', 'action' => 'index']) ?></li>
+                    <li><?= $this->Html->link(__('Produtos'), ['controller' => 'Produtos', 'action' => 'index']) ?></li>
+                    <li><?= $this->Html->link(__('Listas'), ['controller' => 'Listas', 'action' => 'index']) ?></li>
+                    <li><?= $this->Html->link(__('Adicionais'), ['controller' => 'OpcoesExtras', 'action' => 'index']) ?></li>
+                </ul>
+
+                <li data-toggle="collapse" data-target="#midia" class="collapsed">
+                    <a href="#"><i class="fas fa-images"></i> Mídias</a>
+                </li>
+                <ul class="sub-menu collapse" id="midia">
+                    <li><?= $this->Html->link(__('Midias'), ['controller' => 'Midias', 'action' => 'index']) ?></li>
+                    <li><?= $this->Html->link(__('Banners'), ['controller' => 'Banners', 'action' => 'index']) ?></li>
+                </ul>
+
+                <li data-toggle="collapse" data-target="#marketing" class="collapsed">
+                    <a href="#"><i class="fas fa-mail-bulk"></i> Marketing</a>
+                </li>
+                <ul class="sub-menu collapse" id="marketing">
+                    <li><?= $this->Html->link(__('Propaganda Email'), ['controller' => 'Marketing', 'action' => 'email']) ?></li>
+                    <li><?= $this->Html->link(__('Notificação APP'), ['controller' => 'Marketing', 'action' => 'notificar']) ?></li>
                 </ul>
 
                 <li data-toggle="collapse" data-target="#unico" class="collapsed">
@@ -91,37 +137,7 @@ $cacheControl = $cacheControl->getCacheVersion();
                     <li><?= $this->Html->link(__('Carrinhos'), ['controller' => 'ItensCarrinhos', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('Cupom'), ['controller' => 'CupomSite', 'action' => 'index']) ?></li>
                 </ul>
-                <li data-toggle="collapse" data-target="#delivery" class="collapsed">
-                    <a href="#"><i class="fas fa-motorcycle"></i> Delivery</a>
-                </li>
-                <ul class="sub-menu collapse" id="delivery">
-                    <li><?= $this->Html->link(__('Pedidos'), ['controller' => 'Pedidos', 'action' => 'index']) ?></li>
-                    <li><?= $this->Html->link(__('Entregas'), ['controller' => 'PedidosEntregas', 'action' => 'index']) ?></li>
-                </ul>
-                <li data-toggle="collapse" data-target="#interno" class="collapsed">
-                    <a href="#"><i class="fas fa-home"></i> Interno</a>
-                </li>
-                <ul class="sub-menu collapse" id="interno">
-                    <li><?= $this->Html->link(__('Comandas'), ['controller' => 'Pedidos', 'action' => 'comandas']) ?></li>
-                    <li><?= $this->Html->link(__('Bar'), ['controller' => 'PedidosProdutos', 'action' => 'bar']) ?></li>
-                    <li><?= $this->Html->link(__('Cozinha'), ['controller' => 'PedidosProdutos', 'action' => 'cozinha']) ?></li>
-                </ul>
-                <li data-toggle="collapse" data-target="#produto" class="collapsed">
-                    <a href="#"><i class="fas fa-box"></i> Produto</a>
-                </li>
-                <ul class="sub-menu collapse" id="produto">
-                    <li><?= $this->Html->link(__('Categorias'), ['controller' => 'CategoriasProdutos', 'action' => 'index']) ?></li>
-                    <li><?= $this->Html->link(__('Produtos'), ['controller' => 'Produtos', 'action' => 'index']) ?></li>
-                    <li><?= $this->Html->link(__('Listas'), ['controller' => 'Listas', 'action' => 'index']) ?></li>
-                    <li><?= $this->Html->link(__('Adicionais'), ['controller' => 'OpcoesExtras', 'action' => 'index']) ?></li>
-                </ul>
-                <li data-toggle="collapse" data-target="#midia" class="collapsed">
-                    <a href="#"><i class="fas fa-images"></i> Mídias</a>
-                </li>
-                <ul class="sub-menu collapse" id="midia">
-                    <li><?= $this->Html->link(__('Midias'), ['controller' => 'Midias', 'action' => 'index']) ?></li>
-                    <li><?= $this->Html->link(__('Banners'), ['controller' => 'Banners', 'action' => 'index']) ?></li>
-                </ul>
+
                 <li data-toggle="collapse" data-target="#sistema" class="collapsed">
                     <a href="#"><i class="fab fa-windows"></i> Administrador</a>
                 </li>

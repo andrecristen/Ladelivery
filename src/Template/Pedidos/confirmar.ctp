@@ -20,9 +20,6 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                 <span>Cliente: <?= $cliente->nome_completo ?></span>
             </div>
             <div class="form-group">
-                <span>Usuário #: <?= $cliente->id ?></span>
-            </div>
-            <div class="form-group">
                 <span>Valor Produtos: R$<?= $pedido->valor_total_cobrado ?></span>
             </div>
             <div class="form-group">
@@ -119,12 +116,15 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                                         <b>Lista : <?= $tituloLista ?></b>
                                     </div>
                                     <?php foreach ($lista as $adicional){ ?>
-                                        <div class="form-group">
-                                            <span>Nome: <?= $adicional['nome'] ?></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <span>Descricao: <?= $adicional['descricao'] ?></span>
-                                        </div>
+                                        <fieldset>
+                                            <legend></legend>
+                                            <div class="form-group">
+                                                <span>Nome: <?= $adicional['nome'] ?></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <span>Descricao: <?= $adicional['descricao'] ?></span>
+                                            </div>
+                                        </fieldset>
                                     <?php }?>
                                 </div>
                             <?php }
@@ -177,16 +177,15 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
         }
         .form-horizontal{
             padding-left: 5px;
-            border: 1px solid;
         }
         span{
             font-size: 16px;
         }
         .pedido{
-            background-color: #47b8e230;
+            background-color: #47b8e217;
         }
         .entrega{
-            background-color: #3a945b45;
+            background-color: #3a945b21;
         }
     </style>
 </div>

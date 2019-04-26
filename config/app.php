@@ -214,9 +214,16 @@ return [
             'className' => 'Smtp',
             'host' => 'ssl://smtp.gmail.com',
             'port' => 465,
-            'timeout' => 30,
+            'timeout' => 60,
             'username' => 'ladev.sistemas@gmail.com',
             'password' => 'Isoechato!2',
+            'context' => [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                ]
+            ]
         ]
     ],
 

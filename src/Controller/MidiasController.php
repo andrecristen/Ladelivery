@@ -37,7 +37,7 @@ class MidiasController extends AppController
         $this->paginate = [
             'contain' => ['Empresas']
         ];
-        $midias = $this->paginate($this->Midias->find()->where($this->generateConditionsFind()));
+        $midias = $this->paginate($this->Midias->find()->where($this->generateConditionsFind(false)));
         $this->set(compact('midias'));
     }
 

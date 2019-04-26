@@ -28,6 +28,7 @@
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
 <body>
 <div class="page-wrap d-flex flex-row align-items-center">
@@ -39,7 +40,11 @@
                     <?= $this->fetch('content') ?>
                 </div>
                 <div id="footer">
-                    <?= $this->Html->link(__('← Voltar'), 'javascript:history.back()') ?>
+                    <?= $this->Html->link(__('← Voltar'), 'javascript:history.back()', ['class' => 'btn btn-primary btn-lg']) ?>
+                    <a href="/pages/suporte" class="btn btn-success btn-lg">
+                        <span class="glyphicon glyphicon-envelope"></span>
+                        <i class="fas fa-headset"></i>&nbsp;Suporte
+                    </a>
                 </div>
             </div>
         </div>

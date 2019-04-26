@@ -26,6 +26,7 @@ use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Locator\TableLocator;
+use PHP_CodeSniffer\Generators\HTML;
 
 /**
  * Application Controller
@@ -131,9 +132,53 @@ class AppController extends Controller
             if($perfilAction){
                 return;
             }else{
-                $this->Flash->error('Você não possui acesso a ação "'.$actionModel->descricao_action.'", caso necessite desta ação contate suporte para liberar acesso.');
-                $anterior = $this->referer();
-                return $this->redirect($this->referer());
+//                $this->Flash->error('Você não possui acesso a ação "'.$actionModel->descricao_action.'", caso necessite desta ação contate suporte para liberar acesso.');
+                $erro = 'Você não possui acesso a ação "'.$actionModel->descricao_action.'", caso necessite desta ação contate suporte para liberar acesso.';
+                echo '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>';
+                echo '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">';
+                echo '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">';
+                echo '<div class="container">
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="error-template">
+                                      <h1>
+                                          Oops!</h1>
+                                      <h2> Você não tem acesso a essa página</h2>
+                                      <div class="error-details">
+                                          '.$erro.'
+                                      </div>
+                                      <div class="error-actions">
+                                          <a href="javascript:history.back()" class="btn btn-primary btn-lg">
+                                          <span class="glyphicon glyphicon-home"></span>
+                                              <i class="fas fa-backward"></i>&nbsp;Voltar 
+                                          </a>
+                                          <a href="/pages/suporte" class="btn btn-success btn-lg">
+                                             <span class="glyphicon glyphicon-envelope"></span> 
+                                              <i class="fas fa-headset"></i>&nbsp;Suporte
+                                          </a>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <style>
+                      body { 
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8yOS8xMiKqq3kAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAABHklEQVRIib2Vyw6EIAxFW5idr///Qx9sfG3pLEyJ3tAwi5EmBqRo7vHawiEEERHS6x7MTMxMVv6+z3tPMUYSkfTM/R0fEaG2bbMv+Gc4nZzn+dN4HAcREa3r+hi3bcuu68jLskhVIlW073tWaYlQ9+F9IpqmSfq+fwskhdO/AwmUTJXrOuaRQNeRkOd5lq7rXmS5InmERKoER/QMvUAPlZDHcZRhGN4CSeGY+aHMqgcks5RrHv/eeh455x5KrMq2yHQdibDO6ncG/KZWL7M8xDyS1/MIO0NJqdULLS81X6/X6aR0nqBSJcPeZnlZrzN477NKURn2Nus8sjzmEII0TfMiyxUuxphVWjpJkbx0btUnshRihVv70Bv8ItXq6Asoi/ZiCbU6YgAAAABJRU5ErkJggg==);
+                      }
+                      .error-template {
+                        padding: 40px 15px;
+                        text-align: center;
+                      }
+                      .error-actions {
+                        margin-top:15px;
+                        margin-bottom:15px;
+                      }
+                      .error-actions .btn { 
+                        margin-right:10px; 
+                      }
+                      </style>
+                      ';
+                die;
             }
         //Cliente acesso apenas as rotas publicas
         }elseif ($this->Auth->user('tipo') == User::TIPO_CLIENTE) {

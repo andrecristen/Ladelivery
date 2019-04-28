@@ -26,18 +26,21 @@ class User extends Entity
     const TIPO_CLIENTE = 1;
     const TIPO_ADMINISTRADOR = 2;
     const TIPO_MASTER = 3;
+    const TIPO_ENTREGADOR = 4;
 
     public static function getTipoListAll(){
         return [
             self::TIPO_CLIENTE       => 'Cliente',
             self::TIPO_ADMINISTRADOR => 'Administrador',
-            self::TIPO_MASTER        => 'Master'
+            self::TIPO_MASTER        => 'Master',
+            self::TIPO_ENTREGADOR    => 'Entregador'
         ];
     }
 
     public static function getTipoListCRUD(){
         return [
             self::TIPO_ADMINISTRADOR => 'Administrador',
+            self::TIPO_ENTREGADOR    => 'Entregador'
         ];
     }
 

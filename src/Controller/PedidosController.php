@@ -57,6 +57,8 @@ class PedidosController extends AppController
         $this->setPublicAction('rejeitarPedidoAberto');
         $this->setPublicAction('confirmarPedidoAberto');
         $this->setPublicAction('saveTrocoPara');
+        $this->setPublicAction('meusPedidos');
+        $this->setPublicAction('verStatus');
         $this->validateActions();
         $this->empresaUtils = new EmpresaUtils();
     }
@@ -806,6 +808,20 @@ class PedidosController extends AppController
         echo json_encode(['success' => $success]);
     }
 
+    public function meusPedidos(){
+        $pedidos = $this->Pedidos->find()->where(['user_id' => $this->empresaUtils->getUserId()])->orderDesc('id');
+        $this->set(compact('pedidos'));
+    }
+
+    public function verStatus($id = null){
+        $pedido = $this->Pedidos->get($id);
+        if($pedido->user_id !== $this->empresaUtils->getUserId()){
+            $this->Flash->error(__('O pedido informado não pertence ao seu usuário.'));
+            return $this->redirect(['action' => 'meusPedidos']);
+        }
+        $this->set(compact('pedido'));
+    }
+
     public function view($id = null)
     {
         $pedido = $this->Pedidos->get($id);
@@ -827,6 +843,4 @@ class PedidosController extends AppController
     {
         $this->pedidoSession = $pedidoSession;
     }
-
-
 }

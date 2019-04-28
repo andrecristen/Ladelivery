@@ -35,11 +35,17 @@ class FinanceiroController extends AppController
                 'empresa_id' => $this->empresaUtils->getUserEmpresaId(),
                 'status_pedido' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA
             ])->count();
-        $mensagens = 1;
+        $mensagens = 0;
         $dataAtual = new \DateTime();
         $mes = $dataAtual->format('m');
         $lucroMensalDelivery = $this->getValorVendidoDelivery($mes, $this->empresaUtils->getUserEmpresaId());
+        if(!$lucroMensalDelivery){
+            $lucroMensalDelivery = '0.00';
+        }
         $lucroMensalComandas = $this->getValorVendidoComandas($mes, $this->empresaUtils->getUserEmpresaId());
+        if(!$lucroMensalComandas){
+            $lucroMensalComandas = '0.00';
+        }
         $produtosMaisComprados = $this->getProdutosMaisComprados($mes);
         $produtos = [];
         foreach ($produtosMaisComprados as $produtoMaisComprado) {

@@ -8,11 +8,13 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $pedido_id
+ * @property int $user_id
  * @property float $valor_entrega
  * @property string|null $cotacao_maps
  * @property int $endereco_id
  *
  * @property \App\Model\Entity\Pedido $pedido
+ * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Endereco $endereco
  */
 class PedidosEntrega extends Entity
@@ -29,10 +31,12 @@ class PedidosEntrega extends Entity
      */
     protected $_accessible = [
         'pedido_id' => true,
+        'user_id' => true,
         'valor_entrega' => true,
         'cotacao_maps' => true,
         'endereco_id' => true,
         'pedido' => true,
-        'endereco' => true
+        'endereco' => true,
+        'user' => true
     ];
 }

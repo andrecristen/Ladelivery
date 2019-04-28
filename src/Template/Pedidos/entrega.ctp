@@ -31,7 +31,9 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
         /** @var $pedido \App\Model\Entity\Pedido */
         foreach ($pedidos as $pedido){
             /** @var $entrega \App\Model\Entity\PedidosEntrega*/
-            $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id'=> $pedido->id])->first(); ?>
+            $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id'=> $pedido->id])->first();
+            /** @var $entregador \App\Model\Entity\User*/
+            $entregador = $tableLocator->get('Users')->find()->where(['id'=> $entrega->user_id])->first(); ?>
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
@@ -39,9 +41,13 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                         <p class="card-text">
                             Identificador Pedido: <?= $pedido->id?>
                             <br>
+                            Entregador: <?= ($entregador->nome_completo ? $entregador->nome_completo : 'Não definido') ?>
+                            <br>
                             Data/Hora: <?= $pedido->data_pedido->format('d/m/Y H:i:s')?>
                             <br>
                             Tempo produção estimado: <?= $pedido->tempo_producao_aproximado_minutos?>
+                            <br>
+                            Valor entrega: R$<?= $entrega->valor_entrega?>
                             <br>
                             <?php if($entrega){?>
                                 Valor Total: R$<?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
@@ -51,6 +57,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                             <?php }?>
                         </p>
                         <?= $this->Html->link(__(''), ['action' => 'setSaiuParaEntrega', $pedido->id], ['class' => 'fas fa-motorcycle btn btn-success btn-sm', 'title' => 'Pedido saiu para entrega']) ?>
+                        <?= $this->Html->link(__(''), ['controller' => 'PedidosEntregas','action' => 'setEntregador',  $entrega->id], ['class' => 'far fa-address-card btn btn-warning btn-sm', 'title' => 'Definir entregador']) ?>
                         <?= $this->Html->link(__(''), ['action' => 'view', $pedido->id], ['class' => 'fas fa-eye btn btn-info btn-sm', 'title' => 'Visualizar']) ?>
                         <?= $this->Html->link(__(''), ['action' => 'mensagemCliente', $pedido->id], ['class' => 'far fa-comments btn btn-primary btn-sm', 'title' => 'Trocar Mensagem com cliente']) ?>
                     </div>

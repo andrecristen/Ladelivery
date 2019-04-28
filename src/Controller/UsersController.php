@@ -95,7 +95,7 @@ class UsersController extends AppController
                     $userPerfil = new PerfilsUser();
                     $userPerfil->user_id = $this->empresaUtils->getUserId();
                     $userPerfil->perfil_id = $perfilInicial->id;
-                    $this->getTableLocator()->get('PerfilsUser')->save($userPerfil);
+                    $this->getTableLocator()->get('PerfilsUsers')->save($userPerfil);
                 }
                 $this->Flash->success(__('Usuário adicionado com sucesso.'));
 

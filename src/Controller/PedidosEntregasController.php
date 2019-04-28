@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\User;
 use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -33,7 +34,7 @@ class PedidosEntregasController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Pedidos', 'Enderecos']
+            'contain' => ['Pedidos', 'Enderecos', 'Users']
         ];
         $filterFixed = ['pedidos.empresa_id' => $this->empresaUtils->getUserEmpresaId()];
         $pedidosEntregas = $this->paginate($this->PedidosEntregas->find()->where($this->generateConditionsFind(false, $filterFixed)));
@@ -79,6 +80,24 @@ class PedidosEntregasController extends AppController
         $this->set(compact('pedidosEntrega', 'pedidos', 'enderecos'));
     }
 
+    public function setEntregador($id = null){
+        $pedidosEntrega = $this->PedidosEntregas->get($id, [
+            'contain' => ['Pedidos']
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $pedidosEntrega = $this->PedidosEntregas->patchEntity($pedidosEntrega, $this->request->getData());
+            if ($this->PedidosEntregas->save($pedidosEntrega)) {
+                $this->Flash->success(__('Entregador definido com sucesso.'));
+
+                return $this->redirect(['controller'=> 'Pedidos','action' => 'entrega']);
+            }
+            $this->Flash->error(__('Não foi possível definir o entregador.'));
+        }
+        $pedidos = $this->PedidosEntregas->Pedidos->find('list', ['limit' => 1]);
+        $users = $this->PedidosEntregas->Users->find('list')->where(['tipo' => User::TIPO_ENTREGADOR]);
+        $this->set(compact('pedidosEntrega', 'pedidos', 'users'));
+    }
+
     /**
      * Edit method
      *
@@ -100,8 +119,8 @@ class PedidosEntregasController extends AppController
             }
             $this->Flash->error(__('The pedidos entrega could not be saved. Please, try again.'));
         }
-        $pedidos = $this->PedidosEntregas->Pedidos->find('list', ['limit' => 200]);
-        $enderecos = $this->PedidosEntregas->Enderecos->find('list', ['limit' => 200]);
+        $pedidos = $this->PedidosEntregas->Pedidos->find('list');
+        $enderecos = $this->PedidosEntregas->Enderecos->find('list');
         $this->set(compact('pedidosEntrega', 'pedidos', 'enderecos'));
     }
 

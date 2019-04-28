@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * PedidosEntregas Model
  *
  * @property \App\Model\Table\PedidosTable|\Cake\ORM\Association\BelongsTo $Pedidos
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\EnderecosTable|\Cake\ORM\Association\BelongsTo $Enderecos
  *
  * @method \App\Model\Entity\PedidosEntrega get($primaryKey, $options = [])
@@ -42,6 +43,12 @@ class PedidosEntregasTable extends Table
             'foreignKey' => 'pedido_id',
             'joinType' => 'INNER'
         ]);
+
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'LEFT'
+        ]);
+
         $this->belongsTo('Enderecos', [
             'foreignKey' => 'endereco_id',
             'joinType' => 'INNER'
@@ -82,6 +89,7 @@ class PedidosEntregasTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['pedido_id'], 'Pedidos'));
+        $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['endereco_id'], 'Enderecos'));
 
         return $rules;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 26-Abr-2019 às 21:03
+-- Generation Time: 28-Abr-2019 às 01:14
 -- Versão do servidor: 5.7.21
 -- PHP Version: 7.2.4
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `actions` (
   `nome_action` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
   `descricao_action` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `actions`
@@ -181,7 +181,10 @@ INSERT INTO `actions` (`id`, `controller_id`, `nome_action`, `descricao_action`)
 (136, 5, 'concluirPedido', 'Concluir pedido'),
 (137, 5, 'setColetado', 'Definir como coletado pelo cliente'),
 (138, 5, 'setSaiuParaEntrega', 'Definir status do pedido como sendo entregue'),
-(139, 5, 'setEntregue', 'Definir pedido como entregue');
+(139, 5, 'setEntregue', 'Definir pedido como entregue'),
+(140, 1, 'logout', 'Sair do Sistema'),
+(141, 23, 'setEntregador', 'Definir entregador para a entrega do pedido'),
+(142, 5, 'rejeitar', 'Rejeitar Pedido');
 
 -- --------------------------------------------------------
 
@@ -198,62 +201,6 @@ CREATE TABLE IF NOT EXISTS `alteracao_senhas` (
   `usado` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Extraindo dados da tabela `alteracao_senhas`
---
-
-INSERT INTO `alteracao_senhas` (`id`, `user_id`, `token`, `validade`, `usado`) VALUES
-(1, 8, 'LA201903130420170426812001552504817DEV54851054', '2019-03-13 19:20:18', 0),
-(2, 8, 'LA201903130428520913905001552505332DEV87135530', '2019-03-16 16:28:53', 0),
-(3, 8, 'LA201903130431390881918001552505499DEV98718359', '2019-03-16 16:31:40', 0),
-(4, 16, 'LA201903130432270193464001552505547DEV83064079', '2019-03-16 16:32:27', 0),
-(5, 8, 'LA201903130433120701996001552505592DEV81203759', '2019-03-16 16:33:12', 0),
-(6, 8, 'LA201903130523410625990001552508621DEV12508884', '2019-03-16 17:23:42', 0),
-(7, 8, 'LA201903130524040380986001552508644DEV77282234', '2019-03-16 17:24:04', 0),
-(8, 8, 'LA201903130525190666554001552508719DEV14147486', '2019-03-16 17:25:19', 0),
-(9, 8, 'LA201903130526290968416001552508789DEV76921375', '2019-03-16 17:26:30', 0),
-(10, 8, 'LA201903130527440376391001552508864DEV73528013', '2019-03-16 17:27:44', 0),
-(11, 8, 'LA201903130529370800914001552508977DEV26731828', '2019-03-16 17:29:38', 0),
-(12, 8, 'LA201903130531130748392001552509073DEV64116838', '2019-03-16 17:31:13', 0),
-(13, 8, 'LA201903130532030913003001552509123DEV43152506', '2019-03-16 17:32:03', 0),
-(14, 8, 'LA201903130533240041654001552509204DEV31955176', '2019-03-16 17:33:24', 0),
-(15, 8, 'LA201903130533570579593001552509237DEV80232391', '2019-03-16 17:33:57', 0),
-(16, 8, 'LA201903130539200244099001552509560DEV82635612', '2019-03-16 17:39:20', 0),
-(17, 8, 'LA201903130608320663834001552511312DEV63116775', '2019-03-16 18:08:32', 0),
-(18, 8, 'LA201903130609430531140001552511383DEV94312641', '2019-03-16 18:09:43', 0),
-(19, 16, 'LA201903150717550233957001552688275DEV52052338', '2019-03-18 19:17:55', 0),
-(20, 8, 'LA201903150718100136836001552688290DEV77973543', '2019-03-18 16:39:10', 0),
-(21, 8, 'LA201903281039050539801001553823545DEV42160703', '2019-03-31 22:39:05', 0),
-(22, 8, 'LA201904030524540996518001554323094DEV46417968', '2019-04-06 17:24:54', 0),
-(23, 8, 'LA201904030526180951035001554323178DEV65163220', '2019-04-06 17:26:18', 0),
-(24, 8, 'LA201904030529000157634001554323340DEV28747113', '2019-04-06 17:29:00', 0),
-(25, 8, 'LA201904030530130560684001554323413DEV70660840', '2019-04-06 17:30:13', 0),
-(26, 8, 'LA201904030531260226738001554323486DEV89948166', '2019-04-06 17:31:26', 0),
-(27, 24, 'LA201904030532430304900001554323563DEV93765771', '2019-04-06 17:32:43', 0),
-(28, 8, 'LA201904030947120805122001554338832DEV62970912', '2019-04-06 21:47:12', 0),
-(29, 8, 'LA201904030949490211130001554338989DEV23201538', '2019-04-06 21:49:49', 0),
-(30, 8, 'LA201904030950540737123001554339054DEV85074321', '2019-04-06 21:50:54', 0),
-(31, 8, 'LA201904030953040387632001554339184DEV49509950', '2019-04-06 21:53:04', 0),
-(32, 8, 'LA201904030954100696337001554339250DEV79548209', '2019-04-06 21:54:10', 0),
-(33, 8, 'b380fb1d2aa373e2e09e431b959e7f39', '2019-04-06 21:58:18', 1),
-(34, 8, '5bae0c531e8b0e727de3694ab783493d', '2019-04-06 22:01:03', 0),
-(35, 8, 'f1bb797b1141c4318ecf9d5b81ec04fb', '2019-04-06 22:02:56', 0),
-(36, 8, 'bb160aa7fb3f0e66dcbc5266658fde39', '2019-04-06 22:03:33', 0),
-(37, 8, '7e9e3ababcc606d0fe31d9053e7f9e75', '2019-04-06 22:04:42', 0),
-(38, 8, '1a1f67d767e5385e267e130515c96e31', '2019-04-06 22:05:53', 0),
-(39, 8, '5d2570591770fd834cf152f1fee4fb14', '2019-04-06 22:07:19', 0),
-(40, 8, 'f467fab502eb835cc4e51f0bf556db21', '2019-04-06 22:08:30', 0),
-(41, 8, '2c7fea9a1dda8f1ea39dd8f3d4036719', '2019-04-06 22:10:38', 0),
-(42, 8, '32e54455e10c861bd81c606d3c7469e8', '2019-04-06 22:11:08', 0),
-(43, 8, '3d183a7fb40643fbc0230cc7d15fdbe1', '2019-04-06 22:13:51', 0),
-(44, 8, '471be29a9d34e6f9485bd1ef15f8a304', '2019-04-06 22:14:25', 0),
-(45, 24, '08a2b7afbeb6c1b6fabfd03aad9921b8', '2019-04-06 22:14:59', 0),
-(46, 8, 'fc24c0e52c10c607a8c8b21c19e75a2e', '2019-04-07 17:33:29', 1),
-(47, 8, 'abfe359c1a171edd1c05a2df4171a5a6', '2019-04-27 18:11:03', 0),
-(48, 8, 'a12208edb7de554ec493c55da1d474c2', '2019-04-27 18:11:39', 0),
-(49, 8, 'ef96a89317ee04474657cd79cd3df2f1', '2019-04-27 18:12:35', 0),
-(50, 8, '1673dfd2f6dc7e8561708c65a5fd0a36', '2019-04-27 18:13:47', 0);
 
 -- --------------------------------------------------------
 
@@ -298,13 +245,6 @@ CREATE TABLE IF NOT EXISTS `categorias_produtos` (
   PRIMARY KEY (`id`),
   KEY `midia_id` (`midia_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Extraindo dados da tabela `categorias_produtos`
---
-
-INSERT INTO `categorias_produtos` (`id`, `empresa_id`, `midia_id`, `nome_categoria`, `descricao_categoria`, `created`, `modified`) VALUES
-(22, 1, NULL, 'Pizzas', 'Pizzas do Bonna', '2019-03-08 17:20:52', '2019-04-18 19:18:25');
 
 -- --------------------------------------------------------
 
@@ -378,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `cupom_site` (
 --
 
 INSERT INTO `cupom_site` (`id`, `empresa_id`, `nome_cupom`, `vezes_usado`, `maximo_vezes_usar`, `valor_desconto`, `porcentagem`) VALUES
-(1, 1, 'DESCONTO', 6, 0, 15, 0);
+(1, 1, 'DESCONTO', 7, 0, 15, 0);
 
 -- --------------------------------------------------------
 
@@ -393,14 +333,7 @@ CREATE TABLE IF NOT EXISTS `dias_fechados` (
   `dia_fechado` date NOT NULL,
   `motivo_fechado` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Extraindo dados da tabela `dias_fechados`
---
-
-INSERT INTO `dias_fechados` (`id`, `empresa_id`, `dia_fechado`, `motivo_fechado`) VALUES
-(1, 2, '2019-03-30', 'caguei quero dormir');
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -588,7 +521,7 @@ CREATE TABLE IF NOT EXISTS `itens_carrinhos` (
   `observacao` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `opicionais` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -719,7 +652,7 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `cupom_usado` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `valor_desconto` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -731,12 +664,13 @@ DROP TABLE IF EXISTS `pedidos_entregas`;
 CREATE TABLE IF NOT EXISTS `pedidos_entregas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pedido_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `valor_entrega` decimal(10,2) NOT NULL,
   `cotacao_maps` text COLLATE utf8_unicode_ci,
   `endereco_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_pedido_entrega` (`pedido_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -756,7 +690,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_produtos` (
   `ambiente_producao_responsavel` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -794,7 +728,7 @@ CREATE TABLE IF NOT EXISTS `perfils_actions` (
   `action_id` int(11) NOT NULL,
   `perfil_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=145 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=148 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `perfils_actions`
@@ -937,7 +871,10 @@ INSERT INTO `perfils_actions` (`id`, `action_id`, `perfil_id`) VALUES
 (141, 137, 2),
 (142, 138, 2),
 (143, 139, 2),
-(144, 67, 2);
+(144, 67, 2),
+(145, 140, 2),
+(146, 141, 2),
+(147, 142, 2);
 
 -- --------------------------------------------------------
 
@@ -951,7 +888,7 @@ CREATE TABLE IF NOT EXISTS `perfils_users` (
   `perfil_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `perfils_users`
@@ -963,7 +900,8 @@ INSERT INTO `perfils_users` (`id`, `perfil_id`, `user_id`) VALUES
 (3, 4, 8),
 (4, 5, 8),
 (5, 2, 20),
-(6, 5, 20);
+(6, 5, 20),
+(7, 2, 20);
 
 -- --------------------------------------------------------
 
@@ -1044,7 +982,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `ano_nascimento` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `users`
@@ -1055,9 +993,10 @@ INSERT INTO `users` (`id`, `nome_completo`, `tipo`, `empresa_id`, `created`, `mo
 (16, 'André Cristen Cliente', 1, 2, '2019-02-05 22:14:18', '2019-02-15 21:39:25', 'TESTE LADEV CLIENTE', 'andre.cristen@ladev.com', '$2y$10$NNNttUN6hZNz9NBWPXB2AOe4nacaYwnR0QkiZEy/LznND2TxGkMem', 3, 9, 2000),
 (20, 'Baiucas Lanches', 2, 1, '2019-02-14 21:40:09', '2019-04-25 21:42:35', 'Baiucas Lanches e Delivery', 'baiucas.admin@gmail.com', '$2y$10$xL/DkDmDdVeZsX6ccQPnmOa7i0YyQxsgMLr41A96WdTHQ4ws4jZaG', 3, 9, 2000),
 (21, 'LaDev - Software', 2, 2, '2019-02-28 16:30:38', '2019-03-27 16:14:19', 'Ladelivery', 'ladev.sistemas@gmail.com', '$2y$10$RcrpWZi7np6wn1qV..Nn.OqoGbCTvY9IfbC.wVaQKmL61eRfp34VO', 3, 9, 2000),
-(22, 'André Cristen', 2, 1, '2019-03-19 17:04:53', '2019-03-19 17:04:53', '123', 'andrecristenibirama@gmail.com1', '$2y$10$nepDfgLtK4hWc9Ndib/Tr.h5/0iEmflnv7C3BPl7tmGo8kwJizCr6', 1, 1, 1),
+(22, 'André Cristen', 2, 1, '2019-03-19 17:04:53', '2019-04-27 14:49:13', '123', 'andrecristenibirama@gmail.com1', '$2y$10$nepDfgLtK4hWc9Ndib/Tr.h5/0iEmflnv7C3BPl7tmGo8kwJizCr6', 1, 1, 1),
 (23, 'André Cristen', 1, 2, '2019-03-19 17:05:20', '2019-03-19 17:05:20', 'Dezinh do funk', 'de@de.com', '$2y$10$kL2mVxabAH2RoqorZJmOdehZ4/NN0BvstQpHr3Zbxhq3MXj9GT.A6', 132, 12, 12),
-(24, 'Fernando Cristen', 1, 2, '2019-04-03 17:32:34', '2019-04-03 17:32:34', 'Fefe', 'cristenfernando@gmail.com', '$2y$10$jeceWEZJWr1dhYxkZ0Dz1ukZyX2Nn4546d/jbrSy0kRnp8G2f5L/m', 6, 11, 2001);
+(24, 'Fernando Cristen', 1, 2, '2019-04-03 17:32:34', '2019-04-03 17:32:34', 'Fefe', 'cristenfernando@gmail.com', '$2y$10$jeceWEZJWr1dhYxkZ0Dz1ukZyX2Nn4546d/jbrSy0kRnp8G2f5L/m', 6, 11, 2001),
+(27, 'Ze do Grau', 4, 1, '2019-04-27 14:07:43', '2019-04-27 14:07:43', 'Grau e mais', 'zedograu@grau.com', '$2y$10$B0hHAi1D0OMEprUOdONEs.C2k9hz/NeIBFLnhYhsL3cvlWvnZDWW6', 12, 13, 1213);
 
 --
 -- Constraints for dumped tables

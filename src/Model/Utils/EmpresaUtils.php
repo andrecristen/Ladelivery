@@ -18,6 +18,7 @@ use Cake\ORM\Locator\TableLocator;
  */
 class EmpresaUtils extends AppController
 {
+    const NOME_EMPRESA_LOJA = 'LaDelivery - LaDev';
     /*
      * Id da empresa unica que fornece produtos.
      *

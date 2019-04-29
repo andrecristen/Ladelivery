@@ -13,7 +13,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = 'LaDelivery - LaDev';
+$cakeDescription = \App\Model\Utils\EmpresaUtils::NOME_EMPRESA_LOJA;
 $cacheControl = new \App\Model\Utils\CacheControl();
 $cacheControl = $cacheControl->getCacheVersion();
 ?>

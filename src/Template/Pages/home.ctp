@@ -2,7 +2,7 @@
 $cacheControl = new \App\Model\Utils\CacheControl();
 $this->layout = false;
 
-$cakeDescription = 'LaDelivery';
+$cakeDescription = \App\Model\Utils\EmpresaUtils::NOME_EMPRESA_LOJA;
 $controllerPedido = new \App\Model\Utils\SiteUtilsPedido();
 $existstPedidoAberto = false;
 if (isset($_SESSION['Auth']['User']['id'])){
@@ -37,7 +37,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">LaDelivery</a>
+        <a class="navbar-brand" href="#"><?= $cakeDescription?></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

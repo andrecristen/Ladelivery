@@ -10,6 +10,7 @@
         <legend><?= __('Editar Tempo Produção') ?></legend>
         <?php
         echo $this->Form->control('nome');
+        echo $this->Form->control('tipo', ['options' => \App\Model\Entity\TemposMedio::getTipoList()]);
         echo $this->Form->control('tempo_medio_producao_minutos');
         echo $this->Form->control('ativo');
         ?>

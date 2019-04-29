@@ -5,6 +5,9 @@
  */
 ?>
 <div class="col-sm-12">
+    <div class="alert alert-info">
+        <span>Para banners só são aceitas imagens com resolução igual a 1200x400 pixels, resoluções diferentes serão bloqueadas no cadastro.</span>
+    </div>
     <?= $this->Form->create($banner,  ['type'=>'file']) ?>
     <fieldset>
         <legend><?= __('Editar Banner') ?></legend>

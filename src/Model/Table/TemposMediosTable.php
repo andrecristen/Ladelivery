@@ -62,6 +62,10 @@ class TemposMediosTable extends Table
             ->allowEmptyString('nome', false);
 
         $validator
+            ->requirePresence('tipo', 'create')
+            ->allowEmptyString('tipo', false);
+
+        $validator
             ->integer('tempo_medio_producao_minutos')
             ->requirePresence('tempo_medio_producao_minutos', 'create')
             ->allowEmptyString('tempo_medio_producao_minutos', false);

@@ -14,6 +14,15 @@ use Cake\ORM\Entity;
  */
 class TemposMedio extends Entity
 {
+    const TIPO_PARA_ENTREGA = 1;
+    const TIPO_PARA_COLETA = 2;
+
+    public static function getTipoList(){
+        return [
+            self::TIPO_PARA_ENTREGA => 'Pedidos com Entrega',
+            self::TIPO_PARA_COLETA => 'Pedidos com Coleta do Cliente'
+        ];
+    }
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -28,6 +37,7 @@ class TemposMedio extends Entity
         'empresa_id' => true,
         'empresa' => true,
         'nome' => true,
+        'tipo' => true,
         'tempo_medio_producao_minutos' => true,
         'ativo' => true
     ];

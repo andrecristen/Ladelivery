@@ -5,6 +5,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
 $query = $tableLocator->get('Produtos')->find();
 $params = ($this->getRequest()->getAttribute('params'));
 $controllerPedido = new \App\Model\Utils\SiteUtilsPedido();
+$siteUtils = new \App\Model\Utils\SiteUtils();
 $existstPedidoAberto = false;
 if (isset($_SESSION['Auth']['User']['id'])){
     $existstPedidoAberto = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);
@@ -13,6 +14,11 @@ $empresaAberta = $controllerPedido->empresaAberta();
 if(!$existstPedidoAberto || !$empresaAberta){
     $categoria = $params['?']['categoria'];
     $categoriaNome = $params['?']['categoriaNome'];
+    if(!$categoriaNome){
+        /** @var $categoriaModel \App\Model\Entity\CategoriasProduto*/
+        $categoriaModel = $tableLocator->get('CategoriasProdutos')->find()->where(['id' => $categoria])->first();
+        $categoriaNome = $categoriaModel->nome_categoria;
+    }
     $query->where(['categorias_produto_id' => intval($categoria), 'ativo_produto' => true]);
 }else{
     $query = [];
@@ -224,13 +230,15 @@ if(!$existstPedidoAberto || !$empresaAberta){
                     </div>
                     <div class="card-footer">
                         <?php if (isset($_SESSION['Auth']['User']['id']) && $empresaAberta) { ?>
-                            <button class="btn btn-success" style="width: 100%"
+                            <button title="Adicionar ao carrinho" class="btn btn-sm btn-success" style="width: 45%"
                                     onclick="openModalAddCart(<?= $produto->id ?>, <?= $_SESSION['Auth']['User']['id'] ?>)">
-                                Adicionar ao carrinho <i style="display: none" id="loading-<?= $produto->id?>" class="fa fa-spinner fa-spin"></i>
+                                <i class="fas fa-cart-plus"></i> Comprar <i style="display: none" id="loading-<?= $produto->id?>" class="fa fa-spinner fa-spin"></i>
                             </button>
                         <?php } else { ?>
-                            <button disabled class="btn btn-success" style="width: 100%">Adicionar ao carrinho </button>
+                            <button title="Adicionar ao carrinho" disabled class="btn btn-sm btn-success" style="width: 45%"><i class="fas fa-cart-plus"></i> Comprar</button>
                         <?php } ?>
+                        <?php $siteUtils->getStarsProduto($produto->id)?>
+                        <a title="Avaliar Produto" href="produtos/avaliar/<?= $produto->id?>"><i class="far fa-clipboard"></i></a>
                     </div>
                 </div>
             </div>
@@ -246,4 +254,9 @@ if(!$existstPedidoAberto || !$empresaAberta){
     <br>
     <?php }?>
 </div>
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
 </body>

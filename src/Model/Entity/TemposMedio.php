@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  * @property int $empresa_id
  * @property string $nome
  * @property int $tempo_medio_producao_minutos
+ * @property int $tipo
  * @property bool $ativo
  */
 class TemposMedio extends Entity

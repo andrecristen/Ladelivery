@@ -4,6 +4,7 @@
  * Gerente de projeto & Desenvolvedor
  */
 $tableLocator = new \Cake\ORM\Locator\TableLocator();
+$statusList = \App\Model\Entity\Pedido::getDeliveryStatusList();
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -51,33 +52,39 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                     <div class="card-body">
                         <h6 class="card-title"><i class="fas fa-clipboard-list"></i></h6>
                         <p class="card-text">
-                            #Pedido: <?= $pedido->id?>
+                            <b>#Pedido:</b> <?= $pedido->id?>
                             <br>
-                            Data/Hora: <?= $pedido->data_pedido->format('d/m/Y H:i:s')?>
+                            <b>Data/Hora:</b> <?= $pedido->data_pedido->format('d/m/Y H:i:s')?>
                             <br>
-                            Tempo produção estimado: <?= $pedido->tempo_producao_aproximado_minutos?>
+                            <b>Tempo produção estimado:</b> <?= $pedido->tempo_producao_aproximado_minutos?>
                             <br>
-                            Acréscimos: R$ <?= $pedido->valor_acrescimo ?>
+                            <b>Situação :</b> <?= $statusList[$pedido->status_pedido] ?>
                             <br>
-                            Descontos: R$ <?= $pedido->valor_desconto ?>
+                            <b>Acréscimos: R$</b> <?= $pedido->valor_acrescimo ?>
                             <br>
-                            Produtos: R$ <?= $pedido->valor_total_cobrado ?>
+                            <b>Descontos: R$</b> <?= $pedido->valor_desconto ?>
+                            <br>
+                            <b>Produtos: R$</b> <?= $pedido->valor_total_cobrado ?>
                             <br>
                             <?php if($entrega){?>
-                                Entrega: R$<?= $entrega->valor_entrega ?></span>
+                                <b>Entrega: R$</b><?= $entrega->valor_entrega ?></span>
                                 <br>
-                                Valor Total: R$<?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
+                                <b>Valor Total: R$</b><?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
                             <?php }else{ ?>
-                                Entrega: Entrega não contratada
+                                <b>Entrega: Entrega não contratada</b>
                                 <br>
-                                Valor Total: R$<?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
-
+                                <b>Valor Total: R$</b><?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
                             <?php }?>
                         </p>
-                        <?= $this->Html->link(__(''), ['action' => 'verStatus', $pedido->id], ['class' => 'far fa-eye btn btn-success btn-sm', 'title' => 'Visualizar Pedido']) ?>
+                        <?= $this->Html->link(__(''), ['action' => 'verStatus', $pedido->id], ['class' => 'far fa-eye btn btn-info btn-sm', 'title' => 'Visualizar Pedido']) ?>
                     </div>
                 </div>
             </div>
         <?php } ?>
     </div>
 </div>
+<style>
+    .col-sm-4{
+        margin-bottom: 15px;
+    }
+</style>

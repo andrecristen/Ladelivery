@@ -7,8 +7,8 @@
 namespace App\Model\Utils;
 
 
-use App\Model\Entity\HorariosAtendimento;
 use App\Model\Entity\Pedido;
+use Cake\Datasource\ConnectionManager;
 use Cake\ORM\Locator\TableLocator;
 
 class SiteUtilsPedido
@@ -33,6 +33,18 @@ class SiteUtilsPedido
             return $pedidoAberto;
         }
         return false;
+    }
+
+    public function getProdutosMaisVendidos($limit = 5){
+        $sql = 'SELECT produto_id, COUNT(produto_id) as quantidade FROM pedidos_produtos GROUP BY produto_id ORDER BY quantidade DESC LIMIT '.$limit;
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute($sql)
+            ->fetchAll('assoc');
+        $produtos = [];
+        foreach ($results as $result){
+            $produtos[] = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $result['produto_id']])->first();
+        }
+        return $produtos;
     }
 
     public function empresaAberta($empresaId = null){

@@ -8,9 +8,16 @@ $existstPedidoAberto = false;
 if (isset($_SESSION['Auth']['User']['id'])){
     $existstPedidoAberto = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);
 }
-
+$tableLocator = new \Cake\ORM\Locator\TableLocator();
+$empresaUtils = new \App\Model\Utils\EmpresaUtils();
 $empresaAberta = $controllerPedido->empresaAberta();
-
+/** @var $tempoEntrega \App\Model\Entity\TemposMedio*/
+$tempoEntrega = $tableLocator->get('TemposMedios')->find()->where(['empresa_id' => $empresaUtils->getEmpresaBase(),'tipo'  => \App\Model\Entity\TemposMedio::TIPO_PARA_ENTREGA, 'ativo' => true])->first();
+/** @var $tempoColeta \App\Model\Entity\TemposMedio*/
+$tempoColeta = $tableLocator->get('TemposMedios')->find()->where(['empresa_id' => $empresaUtils->getEmpresaBase(),'tipo'  => \App\Model\Entity\TemposMedio::TIPO_PARA_COLETA, 'ativo' => true])->first();
+/** @var $produtosMaisVendidos \App\Model\Entity\Produto[]*/
+$produtosMaisVendidos = $controllerPedido->getProdutosMaisVendidos();
+$haveProdutos = count($produtosMaisVendidos);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,11 +95,10 @@ $empresaAberta = $controllerPedido->empresaAberta();
             </div>
         </div>
     <?php }
-    $tableLocator = new \Cake\ORM\Locator\TableLocator();
     /** @var $banners \App\Model\Entity\Banner[]*/
     $banners = $tableLocator->get('Banners')->find()->where(['ativo' => true]);
     ?>
-    <div id="carouselExampleIndicators" class="carousel slide height-size" data-ride="carousel">
+    <div style="height: 400px" id="carouselExampleIndicators" class="carousel slide height-size" data-ride="carousel">
         <ol class="carousel-indicators">
             <?php
             $count = 0;
@@ -130,16 +136,51 @@ $empresaAberta = $controllerPedido->empresaAberta();
             <span class="sr-only">Next</span>
         </a>
     </div>
-    <!-- Page Heading -->
-    <h1 class="my-4">Bem Vindo ao LaDelivery!
-        <br>
-        <small>Só aqui você encontra as melhores comidas, afinal de contas, comida une as pessoas!</small>
-        <small>E degustar um comida saborosa, prática e rápida é com a gente mesmo, então ta esperando o que?</small>
-        <br>
-        <small>Vai logo dar um conferida nas nossas categorias de lanches saborosos, aposto que algum vai agradar seu paladar...</small>
-    </h1>
+    <br>
+    <br>
+    <h2 style="text-align: center">Tempo de Produção</h2>
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-6 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Coleta</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title"><?= $tempoColeta->tempo_medio_producao_minutos?> <small class="text-muted"> min</small></h1>
+                <span>Não precisa de entrega? busque você mesmo o pedido no restaurante!</span>
+            </div>
+        </div>
+        <div class="card mb-6 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Entrega</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title"><?= $tempoEntrega->tempo_medio_producao_minutos?> <small class="text-muted"> min</small></h1>
+                <span>Fique tranquilo, levamos o pedido até sua casa por uma pequena taxa!</span>
+            </div>
+        </div>
+    </div>
+    <?php if ($haveProdutos > 0 ){ ?>
+        <h2 style="text-align: center">Produtos Mais Vendidos</h2>
+        <div class="card-deck mb-3 text-center">
+            <?php foreach ($produtosMaisVendidos as $produto){ ?>
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal"><?= $produto->nome_produto ?></h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title"><small class="text-muted"> R$ </small><?= $produto->preco_produto?></h1>
+                    </div>
+                    <div style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" class="card-body">
+                        <span><?= $produto->descricao_produto ?></span>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary" href="/pages/produtos?categoria=<?= $produto->categorias_produto_id?>"><i class="fas fa-search"></i> Ver categoria</a>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+    <?php }?>
 </div>
-<!-- Footer -->
 <footer style="background-color: #343a40!important; margin-top: 45px;" class="page-footer font-small blue footer">
     <!-- Copyright -->
     <div style="color: white" class="footer-copyright text-center py-3">© 2019 Copyright <a href=""> LaDev</a>
@@ -160,6 +201,5 @@ $empresaAberta = $controllerPedido->empresaAberta();
         flex-shrink: 0;
     }
 </style>
-<!-- Footer -->
 </body>
 </html>

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\TemposMedio;
 use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -67,7 +68,9 @@ class TemposMediosController extends AppController
             $temposMedio->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->TemposMedios->save($temposMedio)) {
                 $this->Flash->success(__('Salvo com sucesso.'));
-
+                if($temposMedio->ativo){
+                    $this->desativaTempoMedioAtivo($temposMedio->tipo, $temposMedio->id);
+                }
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Erro, tente novamente.'));
@@ -92,7 +95,9 @@ class TemposMediosController extends AppController
             $temposMedio->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->TemposMedios->save($temposMedio)) {
                 $this->Flash->success(__('Editado com sucesso.'));
-
+                if($temposMedio->ativo){
+                    $this->desativaTempoMedioAtivo($temposMedio->tipo,  $temposMedio->id);
+                }
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Erro, tente novamente.'));
@@ -118,5 +123,14 @@ class TemposMediosController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    private function desativaTempoMedioAtivo($tipo, $atual){
+        /** @var $temposMedios TemposMedio*/
+        $temposMedios = $this->getTableLocator()->get('TemposMedios')->find()->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId(), 'tipo' => $tipo, 'ativo' => true , 'id <>' => $atual])->first();
+        if($temposMedios){
+            $temposMedios->ativo = false;
+            $this->TemposMedios->save($temposMedios);
+        }
     }
 }

@@ -43,6 +43,13 @@ class UsersController extends AppController
         $this->set(compact('users'));
     }
 
+    public function clientes()
+    {
+        $filterCliente = ['tipo' => User::TIPO_CLIENTE];
+        $users = $this->paginate($this->Users->find()->where($this->generateConditionsFind(false, $filterCliente)));
+        $this->set(compact('users'));
+    }
+
     /**
      * View method
      *
@@ -139,6 +146,10 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => []
         ]);
+        if($user->tipo == User::TIPO_CLIENTE){
+            $this->Flash->error(__('Você não pode editar usuários do tipo cliente.'));
+            return $this->redirect($this->referer());
+        }
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -166,6 +177,10 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
+        if($user->tipo == User::TIPO_CLIENTE){
+            $this->Flash->error(__('Você não pode excluir usuários do tipo cliente.'));
+            return $this->redirect($this->referer());
+        }
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('Usuário excluido com sucesso.'));
         } else {

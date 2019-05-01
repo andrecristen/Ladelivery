@@ -134,6 +134,7 @@ $cacheControl = $cacheControl->getCacheVersion();
                 </li>
                 <ul class="sub-menu collapse" id="unico">
                     <li><?= $this->Html->link(__('Usuários'), ['controller' => 'Users', 'action' => 'index']) ?></li>
+                    <li><?= $this->Html->link(__('Clientes'), ['controller' => 'Users', 'action' => 'clientes']) ?></li>
                     <li><?= $this->Html->link(__('Endereços'), ['controller' => 'Enderecos', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('Carrinhos'), ['controller' => 'ItensCarrinhos', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('Cupom'), ['controller' => 'CupomSite', 'action' => 'index']) ?></li>

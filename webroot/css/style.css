@@ -698,3 +698,6 @@ fieldset{
     background-color: #e055b7!important;
     color: #ffffff!important;
 }
+.checked-star {
+    color: orange;
+}

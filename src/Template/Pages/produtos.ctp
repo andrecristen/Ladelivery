@@ -238,7 +238,7 @@ if(!$existstPedidoAberto || !$empresaAberta){
                             <button title="Adicionar ao carrinho" disabled class="btn btn-sm btn-success" style="width: 45%"><i class="fas fa-cart-plus"></i> Comprar</button>
                         <?php } ?>
                         <?php $siteUtils->getStarsProduto($produto->id)?>
-                        <a title="Avaliar Produto" href="produtos/avaliar/<?= $produto->id?>"><i class="far fa-clipboard"></i></a>
+                        <a title="Avaliar Produto" href="../ProdutosAvaliacoes/listAvaliacoes/<?= $produto->id?>"><i class="far fa-clipboard"></i></a>
                     </div>
                 </div>
             </div>
@@ -255,7 +255,7 @@ if(!$existstPedidoAberto || !$empresaAberta){
     <?php }?>
 </div>
 <style>
-    .checked {
+    .checked-star {
         color: orange;
     }
 </style>

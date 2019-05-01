@@ -145,17 +145,6 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                     <div class="form-group">
                         <span>Observação: <?= $pedidoItem->observacao ?></span>
                     </div>
-                    <div class="form-group">
-                        <span>Destino:</span>
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-primary active">
-                                <input type="radio" name="item-<?=$pedidoItem->id?>-cozinha"> Cozinha
-                            </label>
-                            <label class="btn btn-primary">
-                                <input type="radio" name="item-<?=$pedidoItem->id?>-bar"> Bar
-                            </label>
-                        </div>
-                    </div>
                 </div>
                 <br/>
             </fieldset>

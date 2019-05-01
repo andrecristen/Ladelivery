@@ -63,7 +63,6 @@ $cacheControl = $cacheControl->getCacheVersion();
     <?= $this->Html->script('resizetable.js') ?>
     <!--  ANGULAR DIRECTIVES  -->
     <script src="/js/web-app/directives/ui-grid-form.js<?= h($cacheControl) ?>"></script>
-    <script src="/js/web-app/directives/ui-input-star.js<?= h($cacheControl) ?>"></script>
     <link rel="stylesheet" href="/css/input-star-directive.css<?= h($cacheControl) ?>">
     <?php echo $this->Html->script('tabs.js'); ?>
     <?php echo $this->Html->css('tabs.css'); ?>

@@ -86,6 +86,11 @@ class ProdutosTable extends Table
             ->allowEmptyString('preco_produto');
 
         $validator
+            ->integer('ambiente_producao_responsavel')
+            ->requirePresence('ambiente_producao_responsavel', 'create')
+            ->allowEmptyString('ambiente_producao_responsavel', false);
+
+        $validator
             ->boolean('ativo_produto')
             ->allowEmptyString('ativo_produto');
 

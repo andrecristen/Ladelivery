@@ -14,6 +14,7 @@ use App\Model\Entity\OpcoesExtra;
 use App\Model\Entity\Pedido;
 use App\Model\Entity\PedidosEntrega;
 use App\Model\Entity\PedidosProduto;
+use App\Model\Entity\Produto;
 use App\Model\Entity\TaxasEntregasCotacao;
 use App\Model\Entity\TemposMedio;
 use App\Model\Entity\User;
@@ -454,11 +455,6 @@ class PedidosController extends AppController
             foreach ($produtosFinal as $item) {
                 $data = $this->getRequest()->getData();
                 $item->status = PedidosProduto::STATUS_EM_FILA_PRODUCAO;
-                if (isset($data['item-' . $item->id . '-bar'])) {
-                    $item->ambiente_producao_responsavel = PedidosProduto::RESPONSAVEL_BAR;
-                } else {
-                    $item->ambiente_producao_responsavel = PedidosProduto::RESPONSAVEL_COZINHA;
-                }
                 if ($produtosTable->save($item)) {
 
                 } else {
@@ -561,7 +557,9 @@ class PedidosController extends AppController
                 $valorCobradoPedido = $valorCobradoPedido + $item->valor_total_cobrado;
                 $newItem->observacao = $item->observacao;
                 $newItem->opcionais = $item->opicionais;
-                $newItem->ambiente_producao_responsavel = PedidosProduto::RESPONSAVEL_COZINHA;
+                /** @var $produto Produto*/
+                $produto = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $item->produto_id])->first();
+                $newItem->ambiente_producao_responsavel = $produto->ambiente_producao_responsavel;
                 $newItem->status = PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO;
                 if ($pedidosProdutosTable->save($newItem)) {
 

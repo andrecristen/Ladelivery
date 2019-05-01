@@ -6,7 +6,9 @@
 //var_dump($produtosAvaliacoes);
 $siteUtils = new \App\Model\Utils\SiteUtils();
 $notaProduto = $siteUtils->getValueStarsProduto($produto->id);
+$cacheControl = new \App\Model\Utils\CacheControl();
 ?>
+<script src="/js/web-app/directives/ui-input-star.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#"><?= \App\Model\Utils\EmpresaUtils::NOME_EMPRESA_LOJA ?></a>

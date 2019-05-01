@@ -49,7 +49,7 @@ class PedidosProdutosController extends AppController
         ];
 
         $filtersFixed = [
-            0 => ['ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_COZINHA],
+            0 => ['produtos.ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_COZINHA],
             1 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
             2 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
         ];
@@ -65,7 +65,7 @@ class PedidosProdutosController extends AppController
             'contain' => ['Pedidos', 'Produtos']
         ];
         $filtersFixed = [
-            0 => ['ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_BAR],
+            0 => ['produtos.ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_BAR],
             1 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
             2 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
         ];

@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $empresa_id
+ * @property int $ambiente_producao_responsavel
  * @property int $midia_id
  * @property string $nome_produto
  * @property int $categorias_produto_id
@@ -37,6 +38,7 @@ class Produto extends Entity
         'nome_produto' => true,
         'midia_id' => true,
         'empresa_id' => true,
+        'ambiente_producao_responsavel' => true,
         'categorias_produto_id' => true,
         'descricao_produto' => true,
         'preco_produto' => true,

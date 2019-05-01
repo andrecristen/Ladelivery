@@ -26,7 +26,7 @@
 /* Create an active/current tablink class */
 .tab button.active {
     background: white!important;
-    box-shadow: inset 0px 0px 5px 0px #00baff94;
+    border-bottom: #2e9ad0 solid 3px!important;
 }
 
 /* Style the tab content */

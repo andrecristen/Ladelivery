@@ -66,11 +66,12 @@ class ProdutosAvaliacoesController extends AppController
         $produtoAvaliacao = $this->ProdutosAvaliacoes->newEntity();
         $produtoAvaliacao->produto_id = $produtoId;
         $produtosAvaliacoes = $this->paginate($this->ProdutosAvaliacoes->find()->where(['produto_id' => $produtoId]));
+        $avaliacoes = $produtosAvaliacoes->count();
         $showForm = false;
         if($this->empresaUtils->getUserId()){
             $showForm = true;
         }
         $produto = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $produtoId])->first();
-        $this->set(compact('produtosAvaliacoes', 'produtoId', 'produtoAvaliacao', 'showForm', 'produto'));
+        $this->set(compact('produtosAvaliacoes', 'produtoId', 'produtoAvaliacao', 'showForm', 'produto', 'avaliacoes'));
     }
 }

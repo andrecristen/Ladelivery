@@ -51,6 +51,8 @@ $cacheControl = new \App\Model\Utils\CacheControl();
             <div class="rating-block">
                 <h2 class="bold padding-bottom-7"><?= $notaProduto ?> <small>/ 5</small></h2>
                 <?php $siteUtils->showStarsByNota($notaProduto)?>
+                <br>
+                <span style="color: #666; font-size: .75em; line-height: 7px;">Com base em <?= $avaliacoes ?> avaliações</span>
             </div>
         </div>
     </div>

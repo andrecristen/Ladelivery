@@ -2,6 +2,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Utils\EmpresaUtils;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 
 /**
  * UsersContatos Controller
@@ -12,6 +15,16 @@ use App\Controller\AppController;
  */
 class UsersContatosController extends AppController
 {
+    protected $empresaUtils;
+
+    public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
+    {
+        parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->empresaUtils = new EmpresaUtils();
+        $this->setPublicAction('meusContatos');
+        $this->setPublicAction('addContatoCliente');
+        $this->validateActions();
+    }
 
     /**
      * Index method
@@ -26,6 +39,44 @@ class UsersContatosController extends AppController
         $usersContatos = $this->paginate($this->UsersContatos);
 
         $this->set(compact('usersContatos'));
+    }
+
+    public function meusContatos($id = null){
+        $this->paginate = [
+            'contain' => ['Users']
+        ];
+        $usersContatos = $this->paginate($this->UsersContatos->find()->where(['user_id' => $this->empresaUtils->getUserId()]));
+        $this->set(compact('usersContatos'));
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $contato = $this->UsersContatos->get($id, [
+                'contain' => []
+            ]);
+            if($contato->user_id != $this->Auth->user('id')){
+                $this->Flash->error(__('O contato qual você tentou editar não está relacionado com seu usuário, então você não pode altera-lo.'));
+                return $this->redirect(['action' => 'meusContatos']);
+            }
+            $contato = $this->UsersContatos->patchEntity($contato, $this->request->getData());
+            if ($this->UsersContatos->save($contato)) {
+                $this->Flash->success(__('Contato salvo.'));
+                return $this->redirect(['action' => 'meusContatos']);
+            }
+            $this->Flash->error(__('Tente novamente.'));
+        }
+    }
+
+    public function addContatoCliente(){
+        $usersContato = $this->UsersContatos->newEntity();
+        if ($this->request->is('post')) {
+            $usersContato = $this->UsersContatos->patchEntity($usersContato, $this->request->getData());
+            $usersContato->user_id = $this->empresaUtils->getUserId();
+            if ($this->UsersContatos->save($usersContato)) {
+                $this->Flash->success(__('Contato salvo com sucesso.'));
+
+                return $this->redirect(['action' => 'meusContatos']);
+            }
+            $this->Flash->error(__('Não foi possivel salvar o contato.'));
+        }
+        $this->set(compact('usersContato'));
     }
 
     /**

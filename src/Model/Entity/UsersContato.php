@@ -18,7 +18,7 @@ class UsersContato extends Entity
 
     const TIPO_WHATSAPP = 1;
     const TIPO_TELEFONE_FIXO = 2;
-    const TIPO_TELEFONE_CELULAR = 2;
+    const TIPO_TELEFONE_CELULAR = 3;
 
     public static function getTipoList(){
         return [

@@ -27,6 +27,7 @@ class UsersController extends AppController
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->setPublicAction('login');
+        $this->setPublicAction('alterarSenha');
         $this->setPublicAction('profile', $this->Auth->user('id'));
         $this->validateActions();
         $this->empresaUtils = new EmpresaUtils();
@@ -74,11 +75,27 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Usuário editado com sucesso.'));
-
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'profile', $user->id]);
             }
             $this->Flash->error(__('Não foi possivel editar usuário, tente novamente.'));
         }
+        $this->set(compact('user'));
+    }
+
+    public function alterarSenha(){
+        $user = $this->Users->get($this->empresaUtils->getUserId(), [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Senha alterada com sucesso.'));
+                return $this->redirect(['action' => 'profile', $user->id]);
+            }
+            $this->Flash->error(__('Não foi possivel alterar a senha, tente novamente.'));
+        }
+        //Para nao vir com o input preenchido
+        $user->password = null;
         $this->set(compact('user'));
     }
 

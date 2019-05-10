@@ -183,7 +183,7 @@ $haveProdutos = count($produtosMaisVendidos);
 </div>
 <footer style="background-color: #343a40!important; margin-top: 45px;" class="page-footer font-small blue footer">
     <!-- Copyright -->
-    <div style="color: white" class="footer-copyright text-center py-3">© 2019 Copyright <a href=""> LaDev</a>
+    <div style="color: white" class="footer-copyright text-center py-3">© 2019 Copyright <a target="_blank" href="https://sites.google.com/view/ladev"> LaDev</a>
     </div>
     <div class="footer-copyright text-center py-3">
         <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-shield')).' Painel Administrador', array('controller' => 'Financeiro', 'action' => 'painel'), array('escape' => false , 'class' => 'btn btn-sm btn-info')) ?>

@@ -81,10 +81,9 @@ $cacheControl = $cacheControl->getCacheVersion();
                 </li>
                 <ul class="sub-menu collapse" id="financeiro">
                     <li><?= $this->Html->link(__('Painel'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
-                    <li><?= $this->Html->link(__('Caixa'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
                     <li><?= $this->Html->link(__('Produtos'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
-                    <li><?= $this->Html->link(__('Pagamentos'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
-                    <li><?= $this->Html->link(__('Entregas'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
+                    <li><?= $this->Html->link(__('Pagamentos'), ['controller' => 'Financeiro', 'action' => 'produtos']) ?></li>
+                    <li><?= $this->Html->link(__('Entregas'), ['controller' => 'Financeiro', 'action' => 'entregas']) ?></li>
                 </ul>
 
                 <li data-toggle="collapse" data-target="#delivery" class="collapsed">

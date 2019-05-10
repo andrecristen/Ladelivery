@@ -13,6 +13,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('#Pedido', 'pedido/id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->addField(new \App\Model\Utils\GridField('Valor Entrega', 'valor_entrega', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->addField(new \App\Model\Utils\GridField('#Endereco', 'endereco/id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Entregador', 'user/nome_completo', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>

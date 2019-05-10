@@ -19,14 +19,9 @@ use App\Model\Entity\Action;
 use App\Model\Entity\PerfilsUser;
 use App\Model\Entity\User;
 use App\Model\Utils\EmpresaUtils;
-use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
-use Cake\Core\App;
 use Cake\Event\Event;
-use Cake\Http\Response;
-use Cake\Http\ServerRequest;
 use Cake\ORM\Locator\TableLocator;
-use PHP_CodeSniffer\Generators\HTML;
 
 /**
  * Application Controller

@@ -5,6 +5,9 @@
  */
 ?>
 <div class="col-sm-12">
+    <div class="alert alert-info">
+        <span>Caso necessite fazer o calculo para o dia de hoje informe na data de inicio hoje e na data de fim o dia seguinte.</span>
+    </div>
     <h3>Calcular Comissão Entregador</h3>
     <?php echo $this->Form->create(false); ?>
     <?php

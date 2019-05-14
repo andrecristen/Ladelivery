@@ -82,7 +82,7 @@ $cacheControl = $cacheControl->getCacheVersion();
                 <ul class="sub-menu collapse" id="financeiro">
                     <li><?= $this->Html->link(__('Painel'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
                     <li><?= $this->Html->link(__('Produtos'), ['controller' => 'Financeiro', 'action' => 'painel']) ?></li>
-                    <li><?= $this->Html->link(__('Pagamentos'), ['controller' => 'Financeiro', 'action' => 'produtos']) ?></li>
+                    <li><?= $this->Html->link(__('Contas'), ['controller' => 'Contas', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('Entregas'), ['controller' => 'Financeiro', 'action' => 'entregas']) ?></li>
                 </ul>
 
@@ -164,11 +164,17 @@ $cacheControl = $cacheControl->getCacheVersion();
     </div>
     <?php $empresaUtils = new \App\Model\Utils\EmpresaUtils() ?>
     <div class="system-info">
-        <i title="Usuário" class="fas fa-user-circle">&nbsp;</i><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'edit', $empresaUtils->getUserId()]) ?></span>
-        &nbsp;
-        <i title="Empresa" class="fas fa-building"></i>&nbsp;<span><?= $this->Html->link(__($empresaUtils->getUserEmpresaModel()->nome_fantasia), ['controller' => 'Empresas', 'action' => 'view', $empresaUtils->getUserEmpresaId()]) ?></span>
-        &nbsp;
-        <i title="Tipo Privilegios" class="fas fa-crown">&nbsp;</i><span><?= $this->Html->link(__(\App\Model\Entity\User::getTipoListAll()[$empresaUtils->getUserTipo()]), '#') ?></span>
+        <div class="item-info">
+            <i title="Usuário" class="fas fa-user-circle">&nbsp;</i><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'edit', $empresaUtils->getUserId()]) ?></span>
+            &nbsp;
+        </div>
+        <div class="item-info">
+            <i title="Empresa" class="fas fa-building"></i>&nbsp;<span><?= $this->Html->link(__($empresaUtils->getUserEmpresaModel()->nome_fantasia), ['controller' => 'Empresas', 'action' => 'view', $empresaUtils->getUserEmpresaId()]) ?></span>
+            &nbsp;
+        </div>
+        <div class="item-info">
+            <i title="Tipo Privilegios" class="fas fa-crown">&nbsp;</i><span><?= $this->Html->link(__(\App\Model\Entity\User::getTipoListAll()[$empresaUtils->getUserTipo()]), '#') ?></span>
+        </div>
         <div class="actions-system-info">
             <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-cart-plus')) . ' Abrir Pedido', array('controller' => 'Pedidos', 'action' => 'add'), array('escape' => false, 'class' => 'btn btn-sm btn-success')) ?>
             <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sticky-note')) . ' Abrir Comanda', array('controller' => 'Pedidos', 'action' => 'add/true'), array('escape' => false, 'class' => 'btn btn-sm btn-primary')) ?>

@@ -7,7 +7,7 @@
     background-color: #2e353d;
     position: fixed;
     top: 0px;
-    width: 300px;
+    width: 220px;
     height: 100%;
     color: #e1ffff;
 }
@@ -41,11 +41,11 @@
 }
 
 .system-info{
-    margin-left: 300px;
+    margin-left: 220px;
 }
 
 .content-next-menu{
-    margin-left: 300px;
+    margin-left: 220px;
     overflow-y: auto;
     height:auto;
     padding-top: 67px;
@@ -55,7 +55,7 @@
     line-height: 50px;
     display: block;
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
 }
 .nav-side-menu .toggle-btn {
     display: none;
@@ -167,7 +167,8 @@
     .system-info{
         margin-left: 0px;
         width: 100%!important;
-        height: 70px!important;
+        height: 100px!important;
+        position: relative!important;
     }
     .nav-side-menu {
         position: relative;
@@ -285,7 +286,7 @@ body {
 @media (max-width: 767px) {
     .content-next-menu{
         margin-left: 0px;
-        margin-top: 67px;
+        margin-top: 10px;
     }
 
     .content{

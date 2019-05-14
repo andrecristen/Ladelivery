@@ -116,6 +116,7 @@ table td {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 12px!important;
 }
 
 table th{
@@ -567,7 +568,7 @@ div.message.hidden {
 }
 
 .content {
-    padding: 2rem;
+    padding: 0rem;
 }
 
 /* Use 'one true layout' methods to get equal height columns */
@@ -586,6 +587,11 @@ div.message.hidden {
     #actions-sidebar {
         padding-bottom: 2rem;
         margin-bottom: 0;
+    }
+    .content,
+    #actions-sidebar {
+        margin-bottom: 10px!important;
+        padding-bottom: 99999px;
     }
 }
 
@@ -609,15 +615,17 @@ div.message.hidden {
 }
 
 table td {
-    vertical-align: top;
     word-break: break-all;
 }
 
+.item-info{
+    float: left;
+}
 .system-info{
     padding: 10px;
     position: fixed;
     margin-bottom: 20px;
-    width: calc(100% - 300px)!important;
+    width: calc(100% - 220px)!important;
     height: 50px!important;
     background-color: #23282e;
     align-content: right;
@@ -630,7 +638,7 @@ table td {
 }
 
 .system-info-menu-aberto{
-    width: calc(100% - 300px)!important;
+    width: calc(100% - 220px)!important;
 }
 
 .system-info-menu-fechado{

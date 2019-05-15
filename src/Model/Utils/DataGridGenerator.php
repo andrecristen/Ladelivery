@@ -90,7 +90,6 @@ class DataGridGenerator extends View implements TypeFields
                 }
             }
         }
-        echo '<br>';
         echo $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-search')) . ' Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
         $action = 'index';
         if ($this->getCallBackActionLimpar()) {
@@ -99,19 +98,18 @@ class DataGridGenerator extends View implements TypeFields
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-trash-alt')) . ' Limpar', ['action' => $action], array('escape' => false, 'class' => 'btn btn-sm btn-danger'));
         echo $this->Form->end();
         echo '</div>';
+        echo '<div class="actions-grid">';
         ?>
-        <br>
         <?php if (!$this->noAdd && $this->appController->validateActionView($this->getController(), 'add')) { ?>
-        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-plus-square')) . ' Adicionar', ['action' => 'add'], array('escape' => false, 'class' => 'btn btn-primary')) ?>
+        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-plus-square')) . ' Adicionar', ['action' => 'add'], array('escape' => false, 'class' => 'btn btn-sm btn-primary')) ?>
     <?php } ?>
         <?php foreach ($this->actions as $action) {
         if ($this->appController->validateActionView($action['controller'], $action['action'])) {
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])) . ' ' . $action['titulo'], ['controller' => $action['controller'], 'action' => $action['action']], array('escape' => false, 'class' => $action['class']));
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])) . ' ' . $action['titulo'], ['controller' => $action['controller'], 'action' => $action['action']], array('escape' => false, 'class' => $action['class'].' btn-sm'));
         } ?>
     <?php } ?>
         <?php
-        echo '<br/>';
-        echo '<br/>';
+        echo '</div>';
         echo '<table cellpadding="0" cellspacing="0">';
         echo '<colgroup>';
         foreach ($this->fields as $col) {

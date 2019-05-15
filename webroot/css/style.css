@@ -44,6 +44,10 @@ a:hover {
 .content-filter input {
     height: 25px!important;
 }
+
+.content-filter form{
+    padding-bottom: 2px!important;
+}
 a {
     color: #1798A5;
 }
@@ -617,32 +621,47 @@ div.message.hidden {
 table td {
     word-break: break-all;
 }
+@media (max-width: 767px) {
+    .item-info{
+        display: none;
+    }
+    .actions-system-info{
+        width: 100%;
+        padding: 10px;
+    }
+    .item-logo{
+        margin-left: 25%;
+    }
+}
 
 .item-info{
     float: left;
+}
+
+.item-logo{
+    margin-top: -5px;
+    width: 180px;
+    float: left;
+    margin-right: 35px;
 }
 .system-info{
     padding: 10px;
     position: fixed;
     margin-bottom: 20px;
-    width: calc(100% - 220px)!important;
+    width: 100%!important;
     height: 50px!important;
-    background-color: #23282e;
+    background: linear-gradient(154deg,#008fe2 0,#00b29c 100%);
     align-content: right;
     color: #ffffff;
     z-index: 1000;
 }
+.system-info a{
+    color: #ffffff !important;
+    text-decoration: none;
+}
 
 .actions-system-info{
     float: right;
-}
-
-.system-info-menu-aberto{
-    width: calc(100% - 220px)!important;
-}
-
-.system-info-menu-fechado{
-    width: calc(100% - 45px)!important;
 }
 
 .checkbox{
@@ -708,4 +727,9 @@ fieldset{
 }
 .checked-star {
     color: orange;
+}
+
+.actions-grid{
+    padding-top: 15px;
+    padding-bottom: 5px;
 }

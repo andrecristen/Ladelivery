@@ -16,21 +16,15 @@ function onClickSaveLastSistem(index, element) {
 function closeMenu() {
     //Esta fechado entao vamos abrir
     if($(".nav-side-menu").width() < 220){
-        $(".system-info").addClass('system-info-menu-aberto');
-        $(".system-info").removeClass('system-info-menu-fechado');
         $(".nav-side-menu").animate({width:"220px"},{queue:false, duration:250});
-        $(".system-info").animate({"margin-left":"220px"},{queue:false, duration:250});
         $(".content-next-menu").animate({"margin-left":"220px"},{queue:false, duration:250});
         $(".brand").show(10);
         $(".menu-content").show(10);
     //Esta aberto entao vamos fechar
     }else{
-        $(".system-info").removeClass('system-info-menu-aberto');
-        $(".system-info").addClass('system-info-menu-fechado');
         $(".brand").hide(250);
         $(".menu-content").hide(250);
         $(".nav-side-menu").animate({width:"45px"},{queue:false, duration:250});
-        $(".system-info").animate({"margin-left":"45px"},{queue:false, duration:250});
         $(".content-next-menu").animate({"margin-left":"45px"},{queue:false, duration:250});
     }
 }

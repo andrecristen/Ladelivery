@@ -71,7 +71,7 @@ $cacheControl = $cacheControl->getCacheVersion();
 <?= $this->Flash->render() ?>
 <?php if ($login && ($_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR || $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_MASTER)) : ?>
     <div class="nav-side-menu">
-        <div class="brand">LADelivery - LADev</div>
+        <div class="brand">LADelivery</div>
         <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
         <i class="fa fa-bars fa-fw toggle-btn-pc" onclick="closeMenu()"></i>
         <div class="menu-list">
@@ -164,6 +164,9 @@ $cacheControl = $cacheControl->getCacheVersion();
     </div>
     <?php $empresaUtils = new \App\Model\Utils\EmpresaUtils() ?>
     <div class="system-info">
+        <div class="item-logo">
+            <?= $this->Html->image('empresa/logologin.png')?>
+        </div>
         <div class="item-info">
             <i title="Usuário" class="fas fa-user-circle">&nbsp;</i><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'edit', $empresaUtils->getUserId()]) ?></span>
             &nbsp;

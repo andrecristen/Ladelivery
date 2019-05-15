@@ -8,10 +8,18 @@ namespace App\Controller;
 
 
 use App\Model\Entity\User;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\Mailer\MailerAwareTrait;
 
 class MarketingController extends AppController
 {
+    public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
+    {
+        parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->validateActions();
+    }
+
     public function email(){
         if($this->getRequest()->is('post')){
             $template = $this->getRequest()->getData('template');

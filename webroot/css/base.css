@@ -417,7 +417,7 @@ optgroup {
  */
 
 table {
-    border-collapse: collapse;
+    border-collapse: inherit!important;
     border-spacing: 0;
 }
 

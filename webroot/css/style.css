@@ -733,3 +733,18 @@ fieldset{
     padding-top: 15px;
     padding-bottom: 5px;
 }
+
+.success-modal{
+    position: absolute!important;
+    right: 5px!important;
+    width: 50% !important;
+    height: auto!important;
+    top: 10px!important;
+    z-index: 99999!important;
+}
+
+@media (max-width: 767px) {
+    .success-modal{
+        width: 90% !important;
+    }
+}

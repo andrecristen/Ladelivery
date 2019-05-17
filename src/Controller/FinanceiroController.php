@@ -106,7 +106,7 @@ class FinanceiroController extends AppController
         if($this->getRequest()->is('post')){
             $data = $this->getRequest()->getData();
             $valorComissao = $this->getComissaoEntregador($data['entregador'], $data['inicio_periodo'], $data['fim_periodo'], $data['porcentagem']);
-            $this->Flash->default(__('Comissão calculada, valor obtido: R$'.$valorComissao));
+            $this->Flash->info(__('Comissão calculada, valor obtido: R$'.$valorComissao));
             return;
         }
     }

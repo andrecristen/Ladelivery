@@ -165,7 +165,7 @@ $cacheControl = $cacheControl->getCacheVersion();
     <?php $empresaUtils = new \App\Model\Utils\EmpresaUtils() ?>
     <div class="system-info">
         <div class="item-logo">
-            <?= $this->Html->image('empresa/logoLaDev.png')?>
+            <?= $this->Html->image('empresa/logoLaDev.png') ?>
         </div>
         <div class="item-info">
             <i title="Usuário" class="fas fa-user-circle">&nbsp;</i><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'edit', $empresaUtils->getUserId()]) ?></span>
@@ -192,7 +192,8 @@ $cacheControl = $cacheControl->getCacheVersion();
         <?php endif; ?>
         <?= $this->fetch('content') ?>
     </div>
-    <footer>
-    </footer>
+</div>
+<footer>
+</footer>
 </body>
 </html>

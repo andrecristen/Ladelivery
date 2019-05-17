@@ -184,15 +184,21 @@ class DataGridGenerator extends View implements TypeFields
                     }
                     echo '</td>';
                 } else if ($td->getType() == self::TYPE_DATE) {
-                    $d = new \DateTime($entidadeWithPath);
-                    $timestamp = $d->getTimestamp();
-                    $formatted_date = $d->format('d/m/Y');
-                    echo '<td>'; ?><?= h($formatted_date) ?><?php echo '</td>';
+                    if(!$entidadeWithPath){
+                        echo '<td></td>';
+                    }else{
+                        $date = new \DateTime($entidadeWithPath);
+                        $formatted_date = $date->format('d/m/Y');
+                        echo '<td>'; ?><?= h($formatted_date) ?><?php echo '</td>';
+                    }
                 } else if ($td->getType() == self::TYPE_DATE_TIME) {
-                    $d = new \DateTime($entidadeWithPath);
-                    $timestamp = $d->getTimestamp();
-                    $formatted_date = $d->format('d/m/Y H:i:s');
-                    echo '<td>'; ?><?= h($formatted_date) ?><?php echo '</td>';
+                    if(!$entidadeWithPath){
+                        echo '<td></td>';
+                    }else{
+                        $dateTime = new \DateTime($entidadeWithPath);
+                        $formatted_date = $dateTime->format('d/m/Y H:i:s');
+                        echo '<td>'; ?><?= h($formatted_date) ?><?php echo '</td>';
+                    }
                 } else if ($td->getType() == self::TYPE_USER) {
                     echo '<td>';
                     if ($entidadeWithPath == 1) {

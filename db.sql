@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 01-Maio-2019 às 14:40
+-- Generation Time: 17-Maio-2019 às 01:54
 -- Versão do servidor: 5.7.21
 -- PHP Version: 7.2.4
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `actions` (
   `nome_action` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
   `descricao_action` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `actions`
@@ -184,7 +184,19 @@ INSERT INTO `actions` (`id`, `controller_id`, `nome_action`, `descricao_action`)
 (139, 5, 'setEntregue', 'Definir pedido como entregue'),
 (140, 1, 'logout', 'Sair do Sistema'),
 (141, 23, 'setEntregador', 'Definir entregador para a entrega do pedido'),
-(142, 5, 'rejeitar', 'Rejeitar Pedido');
+(142, 5, 'rejeitar', 'Rejeitar Pedido'),
+(143, 1, 'clientes', 'Listar Clientes do Sistema'),
+(144, 30, 'email', 'Envio de email ao clientes'),
+(145, 29, 'entregas', 'Visualizar Métricas de entregas'),
+(146, 29, 'comissaoEntregador', 'Gerar comissão do entregador com base nas entregas'),
+(147, 31, 'index', 'Listar Contas'),
+(148, 31, 'add', 'Adicionar Conta'),
+(149, 31, 'view', 'Visualizar Conta'),
+(150, 31, 'edit', 'Alterar Conta'),
+(151, 31, 'delete', 'Excluir Conta'),
+(152, 31, 'definirPago', 'Definir Conta Como Paga'),
+(153, 5, 'defineEntrega', 'Definir entrega do pedido em abertura'),
+(154, 5, 'addItem', 'Adicionar item ao pedido/comanda');
 
 -- --------------------------------------------------------
 
@@ -218,16 +230,6 @@ CREATE TABLE IF NOT EXISTS `banners` (
   KEY `midia_id` (`midia_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Extraindo dados da tabela `banners`
---
-
-INSERT INTO `banners` (`id`, `midia_id`, `ativo`, `nome_banner`) VALUES
-(2, 49, 1, 'carne'),
-(3, 45, 1, 'Kelloggs'),
-(4, 43, 1, 'Cecilia'),
-(5, 51, 1, 'Promo natal');
-
 -- --------------------------------------------------------
 
 --
@@ -250,6 +252,25 @@ CREATE TABLE IF NOT EXISTS `categorias_produtos` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `contas`
+--
+
+DROP TABLE IF EXISTS `contas`;
+CREATE TABLE IF NOT EXISTS `contas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `pessoa` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `valor_total` decimal(10,2) NOT NULL,
+  `descricao` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `data_pagamento` date DEFAULT NULL,
+  `data_vencimento` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `controllers`
 --
 
@@ -259,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `controllers` (
   `nome_controlador` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_nome_controlador` (`nome_controlador`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `controllers`
@@ -269,6 +290,7 @@ INSERT INTO `controllers` (`id`, `nome_controlador`) VALUES
 (25, 'Actions'),
 (14, 'Banners'),
 (7, 'CategoriasProdutos'),
+(31, 'Contas'),
 (24, 'Controllers'),
 (4, 'CupomSite'),
 (20, 'DiasFechados'),
@@ -283,6 +305,7 @@ INSERT INTO `controllers` (`id`, `nome_controlador`) VALUES
 (9, 'Listas'),
 (11, 'ListasOpcoesExtras'),
 (12, 'ListasProdutos'),
+(30, 'Marketing'),
 (13, 'Midias'),
 (10, 'OpcoesExtras'),
 (5, 'Pedidos'),
@@ -502,7 +525,7 @@ CREATE TABLE IF NOT EXISTS `itens_carrinhos` (
   `observacao` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `opicionais` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -573,28 +596,6 @@ CREATE TABLE IF NOT EXISTS `midias` (
   UNIQUE KEY `unique_path_midia` (`path_midia`)
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Extraindo dados da tabela `midias`
---
-
-INSERT INTO `midias` (`id`, `empresa_id`, `tipo_midia`, `path_midia`, `nome_midia`) VALUES
-(35, 2, 3, 'banners/upload_02_04_19_22_04_10_assados.jpg_assados.jpg', 'upload_02_04_19_22_04_10_assados.jpg'),
-(36, 2, 3, 'banners/upload_02_04_19_22_04_01_coca.jpg_coca.jpg', 'upload_02_04_19_22_04_01_coca.jpg'),
-(37, 2, 3, 'banners/upload_02_04_19_22_04_52_bebidas.jpg_bebidas.jpg', 'upload_02_04_19_22_04_52_bebidas.jpg'),
-(39, 2, 3, 'banners/upload_02_04_19_22_04_01_banner_Home.jpg_banner_Home.jpg', 'upload_02_04_19_22_04_01_banner_Home.jpg'),
-(40, 2, 3, 'banners/upload_02_04_19_22_04_47_Cecilia-Pizzaria-Banner-Inicial-Superior.jpg_Cecilia-Pizzaria-Banner-Inicial-Superior.jpg', 'upload_02_04_19_22_04_47_Cecilia-Pizzaria-Banner-Inicial-Superior.jpg'),
-(41, 2, 3, 'banners/upload_02_04_19_23_04_17_chicago.jpg_chicago.jpg', 'upload_02_04_19_23_04_17_chicago.jpg'),
-(42, 2, 3, 'banners/upload_02_04_19_23_04_52_banner_Home.jpg_banner_Home.jpg', 'upload_02_04_19_23_04_52_banner_Home.jpg'),
-(43, 2, 3, 'banners/upload_02_04_19_23_04_14_Cecilia-Pizzaria-Banner-Inicial-Superior.jpg_Cecilia-Pizzaria-Banner-Inicial-Superior.jpg', 'upload_02_04_19_23_04_14_Cecilia-Pizzaria-Banner-Inicial-Superior.jpg'),
-(44, 2, 3, 'banners/upload_02_04_19_23_04_44_download.jpg_download.jpg', 'upload_02_04_19_23_04_44_download.jpg'),
-(45, 2, 3, 'banners/upload_02_04_19_23_04_13_kelloggs-header-banner-1280-1200x420.jpg_kelloggs-header-banner-1280-1200x420.jpg', 'upload_02_04_19_23_04_13_kelloggs-header-banner-1280-1200x420.jpg'),
-(46, 2, 3, 'banners/upload_02_04_19_23_04_56_Cecilia-Pizzaria-Banner-Inicial-Superior.jpg_Cecilia-Pizzaria-Banner-Inicial-Superior.jpg', 'upload_02_04_19_23_04_56_Cecilia-Pizzaria-Banner-Inicial-Superior.jpg'),
-(47, 2, 3, 'banners/upload_02_04_19_23_04_42_banner_Home.jpg_banner_Home.jpg', 'upload_02_04_19_23_04_42_banner_Home.jpg'),
-(48, 2, 3, 'banners/upload_02_04_19_23_04_22_kelloggs-header-banner-1280-1200x420.jpg_kelloggs-header-banner-1280-1200x420.jpg', 'upload_02_04_19_23_04_22_kelloggs-header-banner-1280-1200x420.jpg'),
-(49, 2, 3, 'banners/upload_02_04_19_23_04_42_south-shore-meats-header-banner-1280-1200x420.jpg_south-shore-meats-header-banner-1280-1200x420.jpg', 'upload_02_04_19_23_04_42_south-shore-meats-header-banner-1280-1200x420.jpg'),
-(50, 2, 1, 'produtos/upload_18_04_19_19_04_25_pizza.png_pizza.png', 'upload_18_04_19_19_04_25_pizza.png'),
-(51, 1, 3, 'banners/upload_29_04_19_17_04_16_1200x400-handcrafted-banner.jpg_1200x400-handcrafted-banner.jpg', 'upload_29_04_19_17_04_16_1200x400-handcrafted-banner.jpg');
-
 -- --------------------------------------------------------
 
 --
@@ -634,7 +635,7 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `cupom_usado` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `valor_desconto` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -652,7 +653,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_entregas` (
   `endereco_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_pedido_entrega` (`pedido_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -672,7 +673,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_produtos` (
   `ambiente_producao_responsavel` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -710,7 +711,7 @@ CREATE TABLE IF NOT EXISTS `perfils_actions` (
   `action_id` int(11) NOT NULL,
   `perfil_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=148 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=160 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `perfils_actions`
@@ -856,7 +857,19 @@ INSERT INTO `perfils_actions` (`id`, `action_id`, `perfil_id`) VALUES
 (144, 67, 2),
 (145, 140, 2),
 (146, 141, 2),
-(147, 142, 2);
+(147, 142, 2),
+(148, 143, 2),
+(149, 144, 5),
+(150, 145, 5),
+(151, 146, 5),
+(152, 147, 5),
+(153, 148, 5),
+(154, 149, 5),
+(155, 150, 5),
+(156, 151, 5),
+(157, 152, 5),
+(158, 153, 2),
+(159, 154, 2);
 
 -- --------------------------------------------------------
 
@@ -923,7 +936,7 @@ CREATE TABLE IF NOT EXISTS `produtos_avaliacoes` (
   `nota` int(11) NOT NULL,
   `comentario` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -967,7 +980,7 @@ CREATE TABLE IF NOT EXISTS `tempos_medios` (
   `ativo` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `empresa_id` (`empresa_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `tempos_medios`
@@ -1007,13 +1020,36 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `nome_completo`, `tipo`, `empresa_id`, `created`, `modified`, `apelido`, `login`, `password`, `dia_nascimento`, `mes_nascimento`, `ano_nascimento`) VALUES
 (8, 'André Cristen LADEV', 3, 2, '2019-01-28 23:59:32', '2019-04-22 16:14:21', 'Dezinh', 'andrecristenibirama@gmail.com', '$2y$10$wWXWh1YjSOH5t4.zPo7/TOIkL7pxVsxgIl84MyqxH6x2aOg5d9WBe', 3, 9, 2000),
-(16, 'André Cristen Cliente', 1, 2, '2019-02-05 22:14:18', '2019-02-15 21:39:25', 'TESTE LADEV CLIENTE', 'andre.cristen@ladev.com', '$2y$10$NNNttUN6hZNz9NBWPXB2AOe4nacaYwnR0QkiZEy/LznND2TxGkMem', 3, 9, 2000),
+(16, 'André Cristen Cliente', 1, 2, '2019-02-05 22:14:18', '2019-05-02 17:08:37', 'TESTE LADEV CLIENTE', 'andre.cristen@ladev.com.br', '$2y$10$/0aptDhXOOqgE36oL1SBqe3t7KhyVYbJMzyQLbOyxNIHoS46F.zWO', 3, 9, 2000),
 (20, 'Baiucas Lanches', 2, 1, '2019-02-14 21:40:09', '2019-04-25 21:42:35', 'Baiucas Lanches e Delivery', 'baiucas.admin@gmail.com', '$2y$10$xL/DkDmDdVeZsX6ccQPnmOa7i0YyQxsgMLr41A96WdTHQ4ws4jZaG', 3, 9, 2000),
-(21, 'LaDev - Software', 2, 2, '2019-02-28 16:30:38', '2019-03-27 16:14:19', 'Ladelivery', 'ladev.sistemas@gmail.com', '$2y$10$RcrpWZi7np6wn1qV..Nn.OqoGbCTvY9IfbC.wVaQKmL61eRfp34VO', 3, 9, 2000),
+(21, 'LaDev - Software', 3, 2, '2019-02-28 16:30:38', '2019-05-14 16:37:53', 'Ladelivery', 'ladev.sistemas@gmail.com', '$2y$10$RcrpWZi7np6wn1qV..Nn.OqoGbCTvY9IfbC.wVaQKmL61eRfp34VO', 3, 9, 2000),
 (22, 'André Cristen', 2, 1, '2019-03-19 17:04:53', '2019-04-27 14:49:13', '123', 'andrecristenibirama@gmail.com1', '$2y$10$nepDfgLtK4hWc9Ndib/Tr.h5/0iEmflnv7C3BPl7tmGo8kwJizCr6', 1, 1, 1),
 (23, 'André Cristen', 1, 2, '2019-03-19 17:05:20', '2019-03-19 17:05:20', 'Dezinh do funk', 'de@de.com', '$2y$10$kL2mVxabAH2RoqorZJmOdehZ4/NN0BvstQpHr3Zbxhq3MXj9GT.A6', 132, 12, 12),
 (24, 'Fernando Cristen', 1, 2, '2019-04-03 17:32:34', '2019-04-03 17:32:34', 'Fefe', 'cristenfernando@gmail.com', '$2y$10$jeceWEZJWr1dhYxkZ0Dz1ukZyX2Nn4546d/jbrSy0kRnp8G2f5L/m', 6, 11, 2001),
 (27, 'Ze do Grau', 4, 1, '2019-04-27 14:07:43', '2019-04-27 14:07:43', 'Grau e mais', 'zedograu@grau.com', '$2y$10$B0hHAi1D0OMEprUOdONEs.C2k9hz/NeIBFLnhYhsL3cvlWvnZDWW6', 12, 13, 1213);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `users_contatos`
+--
+
+DROP TABLE IF EXISTS `users_contatos`;
+CREATE TABLE IF NOT EXISTS `users_contatos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `tipo` int(11) NOT NULL,
+  `contato` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `users_contatos`
+--
+
+INSERT INTO `users_contatos` (`id`, `user_id`, `tipo`, `contato`) VALUES
+(1, 16, 1, '92771434'),
+(2, 16, 2, '33572825');
 
 --
 -- Constraints for dumped tables

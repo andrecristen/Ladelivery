@@ -9,11 +9,11 @@
     <fieldset>
         <?php if ($isComanda){
             echo '<legend>Abrir Comanda</legend>';
-            echo $this->Form->control('cliente', ['label'=> 'Cliente']);
+            echo $this->Form->control('cliente', ['label'=> 'Cliente', 'required' => 'required']);
         }else{
             echo '<legend>Abrir Pedido</legend>';
-            echo $this->Form->control('user_id', ['label'=> 'Cliente', 'options' => $users]);
-            echo $this->Form->control('formas_pagamento_id', ['label'=> 'Forma Pagamento', 'options' => $formasPagamento]);
+            echo $this->Form->control('user_id', ['label'=> 'Cliente', 'options' => $users, 'required' => 'required']);
+            echo $this->Form->control('formas_pagamento_id', ['label'=> 'Forma Pagamento', 'options' => $formasPagamento, 'required' => 'required']);
         } ?>
 
     </fieldset>

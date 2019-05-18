@@ -63,8 +63,8 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => []
         ]);
-
-        $this->set('user', $user);
+        $contatos = $this->getTableLocator()->get('UsersContatos')->find()->where(['user_id' => $user->id]);
+        $this->set(compact('user','contatos'));
     }
 
     public function profile($id = null){

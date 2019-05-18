@@ -109,6 +109,7 @@ class Pedido extends Entity
      * @var array
      */
     protected $_accessible = [
+        'id',
         'user_id' => true,
         'valor_total_cobrado' => true,
         'tempo_producao_aproximado_minutos' => true,

@@ -13,20 +13,26 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
 ?>
 <div class="col-sm-12">
     <?php
+    $createEntregaTable = false;
     if ($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_DELIVERY) {
         echo '<h3>Pedido #' . h($pedido->id) . '</h3>';
         $status = $listUtils->returnListPosition($pedido->status_pedido, \App\Model\Entity\Pedido::getDeliveryStatusList());
-        $createEntregaTable = true;
+        if($entrega){
+            $createEntregaTable = true;
+        }
     } else {
         echo '<h3>Comanda #' . h($pedido->id) . '</h3>';
         $status = $listUtils->returnListPosition($pedido->status_pedido, \App\Model\Entity\Pedido::getComandaStatusList());
-        $createEntregaTable = false;
     }
     ?>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($pedido->id) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Cliente') ?></th>
+            <td><?= $pedido->has('user') ? $this->Html->link($pedido->user->nome_completo, ['controller' => 'Users', 'action' => 'view', $pedido->user->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Situação') ?></th>

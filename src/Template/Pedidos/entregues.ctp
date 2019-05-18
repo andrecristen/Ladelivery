@@ -13,15 +13,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                 <input type="text" name="pedido/id" class="form-control" autocomplete="off" placeholder="Pesquisar #" id="pedido-id">
             </div>
             <div class="input text">
-                <input type="text" name="user/nome_completo" class="form-control" autocomplete="off" placeholder="Pesquisar Cliente" id="user-nome-completo"></div>
-            <div class="input text">
-                <input type="text" name="formas_pagamento/nome" class="form-control" autocomplete="off" placeholder="Pesquisar Pagamento" id="formas-pagamento-nome">
-            </div>
-            <div class="input text">
-                <input type="text" name="valor_total_cobrado" class="form-control" autocomplete="off" placeholder="Pesquisar Valor Total" id="valor-total-cobrado">
-            </div>
-            <div class="input text">
-                <input type="text" name="troco_para" class="form-control" autocomplete="off" placeholder="Pesquisar Troco Para" id="troco-para">
+                <input type="text" name="user/nome_completo" class="form-control" autocomplete="off" placeholder="Pesquisar Cliente" id="user-nome-completo">
             </div>
             <button class="btn btn-sm btn-success" style="margin-right: 3px;" type="submit"><i class="fas fa-search"></i> Pesquisar</button>
         </form>

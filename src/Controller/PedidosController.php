@@ -78,8 +78,9 @@ class PedidosController extends AppController
                 $this->Flash->success(__('Pedido aberto com sucesso.'));
                 if ($isComanda) {
                     $this->Flash->success(__('Comanda aberta com sucesso.'));
+                    return $this->redirect(['action' => 'addItem', $pedido->id]);
                 }
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'defineEntrega', $pedido->id]);
             }
             $this->Flash->error(__('Não foi possível abrir, tente novamente.'));
         }
@@ -91,6 +92,27 @@ class PedidosController extends AppController
             $formasPagamento = $this->getTableLocator()->get('FormasPagamentos')->find('list')->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId()]);
         }
         $this->set(compact('pedido', 'isComanda', 'users', 'formasPagamento'));
+    }
+
+    public function addItem($id = null){
+        $pedido = $this->Pedidos->get($id, [
+            'contain' => []
+        ]);
+        $this->set(compact('pedido'));
+    }
+
+    public function defineEntrega($id = null){
+        $pedido = $this->Pedidos->get($id, [
+            'contain' => []
+        ]);
+        $users = $this->getTableLocator()->get('Users')->find('list')->where(['tipo' => User::TIPO_CLIENTE]);
+        /** @var $enderecosClienteModel Endereco[]*/
+        $enderecosClienteModel = $this->getTableLocator()->get('Enderecos')->find()->where(['user_id' => $pedido->user_id]);
+        $enderecosCliente = [];
+        foreach ($enderecosClienteModel as $endereco){
+            $enderecosCliente[$endereco->id] = "Rua: ".$endereco->rua." Número: ". $endereco->numero." Bairro: ".$endereco->bairro.", ".$endereco->cidade."-".$endereco->estado;
+        }
+        $this->set(compact('pedido','users', 'enderecosCliente'));
     }
 
     private function instanceNewPedido($isComanda)
@@ -828,7 +850,7 @@ class PedidosController extends AppController
 
     public function view($id = null)
     {
-        $pedido = $this->Pedidos->get($id);
+        $pedido = $this->Pedidos->get($id, ['contain' => ['Users', 'FormasPagamentos']]);
         $this->set('pedido', $pedido);
     }
 

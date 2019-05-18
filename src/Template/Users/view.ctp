@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\User $user
  */
 $listTipo = \App\Model\Entity\User::getTipoListCRUD();
+$listTipoContato =\App\Model\Entity\UsersContato::getTipoList();
 ?>
 <div class="col-sm-12">
     <h3>Usuário #<?= h($user->id) ?></h3>
@@ -41,4 +42,23 @@ $listTipo = \App\Model\Entity\User::getTipoListCRUD();
             <td><?= $this->Number->format($user->ano_nascimento) ?></td>
         </tr>
     </table>
+    <div class="related">
+        <h4><?= __('Contatos:') ?></h4>
+        <?php if (!empty($contatos)): ?>
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <th scope="col"><?= __('#') ?></th>
+                    <th scope="col"><?= __('Tipo') ?></th>
+                    <th scope="col"><?= __('Contato') ?></th>
+                </tr>
+                <?php foreach ($contatos as $contato): ?>
+                    <tr>
+                        <td><?= h($contato->id) ?></td>
+                        <td><?= $listTipoContato[$contato->tipo] ?></td>
+                        <td><?= h($contato->contato) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php endif; ?>
+    </div>
 </div>

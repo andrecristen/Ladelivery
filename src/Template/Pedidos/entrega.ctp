@@ -13,15 +13,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                 <input type="text" name="pedido/id" class="form-control" autocomplete="off" placeholder="Pesquisar #" id="pedido-id">
             </div>
             <div class="input text">
-                <input type="text" name="user/nome_completo" class="form-control" autocomplete="off" placeholder="Pesquisar Cliente" id="user-nome-completo"></div>
-            <div class="input text">
-                <input type="text" name="formas_pagamento/nome" class="form-control" autocomplete="off" placeholder="Pesquisar Pagamento" id="formas-pagamento-nome">
-            </div>
-            <div class="input text">
-                <input type="text" name="valor_total_cobrado" class="form-control" autocomplete="off" placeholder="Pesquisar Valor Total" id="valor-total-cobrado">
-            </div>
-            <div class="input text">
-                <input type="text" name="troco_para" class="form-control" autocomplete="off" placeholder="Pesquisar Troco Para" id="troco-para">
+                <input type="text" name="user/nome_completo" class="form-control" autocomplete="off" placeholder="Pesquisar Cliente" id="user-nome-completo">
             </div>
             <button class="btn btn-sm btn-success" style="margin-right: 3px;" type="submit"><i class="fas fa-search"></i> Pesquisar</button>
         </form>
@@ -59,7 +51,6 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                         <?= $this->Html->link(__(''), ['action' => 'setSaiuParaEntrega', $pedido->id], ['class' => 'fas fa-motorcycle btn btn-success btn-sm', 'title' => 'Pedido saiu para entrega']) ?>
                         <?= $this->Html->link(__(''), ['controller' => 'PedidosEntregas','action' => 'setEntregador',  $entrega->id], ['class' => 'far fa-address-card btn btn-warning btn-sm', 'title' => 'Definir entregador']) ?>
                         <?= $this->Html->link(__(''), ['action' => 'view', $pedido->id], ['class' => 'fas fa-eye btn btn-info btn-sm', 'title' => 'Visualizar']) ?>
-                        <?= $this->Html->link(__(''), ['action' => 'mensagemCliente', $pedido->id], ['class' => 'far fa-comments btn btn-primary btn-sm', 'title' => 'Trocar Mensagem com cliente']) ?>
                     </div>
                 </div>
             </div>

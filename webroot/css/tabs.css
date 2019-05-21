@@ -32,13 +32,16 @@
 /* Style the tab content */
 .tabcontent {
     max-height: 100%!important;
-    overflow-y: auto!important;
+    overflow-y: initial!important;
     display: none;
     padding: 6px 12px!important;
     border: 1px solid #ccc!important;
     border-top: none!important;
 }
+form .tabcontent{
+    overflow-y: auto!important;
 
+}
 .dropdown-toggle{
     height: 35px!important;
 }

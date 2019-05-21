@@ -24,6 +24,7 @@ if(!$existstPedidoAberto || !$empresaAberta){
 }else{
     $query = [];
 }
+$produtoOpen = $params['?']['openProduto'];
 ?>
 <head>
     <meta charset="utf-8">
@@ -84,7 +85,7 @@ if(!$existstPedidoAberto || !$empresaAberta){
     <div class="modal" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div style="min-height: 70%" class="modal-content">
+            <div style="min-height: 95%" class="modal-content">
                 <div class="modal-header">
                     <?php
                     if(isset($_SESSION['Auth']['User']['id']) && $empresaAberta){?>
@@ -142,7 +143,7 @@ if(!$existstPedidoAberto || !$empresaAberta){
                         </div>
                     </div>
 
-                    <div id="opcoes" style="min-height:60%" class="tabcontent">
+                    <div id="opcoes" class="tabcontent">
                         <div id="contentOptions">
                         <!--      SERVE PARA PODER APENDAR A LISTAS CRIADAS DOS PRODUTOS        -->
                         </div>
@@ -199,7 +200,7 @@ if(!$existstPedidoAberto || !$empresaAberta){
                     <div class="card-footer">
                         <?php if (isset($_SESSION['Auth']['User']['id']) && $empresaAberta) { ?>
                             <button title="Adicionar ao carrinho" class="btn btn-sm btn-success" style="width: 45%"
-                                    onclick="openModalAddCart(<?= $produto->id ?>, <?= $_SESSION['Auth']['User']['id'] ?>)">
+                                    onclick="openModalAddCart(<?= $produto->id ?>)">
                                 <i class="fas fa-cart-plus"></i> Comprar <i style="display: none" id="loading-<?= $produto->id?>" class="fa fa-spinner fa-spin"></i>
                             </button>
                         <?php } else { ?>
@@ -227,4 +228,11 @@ if(!$existstPedidoAberto || !$empresaAberta){
         color: orange;
     }
 </style>
+<?php if($produtoOpen){ ?>
+<script>
+    $(document).ready(function () {
+        openModalAddCart(<?= $produtoOpen ?>);
+    });
+</script>
+<?php } ?>
 </body>

@@ -141,7 +141,7 @@ $haveProdutos = count($produtosMaisVendidos);
                         <span><?= $produto->descricao_produto ?></span>
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-primary" href="/pages/produtos?categoria=<?= $produto->categorias_produto_id?>"><i class="fas fa-search"></i> Ver categoria</a>
+                        <a class="btn btn-primary" href="/pages/produtos?categoria=<?= $produto->categorias_produto_id?>&openProduto=<?= $produto->id?>"><i class="fas fa-search"></i> Visualizar</a>
                     </div>
                 </div>
             <?php } ?>

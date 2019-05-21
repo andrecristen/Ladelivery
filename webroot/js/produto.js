@@ -34,7 +34,7 @@ function findProduto(produtoId) {
     });
 }
 
-function openModalAddCart(produtoId, userId) {
+function openModalAddCart(produtoId) {
     $("#loading-" + produtoId).show();
     setTimeout(function () {
         findProduto(produtoId);

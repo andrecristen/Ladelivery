@@ -31,7 +31,7 @@ class ContasController extends AppController
         $this->paginate = [
             'contain' => ['Users']
         ];
-        $contas = $this->paginate($this->Contas);
+        $contas = $this->paginate($this->Contas->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('contas'));
     }

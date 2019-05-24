@@ -541,7 +541,9 @@ class PedidosController extends AppController
             $newPedido->user_id = $this->Auth->user('id');
             $newPedido->valor_total_cobrado = 0;
             $newPedido->status_pedido = Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE;
-            $newPedido->data_pedido = new  \DateTime();
+            $dateTime = new  \DateTime();
+            $dateTime->setTime ( $dateTime->format("H"), $dateTime->format('i'), 0 );
+            $newPedido->data_pedido = $dateTime;
             $newPedido->empresa_id = $this->empresaUtils->getEmpresaBase();
             if ($endereco != 'retirar-no-local'){
                 $tempoMedio = $tableLocator->get('TemposMedios')->find()->where(['ativo' => true, 'tipo' => TemposMedio::TIPO_PARA_ENTREGA]);

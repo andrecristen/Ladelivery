@@ -155,6 +155,7 @@ $cacheControl = $cacheControl->getCacheVersion();
                 <ul class="sub-menu collapse" id="engine">
                     <li><?= $this->Html->link(__('Empresas'), ['controller' => 'Empresas', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('API Google Maps Key'), ['controller' => 'GoogleMapsApiKey', 'action' => 'index']) ?></li>
+                    <li><?= $this->Html->link(__('Módulos'), ['controller' => 'Modulos', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('Controllers'), ['controller' => 'Controllers', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('Actions'), ['controller' => 'Actions', 'action' => 'index']) ?></li>
                     <li><?= $this->Html->link(__('Perfils'), ['controller' => 'Perfils', 'action' => 'index']) ?></li>

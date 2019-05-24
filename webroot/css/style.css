@@ -38,6 +38,29 @@ a:hover {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.content-filter .datetime{
+    margin-bottom: 5px!important;
+}
+
+.content-filter .date{
+    margin-bottom: 5px!important;
+}
+
+.content-filter input{
+    margin: 1px!important;
+}
+
+.content-filter ::-webkit-clear-button
+{
+    display: none;
+    -webkit-appearance: none;
+}
+.content-filter ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+}
+
 .content-filter .form-control{
     margin-bottom: 5px!important;
 }

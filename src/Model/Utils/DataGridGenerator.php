@@ -71,22 +71,37 @@ class DataGridGenerator extends View implements TypeFields
         echo '<div class="content-filter">';
         echo $this->Form->create(null, ['type' => 'get']);
         foreach ($this->fields as $field) {
+            $filterName = $field->getAlias().'='.$field->getType();
             if ($field->getFilter()) {
-                if ($field->getType() == self::TYPE_TEXT || $field->getType() == self::TYPE_NUMBER) {
-                    echo $this->Form->input($field->getAlias(), ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'value' => $this->request->getQuery($field->getAlias())]);
-                } else {
-                    if ($field->getType() == self::TYPE_LIST) {
-                        $list[''] = 'Selecione uma opção';
+                switch ($field->getType()){
+                    case TypeFields::TYPE_TEXT:
+                        echo $this->Form->input($filterName, ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'type'=> 'text','value' => $this->request->getQuery($filterName)]);
+                        break;
+                    case TypeFields::TYPE_NUMBER:
+                        echo $this->Form->input($filterName, ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'type'=> 'number','value' => $this->request->getQuery($filterName)]);
+                        break;
+                    case TypeFields::TYPE_LIST:
+                        $list = [];
+                        $list[''] = 'Selecione uma opção para o filtro '. $field->getTitulo();
                         foreach ($field->getList() as $key => $option) {
                             $list[$key] = $option;
                         }
-                        echo $this->Form->select($field->getAlias(), $list, ['label' => false, 'value' => $this->request->getQuery($field->getAlias())]);
+                        echo $this->Form->select($filterName, $list, ['label' => false, 'value' => $this->request->getQuery($filterName)]);
                         echo '<br/>';
-                    } else {
-                        if ($field->getType() == self::TYPE_BOOLEAN) {
-                            echo $this->Form->select($field->getAlias(), ['' => 'Selecione uma opção para o filtro ' . $field->getTitulo(), 1 => 'Sim', 0 => 'Não'], ['label' => false, 'value' => $this->request->getQuery($field->getAlias())]);
-                        }
-                    }
+                        break;
+                    case TypeFields::TYPE_BOOLEAN:
+                        echo $this->Form->select($filterName, ['' => 'Selecione uma opção para o filtro ' . $field->getTitulo(), 1 => 'Sim', 0 => 'Não'], ['label' => false, 'value' => $this->request->getQuery($filterName)]);
+                    break;
+                    case TypeFields::TYPE_DATE:
+                        echo '<div class="input date">';
+                        echo '<input title="Pesquisar '.$field->getTitulo().'" name="'.$filterName.'" id="'.$filterName.'" type="date" value="'.$this->request->getQuery($filterName).'" >';
+                        echo '</div>';
+                        break;
+                    case TypeFields::TYPE_DATE_TIME:
+                        echo '<div class="input datetime">';
+                        echo '<input title="Pesquisar '.$field->getTitulo().'" name="'.$filterName.'" id="'.$filterName.'" type="datetime-local" value="'.$this->request->getQuery($filterName).'" >';
+                        echo '</div>';
+                        break;
                 }
             }
         }

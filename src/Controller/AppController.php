@@ -19,6 +19,7 @@ use App\Model\Entity\Action;
 use App\Model\Entity\PerfilsUser;
 use App\Model\Entity\User;
 use App\Model\Utils\EmpresaUtils;
+use App\Model\Utils\TypeFields;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\ORM\Locator\TableLocator;
@@ -243,6 +244,9 @@ class AppController extends Controller
             if ($search) {
                 foreach ($search as $key => $field) {
                     if ($field !== '' && $key !== 'page' && $key !== 'limit') {
+                        $keyParts = explode('=', $key);
+                        $key = $keyParts[0];
+                        $typeField = $keyParts[1];
                         //Caso no alias ja tiver o s da entidade
                         $toCamelCase = false;
                         if (strpos($key, 's/')) {
@@ -262,16 +266,27 @@ class AppController extends Controller
                                 $key .= '.'.$part;
                             }
                         }
-                        if (intval($field) || $field == '0' || floatval($field)) {
-                            $finalSearch[$key] = $field;
-                        } else {
-                            if ($field == 'false' || $field == 'true') {
-                                $finalSearch[$key] = boolval($field);
-                            } else {
-                                $finalSearch[$key . ' LIKE'] = '%' . $field . '%';
-                            }
-                        }
 
+                        switch ($typeField){
+                            case TypeFields::TYPE_TEXT:
+                                $finalSearch[$key . ' LIKE'] = '%' . $field . '%';
+                                break;
+                            case TypeFields::TYPE_LIST:
+                            case TypeFields::TYPE_NUMBER:
+                                $finalSearch[$key] = $field;
+                                break;
+                            case TypeFields::TYPE_BOOLEAN:
+                                $finalSearch[$key] = boolval($field);
+                                break;
+                            case TypeFields::TYPE_DATE_TIME:
+                                $dateInicio = date("Y-m-d H:i:s",strtotime($field));
+                                $finalSearch[$key] = $dateInicio;
+                                break;
+                            case TypeFields::TYPE_DATE:
+                                $dateInicio = date("Y-m-d",strtotime($field));
+                                $finalSearch[$key] = $dateInicio;
+                                break;
+                        }
                     }
                 }
             }

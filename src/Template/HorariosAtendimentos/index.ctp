@@ -18,8 +18,8 @@
     $turno = new \App\Model\Utils\GridField('Turno', 'turno', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
     $turno->setList(\App\Model\Entity\HorariosAtendimento::getTurnoList());
     $dataGrid->addField($turno);
-    $dataGrid->addField(new \App\Model\Utils\GridField('Inicio', 'hora_inicio', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Fim', 'hora_fim', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Inicio', 'hora_inicio', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME, true, false));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Fim', 'hora_fim', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME, true, false));
     $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>

@@ -68,8 +68,8 @@ class FinanceiroController extends AppController
     }
 
     public function produtos(){
-        $produtos = $this->getProdutosMes($this->empresaUtils->getUserEmpresaId());
-        $this->set(compact('produtos'));
+        //$produtos = $this->getProdutosMes($this->empresaUtils->getUserEmpresaId());
+        //$this->set(compact('produtos'));
     }
 
     private function getEntregasMes($empresa){

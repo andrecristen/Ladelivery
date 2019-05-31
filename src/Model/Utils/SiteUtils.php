@@ -25,6 +25,43 @@ class SiteUtils extends AppController
         $this->Html = new HtmlHelper($appView, []);
     }
 
+    /**
+     * @todo Utilizar mapeamento destas informacoes para gerar relatorios.
+     */
+    public static function getMesList(){
+        return [
+            '01'=>'Janeiro',
+            '02'=>'Fevereiro',
+            '03'=>'Março',
+            '04'=>'Abril',
+            '05'=>'Maio',
+            '06'=>'Junho',
+            '07'=>'Julho',
+            '08'=>'Agosto',
+            '09'=>'Setembro',
+            '10'=>'Outubro',
+            '11'=>'Novembro',
+            '12'=>'Dezembro'];
+    }
+
+    /**
+     * @todo Utilizar mapeamento destas informacoes para gerar relatorios.
+     */
+    public static function getAnoList(){
+        $anoHomologacao = EmpresaUtils::ANO_HOMOLOGACAO_EMPRESA;
+        $date = new \DateTime();
+        $date = $date->format('Y');
+        $anos = [];
+        $anos[] = $anoHomologacao;
+        $anoAtual = $anoHomologacao;
+        $diferenca = (intval($date) - $anoAtual);
+        for($i = 0 ; $i < $diferenca ; $i++){
+            $anos[] = $anoAtual+1;
+            $anoAtual += 1;
+        }
+        return $anos;
+    }
+
     public function showStarsByNota($nota){
         switch (intval($nota)){
             case 0:

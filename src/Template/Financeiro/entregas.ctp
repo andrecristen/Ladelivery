@@ -5,6 +5,9 @@
  */
 ?>
 <div class="col-sm-12">
+    <div class="alert alert-info">
+        <span>Listagem referentes a dados deste mês.</span>
+    </div>
     <?= $this->Html->link(__('Gerar Comissões'), ['controller' => 'Financeiro', 'action' => 'comissaoEntregador'], ['class' => 'btn btn-success'])?>
     <h3>Métricas de entregas deste mês</h3>
     <div class="row">

@@ -2,7 +2,6 @@
 /**
  * André Cristen - andrecristenibirama@gmail.com
  * Gerente de projeto & Desenvolvedor
- *
  */
 
 namespace App\Model\Utils;
@@ -15,10 +14,13 @@ use Cake\ORM\Locator\TableLocator;
 /*
  * Classe usada para minimizar buscas ao banco de dados
  * trata-se de uma configuracao para o sistema
+ * deve ser utilizada para o nicho de uma empresa so.
  */
 class EmpresaUtils extends AppController
 {
     const NOME_EMPRESA_LOJA = 'LaDelivery - LaDev';
+    const ANO_HOMOLOGACAO_EMPRESA = 2019;
+
     /*
      * Id da empresa unica que fornece produtos.
      *

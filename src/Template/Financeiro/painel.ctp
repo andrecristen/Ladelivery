@@ -21,6 +21,9 @@ $colorsGraph = [
 <?= $this->Html->css('painel.css') ?>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <div class="container-fluid">
+    <div class="alert alert-info">
+        <span>Listagem referentes a dados deste mês.</span>
+    </div>
     <div class="row">
         <div class="col-sm-6">
             <div class="card border-left-primary shadow h-100 py-2">

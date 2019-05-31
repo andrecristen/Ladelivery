@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\TaxasEntregasCotacao;
 use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -68,11 +69,13 @@ class TaxasEntregasCotacaoController extends AppController
             $taxasEntregasCotacao = $this->TaxasEntregasCotacao->patchEntity($taxasEntregasCotacao, $this->request->getData());
             $taxasEntregasCotacao->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->TaxasEntregasCotacao->save($taxasEntregasCotacao)) {
-                $this->Flash->success(__('The taxas entregas cotacao has been saved.'));
-
+                $this->Flash->success(__('Taxa entrega salva com sucesso.'));
+                if($taxasEntregasCotacao->ativo){
+                    $this->desativaTaxasEntregaAtiva($taxasEntregasCotacao->id);
+                }
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The taxas entregas cotacao could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro ao salvar taxa de entrega, tente novamente.'));
         }
         $this->set(compact('taxasEntregasCotacao'));
     }
@@ -93,14 +96,26 @@ class TaxasEntregasCotacaoController extends AppController
             $taxasEntregasCotacao = $this->TaxasEntregasCotacao->patchEntity($taxasEntregasCotacao, $this->request->getData());
             $taxasEntregasCotacao->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->TaxasEntregasCotacao->save($taxasEntregasCotacao)) {
-                $this->Flash->success(__('The taxas entregas cotacao has been saved.'));
-
+                $this->Flash->success(__('Taxa entrega salva com sucesso.'));
+                if($taxasEntregasCotacao->ativo){
+                    $this->desativaTaxasEntregaAtiva($taxasEntregasCotacao->id);
+                }
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The taxas entregas cotacao could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro ao salvar taxa de entrega, tente novamente.'));
         }
         $this->set(compact('taxasEntregasCotacao'));
     }
+
+    private function desativaTaxasEntregaAtiva($taxaAtualId){
+        /** @var $taxaEntrega TaxasEntregasCotacao*/
+        $taxaEntrega = $this->TaxasEntregasCotacao->find()->where(['empresa_id' => $this->empresaUtils->getUserEmpresaId(),'ativo' => true, 'id <>' => $taxaAtualId])->first();
+        if ($taxaEntrega){
+            $taxaEntrega->ativo = false;
+            $this->TaxasEntregasCotacao->save($taxaEntrega);
+        }
+    }
+
 
     /**
      * Delete method

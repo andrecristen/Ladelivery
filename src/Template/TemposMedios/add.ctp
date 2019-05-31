@@ -6,7 +6,12 @@
 ?>
 <div class="col-sm-12">
     <div class="alert alert-info">
-        <span>Atenção! Ao cadastrar um tempo de produção como ativo caso no sistema já constar algum ativo o anterior será desativado e o novo mantido como ativo. Isso porque só podemos ter um tempo para cada tipo ativo</span>
+        <span>
+              Atenção! Ao cadastrar um tempo de produção como ativo caso no sistema já constar algum ativo o anterior
+              será desativado e o novo mantido como ativo. Isso porque só podemos ter um tempo para cada tipo ativo.
+              Certifique-se de sempre manter um cadastro para cada tipo ativo, pois do contrario o sistema pode não
+              funcionar corretamente.
+        </span>
     </div>
     <?= $this->Form->create($temposMedio) ?>
     <fieldset>

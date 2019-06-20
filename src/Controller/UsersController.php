@@ -9,6 +9,7 @@ use App\Model\Entity\User;
 use App\Model\Table\PerfilsTable;
 use App\Model\Utils\EmpresaUtils;
 use Cake\Controller\ComponentRegistry;
+use Cake\Datasource\ConnectionManager;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -218,6 +219,7 @@ class UsersController extends AppController
                 $redirect = ($this->Auth->redirectUrl());
                 //Quer dizer que é um admin entrando a primeira vez
                 if($user['tipo'] == User::TIPO_ADMINISTRADOR || $user['tipo'] == User::TIPO_MASTER){
+                    $_SESSION["menus"] = $this->getMenusToUser($user);
                     if($redirect == '/pages'){
                         return $this->redirect('/financeiro/painel');
                     }
@@ -227,6 +229,58 @@ class UsersController extends AppController
                 $this->Flash->default(__('Login ou Senha incorretos!'), ['class'=>'"alert alert-danger']);
             }
         }
+    }
+
+    private function getMenusToUser($user){
+        $connection = ConnectionManager::get('default');
+        if($user['tipo'] == User::TIPO_MASTER){
+            $sql = "SELECT * 
+                      FROM menus 
+                      JOIN modulos
+                        ON menus.modulo_id = modulos.id
+                      JOIN actions
+                        ON actions.id = menus.action_id
+                      JOIN controllers
+                        ON actions.controller_id = controllers.id      
+                     WHERE ativo = true 
+                       AND ativo_menu = true
+                  ORDER BY ordem, ordem_menu ";
+            $results = $connection->execute($sql)->fetchAll('assoc');
+        }else{
+            $sql = "SELECT * 
+                      FROM menus 
+                      JOIN modulos
+                        ON menus.modulo_id = modulos.id
+                      JOIN actions
+                        ON actions.id = menus.action_id
+                      JOIN controllers
+                        ON actions.controller_id = controllers.id      
+                     WHERE action_id in(SELECT action_id 
+                                          FROM perfils_actions
+                                          JOIN perfils_users
+                                            ON perfils_actions.perfil_id = perfils_users.perfil_id
+                                           AND perfils_users.user_id = :usuario)
+                                           
+                       AND ativo = true 
+                       AND ativo_menu = true
+                  ORDER BY ordem, ordem_menu ";
+            $results = $connection->execute($sql, ['usuario' => $user['id']])->fetchAll('assoc');
+        }
+        $menus = [];
+        foreach ($results as $result){
+            if(!isset($menus[$result['nome']])){
+                $menus[$result['nome']] = [
+                    'nome' => $result['nome'],
+                    'icon' => $result['icon_class'],
+                ];
+            }
+            $menus[$result['nome']]['childrens'][] = [
+                'nome' => $result['nome_menu'],
+                'controller' => $result['nome_controlador'],
+                'action' => $result['nome_action'],
+            ];
+        }
+        return $menus;
     }
 
     public function logout()

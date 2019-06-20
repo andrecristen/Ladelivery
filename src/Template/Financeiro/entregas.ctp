@@ -9,6 +9,7 @@
         <span>Listagem referentes a dados deste mês.</span>
     </div>
     <?= $this->Html->link(__('Gerar Comissões'), ['controller' => 'Financeiro', 'action' => 'comissaoEntregador'], ['class' => 'btn btn-success'])?>
+    <?= $this->Html->link(__('Todos Períodos'), ['controller' => 'Financeiro', 'action' => 'entregasGeral'], ['class' => 'btn btn-danger'])?>
     <h3>Métricas de entregas deste mês</h3>
     <div class="row">
         <?php

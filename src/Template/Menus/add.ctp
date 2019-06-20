@@ -4,20 +4,10 @@
  * @var \App\Model\Entity\Menu $menu
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Menus'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Modulos'), ['controller' => 'Modulos', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Modulo'), ['controller' => 'Modulos', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Actions'), ['controller' => 'Actions', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Action'), ['controller' => 'Actions', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="menus form large-9 medium-8 columns content">
+<div class="col-sm-12">
     <?= $this->Form->create($menu) ?>
     <fieldset>
-        <legend><?= __('Add Menu') ?></legend>
+        <legend><?= __('Adicionar Menu') ?></legend>
         <?php
             echo $this->Form->control('modulo_id', ['options' => $modulos]);
             echo $this->Form->control('action_id', ['options' => $actions]);
@@ -27,6 +17,6 @@
             echo $this->Form->control('icon_menu');
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Adicionar')) ?>
     <?= $this->Form->end() ?>
 </div>

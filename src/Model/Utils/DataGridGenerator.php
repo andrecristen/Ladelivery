@@ -19,6 +19,10 @@ class DataGridGenerator extends View implements TypeFields
 
     protected $appController;
 
+    protected $showFilters = true;
+
+    protected $showActions = true;
+
     protected $filtersValues = [];
 
     protected $controller;
@@ -67,60 +71,61 @@ class DataGridGenerator extends View implements TypeFields
             echo 'DIRECT ACTIONS FOR THE TABLE LINES:';
             var_dump($this->actions);
         }
-
-        echo '<div class="content-filter">';
-        echo $this->Form->create(null, ['type' => 'get']);
-        foreach ($this->fields as $field) {
-            $filterName = $field->getAlias().'='.$field->getType();
-            if ($field->getFilter()) {
-                switch ($field->getType()){
-                    case TypeFields::TYPE_TEXT:
-                        echo $this->Form->input($filterName, ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'type'=> 'text','value' => $this->request->getQuery($filterName)]);
-                        break;
-                    case TypeFields::TYPE_NUMBER:
-                        echo $this->Form->input($filterName, ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'type'=> 'number','value' => $this->request->getQuery($filterName)]);
-                        break;
-                    case TypeFields::TYPE_LIST:
-                        $list = [];
-                        $list[''] = 'Selecione uma opção para o filtro '. $field->getTitulo();
-                        foreach ($field->getList() as $key => $option) {
-                            $list[$key] = $option;
-                        }
-                        echo $this->Form->select($filterName, $list, ['label' => false, 'value' => $this->request->getQuery($filterName)]);
-                        echo '<br/>';
-                        break;
-                    case TypeFields::TYPE_BOOLEAN:
-                        echo $this->Form->select($filterName, ['' => 'Selecione uma opção para o filtro ' . $field->getTitulo(), 1 => 'Sim', 0 => 'Não'], ['label' => false, 'value' => $this->request->getQuery($filterName)]);
-                    break;
-                    case TypeFields::TYPE_DATE:
-                        echo '<div class="input date">';
-                        echo '<input title="Pesquisar '.$field->getTitulo().'" name="'.$filterName.'" id="'.$filterName.'" type="date" value="'.$this->request->getQuery($filterName).'" >';
-                        echo '</div>';
-                        break;
-                    case TypeFields::TYPE_DATE_TIME:
-                        echo '<div class="input datetime">';
-                        echo '<input title="Pesquisar '.$field->getTitulo().'" name="'.$filterName.'" id="'.$filterName.'" type="datetime-local" value="'.$this->request->getQuery($filterName).'" >';
-                        echo '</div>';
-                        break;
+        if ($this->isShowFilters()) {
+            echo '<div class="content-filter">';
+            echo $this->Form->create(null, ['type' => 'get']);
+            foreach ($this->fields as $field) {
+                $filterName = $field->getAlias() . '=' . $field->getType();
+                if ($field->getFilter()) {
+                    switch ($field->getType()) {
+                        case TypeFields::TYPE_TEXT:
+                            echo $this->Form->input($filterName, ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'type' => 'text', 'value' => $this->request->getQuery($filterName)]);
+                            break;
+                        case TypeFields::TYPE_NUMBER:
+                            echo $this->Form->input($filterName, ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'type' => 'number', 'value' => $this->request->getQuery($filterName)]);
+                            break;
+                        case TypeFields::TYPE_LIST:
+                            $list = [];
+                            $list[''] = 'Selecione uma opção para o filtro ' . $field->getTitulo();
+                            foreach ($field->getList() as $key => $option) {
+                                $list[$key] = $option;
+                            }
+                            echo $this->Form->select($filterName, $list, ['label' => false, 'value' => $this->request->getQuery($filterName)]);
+                            echo '<br/>';
+                            break;
+                        case TypeFields::TYPE_BOOLEAN:
+                            echo $this->Form->select($filterName, ['' => 'Selecione uma opção para o filtro ' . $field->getTitulo(), 1 => 'Sim', 0 => 'Não'], ['label' => false, 'value' => $this->request->getQuery($filterName)]);
+                            break;
+                        case TypeFields::TYPE_DATE:
+                            echo '<div class="input date">';
+                            echo '<input title="Pesquisar ' . $field->getTitulo() . '" name="' . $filterName . '" id="' . $filterName . '" type="date" value="' . $this->request->getQuery($filterName) . '" >';
+                            echo '</div>';
+                            break;
+                        case TypeFields::TYPE_DATE_TIME:
+                            echo '<div class="input datetime">';
+                            echo '<input title="Pesquisar ' . $field->getTitulo() . '" name="' . $filterName . '" id="' . $filterName . '" type="datetime-local" value="' . $this->request->getQuery($filterName) . '" >';
+                            echo '</div>';
+                            break;
+                    }
                 }
             }
+            echo $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-search')) . ' Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
+            $action = 'index';
+            if ($this->getCallBackActionLimpar()) {
+                $action = $this->getCallBackActionLimpar();
+            }
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-trash-alt')) . ' Limpar', ['action' => $action], array('escape' => false, 'class' => 'btn btn-sm btn-danger'));
+            echo $this->Form->end();
+            echo '</div>';
         }
-        echo $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-search')) . ' Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
-        $action = 'index';
-        if ($this->getCallBackActionLimpar()) {
-            $action = $this->getCallBackActionLimpar();
-        }
-        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-trash-alt')) . ' Limpar', ['action' => $action], array('escape' => false, 'class' => 'btn btn-sm btn-danger'));
-        echo $this->Form->end();
-        echo '</div>';
         echo '<div class="actions-grid">';
         ?>
-        <?php if (!$this->noAdd && $this->appController->validateActionView($this->getController(), 'add')) { ?>
+        <?php if ($this->isShowActions() && !$this->noAdd && $this->appController->validateActionView($this->getController(), 'add')) { ?>
         <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-plus-square')) . ' Adicionar', ['action' => 'add'], array('escape' => false, 'class' => 'btn btn-sm btn-primary')) ?>
     <?php } ?>
         <?php foreach ($this->actions as $action) {
-        if ($this->appController->validateActionView($action['controller'], $action['action'])) {
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])) . ' ' . $action['titulo'], ['controller' => $action['controller'], 'action' => $action['action']], array('escape' => false, 'class' => $action['class'].' btn-sm'));
+        if ($this->isShowActions() && $this->appController->validateActionView($action['controller'], $action['action'])) {
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])) . ' ' . $action['titulo'], ['controller' => $action['controller'], 'action' => $action['action']], array('escape' => false, 'class' => $action['class'] . ' btn-sm'));
         } ?>
     <?php } ?>
         <?php
@@ -142,22 +147,24 @@ class DataGridGenerator extends View implements TypeFields
             }
             echo '<th scope="col"><span>' . $th->getTitulo() . '</span></th>';
         }
-        if (!$this->hiddenActionsColumn) {
+        if (!$this->hiddenActionsColumn && $this->isShowActions()) {
             echo '<th scope="col" class="actions"> Ações </th>';
         }
         echo '</thead>';
         echo '<tbody>';
-        $isValidView = $this->appController->validateActionView($this->getController(), 'view');
-        $isValidEdit = $this->appController->validateActionView($this->getController(), 'edit');
-        $isValidDelete = $this->appController->validateActionView($this->getController(), 'delete');
-        $actionsRowValid = [];
-        foreach ($this->actionsTable as $actionTable) {
-            $actionController = $this->getController();
-            if(isset($actionTable['url']['controller'])){
-                $actionController = $actionTable['url']['controller'];
-            }
-            if($this->appController->validateActionView($actionController, $actionTable['url']['action'])){
-                $actionsRowValid[] = $actionTable;
+        if (!$this->hiddenActionsColumn && $this->isShowActions()) {
+            $isValidView = $this->appController->validateActionView($this->getController(), 'view');
+            $isValidEdit = $this->appController->validateActionView($this->getController(), 'edit');
+            $isValidDelete = $this->appController->validateActionView($this->getController(), 'delete');
+            $actionsRowValid = [];
+            foreach ($this->actionsTable as $actionTable) {
+                $actionController = $this->getController();
+                if (isset($actionTable['url']['controller'])) {
+                    $actionController = $actionTable['url']['controller'];
+                }
+                if ($this->appController->validateActionView($actionController, $actionTable['url']['action'])) {
+                    $actionsRowValid[] = $actionTable;
+                }
             }
         }
         foreach ($this->model as $entidade) {
@@ -199,17 +206,17 @@ class DataGridGenerator extends View implements TypeFields
                     }
                     echo '</td>';
                 } else if ($td->getType() == self::TYPE_DATE) {
-                    if(!$entidadeWithPath){
+                    if (!$entidadeWithPath) {
                         echo '<td></td>';
-                    }else{
+                    } else {
                         $date = new \DateTime($entidadeWithPath);
                         $formatted_date = $date->format('d/m/Y');
                         echo '<td>'; ?><?= h($formatted_date) ?><?php echo '</td>';
                     }
                 } else if ($td->getType() == self::TYPE_DATE_TIME) {
-                    if(!$entidadeWithPath){
+                    if (!$entidadeWithPath) {
                         echo '<td></td>';
-                    }else{
+                    } else {
                         $dateTime = new \DateTime($entidadeWithPath);
                         $formatted_date = $dateTime->format('d/m/Y H:i:s');
                         echo '<td>'; ?><?= h($formatted_date) ?><?php echo '</td>';
@@ -228,7 +235,7 @@ class DataGridGenerator extends View implements TypeFields
                     echo '<td>'; ?><?= h($td->getList()[$entidadeWithPath]) ?><?php echo '</td>';
                 }
             }
-            if (!$this->hiddenActionsColumn) {
+            if (!$this->hiddenActionsColumn && $this->isShowActions()) {
                 echo '<td class="actions">';
                 ?>
                 <?php if (!$this->noView && $isValidView) { ?>
@@ -577,6 +584,38 @@ class DataGridGenerator extends View implements TypeFields
     public function setController($controller)
     {
         $this->controller = $controller;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowFilters()
+    {
+        return $this->showFilters;
+    }
+
+    /**
+     * @param bool $showFilters
+     */
+    public function setShowFilters($showFilters)
+    {
+        $this->showFilters = $showFilters;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowActions()
+    {
+        return $this->showActions;
+    }
+
+    /**
+     * @param bool $showActions
+     */
+    public function setShowActions($showActions)
+    {
+        $this->showActions = $showActions;
     }
 
 }

@@ -130,8 +130,8 @@ class AppController extends Controller
             }else{
 //                $this->Flash->error('Você não possui acesso a ação "'.$actionModel->descricao_action.'", caso necessite desta ação contate suporte para liberar acesso.');
                 $erro = 'Você não possui acesso a ação "'.$actionModel->descricao_action.'", caso necessite desta ação contate suporte para liberar acesso.';
-                echo '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>';
-                echo '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">';
+                echo '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>';
+                echo '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">';
                 echo '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">';
                 echo '<div class="container">
                           <div class="row">
@@ -279,12 +279,12 @@ class AppController extends Controller
                                 $finalSearch[$key] = boolval($field);
                                 break;
                             case TypeFields::TYPE_DATE_TIME:
-                                $dateInicio = date("Y-m-d H:i:s",strtotime($field));
-                                $finalSearch[$key] = $dateInicio;
+                                $dateInicio = date("Y-m-d H:i",strtotime($field));
+                                $finalSearch[$key.' LIKE'] = "%".$dateInicio."%";
                                 break;
                             case TypeFields::TYPE_DATE:
                                 $dateInicio = date("Y-m-d",strtotime($field));
-                                $finalSearch[$key] = $dateInicio;
+                                $finalSearch[$key.' LIKE'] = "%".$dateInicio."%";
                                 break;
                         }
                     }

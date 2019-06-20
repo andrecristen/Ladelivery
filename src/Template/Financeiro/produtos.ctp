@@ -12,8 +12,20 @@
                 </h6>
             </div>
             <div id="produtos" class="panel-collapse collapse">
-                <div class="panel-body">Panel Body</div>
-                <div class="panel-footer">Panel Footer</div>
+                <div class="panel-body">
+                    <?php
+                    $posicao = 1;
+                    if($produtos){
+                        foreach ($produtos as $produto){ ?>
+                            <b><?= $posicao?> º</b> <span><?= $produto['nome']?> - Vendidos: <?= $produto['quantidade']?></span>
+                            <br/>
+                            <?php
+                            $posicao++;
+                        }
+                    }else{
+                        echo '<span>Sem dados para o período</span>';
+                    } ?>
+                </div>
             </div>
         </div>
     </div>
@@ -25,8 +37,20 @@
                 </h6>
             </div>
             <div id="categorias" class="panel-collapse collapse">
-                <div class="panel-body">Panel Body</div>
-                <div class="panel-footer">Panel Footer</div>
+                <div class="panel-body">
+                    <?php
+                    $posicao = 1;
+                    if($categorias){
+                        foreach ($categorias as $categoria){ ?>
+                            <b><?= $posicao?> º</b> <span><?= $categoria['nome']?> - Vendidos: <?= $categoria['quantidade']?></span>
+                            <br/>
+                            <?php
+                            $posicao++;
+                        }
+                    }else{
+                        echo '<span>Sem dados para o período</span>';
+                    } ?>
+                </div>
             </div>
         </div>
     </div>

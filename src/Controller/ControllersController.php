@@ -28,7 +28,7 @@ class ControllersController extends AppController
      */
     public function index()
     {
-        $controllers = $this->paginate($this->Controllers);
+        $controllers = $this->paginate($this->Controllers->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('controllers'));
     }

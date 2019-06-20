@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 
 /**
  * Menus Controller
@@ -12,6 +14,12 @@ use App\Controller\AppController;
  */
 class MenusController extends AppController
 {
+
+    public function __construct(ServerRequest $request = null, Response $response = null, $name = null, $eventManager = null, $components = null)
+    {
+        parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->validateActions();
+    }
 
     /**
      * Index method

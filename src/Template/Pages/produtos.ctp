@@ -31,23 +31,8 @@ $produtoOpen = $params['?']['openProduto'];
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Produtos : <?= $categoriaNome ?></title>
-
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css<?= h($cacheControl->getCacheVersion()) ?>"
-          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css<?= h($cacheControl->getCacheVersion()) ?>"
-          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js<?= h($cacheControl->getCacheVersion()) ?>9"
-            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js<?= h($cacheControl->getCacheVersion()) ?>"
-            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/css/bootstrap-select.min.css<?= h($cacheControl->getCacheVersion()) ?>">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/js/bootstrap-select.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
+    <?php $siteUtils->ambiguousHeadImportsSite() ?>
     <script src="/ladev/alert/alertify.min.js<?= h($cacheControl->getCacheVersion()) ?>"></script>
     <link rel="stylesheet" href="/ladev/alert/css/alertify.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
     <link rel="stylesheet" href="/ladev/alert/css/themes/bootstrap.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
@@ -76,11 +61,10 @@ $produtoOpen = $params['?']['openProduto'];
             </div>
         </div>
     <?php }else{?>
-    <!-- Button trigger modal -->
+    <!-- Button modal -->
     <button id="openModal" style="display: none" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" data-backdrop="static" data-keyboard="false">
         abrir modal
     </button>
-
     <!-- Modal -->
     <div class="modal" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
@@ -95,8 +79,6 @@ $produtoOpen = $params['?']['openProduto'];
                     if(!isset($_SESSION['Auth']['User']['id']) || !$empresaAberta){?>
                         <h5 class="modal-title" id="exampleModalLabel">Visualizar Produto</h5>
                     <?php } ?>
-
-
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -106,7 +88,6 @@ $produtoOpen = $params['?']['openProduto'];
                         <button id="initialTabModal" class="tablinks" onclick="openTab(event, 'geral')">Geral</button>
                         <button class="tablinks" onclick="openTab(event, 'opcoes')">Opções</button>
                     </div>
-
                     <div id="geral" class="tabcontent">
                         <div class="form-horizontal">
                             <div style="display: none" class="form-group">
@@ -142,14 +123,12 @@ $produtoOpen = $params['?']['openProduto'];
                             <?php } ?>
                         </div>
                     </div>
-
                     <div id="opcoes" class="tabcontent">
                         <div id="contentOptions">
                         <!--      SERVE PARA PODER APENDAR A LISTAS CRIADAS DOS PRODUTOS        -->
                         </div>
                     </div>
                 </div>
-
                 <?php
                 if(isset($_SESSION['Auth']['User']['id']) && $empresaAberta){?>
                     <div class="modal-footer">

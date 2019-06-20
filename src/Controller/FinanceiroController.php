@@ -47,8 +47,10 @@ class FinanceiroController extends AppController
         }
         $produtosMaisComprados = $this->getProdutosMaisComprados();
         $produtos = [];
-        foreach ($produtosMaisComprados as $produtoMaisComprado) {
-            $produtos[] = ['quantidade' => $produtoMaisComprado['total'], 'nome' => $produtoMaisComprado['produto_id']];
+        if($produtosMaisComprados){
+            foreach ($produtosMaisComprados as $produtoMaisComprado) {
+                $produtos[] = ['quantidade' => $produtoMaisComprado['total'], 'nome' => $produtoMaisComprado['produto_id']];
+            }
         }
         $vendasDiasSemana = $this->getVendasPorDiaSemana();
         $vendasFormatadas = [];
@@ -67,14 +69,44 @@ class FinanceiroController extends AppController
         $this->set(compact('entregas'));
     }
 
+    public function entregasGeral(){
+        $entregas = $this->getEntregasTotal($this->empresaUtils->getUserEmpresaId());
+        $this->set(compact('entregas'));
+    }
+
     public function produtos(){
-        //$produtos = $this->getProdutosMes($this->empresaUtils->getUserEmpresaId());
-        //$this->set(compact('produtos'));
+        $produtosMaisComprados = $this->getProdutosMaisComprados();
+        $produtos = [];
+        if($produtosMaisComprados){
+            foreach ($produtosMaisComprados as $produtoMaisComprado) {
+                $produtos[] = ['quantidade' => $produtoMaisComprado['total'], 'nome' => $produtoMaisComprado['nome_produto']];
+            }
+        }
+        $this->set(compact('produtos'));
+    }
+
+    private function getEntregasTotal($empresa){
+        $connection = ConnectionManager::get('default');
+        $sql = "SELECT sum(valor_entrega) AS valor, 
+                       count(pedidos_entregas.id) AS quantidade , 
+                       nome_completo,  
+                       MONTH(data_pedido) mes, 
+                       YEAR(data_pedido) ano
+                  FROM pedidos_entregas 
+                  JOIN pedidos ON pedidos_entregas.pedido_id = pedidos.id
+                  JOIN users ON users.id = pedidos_entregas.user_id
+                 WHERE pedidos.empresa_id = ".$empresa."
+              GROUP BY pedidos_entregas.user_id, mes, ano
+              ORDER BY ano, mes DESC";
+        $results = $connection->execute($sql)->fetchAll('assoc');
+        return $results;
     }
 
     private function getEntregasMes($empresa){
         $connection = ConnectionManager::get('default');
-        $sql = 'SELECT sum(valor_entrega) AS valor, count(pedidos_entregas.id) AS quantidade , nome_completo
+        $sql = 'SELECT sum(valor_entrega) AS valor, 
+                       count(pedidos_entregas.id) AS quantidade , 
+                       nome_completo
                   FROM pedidos_entregas 
                   JOIN pedidos ON pedidos_entregas.pedido_id = pedidos.id
                   JOIN users ON users.id = pedidos_entregas.user_id
@@ -90,7 +122,19 @@ class FinanceiroController extends AppController
     private function getProdutosMaisComprados()
     {
         $connection = ConnectionManager::get('default');
-        $results = $connection->execute('SELECT produto_id, sum(quantidade) AS total FROM pedidos_produtos JOIN pedidos ON pedidos.id = pedidos_produtos.pedido_id  WHERE MONTH(data_pedido) = MONTH(CURRENT_TIMESTAMP) AND YEAR(data_pedido) = YEAR(CURRENT_TIMESTAMP) GROUP BY 1 ORDER BY 2 DESC LIMIT 10')->fetchAll('assoc');
+        $results = $connection->execute('SELECT produto_id, 
+                                                      sum(quantidade) AS total,
+                                                      nome_produto 
+                                                      FROM pedidos_produtos 
+                                                      JOIN pedidos 
+                                                      ON pedidos.id = pedidos_produtos.pedido_id 
+                                                      JOIN produtos 
+                                                      ON produtos.id = pedidos_produtos.produto_id 
+                                                      WHERE MONTH(data_pedido) = MONTH(CURRENT_TIMESTAMP) 
+                                                      AND YEAR(data_pedido) = YEAR(CURRENT_TIMESTAMP) 
+                                                      GROUP BY 1 
+                                                      ORDER BY 2 
+                                                      DESC LIMIT 10')->fetchAll('assoc');
         return $results;
     }
 

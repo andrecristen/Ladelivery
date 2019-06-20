@@ -32,7 +32,7 @@ class ModulosTable extends Table
         parent::initialize($config);
 
         $this->setTable('modulos');
-        $this->setDisplayField('id');
+        $this->setDisplayField('nome');
         $this->setPrimaryKey('id');
     }
 

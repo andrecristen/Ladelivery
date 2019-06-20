@@ -158,9 +158,9 @@ $produtoOpen = $params['?']['openProduto'];
             /** @var $existMidia \App\Model\Entity\Midia*/
             $existMidia = $existMidia->first();
             ?>
-            <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+            <div style="cursor: pointer!important;" class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
                 <div class="card" style="margin-bottom: 5px">
-                    <a onclick="openModalAddCart(<?= $produto->id ?>, <?= $_SESSION['Auth']['User']['id'] ?>)">
+                    <a onclick="openModalAddCart(<?= $produto->id ?>)">
                         <?php if ($existMidia !== null) { ?>
                             <?php echo $this->Html->image($existMidia->path_midia, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40')); ?>
                         <?php } else { ?>
@@ -183,10 +183,13 @@ $produtoOpen = $params['?']['openProduto'];
                                 <i class="fas fa-cart-plus"></i> Comprar <i style="display: none" id="loading-<?= $produto->id?>" class="fa fa-spinner fa-spin"></i>
                             </button>
                         <?php } else { ?>
-                            <button title="Adicionar ao carrinho" disabled class="btn btn-sm btn-success" style="width: 45%"><i class="fas fa-cart-plus"></i> Comprar</button>
+                            <button title="Adicionar ao carrinho" disabled class="btn btn-sm btn-success" style="width: 45%"><i class="fas fa-cart-plus"></i> Comprar <i style="display: none" id="loading-<?= $produto->id?>" class="fa fa-spinner fa-spin"></i>
+                            </button>
                         <?php } ?>
-                        <?php $siteUtils->getStarsProduto($produto->id)?>
-                        <a title="Avaliar Produto" href="../ProdutosAvaliacoes/listAvaliacoes/<?= $produto->id?>"><i class="far fa-clipboard"></i></a>
+                        <a style="text-decoration-line: none;color: black;" title="Avaliar Produto" href="../ProdutosAvaliacoes/listAvaliacoes/<?= $produto->id?>">
+                            <i class="far fa-clipboard"></i>
+                            <?php $siteUtils->getStarsProduto($produto->id)?>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -205,6 +208,9 @@ $produtoOpen = $params['?']['openProduto'];
 <style>
     .checked-star {
         color: orange;
+    }
+    li .selected{
+        background: #7fffd459 !important;
     }
 </style>
 <?php if($produtoOpen){ ?>

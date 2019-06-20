@@ -3,7 +3,7 @@ app.directive('uiGridForm', function($templateCache) {
         var template_for = function(attrs) {
             var temp = $templateCache.get( attrs.ngModel + '.html');
             if(!temp){
-                console.log(temp, attrs.ngModel + '.html');
+                console.log('Não localizado template para '+attrs.ngModel + '.html');
             }
 
             temp = temp.replace(/ng-model="(.*?)"/g,function(name, ngModel){
@@ -134,9 +134,6 @@ app.directive('uiGridForm', function($templateCache) {
                 if(adicionados === 0){
                     scope.add();
                 }
-                scope.$watch(function(){
-                    console.log(scope.data);
-                });
             }
         }
     });

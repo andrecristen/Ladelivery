@@ -9,7 +9,7 @@ namespace App\Model\Utils;
 
 class CacheControl
 {
-    protected $cacheVersion = '?v=30-05-2019-01';
+    protected $cacheVersion = '?v=20-06-2019-01';
 
     /**
      * @return string

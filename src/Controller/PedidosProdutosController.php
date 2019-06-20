@@ -58,6 +58,9 @@ class PedidosProdutosController extends AppController
         $this->set(compact('pedidosProdutos'));
     }
 
+    public function cozinhaKanban(){
+        $this->cozinha();
+    }
 
     public function bar()
     {
@@ -72,6 +75,11 @@ class PedidosProdutosController extends AppController
         $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
         $this->set(compact('pedidosProdutos'));
     }
+
+    public function barKanban(){
+        $this->bar();
+    }
+
     /**
      * View method
      *

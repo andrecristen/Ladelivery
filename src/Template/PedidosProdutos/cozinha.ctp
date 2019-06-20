@@ -16,7 +16,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Valor Cobrado', 'valor_total_cobrado', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, 'auto', 'pedidosProduto/valor_total_cobrado'));
     $dataGrid->addField(new \App\Model\Utils\GridField('OBS.', 'observacao', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $status = new \App\Model\Utils\GridField('Status', 'status', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
-    $status->setList(\App\Model\Entity\PedidosProduto::getStatusList());
+    $status->setList(\App\Model\Entity\PedidosProduto::getStatusGridList());
     $dataGrid->addField($status);
     $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Item'], false, 'id');
     $dataGrid->addActionRow('', ['controller' => 'Pedidos','action' => 'view'], ['class' => 'fa fa-search-plus btn btn-dark btn-sm', 'title' => 'Visualizar Pedido/Comanda'], false, 'pedido_id');

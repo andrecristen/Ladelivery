@@ -23,7 +23,7 @@
     echo $this->Form->label('Porcentagem Entregador');
     ?>
     <input required="required" min="0" max="100" name="porcentagem" id="porcentagem" type="number">
-    <input type="checkbox" name="conta_pagar" id="conta_pagar" value=""> Gerar Conta a Pagar
+<!--    <input type="checkbox" name="conta_pagar" id="conta_pagar" value=""> Gerar Conta a Pagar-->
     <br>
     <?= $this->Form->button(__('Calcular')) ?>
     <?= $this->Form->end() ?>

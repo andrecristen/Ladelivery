@@ -38,6 +38,7 @@ class PedidosProduto extends Entity
             self::RESPONSAVEL_BAR => 'Bar',
         ];
     }
+
     public static function getStatusList(){
         return [
             self::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO => 'Aguardando Confirmação Cliente',
@@ -46,6 +47,14 @@ class PedidosProduto extends Entity
             self::STATUS_EM_PRODUCAO => 'Em Produção',
             self::STATUS_PRODUCAO_CONCLUIDA => 'Produção Concluida',
             self::STATUS_PEDIDO_REJEITADO => 'Pedido Rejeitado',
+        ];
+    }
+
+    public static function getStatusGridList(){
+        return [
+            self::STATUS_EM_FILA_PRODUCAO => 'Aguardando Produção',
+            self::STATUS_EM_PRODUCAO => 'Em Produção',
+            self::STATUS_PRODUCAO_CONCLUIDA => 'Produção Concluida',
         ];
     }
 

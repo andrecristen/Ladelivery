@@ -16,6 +16,7 @@ $tempoColeta = $tableLocator->get('TemposMedios')->find()->where(['empresa_id' =
 /** @var $produtosMaisVendidos \App\Model\Entity\Produto[]*/
 $produtosMaisVendidos = $controllerPedido->getProdutosMaisVendidos();
 $haveProdutos = count($produtosMaisVendidos);
+$empresa = $empresaUtils->getEmpresaBaseModel()
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -134,8 +135,14 @@ $haveProdutos = count($produtosMaisVendidos);
     <?php }?>
 </div>
 <footer style="background-color: #343a40!important; margin-top: 45px;" class="page-footer font-small blue footer">
+    <div style="color: white" class="footer-copyright text-center py-3">
+        Responsável pelos pedidos:
+        <br>
+        <?= $empresa->nome_fantasia.' CNPJ: '. $empresa->cnpj ?>
+    </div>
     <!-- Copyright -->
-    <div style="color: white" class="footer-copyright text-center py-3">© 2019 Copyright <a target="_blank" href="https://sites.google.com/view/ladev"> LaDev</a>
+    <div style="color: white" class="footer-copyright text-center py-3">
+        © 2019 Sistema desenvolvido por <a target="_blank" href="https://sites.google.com/view/ladev"> LaDev</a>
     </div>
     <div class="footer-copyright text-center py-3">
         <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-shield')).' Painel Administrador', array('controller' => 'Financeiro', 'action' => 'painel'), array('escape' => false , 'class' => 'btn btn-sm btn-info')) ?>

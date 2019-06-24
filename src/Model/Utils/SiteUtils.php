@@ -188,7 +188,6 @@ class SiteUtils extends AppController
         $categorias = $this->getTableLocator()->get('CategoriasProdutos')->find();
         $itensCarrinhos = $this->getTableLocator()->get('ItensCarrinhos')->find()->where(['user_id' => $this->Auth->user('id')])->count();
         echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">';
-        echo '<div class="container">';
         echo '<a class="navbar-brand" href="#">' . $cakeDescription . '</a>';
         echo '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>';
         echo '<div class="collapse navbar-collapse" id="navbarResponsive">';
@@ -220,7 +219,6 @@ class SiteUtils extends AppController
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')) . ' Entrar', array('controller' => 'users', 'action' => 'login'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
         }
-        echo '</div>';
         echo '</div>';
         echo '</nav>';
     }

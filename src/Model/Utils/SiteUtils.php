@@ -8,6 +8,7 @@ namespace App\Model\Utils;
 
 
 use App\Controller\AppController;
+use App\Model\Entity\CategoriasProduto;
 use App\View\AppView;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Response;
@@ -155,6 +156,7 @@ class SiteUtils extends AppController
         echo $this->Html->script('bootstrap.js'.$cacheVersion);
        // echo $this->Html->script('font-awesome-all.js'.$cacheVersion);
         echo $this->Html->script('bootstrap-select.js'.$cacheVersion);
+        echo $this->Html->script('site-utils.js'.$cacheVersion);
     }
 
     public final function menuAdmin($menus){
@@ -182,6 +184,8 @@ class SiteUtils extends AppController
     public final function menuSite()
     {
         $cakeDescription = \App\Model\Utils\EmpresaUtils::NOME_EMPRESA_LOJA;
+        /** @var $categorias CategoriasProduto[]*/
+        $categorias = $this->getTableLocator()->get('CategoriasProdutos')->find();
         echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">';
         echo '<div class="container">';
         echo '<a class="navbar-brand" href="#">' . $cakeDescription . '</a>';
@@ -191,8 +195,13 @@ class SiteUtils extends AppController
         echo '<li class="nav-item active">';
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-home')) . ' Início', array('controller' => 'pages', 'action' => ''), array('escape' => false, 'class' => 'nav-link'));
         echo '</li>';
-        echo '<li class="nav-item">';
-        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-th-list')) . ' Categorias', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false, 'class' => 'nav-link'));
+        echo '<li class="dropdown nav-item">';
+        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-th-list')) . ' Categorias', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false, 'class' => 'nav-link dropdown-toggle'));
+        echo '<div class="dropdown-menu">';
+            foreach ($categorias as $categoria){
+                echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' '.$categoria->nome_categoria, array('controller' => 'pages', 'action' => 'produtos?categoria='.$categoria->id.'&categoriaNome='.$categoria->nome_categoria), array('escape' => false, 'class' => 'dropdown-item'));
+            }
+        echo '</div>';
         echo '</li>';
         if ($this->Auth->user('id')) {
             echo '<li class="nav-item">';

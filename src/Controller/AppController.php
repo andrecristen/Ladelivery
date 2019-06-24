@@ -79,13 +79,14 @@ class AppController extends Controller
             ]
         ]);
         $this->loadComponent('RequestHandler');
+        //Funcoes permitidas para quem nao estiver logado.
+        $this->Auth->allow(['registrar', 'logout', 'display', 'getProduto', 'solicitar', 'novaSenha', 'getListas', 'listAvaliacoes']);
+
     }
 
     public function beforeFilter(Event $event)
     {
         $this->set('login', $this->Auth->user('login'));
-        //Funcoes permitidas para quem nao estiver logado.
-        $this->Auth->allow(['registrar', 'display', 'getProduto', 'solicitar', 'novaSenha', 'getListas', 'listAvaliacoes']);
         //Limite de registros por pagina.
         $this->paginate['limit'] = 10;
     }
@@ -96,15 +97,23 @@ class AppController extends Controller
      */
     public function validateActions()
     {
+        $publicActions = $this->Auth->allowedActions;
+        $params = ($this->getRequest()->getAttribute('params'));
+        $action = $params['action'];
+        if($action && $publicActions){
+            foreach ($publicActions as $publicAction){
+                if($publicAction == $action){
+                    return true;
+                }
+            }
+        }
         //Acoes como login, registrar e logout devem ser ignoradas.
         $invalid = false;
         //Master acesso total ao sistema
         if ($this->Auth->user('tipo') == User::TIPO_MASTER) {
             return;
         //Administrador acesso somente as rotas dos perfis dele
-        }elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR){
-            $params = ($this->getRequest()->getAttribute('params'));
-            $action = $params['action'];
+        }elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR || $this->Auth->user('tipo') == User::TIPO_ENTREGADOR){
             if (!$action){
                 return;
             }
@@ -151,6 +160,10 @@ class AppController extends Controller
                                           <a href="/pages/suporte" class="btn btn-success btn-lg">
                                              <span class="glyphicon glyphicon-envelope"></span> 
                                               <i class="fas fa-headset"></i>&nbsp;Suporte
+                                          </a>
+                                          <a href="/" class="btn btn-success btn-lg">
+                                             <span class="glyphicon glyphicon-envelope"></span> 
+                                              <i class="fas fa-home"></i>&nbsp;Site
                                           </a>
                                       </div>
                                   </div>
@@ -207,7 +220,7 @@ class AppController extends Controller
         if ($this->Auth->user('tipo') == User::TIPO_MASTER) {
             return true;
             //Administrador acesso somente as rotas dos perfis dele
-        }elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR){
+        }elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR || $this->Auth->user('tipo') == User::TIPO_ENTREGADOR){
             $tableLocator = new TableLocator();
             /** @var $controller \App\Model\Entity\Controller*/
             $controller = $tableLocator->get('Controllers')->find()->where(['nome_controlador' => $controller])->first();

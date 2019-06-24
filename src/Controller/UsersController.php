@@ -41,7 +41,8 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $users = $this->paginate($this->Users->find()->where($this->generateConditionsFind()));
+        $filterFixed = ['tipo <>' => User::TIPO_CLIENTE];
+        $users = $this->paginate($this->Users->find()->where($this->generateConditionsFind(true, $filterFixed)));
         $this->set(compact('users'));
     }
 
@@ -218,7 +219,7 @@ class UsersController extends AppController
                 $_SESSION["empresa"] = $this->Auth->user('empresa_id');
                 $redirect = ($this->Auth->redirectUrl());
                 //Quer dizer que é um admin entrando a primeira vez
-                if($user['tipo'] == User::TIPO_ADMINISTRADOR || $user['tipo'] == User::TIPO_MASTER){
+                if($user['tipo'] == User::TIPO_ADMINISTRADOR || $user['tipo'] == User::TIPO_MASTER || $user['tipo'] == User::TIPO_ENTREGADOR ){
                     $_SESSION["menus"] = $this->getMenusToUser($user);
                     if($redirect == '/pages'){
                         return $this->redirect('/financeiro/painel');

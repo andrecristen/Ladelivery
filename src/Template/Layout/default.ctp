@@ -49,7 +49,7 @@ $menusAdmin = $_SESSION["menus"];
 </head>
 <body>
 <?= $this->Flash->render() ?>
-<?php if ($login && ($_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR || $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_MASTER)) : ?>
+<?php if ($login && ($_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR || $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_MASTER|| $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ENTREGADOR)) : ?>
     <?php $siteUtils->menuAdmin($menusAdmin)?>
     <?php $empresaUtils = new \App\Model\Utils\EmpresaUtils() ?>
     <div class="system-info">
@@ -74,7 +74,7 @@ $menusAdmin = $_SESSION["menus"];
         </div>
     </div>
 <?php endif; ?>
-<?php if ($login && ($_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR || $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_MASTER)) : ?>
+<?php if ($login && ($_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ADMINISTRADOR || $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_MASTER || $_SESSION['Auth']['User']['tipo'] == \App\Model\Entity\User::TIPO_ENTREGADOR)) : ?>
 <div class="content-next-menu content">
     <?php else:; ?>
     <div style="height:auto; padding-bottom: 0px!important;" class="content">

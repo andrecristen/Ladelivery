@@ -46,7 +46,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
                 </div>
             </div>
         <?php }else{?>
-            <h4>Carrinho</h4>
+            <h4>Carrinho <button title="Ir para o final da página" style="float: right" class="btn btn-sm btn-primary" onclick="scrollToConfirm()"><i class="fas fa-fast-forward"></i> Fim Da Página</button></h4>
             <div class="basket">
                 <div class="basket-labels">
                     <ul>

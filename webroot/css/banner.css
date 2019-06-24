@@ -3,3 +3,26 @@
         height: 130px!important;
     }
 }
+
+.icon-cart-number{
+    border-radius: 50%;
+    color: black;
+    float: right;
+    width: 27px;
+    text-align: center;
+    margin-left: 5px;
+    background: white;
+}
+
+.menu-site{
+    background: #343a40!important;
+    border: none!important;
+}
+
+.menu-site-item{
+    color: #cccecf!important;
+}
+
+.menu-site-item:hover{
+    background: #4c5c66 !important;
+}

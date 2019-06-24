@@ -164,7 +164,7 @@ function addItemToCart(userId) {
         data.idProduto = $("#idProduto").val();
         data.quantidade = $("#quantidadeProduto").val();
         data.observacao = $("#observacaoDigitada").val();
-        data.valorCobrado = $("#precoProduto").val();
+        data.valorCobrado = parseFloat($("#precoProdutoOriginal").val()) * parseInt(data.quantidade);
         data.opcionais = [];
         if ($("select")) {
             var selects = ($("select"));
@@ -220,6 +220,10 @@ function enviteToCart(data) {
         success: function (data) {
             if (data.itemGravado) {
                 alertify.success('Item adicionado ao carrinho');
+                //Atualiza icone de carrinho;
+                var icone = $(".icon-cart-number");
+                var valorAtual = parseInt(icone.html());
+                icone.html(valorAtual + 1);
                 closeModal();
             } else {
                 alertify.error('Não foi possivel adicionar o item ao carrinho');
@@ -237,5 +241,6 @@ function openModal() {
 }
 
 function closeModal() {
+    $("#quantidadeProduto").val(1);
     $('#closeModal').click();
 }

@@ -186,6 +186,7 @@ class SiteUtils extends AppController
         $cakeDescription = \App\Model\Utils\EmpresaUtils::NOME_EMPRESA_LOJA;
         /** @var $categorias CategoriasProduto[]*/
         $categorias = $this->getTableLocator()->get('CategoriasProdutos')->find();
+        $itensCarrinhos = $this->getTableLocator()->get('ItensCarrinhos')->find()->where(['user_id' => $this->Auth->user('id')])->count();
         echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">';
         echo '<div class="container">';
         echo '<a class="navbar-brand" href="#">' . $cakeDescription . '</a>';
@@ -196,19 +197,20 @@ class SiteUtils extends AppController
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-home')) . ' Início', array('controller' => 'pages', 'action' => ''), array('escape' => false, 'class' => 'nav-link'));
         echo '</li>';
         echo '<li class="dropdown nav-item">';
-        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-th-list')) . ' Categorias', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false, 'class' => 'nav-link dropdown-toggle'));
-        echo '<div class="dropdown-menu">';
+        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-th-list')) . ' Categorias', '#', array('escape' => false, 'class' => 'nav-link dropdown-toggle'));
+        echo '<div class="dropdown-menu menu-site">';
             foreach ($categorias as $categoria){
-                echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' '.$categoria->nome_categoria, array('controller' => 'pages', 'action' => 'produtos?categoria='.$categoria->id.'&categoriaNome='.$categoria->nome_categoria), array('escape' => false, 'class' => 'dropdown-item'));
+                echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' '.$categoria->nome_categoria, array('controller' => 'pages', 'action' => 'produtos?categoria='.$categoria->id.'&categoriaNome='.$categoria->nome_categoria), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
             }
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' Todas', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
         echo '</div>';
         echo '</li>';
         if ($this->Auth->user('id')) {
             echo '<li class="nav-item">';
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-circle')) . ' Minha Conta', array('controller' => 'users', 'action' => 'profile/' . $_SESSION['Auth']['User']['id']), array('escape' => false, 'class' => 'nav-link'));
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-circle')) . ' Minha Conta', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
             echo '<li class="nav-item">';
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-cart')) . ' Carrinho', array('controller' => 'pages', 'action' => 'carrinho?' . $_SESSION['Auth']['User']['id']), array('escape' => false, 'class' => 'nav-link'));
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-cart')) . ' Carrinho'.$this->Html->tag('div', $itensCarrinhos, array('class' => 'icon-cart-number')), array('controller' => 'pages', 'action' => 'carrinho'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
             echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-out-alt')) . ' Sair', array('controller' => 'users', 'action' => 'logout'), array('escape' => false, 'class' => 'nav-link'));

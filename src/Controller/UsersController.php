@@ -29,7 +29,7 @@ class UsersController extends AppController
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->setPublicAction('login');
         $this->setPublicAction('alterarSenha');
-        $this->setPublicAction('profile', $this->Auth->user('id'));
+        $this->setPublicAction('profile');
         $this->validateActions();
         $this->empresaUtils = new EmpresaUtils();
     }
@@ -69,15 +69,15 @@ class UsersController extends AppController
         $this->set(compact('user','contatos'));
     }
 
-    public function profile($id = null){
-        $user = $this->Users->get($id, [
+    public function profile(){
+        $user = $this->Users->get($this->Auth->user('id'), [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Usuário editado com sucesso.'));
-                return $this->redirect(['action' => 'profile', $user->id]);
+                return $this->redirect(['action' => 'profile']);
             }
             $this->Flash->error(__('Não foi possivel editar usuário, tente novamente.'));
         }

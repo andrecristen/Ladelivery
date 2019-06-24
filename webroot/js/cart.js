@@ -22,6 +22,12 @@ function removeItemCarrinho(idItemCarrinho) {
     });
 }
 
+function scrollToConfirm() {
+    $('html, body').animate({
+        scrollTop: $(document).height()
+    }, 700);
+}
+
 function fecharCarrinho() {
     var endereco = $( "select option:selected");
     jQuery.ajax({

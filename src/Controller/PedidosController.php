@@ -522,7 +522,7 @@ class PedidosController extends AppController
             $this->Flash->success(__('Pedido Rejeitado Com Sucesso.'));
             $produtosPedidoTable->getConnection()->commit();
             $this->Pedidos->getConnection()->commit();
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'novos']);
         } else {
             $produtosPedidoTable->getConnection()->rollback();
             $this->Pedidos->getConnection()->rollback();

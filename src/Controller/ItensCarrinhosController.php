@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Model\Entity\OpcoesExtra;
+use App\Model\Entity\Produto;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -129,18 +131,25 @@ class ItensCarrinhosController extends AppController
         $post = $_GET['postProduto'];
         $post = json_decode($post, true);
         $itensCarrinho = $this->ItensCarrinhos->newEntity();
+        /** @var $produto Produto*/
+        $produto = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $post['idProduto']])->first();
         $itensCarrinho->user_id = $post['userId'];
         $itensCarrinho->produto_id = $post['idProduto'];
         $itensCarrinho->observacao = $post['observacao'];
         $itensCarrinho->quantidades = $post['quantidade'];
         $validOpcionais = [];
+        $valorOpcionais = 0;
         foreach ($post['opcionais'] as $key => $opcional) {
             if ($opcional !== null) {
-                $validOpcionais[$key] = $opcional;
+                $validOpcionais[$opcional['lista']][] = $opcional['opcional'];
+                /** @var $opcionalModel OpcoesExtra*/
+                $opcionalModel = $this->getTableLocator()->get('OpcoesExtras')->find()->where(['id' => $opcional['opcional']])->first();
+                $valorOpcionais = $valorOpcionais + $opcionalModel->valor_adicional;
             }
         }
         $itensCarrinho->opicionais = json_encode($validOpcionais);
-        $itensCarrinho->valor_total_cobrado = $post['valorCobrado'];
+        $valorCobrado = ($produto->preco_produto * $itensCarrinho->quantidades) + $valorOpcionais;
+        $itensCarrinho->valor_total_cobrado = $valorCobrado;
         $success = false;
         if ($this->ItensCarrinhos->save($itensCarrinho)) {
             $success = true;

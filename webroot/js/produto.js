@@ -164,7 +164,6 @@ function addItemToCart(userId) {
         data.idProduto = $("#idProduto").val();
         data.quantidade = $("#quantidadeProduto").val();
         data.observacao = $("#observacaoDigitada").val();
-        data.valorCobrado = parseFloat($("#precoProdutoOriginal").val()) * parseInt(data.quantidade);
         data.opcionais = [];
         if ($("select")) {
             var selects = ($("select"));
@@ -172,10 +171,7 @@ function addItemToCart(userId) {
                 var idLista = $(selects[i]).attr('id');
                 var optionsSelected = $("option:selected", selects[i]);
                 for (var j = 0; j < optionsSelected.length; j++) {
-                    if (!data.opcionais[idLista]) {
-                        data.opcionais[idLista] = [];
-                    }
-                    data.opcionais[idLista].push($(optionsSelected[j]).attr('idopcional'));
+                    data.opcionais.push({'opcional': $(optionsSelected[j]).attr('idopcional'), 'lista': idLista});
                 }
             }
         }

@@ -30,6 +30,7 @@ function scrollToConfirm() {
 
 function fecharCarrinho() {
     var endereco = $( "select option:selected");
+    $("#btnFecharCarrinho").attr("disabled", true);
     jQuery.ajax({
         url: "../pedidos/generatePedido/"+endereco.val(),
         method: "GET",
@@ -38,13 +39,15 @@ function fecharCarrinho() {
         success: function (data) {
             if(data.success){
                 alertify.success('Confirmação de itens concluida com sucesso');
-                $(location).attr('href', '/pages/confirmar?pedido='+data.pedido);
+                $(location).attr('href', '/pages/confirmar');
             }else{
                 alertify.error('Não foi possivel confirmar os itens do pedido');
+                $("#btnFecharCarrinho").attr("disabled", false);
             }
         },
         error: function (data) {
-            alertify.error('NÃO FOI POSSIVEL GERAR UM NOVO PEDIDO COM SEU CARRINHO');
+            alertify.error('Não foi possivel confirmar os itens do pedido');
+            $("#btnFecharCarrinho").attr("disabled", false);
         }
     });
 }

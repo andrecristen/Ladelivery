@@ -103,7 +103,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
                     </div>
                     <?php if($itensCarrinho > 0) {?>
                         <div class="summary-total">
-                            <div style="width: auto; margin-right: 2px;" class="total-title">Endereço</div><a href="../enderecos/add-endereco-cliente" class=""><i class="far fa-plus-square"></i>Novo</a>
+                            <div style="width: auto; margin-right: 2px;" class="total-title">Endereço</div><a href="../enderecos/add-endereco-cliente" class=""><i class="far fa-plus-square"></i> Novo</a>
                             <select class="select-endereco" name="enderecoSelect">
                                 <?php
                                 $enderecos = $tableLocator->get('Enderecos')->find()->where(['user_id' => intval($_SESSION['Auth']['User']['id'])]);
@@ -117,7 +117,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
                             </select>
                         </div>
                         <div class="summary-checkout">
-                            <button onclick="fecharCarrinho()" class="checkout-cta btn-success">Confirmar Conteúdo</button>
+                            <button id="btnFecharCarrinho" onclick="fecharCarrinho()" class="checkout-cta btn-success">Confirmar Conteúdo</button>
                             <br>
                             <a href="../pages/categorias" class="checkout-cta btn-warning">Continuar Comprando</a>
                         </div>

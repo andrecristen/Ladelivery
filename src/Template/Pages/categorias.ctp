@@ -22,21 +22,14 @@ $query = $tableLocator->get('CategoriasProdutos')->find();
 <?php $siteUtils->menuSite() ?>
 <!-- Page Content -->
 <div class="container">
-    <?php if(!$empresaAberta){?>
-        <div class="row">
-            <div style="width: 100%" class="alert alert-danger">
-                <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos novos...<i class="fas fa-sad-cry fa-2x"></i></h4>
-            </div>
-        </div>
+    <?php if(!$empresaAberta){
+        $siteUtils->mensagemEmpresaFechada();
+        ?>
     <?php $existsPedidoAberto = false;
     }
     ?>
-    <?php if($existsPedidoAberto){?>
-        <div class="row">
-            <div style="width: 100%" class="alert alert-info">
-                <h4>Você possui pedidos aguardando sua confirmação ou rejeição, certifique-se de concluir primeiro este pedido antes de iniciar um novo!<a href="../pages/confirmar">Para ver o pedido clique aqui</a></h4>
-            </div>
-        </div>
+    <?php if($existsPedidoAberto){
+        $siteUtils->mensagemPedidoAberto()?>
     <?php }else{?>
     <!-- Page Heading -->
     <h1 class="my-4">Categorias de Produtos

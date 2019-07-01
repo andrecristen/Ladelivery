@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int empresa_id
  * @property string $api_key
+ * @property string $src_iframe_maps
  * @property int $ativa
  *
  * @property \App\Model\Entity\Empresa empresa
@@ -28,6 +29,7 @@ class GoogleMapsApiKey extends Entity
     protected $_accessible = [
         'empresa_id' => true,
         'api_key' => true,
+        'src_iframe_maps' => true,
         'ativa' => true,
         'empresa' => true
     ];

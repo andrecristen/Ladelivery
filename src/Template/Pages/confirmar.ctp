@@ -54,12 +54,8 @@ $empresaAberta = $controllerPedido->empresaAberta();
     </div>
 </div>
 <div class="container main-cart">
-    <?php if(!$empresaAberta){?>
-        <div class="row">
-            <div style="width: 100%" class="alert alert-danger">
-                <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos...<i class="fas fa-sad-cry fa-2x"></i></h4>
-            </div>
-        </div>
+    <?php if(!$empresaAberta){
+        $siteUtils->mensagemEmpresaFechada()?>
         <?php return;
     }
     ?>

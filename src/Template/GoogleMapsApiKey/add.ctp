@@ -12,6 +12,7 @@
         <?php
         echo $this->Form->control('empresa_id', ['options' => $empresas]);
         echo $this->Form->control('api_key');
+        echo $this->Form->control('src_iframe_maps');
         echo $this->Form->control('ativa', ['options' => [1 => 'Sim', 2 => 'Não']]);
         ?>
         <br/>

@@ -5,19 +5,19 @@ app.directive('uiInputStar', function () {
         '<section class=\'rating-widget\'>\n' +
         '    <div class=\'rating-stars\'>\n' +
         '        <ul id=\'stars\'>\n' +
-        '            <li class=\'star\' title=\'Já entendi agora :c\' data-value=\'1\'>\n' +
+        '            <li class=\'star\' title=\'Ruim\' data-value=\'1\'>\n' +
         '                <i class=\'fa fa-star fa-fw\'></i>\n' +
         '            </li>\n' +
-        '            <li class=\'star\' title=\'Melhor do que nada não é?\' data-value=\'2\'>\n' +
+        '            <li class=\'star\' title=\'Regular\' data-value=\'2\'>\n' +
         '                <i class=\'fa fa-star fa-fw\'></i>\n' +
         '            </li>\n' +
-        '            <li class=\'star\' title=\'Eba, nem pior nem melhor...\' data-value=\'3\'>\n' +
+        '            <li class=\'star\' title=\'Bom\' data-value=\'3\'>\n' +
         '                <i class=\'fa fa-star fa-fw\'></i>\n' +
         '            </li>\n' +
-        '            <li class=\'star\' title=\'Quase lá!\' data-value=\'4\'>\n' +
+        '            <li class=\'star\' title=\'Ótimo\' data-value=\'4\'>\n' +
         '                <i class=\'fa fa-star fa-fw\'></i>\n' +
         '            </li>\n' +
-        '            <li class=\'star\' title=\'TOPISSIMO!!!\' data-value=\'5\'>\n' +
+        '            <li class=\'star\' title=\'Perfeito\' data-value=\'5\'>\n' +
         '                <i class=\'fa fa-star fa-fw\'></i>\n' +
         '            </li>\n' +
         '        </ul>\n' +

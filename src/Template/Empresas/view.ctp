@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\Empresa $empresa
  */
 $listTipo = \App\Model\Entity\Empresa::getTipoList();
+$listTipoFrete = \App\Model\Entity\Empresa::getTipoFreteList();
 ?>
 <div class="col-sm-12">
     <h3><?= h($empresa->id) ?></h3>
@@ -27,6 +28,10 @@ $listTipo = \App\Model\Entity\Empresa::getTipoList();
         <tr>
             <th scope="row"><?= __('Tipo') ?></th>
             <td><?= $listTipo[$empresa->tipo_empresa] ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Tipo Frete') ?></th>
+            <td><?= $listTipoFrete[$empresa->tipo_frete] ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Ativa') ?></th>

@@ -159,6 +159,31 @@ class SiteUtils extends AppController
         echo $this->Html->script('site-utils.js'.$cacheVersion);
     }
 
+    public final function mensagemLogarParaComprar(){
+        echo '<div class="row">
+            <div style="width: 100%" class="alert alert-info">
+                <h4><i class="fas fa-exclamation-triangle fa-fw" style="color: #ff1b2e"></i>Para poder adicionar ao carrinho, por favor entre com sua conta! '.$this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')) . ' Entre Agora', array('controller' => 'Users', 'action' => 'login'), array('escape' => false, 'class' => '')).'</h4>
+            </div>
+        </div>';
+    }
+
+    public final function mensagemPedidoAberto(){
+        echo '<div class="row">
+               <div style="width: 100%" class="alert alert-info">
+                <h4>Você possui pedidos aguardando sua confirmação ou cancelamento, certifique-se de concluir primeiro este pedido antes de iniciar um novo!'.$this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-basket')) . ' Ver Pedido', array('controller' => 'pages', 'action' => 'confirmar'), array('escape' => false, 'class' => '')).'</h4>
+                </div>
+              </div>';
+    }
+
+    public final function mensagemEmpresaFechada(){
+        echo '
+        <div class="row">
+            <div style="width: 100%" class="alert alert-danger">
+                <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos novos  <i class="fas fa-sad-cry fa-2x"></i></h4>
+            </div>
+        </div>';
+    }
+
     public final function menuAdmin($menus){
         echo '<div class="nav-side-menu">';
             echo '<div class="brand">LADelivery</div>';
@@ -188,7 +213,7 @@ class SiteUtils extends AppController
         $categorias = $this->getTableLocator()->get('CategoriasProdutos')->find();
         $itensCarrinhos = $this->getTableLocator()->get('ItensCarrinhos')->find()->where(['user_id' => $this->Auth->user('id')])->count();
         echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">';
-        echo '<a class="navbar-brand" href="#">' . $cakeDescription . '</a>';
+        echo $this->Html->link(($cakeDescription), ['controller' => 'pages', 'action' => ''], ['class' => 'navbar-brand']);
         echo '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>';
         echo '<div class="collapse navbar-collapse" id="navbarResponsive">';
         echo '<ul class="navbar-nav ml-auto">';
@@ -210,6 +235,9 @@ class SiteUtils extends AppController
             echo '</li>';
             echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-cart')) . ' Carrinho'.$this->Html->tag('div', $itensCarrinhos, array('class' => 'icon-cart-number')), array('controller' => 'pages', 'action' => 'carrinho'), array('escape' => false, 'class' => 'nav-link'));
+            echo '</li>';
+            echo '<li class="nav-item">';
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-id-card-alt')) . ' Quem Somos', array('controller' => 'pages', 'action' => 'empresa'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
             echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-out-alt')) . ' Sair', array('controller' => 'users', 'action' => 'logout'), array('escape' => false, 'class' => 'nav-link'));

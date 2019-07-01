@@ -9,6 +9,8 @@ namespace App\Model\Utils;
 
 use App\Controller\AppController;
 use App\Model\Entity\Empresa;
+use App\Model\Entity\EnderecosEmpresa;
+use App\Model\Entity\GoogleMapsApiKey;
 use Cake\ORM\Locator\TableLocator;
 
 /*
@@ -54,6 +56,20 @@ class EmpresaUtils extends AppController
         /** @var $empresa Empresa*/
         $empresa = $tableLocator->get('Empresas')->find()->where(['id' => $this->empresaBaseId])->first();
         return $empresa;
+    }
+
+    public function getEmpresaBaseEnderecoModel(){
+        $tableLocator = new TableLocator();
+        /** @var $empresaEndereco EnderecosEmpresa*/
+        $empresaEndereco = $tableLocator->get('EnderecosEmpresas')->find()->where(['empresa_id' => $this->empresaBaseId])->first();
+        return $empresaEndereco;
+    }
+
+    public function getEmpresaBaseEnderecoIFrameSrc(){
+        $tableLocator = new TableLocator();
+        /** @var $empresaEndereco GoogleMapsApiKey*/
+        $empresaEndereco = $tableLocator->get('GoogleMapsApiKey')->find()->where(['empresa_id' => $this->empresaBaseId])->first();
+        return $empresaEndereco->src_iframe_maps;
     }
 
 

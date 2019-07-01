@@ -11,8 +11,8 @@ use Cake\ORM\Entity;
  * @property string|null $cnpj
  * @property string|null $ie
  * @property bool $ativa
- * @property int $user_id
  * @property int $tipo_empresa
+ * @property int $tipo_frete
  *
  * @property \App\Model\Entity\TemposMedio[] $tempos_medios
  */
@@ -22,10 +22,22 @@ class Empresa extends Entity
     const TIPO_EMPRESA_SOFTWARE = 1;
     const TIPO_EMPRESA_PARCEIRA = 2;
 
+    const FRETE_TIPO_KM = 1;
+    const FRETE_TIPO_FAIXA = 2;
+    const FRETE_TIPO_BAIRRO = 3;
+
     public static function getTipoList(){
         return [
             self::TIPO_EMPRESA_SOFTWARE => 'Software',
             self::TIPO_EMPRESA_PARCEIRA => 'Loja Parceira',
+        ];
+    }
+
+    public static function getTipoFreteList(){
+        return [
+            self::FRETE_TIPO_KM => 'Valor Por KM',
+            self::FRETE_TIPO_FAIXA => 'Valor Por Faixa de Distância',
+            self::FRETE_TIPO_BAIRRO => 'Valor Por Bairro',
         ];
     }
 
@@ -43,6 +55,7 @@ class Empresa extends Entity
         'cnpj' => true,
         'ie' => true,
         'tipo_empresa' => true,
+        'tipo_frete' => true,
         'ativa' => true,
         'tempos_medios' => true
     ];

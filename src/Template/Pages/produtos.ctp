@@ -45,21 +45,13 @@ $produtoOpen = $params['?']['openProduto'];
 <div class="div-ajax-carregamento-pagina"><h1>Carregando...</h1></div>
 <?php $siteUtils->menuSite() ?>
 <div class="container">
-    <?php if(!$empresaAberta){?>
-        <div class="row">
-            <div style="width: 100%" class="alert alert-danger">
-                <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos novos...<i class="fas fa-sad-cry fa-2x"></i></h4>
-            </div>
-        </div>
+    <?php if(!$empresaAberta){
+        $siteUtils->mensagemEmpresaFechada()?>
     <?php $existstPedidoAberto = false;
     }
     ?>
-    <?php if($existstPedidoAberto){?>
-        <div class="row">
-            <div style="width: 100%" class="alert alert-info">
-                <h4>Você possui pedidos aguardando sua confirmação ou rejeição, certifique-se de concluir primeiro este pedido antes de iniciar um novo!<a href="../pages/confirmar">Para ver o pedido clique aqui</a></h4>
-            </div>
-        </div>
+    <?php if($existstPedidoAberto){
+        $siteUtils->mensagemPedidoAberto()?>
     <?php }else{?>
     <!-- Button modal -->
     <button id="openModal" style="display: none" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" data-backdrop="static" data-keyboard="false">
@@ -140,12 +132,8 @@ $produtoOpen = $params['?']['openProduto'];
         </div>
     </div>
     <h4 class="my-4">Produtos da Categoria: <?= strtoupper($categoriaNome) ?></h4>
-    <?php if (!isset($_SESSION['Auth']['User']['id'])) { ?>
-        <div class="row">
-            <div style="width: 100%" class="alert alert-info">
-                <h4><i class="fas fa-exclamation-triangle fa-fw" style="color: #ff1b2e"></i>Para poder adicionar ao carrinho, por favor entre com sua conta!</h4>
-            </div>
-        </div>
+    <?php if (!isset($_SESSION['Auth']['User']['id'])) {
+        $siteUtils->mensagemLogarParaComprar()?>
     <?php } ?>
     <div class="row">
         <?php

@@ -18,6 +18,7 @@ use App\Model\Entity\Produto;
 use App\Model\Entity\TaxasEntregasCotacao;
 use App\Model\Entity\TemposMedio;
 use App\Model\Entity\User;
+use App\Model\ExceptionSQLMessage;
 use App\Model\Table\PedidosProdutosTable;
 use App\Model\Table\PedidosTable;
 use App\Model\Utils\EmpresaUtils;
@@ -105,6 +106,21 @@ class PedidosController extends AppController
         $pedido = $this->Pedidos->get($id, [
             'contain' => []
         ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $dados = $this->request->getData();
+            $valorEntregaFixed = false;
+            if(is_float($dados['valor_entrega'])){
+                $valorEntregaFixed = floatval($dados['valor_entrega']);
+            }
+            try{
+                $this->calcularEntrega($dados['endereco_id'], $pedido, $valorEntregaFixed);
+                $this->Flash->success(__('Entrega vinculada com sucesso.'));
+                return $this->redirect(['action' => 'addItem', $pedido->id]);
+            }catch (\Exception $exception){
+                $exMessage = new ExceptionSQLMessage();
+                $this->Flash->error(__($exMessage->getMessage($exception)));
+            }
+        }
         $users = $this->getTableLocator()->get('Users')->find('list')->where(['tipo' => User::TIPO_CLIENTE]);
         /** @var $enderecosClienteModel Endereco[]*/
         $enderecosClienteModel = $this->getTableLocator()->get('Enderecos')->find()->where(['user_id' => $pedido->user_id]);
@@ -112,6 +128,7 @@ class PedidosController extends AppController
         foreach ($enderecosClienteModel as $endereco){
             $enderecosCliente[$endereco->id] = "Rua: ".$endereco->rua." Número: ". $endereco->numero." Bairro: ".$endereco->bairro.", ".$endereco->cidade."-".$endereco->estado;
         }
+        $enderecosCliente[Pedido::RETIRAR_NO_LOCAL] = 'Cliente irá buscar o pedido';
         $this->set(compact('pedido','users', 'enderecosCliente'));
     }
 
@@ -530,10 +547,158 @@ class PedidosController extends AppController
         }
     }
 
+    private function calcularEntrega($endereco, $newPedido, $valorEntregaFixed = false){
+        if($endereco == Pedido::RETIRAR_NO_LOCAL){
+            return;
+        }
+        $tableLocator = $this->getTableLocator();
+        $pedidoEntregaTable = $tableLocator->get('PedidosEntregas');
+        /** @var $enderecoClienteModel Endereco */
+        $enderecoClienteModel = $tableLocator->get('Enderecos')->find()->where(['id' => $endereco])->first();
+        /** @var $newPedidoEntrega PedidosEntrega */
+        $newPedidoEntrega = $pedidoEntregaTable->newEntity();
+        $newPedidoEntrega->pedido_id = $newPedido->id;
+        $newPedidoEntrega->endereco_id = $enderecoClienteModel->id;
+        if($valorEntregaFixed){
+            $newPedidoEntrega->valor_entrega = $valorEntregaFixed;
+        }else{
+            $ruaFinal = str_replace(' ', '%20', $enderecoClienteModel->rua);
+            $numeroFinal = str_replace(' ', '%20', $enderecoClienteModel->numero);
+            $bairroFinal = str_replace(' ', '%20', $enderecoClienteModel->bairro);
+            $cidadeFinal = str_replace(' ', '%20', $enderecoClienteModel->cidade);
+            $estadoFinal = str_replace(' ', '%20', $enderecoClienteModel->estado);
+            /** @var $enderecoEmpresaModel EnderecosEmpresa */
+            $enderecoEmpresaModel = $tableLocator->get('EnderecosEmpresas')->find()->where(['empresa_id' => $newPedido->empresa_id])->first();
+            $ruaEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->rua);
+            $numeroEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->numero);
+            $bairroEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->bairro);
+            $cidadeEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->cidade);
+            $estadoEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->estado);
+            /** @var $key GoogleMapsApiKey */
+            $key = $tableLocator->get('GoogleMapsApiKey')->find()->where(['empresa_id' => $newPedido->empresa_id])->first();
+            $cotacao = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?&origins=Rua%20' . $ruaFinal . '%20' . $numeroFinal . ',%20' . $bairroFinal . ',%20' . $cidadeFinal . '-' . $estadoFinal . '&destinations=Rua%20' . $ruaEmpresaFinal . '%20' . $numeroEmpresaFinal . ',%20' . $bairroEmpresaFinal . ',%20' . $cidadeEmpresaFinal . '-' . $estadoEmpresaFinal . '&language=pt-BR&key=' . $key->api_key);
+            $cotacao = json_decode($cotacao, true);
+            $cotacaoSuccess = false;
+            $cotacaoKms = false;
+            if (isset($cotacao['rows'])) {
+                if (isset($cotacao['rows']['0'])) {
+                    if (isset($cotacao['rows']['0']['elements'])) {
+                        if (isset($cotacao['rows']['0']['elements']['0'])) {
+                            if (isset($cotacao['rows']['0']['elements']['0']['distance'])) {
+                                $cotacaoSuccess = true;
+                                //Pega em metros
+                                $cotacaoKms = $cotacao['rows']['0']['elements']['0']['distance']['value'];
+                                //Para KM
+                                $cotacaoKms = floatval($cotacaoKms) / 1000;
+                            }
+                        }
+                    }
+                }
+            }
+            /** @var $cotacaoEntrega TaxasEntregasCotacao */
+            $cotacaoEntrega = $tableLocator->get('TaxasEntregasCotacao')->find()->where(['empresa_id' => $newPedido->empresa_id, 'ativo' => 1])->first();
+            if (isset($cotacao['rows']['0']['elements']['0'])) {
+                $newPedidoEntrega->cotacao_maps = json_encode($cotacao['rows']['0']['elements']['0']);
+            }
+            if ($cotacaoSuccess && $cotacaoKms) {
+                $valorEntrega = ($cotacaoEntrega->valor_km * $cotacaoKms);
+                //Arrendonda pro mais perto
+                if ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_CENTRAL) {
+                    $valorEntrega = round($valorEntrega);
+                    //Arrendonda pra cima
+                } elseif ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_SUPERIOR) {
+                    $valorEntrega = floor($valorEntrega);
+                    //Arrendonda pra baixo
+                } elseif ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_INFERIOR) {
+                    $valorEntrega = ceil($valorEntrega);
+                }
+                $newPedidoEntrega->valor_entrega = $valorEntrega;
+            } else {
+                $newPedidoEntrega->valor_entrega = $cotacaoEntrega->valor_base_erro;
+            }
+        }
+        if (!$pedidoEntregaTable->save($newPedidoEntrega)) {
+            throw new \Exception('Erro ao criar entidade de entrega');
+        }
+    }
+
+    public function confirmarAbertura($pedido){
+        $this->render(false);
+        $this->Pedidos->getConnection()->begin();
+        /** @var $pedido Pedido*/
+        $pedido = $this->Pedidos->find()->where(['id' => $pedido])->first();
+        $successStatus = false;
+        if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA){
+            $pedido->status_pedido = Pedido::STATUS_ABERTA;
+        }else{
+            $pedido->status_pedido = Pedido::STATUS_EM_PRODUCAO;
+        }
+        if ($this->Pedidos->save($pedido)) {
+            $successStatus = true;
+        }
+        $gravouTodosItens = true;
+        $produtosTable = $this->getTableLocator()->get('PedidosProdutos');
+        $produtosFinal = $produtosTable->find()->where(['pedido_id' => $pedido->id]);
+        foreach ($produtosFinal as $item) {
+            $item->status = PedidosProduto::STATUS_EM_FILA_PRODUCAO;
+            if ($produtosTable->save($item)) {
+
+            } else {
+                $gravouTodosItens = false;
+            }
+        }
+        if ($gravouTodosItens && $successStatus) {
+            $this->Pedidos->getConnection()->commit();
+            if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA){
+                $this->Flash->success(__('Comanda Confirmada Com Sucesso.'));
+                return $this->redirect(['action' => 'comandas']);
+            }
+            $this->Flash->success(__('Pedido Confirmado Com Sucesso.'));
+            return $this->redirect(['action' => 'producao']);
+        } else {
+            $this->Pedidos->getConnection()->rollback();
+            $this->Flash->error(__('Não foi possível confirmar o pedido, tente novamente.'));
+        }
+    }
+
+    private function persistProdutosPedido($newPedido){
+        //Adiciona os itens que compoem este pedido
+        $tableLocator = $this->getTableLocator();
+        $itensCarrinhoTable = $tableLocator->get('ItensCarrinhos');
+        $pedidosProdutosTable = $tableLocator->get('PedidosProdutos');
+        $itensCarrinho = $itensCarrinhoTable->find()->where(['user_id' => $this->Auth->user('id')]);
+        /** @var $item ItensCarrinho */
+        $valorCobradoPedido = 0;
+        foreach ($itensCarrinho as $item) {
+            /** @var $newItem PedidosProduto */
+            $newItem = $pedidosProdutosTable->newEntity();
+            $newItem->pedido_id = $newPedido->id;
+            $newItem->produto_id = $item->produto_id;
+            $newItem->quantidade = $item->quantidades;
+            $newItem->valor_total_cobrado = $item->valor_total_cobrado;
+            $valorCobradoPedido = $valorCobradoPedido + $item->valor_total_cobrado;
+            $newItem->observacao = $item->observacao;
+            $newItem->opcionais = $item->opicionais;
+            /** @var $produto Produto*/
+            $produto = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $item->produto_id])->first();
+            $newItem->ambiente_producao_responsavel = $produto->ambiente_producao_responsavel;
+            $newItem->status = PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO;
+            if (!$pedidosProdutosTable->save($newItem)) {
+                throw new \Exception('Erro ao cadastrar item');
+            }
+            if(!$itensCarrinhoTable->delete($item)){
+                throw new \Exception('Erro ao excluir item do carrinho');
+            }
+        }
+        //Altera o valor final do pedido com base nos itens lidos.
+        $newPedido->valor_total_cobrado = $valorCobradoPedido;
+        return $newPedido;
+    }
+
     public function generatePedido($endereco = null)
     {
-        $success = false;
-        $tableLocator = new TableLocator();
+        $tableLocator = $this->getTableLocator();
+        $msg = 'Confirmação de itens concluida com sucesso';
         try {
             //Cria um novo pedido
             $this->Pedidos->getConnection()->begin();
@@ -559,130 +724,24 @@ class PedidosController extends AppController
             $newPedido->tempo_producao_aproximado_minutos = $tempoFinal;
             $this->render(false);
             if ($this->Pedidos->save($newPedido)) {
-
+                $newPedido = $this->persistProdutosPedido($newPedido);
+                if($this->Pedidos->save($newPedido)){
+                    $this->calcularEntrega($endereco, $newPedido);
+                }else{
+                    throw new \Exception('Erro ao cadastrar pedido');
+                }
             } else {
                 throw new \Exception('Erro ao cadastrar pedido');
             }
-            //Adiciona os itens que compoem este pedido
-            $itensCarrinhoTable = $tableLocator->get('ItensCarrinhos');
-            $pedidosProdutosTable = $tableLocator->get('PedidosProdutos');
-            $itensCarrinho = $itensCarrinhoTable->find()->where(['user_id' => $this->Auth->user('id')]);
-            $pedidosProdutosTable->getConnection()->begin();
-            /** @var $item ItensCarrinho */
-            $valorCobradoPedido = 0;
-            $itensCarrinhoTable->getConnection()->begin();
-            foreach ($itensCarrinho as $item) {
-                /** @var $newItem PedidosProduto */
-                $newItem = $pedidosProdutosTable->newEntity();
-                $newItem->pedido_id = $newPedido->id;
-                $newItem->produto_id = $item->produto_id;
-                $newItem->quantidade = $item->quantidades;
-                $newItem->valor_total_cobrado = $item->valor_total_cobrado;
-                $valorCobradoPedido = $valorCobradoPedido + $item->valor_total_cobrado;
-                $newItem->observacao = $item->observacao;
-                $newItem->opcionais = $item->opicionais;
-                /** @var $produto Produto*/
-                $produto = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $item->produto_id])->first();
-                $newItem->ambiente_producao_responsavel = $produto->ambiente_producao_responsavel;
-                $newItem->status = PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO;
-                if ($pedidosProdutosTable->save($newItem)) {
-
-                } else {
-                    throw new \Exception('Erro ao cadastrar item');
-                }
-                $itensCarrinhoTable->delete($item);
-            }
-            //Altera o valor final do pedido com base nos itens lidos.
-            $newPedido->valor_total_cobrado = $valorCobradoPedido;
-            if ($this->Pedidos->save($newPedido)) {
-
-            } else {
-                throw new \Exception('Erro ao cadastrar valor do pedido');
-            }
-            //Realiza cotacao de frete
-            if ($endereco != 'retirar-no-local') {
-                /** @var $enderecoClienteModel Endereco */
-                $enderecoClienteModel = $tableLocator->get('Enderecos')->find()->where(['id' => $endereco])->first();
-                $ruaFinal = str_replace(' ', '%20', $enderecoClienteModel->rua);
-                $numeroFinal = str_replace(' ', '%20', $enderecoClienteModel->numero);
-                $bairroFinal = str_replace(' ', '%20', $enderecoClienteModel->bairro);
-                $cidadeFinal = str_replace(' ', '%20', $enderecoClienteModel->cidade);
-                $estadoFinal = str_replace(' ', '%20', $enderecoClienteModel->estado);
-                /** @var $enderecoEmpresaModel EnderecosEmpresa */
-                $enderecoEmpresaModel = $tableLocator->get('EnderecosEmpresas')->find()->where(['empresa_id' => $newPedido->empresa_id])->first();
-                $ruaEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->rua);
-                $numeroEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->numero);
-                $bairroEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->bairro);
-                $cidadeEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->cidade);
-                $estadoEmpresaFinal = str_replace(' ', '%20', $enderecoEmpresaModel->estado);
-                /** @var $key GoogleMapsApiKey */
-                $key = $tableLocator->get('GoogleMapsApiKey')->find()->where(['empresa_id' => $newPedido->empresa_id])->first();
-                $cotacao = file_get_contents('https://maps.googleapis.com/maps/api/distancematrix/json?&origins=Rua%20' . $ruaFinal . '%20' . $numeroFinal . ',%20' . $bairroFinal . ',%20' . $cidadeFinal . '-' . $estadoFinal . '&destinations=Rua%20' . $ruaEmpresaFinal . '%20' . $numeroEmpresaFinal . ',%20' . $bairroEmpresaFinal . ',%20' . $cidadeEmpresaFinal . '-' . $estadoEmpresaFinal . '&language=pt-BR&key=' . $key->api_key);
-                $cotacao = json_decode($cotacao, true);
-                $cotacaoSuccess = false;
-                $cotacaoKms = false;
-                if (isset($cotacao['rows'])) {
-                    if (isset($cotacao['rows']['0'])) {
-                        if (isset($cotacao['rows']['0']['elements'])) {
-                            if (isset($cotacao['rows']['0']['elements']['0'])) {
-                                if (isset($cotacao['rows']['0']['elements']['0']['distance'])) {
-                                    $cotacaoSuccess = true;
-                                    $cotacaoKms = $cotacao['rows']['0']['elements']['0']['distance']['text'];
-                                    $cotacaoKms = floatval($cotacaoKms);
-                                }
-                            }
-                        }
-                    }
-                }
-                $pedidoEntregaTable = $tableLocator->get('PedidosEntregas');
-                $pedidoEntregaTable->getConnection()->begin();
-                /** @var $cotacaoEntrega TaxasEntregasCotacao */
-                $cotacaoEntrega = $tableLocator->get('TaxasEntregasCotacao')->find()->where(['empresa_id' => $newPedido->empresa_id, 'ativo' => 1])->first();
-                /** @var $newPedidoEntrega PedidosEntrega */
-                $newPedidoEntrega = $pedidoEntregaTable->newEntity();
-                $newPedidoEntrega->pedido_id = $newPedido->id;
-                $newPedidoEntrega->endereco_id = $enderecoClienteModel->id;
-                if (isset($cotacao['rows']['0']['elements']['0'])) {
-                    $newPedidoEntrega->cotacao_maps = json_encode($cotacao['rows']['0']['elements']['0']);
-                }
-                if ($cotacaoSuccess && $cotacaoKms) {
-                    $valorEntrega = ($cotacaoEntrega->valor_km * $cotacaoKms);
-                    //Arrendonda pro mais perto
-                    if ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_CENTRAL) {
-                        $valorEntrega = round($valorEntrega);
-                        //Arrendonda pra cima
-                    } elseif ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_SUPERIOR) {
-                        $valorEntrega = floor($valorEntrega);
-                        //Arrendonda pra baixo
-                    } elseif ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_INFERIOR) {
-                        $valorEntrega = ceil($valorEntrega);
-                    }
-                    $newPedidoEntrega->valor_entrega = $valorEntrega;
-                } else {
-                    $newPedidoEntrega->valor_entrega = $cotacaoEntrega->valor_base_erro;
-                }
-                if ($pedidoEntregaTable->save($newPedidoEntrega)) {
-
-                } else {
-                    throw new \Exception('Erro ao cadastrar entrega');
-                }
-            }
             $this->Pedidos->getConnection()->commit();
-            $pedidosProdutosTable->getConnection()->commit();
-            $itensCarrinhoTable->getConnection()->commit();
-            if ($endereco != 'retirar-no-local') {
-                $pedidoEntregaTable->getConnection()->commit();
-            }
             $success = true;
         } catch (\Exception $exception) {
             $success = false;
+            $msg = $exception->getMessage();
             $this->Pedidos->getConnection()->rollback();
-            $pedidosProdutosTable->getConnection()->rollback();
-            $itensCarrinhoTable->getConnection()->rollback();
-            $pedidoEntregaTable->getConnection()->rollback();
         }
 
-        echo json_encode(['success' => $success, 'pedido' => $newPedido->id]);
+        echo json_encode(['success' => $success, 'pedido' => $newPedido->id, 'message' => $msg]);
     }
 
     public function rejeitarPedidoAberto()
@@ -852,7 +911,10 @@ class PedidosController extends AppController
 
     public function view($id = null)
     {
-        $pedido = $this->Pedidos->get($id, ['contain' => ['Users', 'FormasPagamentos']]);
+        $pedido = $this->Pedidos->get($id);
+        if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_DELIVERY){
+            $pedido->user = $this->getTableLocator()->get('Users')->find()->where(['id' => $pedido->user_id])->first();
+        }
         $this->set('pedido', $pedido);
     }
 

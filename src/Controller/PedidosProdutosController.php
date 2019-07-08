@@ -2,7 +2,9 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\Pedido;
 use App\Model\Entity\PedidosProduto;
+use App\Model\Entity\Produto;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -19,6 +21,7 @@ class PedidosProdutosController extends AppController
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
+        $this->setPublicAction('addPedidoItem');
         $this->validateActions();
     }
 
@@ -116,6 +119,45 @@ class PedidosProdutosController extends AppController
         $pedidos = $this->PedidosProdutos->Pedidos->find('list', ['limit' => 200]);
         $produtos = $this->PedidosProdutos->Produtos->find('list', ['limit' => 200]);
         $this->set(compact('pedidosProduto', 'pedidos', 'produtos'));
+    }
+
+    public function addPedidoItem(){
+        $this->render(false);
+        $this->PedidosProdutos->getConnection()->begin();
+        $itensCarrinhoController = new ItensCarrinhosController();
+        $post = $_GET['postProduto'];
+        $post = json_decode($post, true);
+        /** @var $newPedidoProduto PedidosProduto*/
+        $newPedidoProduto = $this->PedidosProdutos->newEntity();
+        $newPedidoProduto->pedido_id = $post['pedidoId'];
+        /** @var $produto Produto*/
+        $produto = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $post['idProduto']])->first();
+        $newPedidoProduto->produto_id = $produto->id;
+        $newPedidoProduto->quantidade = $post['quantidade'];
+        $newPedidoProduto->observacao = $post['observacao'];
+        $formatedOpcionais = $itensCarrinhoController->formatOpcionais($post['opcionais']);
+        $newPedidoProduto->opcionais = $formatedOpcionais['opcionais'];
+        $newPedidoProduto->valor_total_cobrado = $itensCarrinhoController->calculaPrecoProduto($produto, $newPedidoProduto->quantidade ,$formatedOpcionais['valor']);
+        $newPedidoProduto->ambiente_producao_responsavel = $produto->ambiente_producao_responsavel;
+        $newPedidoProduto->status = PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO;
+        if ($this->PedidosProdutos->save($newPedidoProduto)) {
+            $success = true;
+        }else{
+            $success = false;
+        }
+        $pedidoTable =  $this->getTableLocator()->get('Pedidos');
+        /** @var $pedido Pedido*/
+        $pedido = $pedidoTable->find()->where(['id' => $newPedidoProduto->pedido_id])->first();
+        $pedido->valor_total_cobrado += $newPedidoProduto->valor_total_cobrado;
+        if (!$pedidoTable->save($pedido)){
+            $success = false;
+        }
+        if($success){
+            $this->PedidosProdutos->getConnection()->commit();
+        }else{
+            $this->PedidosProdutos->getConnection()->rollback();
+        }
+        echo json_encode(array("itemGravado" => $success));
     }
 
     /**

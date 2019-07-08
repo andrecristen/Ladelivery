@@ -4,8 +4,8 @@
  * Gerente de projeto & Desenvolvedor
  */
 ?>
-<?= $this->Form->create($pedido) ?>
 <div class="col-sm-12">
+    <?= $this->Form->create($pedido) ?>
     <div class="alert alert-info">
         <span>Caso você não preencha o campo valor, o sistema irá calcular automaticamente com base no endereço de entrega.</span>
     </div>
@@ -20,6 +20,6 @@
 
     </fieldset>
     <br/>
-    <?= $this->Form->button(__('Abrir')) ?>
+    <?= $this->Form->button(__('Definir Entrega')) ?>
     <?= $this->Form->end() ?>
 </div>

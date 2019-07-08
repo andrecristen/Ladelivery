@@ -1,11 +1,12 @@
 <?php
 $siteUtils = new \App\Model\Utils\SiteUtils();
+$empresaUtils = new \App\Model\Utils\EmpresaUtils();
 $tableLocator = new \Cake\ORM\Locator\TableLocator();
 $this->layout = false;
 $controllerPedido = new \App\Model\Utils\SiteUtilsPedido();
 $existsPedidoAberto = false;
-if (isset($_SESSION['Auth']['User']['id'])){
-    $existsPedidoAberto = $controllerPedido->existsPedidoEmAberto($_SESSION['Auth']['User']['id']);
+if ($empresaUtils->getUserId()){
+    $existsPedidoAberto = $controllerPedido->existsPedidoEmAberto($empresaUtils->getUserId());
 }
 $empresaAberta = $controllerPedido->empresaAberta();
 $query = $tableLocator->get('CategoriasProdutos')->find();

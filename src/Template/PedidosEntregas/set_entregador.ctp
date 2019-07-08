@@ -5,6 +5,9 @@
  */
 ?>
 <div class="col-sm-12">
+    <div class="alert alert-info">
+        <?= $mensagem ?>
+    </div>
     <?= $this->Form->create($pedidosEntrega) ?>
     <fieldset>
         <legend><?= __('Definir Entregador - Pedido Entrega') ?></legend>

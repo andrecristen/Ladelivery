@@ -25,7 +25,7 @@ $empresaEndereco = $empresaUtils->getEmpresaBaseEnderecoModel();
 <html lang="en">
 <head>
     <?php $siteUtils->ambiguousHeadImportsSite() ?>
-    <title>Home</title>
+    <title>Quem Somos</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>

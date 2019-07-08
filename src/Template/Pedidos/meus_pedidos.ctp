@@ -45,7 +45,7 @@ $siteUtils->menuSite();
                                 <b>Valor Total: R$</b><?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
                             <?php }?>
                         </p>
-                        <?= $this->Html->link(__(''), ['action' => 'verStatus', $pedido->id], ['class' => 'far fa-eye btn btn-info btn-sm', 'title' => 'Visualizar Pedido']) ?>
+                        <?= $this->Html->link(__(' Acompanhar Pedido'), ['action' => 'verStatus', $pedido->id], ['class' => 'far fa-eye btn btn-info btn-sm', 'title' => 'Visualizar Pedido']) ?>
                     </div>
                 </div>
             </div>

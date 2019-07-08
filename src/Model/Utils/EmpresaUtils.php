@@ -20,7 +20,7 @@ use Cake\ORM\Locator\TableLocator;
  */
 class EmpresaUtils extends AppController
 {
-    const NOME_EMPRESA_LOJA = 'LaDelivery - LaDev';
+    const NOME_EMPRESA_LOJA = 'Empresa Demonstração';
     const ANO_HOMOLOGACAO_EMPRESA = 2019;
 
     /*

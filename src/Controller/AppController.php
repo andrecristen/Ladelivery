@@ -117,6 +117,9 @@ class AppController extends Controller
             if (!$action){
                 return;
             }
+            if(isset($this->validActions[$action])){
+                return;
+            }
             $tableLocator = new TableLocator();
             /** @var $controller \App\Model\Entity\Controller*/
             $controller = $tableLocator->get('Controllers')->find()->where(['nome_controlador' => $this->name])->first();

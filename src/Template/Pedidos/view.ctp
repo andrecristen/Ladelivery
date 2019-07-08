@@ -32,7 +32,11 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
         </tr>
         <tr>
             <th scope="row"><?= __('Cliente') ?></th>
-            <td><?= $pedido->has('user') ? $this->Html->link($pedido->user->nome_completo, ['controller' => 'Users', 'action' => 'view', $pedido->user->id]) : '' ?></td>
+            <?php if ($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_DELIVERY) { ?>
+                 <td><?= $pedido->has('user') ? $this->Html->link($pedido->user->nome_completo, ['controller' => 'Users', 'action' => 'view', $pedido->user->id]) : '' ?></td>
+            <?php }else{ ?>
+                <td><?= h($pedido->cliente) ?></td>
+            <?php }?>
         </tr>
         <tr>
             <th scope="row"><?= __('Situação') ?></th>

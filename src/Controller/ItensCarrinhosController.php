@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\Entity\OpcoesExtra;
 use App\Model\Entity\Produto;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Controller\ComponentRegistry;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -18,12 +19,14 @@ use Cake\Http\ServerRequest;
 class ItensCarrinhosController extends AppController
 {
 
+    private $empresaUtils;
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->setPublicAction('addProduto');
         $this->setPublicAction('removeItemCarrinho');
         $this->validateActions();
+        $this->empresaUtils = new EmpresaUtils();
     }
 
     /**
@@ -133,13 +136,35 @@ class ItensCarrinhosController extends AppController
         $itensCarrinho = $this->ItensCarrinhos->newEntity();
         /** @var $produto Produto*/
         $produto = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $post['idProduto']])->first();
-        $itensCarrinho->user_id = $post['userId'];
+        if(isset($post['userId'])){
+            $user = $post['userId'];
+        }else{
+            $user = $this->empresaUtils->getUserId();
+        }
+        $itensCarrinho->user_id = $user;
         $itensCarrinho->produto_id = $post['idProduto'];
         $itensCarrinho->observacao = $post['observacao'];
         $itensCarrinho->quantidades = $post['quantidade'];
+        $formatedOpcionais = $this->formatOpcionais($post['opcionais']);
+        $itensCarrinho->opicionais = $formatedOpcionais['opcionais'];
+        $valorCobrado = $this->calculaPrecoProduto($produto, $itensCarrinho->quantidades,$formatedOpcionais['valor']);
+        $itensCarrinho->valor_total_cobrado = $valorCobrado;
+        $success = false;
+        if ($this->ItensCarrinhos->save($itensCarrinho)) {
+            $success = true;
+        }
+        echo json_encode(array("itemGravado" => $success));
+    }
+
+    public function calculaPrecoProduto($produto, $quantidade, $valorOpcionais){
+        $valorCobrado = ($produto->preco_produto * $quantidade) + ($valorOpcionais * $quantidade);
+        return $valorCobrado;
+    }
+
+    public function formatOpcionais($opcionais){
         $validOpcionais = [];
         $valorOpcionais = 0;
-        foreach ($post['opcionais'] as $key => $opcional) {
+        foreach ($opcionais as $key => $opcional) {
             if ($opcional !== null) {
                 $validOpcionais[$opcional['lista']][] = $opcional['opcional'];
                 /** @var $opcionalModel OpcoesExtra*/
@@ -147,14 +172,7 @@ class ItensCarrinhosController extends AppController
                 $valorOpcionais = $valorOpcionais + $opcionalModel->valor_adicional;
             }
         }
-        $itensCarrinho->opicionais = json_encode($validOpcionais);
-        $valorCobrado = ($produto->preco_produto * $itensCarrinho->quantidades) + $valorOpcionais;
-        $itensCarrinho->valor_total_cobrado = $valorCobrado;
-        $success = false;
-        if ($this->ItensCarrinhos->save($itensCarrinho)) {
-            $success = true;
-        }
-        echo json_encode(array("itemGravado" => $success));
+        return ['opcionais' => json_encode($validOpcionais), 'valor' => $valorOpcionais];
     }
 
     public function removeItemCarrinho($id = null)

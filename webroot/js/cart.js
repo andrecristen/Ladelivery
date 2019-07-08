@@ -38,15 +38,15 @@ function fecharCarrinho() {
         dataType: "json",
         success: function (data) {
             if(data.success){
-                alertify.success('Confirmação de itens concluida com sucesso');
+                alertify.success(data.message);
                 $(location).attr('href', '/pages/confirmar');
             }else{
-                alertify.error('Não foi possivel confirmar os itens do pedido');
+                alertify.error(data.message);
                 $("#btnFecharCarrinho").attr("disabled", false);
             }
         },
         error: function (data) {
-            alertify.error('Não foi possivel confirmar os itens do pedido');
+            alertify.error(data.message);
             $("#btnFecharCarrinho").attr("disabled", false);
         }
     });

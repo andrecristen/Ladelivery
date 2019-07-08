@@ -25,6 +25,7 @@ class Empresa extends Entity
     const FRETE_TIPO_KM = 1;
     const FRETE_TIPO_FAIXA = 2;
     const FRETE_TIPO_BAIRRO = 3;
+    const FRETE_SEM_ENTREGA= 4;
 
     public static function getTipoList(){
         return [
@@ -38,6 +39,7 @@ class Empresa extends Entity
             self::FRETE_TIPO_KM => 'Valor Por KM',
             self::FRETE_TIPO_FAIXA => 'Valor Por Faixa de Distância',
             self::FRETE_TIPO_BAIRRO => 'Valor Por Bairro',
+            self::FRETE_SEM_ENTREGA => 'Sem Entrega',
         ];
     }
 

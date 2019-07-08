@@ -47,8 +47,10 @@ class Pedido extends Entity
     const STATUS_EM_ABERTURA = 12;
 
     //Status para Lists pedidos tipo Comanda
-    const  STATUS_ABERTA = 11;
-    const  STATUS_FECHADA = 12;
+    const STATUS_ABERTA = 11;
+    const STATUS_FECHADA = 12;
+
+    const RETIRAR_NO_LOCAL = 'retirar-no-local';
 
     public static function getTipoList(){
         return [

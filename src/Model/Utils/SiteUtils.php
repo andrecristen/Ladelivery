@@ -19,11 +19,29 @@ class SiteUtils extends AppController
 {
     protected $Html;
 
+    private static $dontImportAdminScripts;
+
     public function __construct(ServerRequest $request = null, Response $response = null, $name = null, \Cake\Event\EventManager $eventManager = null, ComponentRegistry $components = null)
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $appView = new AppView();
         $this->Html = new HtmlHelper($appView, []);
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getDontImportAdminScripts()
+    {
+        return self::$dontImportAdminScripts;
+    }
+
+    /**
+     * @param mixed $dontImportAdminScripts
+     */
+    public static function setDontImportAdminScripts($dontImportAdminScripts)
+    {
+        self::$dontImportAdminScripts = $dontImportAdminScripts;
     }
 
     /**
@@ -146,36 +164,39 @@ class SiteUtils extends AppController
     {
         $cacheControl = new \App\Model\Utils\CacheControl();
         $cacheVersion = $cacheControl->getCacheVersion();
-        echo $this->Html->css('banner.css'.$cacheVersion);
-        echo $this->Html->css('bootstrap.css'.$cacheVersion);
-        echo $this->Html->css('font-awesome-all.css'.$cacheVersion);
-        echo $this->Html->css('bootstrap-select.css'.$cacheVersion);
-        echo $this->Html->script('jquery.js'.$cacheVersion);
-        echo $this->Html->script('popper.js'.$cacheVersion);
-        echo $this->Html->script('angular.js'.$cacheVersion);
-        echo $this->Html->script('bootstrap.js'.$cacheVersion);
-       // echo $this->Html->script('font-awesome-all.js'.$cacheVersion);
-        echo $this->Html->script('bootstrap-select.js'.$cacheVersion);
-        echo $this->Html->script('site-utils.js'.$cacheVersion);
+        echo $this->Html->css('banner.css' . $cacheVersion);
+        echo $this->Html->css('bootstrap.css' . $cacheVersion);
+        echo $this->Html->css('font-awesome-all.css' . $cacheVersion);
+        echo $this->Html->css('bootstrap-select.css' . $cacheVersion);
+        echo $this->Html->script('jquery.js' . $cacheVersion);
+        echo $this->Html->script('popper.js' . $cacheVersion);
+        echo $this->Html->script('angular.js' . $cacheVersion);
+        echo $this->Html->script('bootstrap.js' . $cacheVersion);
+        // echo $this->Html->script('font-awesome-all.js'.$cacheVersion);
+        echo $this->Html->script('bootstrap-select.js' . $cacheVersion);
+        echo $this->Html->script('site-utils.js' . $cacheVersion);
     }
 
-    public final function mensagemLogarParaComprar(){
+    public final function mensagemLogarParaComprar()
+    {
         echo '<div class="row">
             <div style="width: 100%" class="alert alert-info">
-                <h4><i class="fas fa-exclamation-triangle fa-fw" style="color: #ff1b2e"></i>Para poder adicionar ao carrinho, por favor entre com sua conta! '.$this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')) . ' Entre Agora', array('controller' => 'Users', 'action' => 'login'), array('escape' => false, 'class' => '')).'</h4>
+                <h4><i class="fas fa-exclamation-triangle fa-fw" style="color: #ff1b2e"></i>Para poder adicionar ao carrinho, por favor entre com sua conta! ' . $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')) . ' Entre Agora', array('controller' => 'Users', 'action' => 'login'), array('escape' => false, 'class' => '')) . '</h4>
             </div>
         </div>';
     }
 
-    public final function mensagemPedidoAberto(){
+    public final function mensagemPedidoAberto()
+    {
         echo '<div class="row">
                <div style="width: 100%" class="alert alert-info">
-                <h4>Você possui pedidos aguardando sua confirmação ou cancelamento, certifique-se de concluir primeiro este pedido antes de iniciar um novo!'.$this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-basket')) . ' Ver Pedido', array('controller' => 'pages', 'action' => 'confirmar'), array('escape' => false, 'class' => '')).'</h4>
+                <h4>Você possui pedidos aguardando sua confirmação ou cancelamento, certifique-se de concluir primeiro este pedido antes de iniciar um novo!' . $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-basket')) . ' Ver Pedido', array('controller' => 'pages', 'action' => 'confirmar'), array('escape' => false, 'class' => '')) . '</h4>
                 </div>
               </div>';
     }
 
-    public final function mensagemEmpresaFechada(){
+    public final function mensagemEmpresaFechada()
+    {
         echo '
         <div class="row">
             <div style="width: 100%" class="alert alert-danger">
@@ -184,32 +205,178 @@ class SiteUtils extends AppController
         </div>';
     }
 
-    public final function menuAdmin($menus){
-        echo '<div class="nav-side-menu">';
-            echo '<div class="brand">LADelivery</div>';
-            echo '<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>';
-            echo '<i class="fa fa-bars fa-fw toggle-btn-pc" onclick="closeMenu()"></i>';
-            echo '<div class="menu-list">';
-                echo '<ul id="menu-content" class="menu-content collapse out">';
-                foreach ($menus as $key => $menu){
-                    echo '<li data-toggle="collapse" data-target="#'.$key.'" class="collapsed">';
-                    echo '<a href="#"><i class="'.$menu['icon'].'"></i> '.$menu['nome'].'</a>';
-                    echo '</li>';
-                    echo '<ul class="sub-menu collapse" id="'.$key.'">';
-                        foreach ($menu['childrens'] as $children) {
-                            echo '<li>'.$this->Html->link(__($children['nome']), ['controller' => $children['controller'], 'action' => $children['action']]).'</li>';
-                        }
-                     echo '</ul>';
+    public final function createFormAdicionarProduto($setUser = false, $diretoAoPedido = false)
+    {
+        $empresaUtils = new EmpresaUtils();
+        $utilsPedido = new SiteUtilsPedido();
+        $user = false;
+        if($setUser){
+            $user = $empresaUtils->getUserId();
+        }
+        echo '<button id="openModal" style="display: none" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" data-backdrop="static" data-keyboard="false">Abre</button>';
+        echo '<div class="modal" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">';
+        echo '<div class="modal-dialog" role="document">';
+        echo '<div style="min-height: 95%" class="modal-content">';
+        echo '<div class="modal-header">';
+
+        if ($empresaUtils->getUserId() && $utilsPedido->empresaAberta()) {
+            echo '<h5 class="modal-title" id="exampleModalLabel">Adicionar ao carrinho</h5>';
+        } else {
+            echo '<h5 class="modal-title" id="exampleModalLabel">Visualizar Produto</h5>';
+        }
+        echo '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+        echo '</div>';
+        echo '<div class="modal-body">';
+        echo '<div class="tab">';
+        echo '<button id="initialTabModal" class="tablinks" onclick="openTab(event, \'geral\')">Geral</button>';
+        echo '<button class="tablinks" onclick="openTab(event, \'opcoes\')">Opções</button>';
+        echo '</div>';
+        echo '<div id="geral" class="tabcontent">
+                        <div class="form-horizontal">
+                            <div style="display: none" class="form-group">
+                                <label for="exampleFormControlInput1">#Produto</label>
+                                <input type="text" readonly class="form-control" id="idProduto">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Produto</label>
+                                <input type="text" readonly class="form-control" id="nomeProduto">
+                            </div>
+                            <div style="display: none" class="form-group">
+                                <label for="exampleFormControlInput1">Preço Produto Original</label>
+                                <input type="text" readonly class="form-control" id="precoProdutoOriginal">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Preço</label>
+                                <input type="text" readonly class="form-control" id="precoProduto">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlTextarea1">Descrição</label>
+                                <textarea class="form-control" readonly id="descricaoProduto" rows="2"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Quantidade</label>
+                                <input class="form-control" type="number" onkeyup="verificaQuantidadeIsInt(event)" id="quantidadeProduto" min="1" max="100" step="1" value="1">
+                            </div>';
+        if ($empresaUtils->getUserId() && $utilsPedido->empresaAberta()) {
+            echo '<div class="form-group">
+                    <label for="exampleFormControlTextarea1">Observação</label>
+                    <textarea placeholder="Digite observações, por exemplo, retirar pepino." class="form-control" id="observacaoDigitada" rows="2"></textarea>
+                  </div>';
+        }
+        echo '</div>';
+        echo '</div>';
+        echo '<div id="opcoes" class="tabcontent">
+                        <div id="contentOptions">
+                        <!--      SERVE PARA PODER APENDAR A LISTAS CRIADAS DOS PRODUTOS        -->
+                        </div>
+                    </div>';
+        echo '</div>';
+        if ($empresaUtils->getUserId() && $utilsPedido->empresaAberta()) {
+            if(!$diretoAoPedido){
+                echo '<div class="modal-footer">
+                        <button type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" onclick="addItemToCart(' . $user . ')" class="btn btn-primary">Confirmar</button>
+                    </div>';
+            }else{
+                echo '<div class="modal-footer">
+                        <button type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" onclick="addItemToPedido(' . $diretoAoPedido . ')" class="btn btn-primary">Confirmar</button>
+                    </div>';
+            }
+        }
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+    }
+
+    public final function createProdutosCategoria($categoria, $showStars = true, $isAdmin = false, $showFoto = true, $titleButtonComprar = false)
+    {
+        if(!$titleButtonComprar){
+            $titleButtonComprar = 'Comprar';
+        }
+        $siteUtilsPedido = new SiteUtilsPedido();
+        $condicao = ['ativo_produto' => true];
+        if ($categoria) {
+            $condicao['categorias_produto_id'] = intval($categoria);
+        }
+        $produtos = $this->getTableLocator()->get('Produtos')->find()->where($condicao);
+        $produtoscount = 0;
+        foreach ($produtos as $produto) {
+            echo '<div style="cursor: pointer!important;" class="col-lg-3 col-md-4 col-sm-6 portfolio-item">';
+            echo '<div class="card" style="margin-bottom: 5px">';
+            if($showFoto){
+                $midiaTable = $this->getTableLocator()->get('Midias');
+                $existMidia = $midiaTable->find();
+                $existMidia->where(['id' => $produto->midia_id]);
+                /** @var $existMidia \App\Model\Entity\Midia */
+                $existMidia = $existMidia->first();
+                echo '<a onclick="openModalAddCart(' . $produto->id . ')">';
+                if ($existMidia !== null) {
+                    echo $this->Html->image($existMidia->path_midia, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40'));
+                } else {
+                    echo $this->Html->image('empresa/padrao.jpeg', array('width' => '100%', 'height' => '22%'));
                 }
-                echo '</ul>';
+                echo '</a>';
+            }
+            echo '<div class="card-body">';
+            echo '<h4 class="card-title">';
+            echo '<span>' . $produto->nome_produto . '</span>';
+            echo '<br/>';
+            echo '<span>R$' . $produto->preco_produto . '</span>';
+            echo '</h4>';
+            echo '<p style="height: 120px; overflow-y: auto; overflow-x: hidden;" class="card-text">' . $produto->descricao_produto . '</p>';
             echo '</div>';
+            echo '<div class="card-footer">';
+            if ($this->Auth->user('id') && $siteUtilsPedido->empresaAberta()) {
+                echo '<button title="Adicionar ao carrinho" class="btn btn-sm btn-success" style="width: 45%" onclick="openModalAddCart(' . $produto->id . ','.$isAdmin.')"> <i class="fas fa-cart-plus"></i> '.$titleButtonComprar.' <i style="display: none" id="loading-' . $produto->id . '" class="fa fa-spinner fa-spin"></i> </button>';
+            } else {
+                echo '<button title="Adicionar ao carrinho" disabled class="btn btn-sm btn-success" style="width: 45%"><i class="fas fa-cart-plus"></i> '.$titleButtonComprar.' <i style="display: none" id="loading-' . $produto->id . '" class="fa fa-spinner fa-spin"></i> </button>';
+            }
+            if ($showStars) {
+                echo '<a style="text-decoration-line: none;color: black; margin-left: 5px;" title="Avaliar Produto" href="../ProdutosAvaliacoes/listAvaliacoes/' . $produto->id . '">';
+                echo '<i class="far fa-clipboard"></i>&nbsp;';
+                $this->getStarsProduto($produto->id);
+                echo '</a>';
+            }
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            $produtoscount++;
+        }
+        if ($produtoscount < 1) {
+            echo '<div style="width: 100%" class="alert alert-danger" role="alert"> <i class="far fa-grin-beam-sweat fa-3x" style="color: #000000"></i>&nbsp;<span>Está categoria ainda não possui nenhum item cadastrado, mas não deixe de visitar para encontrar novidades!</span></div>';
+        }
+        echo '</div>';
+        echo '<br>';
+    }
+
+    public final function menuAdmin($menus)
+    {
+        echo '<div class="nav-side-menu">';
+        echo '<div class="brand">LADelivery</div>';
+        echo '<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>';
+        echo '<i class="fa fa-bars fa-fw toggle-btn-pc" onclick="closeMenu()"></i>';
+        echo '<div class="menu-list">';
+        echo '<ul id="menu-content" class="menu-content collapse out">';
+        foreach ($menus as $key => $menu) {
+            echo '<li data-toggle="collapse" data-target="#' . $key . '" class="collapsed">';
+            echo '<a href="#"><i class="' . $menu['icon'] . '"></i> ' . $menu['nome'] . '</a>';
+            echo '</li>';
+            echo '<ul class="sub-menu collapse" id="' . $key . '">';
+            foreach ($menu['childrens'] as $children) {
+                echo '<li>' . $this->Html->link(__($children['nome']), ['controller' => $children['controller'], 'action' => $children['action']]) . '</li>';
+            }
+            echo '</ul>';
+        }
+        echo '</ul>';
+        echo '</div>';
         echo '</div>';
     }
 
     public final function menuSite()
     {
         $cakeDescription = \App\Model\Utils\EmpresaUtils::NOME_EMPRESA_LOJA;
-        /** @var $categorias CategoriasProduto[]*/
+        /** @var $categorias CategoriasProduto[] */
         $categorias = $this->getTableLocator()->get('CategoriasProdutos')->find();
         $itensCarrinhos = $this->getTableLocator()->get('ItensCarrinhos')->find()->where(['user_id' => $this->Auth->user('id')])->count();
         echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">';
@@ -223,10 +390,10 @@ class SiteUtils extends AppController
         echo '<li class="dropdown nav-item">';
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-th-list')) . ' Categorias', '#', array('escape' => false, 'class' => 'nav-link dropdown-toggle'));
         echo '<div class="dropdown-menu menu-site">';
-            foreach ($categorias as $categoria){
-                echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' '.$categoria->nome_categoria, array('controller' => 'pages', 'action' => 'produtos?categoria='.$categoria->id.'&categoriaNome='.$categoria->nome_categoria), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
-            }
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' Todas', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
+        foreach ($categorias as $categoria) {
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' ' . $categoria->nome_categoria, array('controller' => 'pages', 'action' => 'produtos?categoria=' . $categoria->id . '&categoriaNome=' . $categoria->nome_categoria), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
+        }
+        echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' Todas', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
         echo '</div>';
         echo '</li>';
         if ($this->Auth->user('id')) {
@@ -234,7 +401,7 @@ class SiteUtils extends AppController
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-circle')) . ' Minha Conta', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
             echo '<li class="nav-item">';
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-cart')) . ' Carrinho'.$this->Html->tag('div', $itensCarrinhos, array('class' => 'icon-cart-number')), array('controller' => 'pages', 'action' => 'carrinho'), array('escape' => false, 'class' => 'nav-link'));
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-cart')) . ' Carrinho' . $this->Html->tag('div', $itensCarrinhos, array('class' => 'icon-cart-number')), array('controller' => 'pages', 'action' => 'carrinho'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
             echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-id-card-alt')) . ' Quem Somos', array('controller' => 'pages', 'action' => 'empresa'), array('escape' => false, 'class' => 'nav-link'));

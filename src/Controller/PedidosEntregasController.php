@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\FormasPagamento;
+use App\Model\Entity\Pedido;
 use App\Model\Entity\User;
 use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
@@ -93,9 +95,20 @@ class PedidosEntregasController extends AppController
             }
             $this->Flash->error(__('Não foi possível definir o entregador.'));
         }
-        $pedidos = $this->PedidosEntregas->Pedidos->find('list', ['limit' => 1]);
+        $pedidos = $this->PedidosEntregas->Pedidos->find('list', ['limit' => 1])->where(['id' => $pedidosEntrega->pedido_id]);
+        /** @var $pedidoModel Pedido*/
+        $pedidoModel = $this->PedidosEntregas->Pedidos->find()->where(['id' => $pedidosEntrega->pedido_id])->first();
+        /** @var $formaPagamento FormasPagamento*/
+        $formaPagamento = $this->getTableLocator()->get('FormasPagamentos')->find()->where(['id' => $pedidoModel->formas_pagamento_id])->first();
+        $mensagem = "";
+        if($formaPagamento->necesista_maquina_cartao){
+            $mensagem .= "O entregador deve levar a máquina de cartão, para o cliente realizar o pagamento. ";
+        }
+        if($formaPagamento->necessita_troco){
+            $mensagem .= "O entregador deve levar R$". ($pedidoModel->troco_para - $pedidoModel->valor_total_cobrado)." para troco.";
+        }
         $users = $this->PedidosEntregas->Users->find('list')->where(['tipo' => User::TIPO_ENTREGADOR]);
-        $this->set(compact('pedidosEntrega', 'pedidos', 'users'));
+        $this->set(compact('pedidosEntrega', 'pedidos', 'users', 'mensagem'));
     }
 
     /**

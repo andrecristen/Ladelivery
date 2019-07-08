@@ -14,8 +14,12 @@ function allSelectMultiple() {
 }
 
 function findProduto(produtoId) {
+    realFindProduto("/produtos/getProduto/" + parseInt(produtoId) , false, produtoId);
+}
+
+function realFindProduto(url, isAdmin, produtoId) {
     jQuery.ajax({
-        url: "../produtos/getProduto/" + parseInt(produtoId),
+        url: url,
         method: "GET",
         async: false,
         dataType: "json",
@@ -26,18 +30,33 @@ function findProduto(produtoId) {
             $("#precoProduto").val(parseFloat(data.preco_produto));
             $("#descricaoProduto").val(data.descricao_produto);
             $("#bloqDiv").css('display', 'none');
-            findLists(produtoId);
+            if(isAdmin){
+                findLists(produtoId);
+            }else{
+                findListsAdmin(produtoId);
+            }
+
         },
         error: function (data) {
-            $("#loading-" + produtoId).hidde();
+            $("#loading-" + produtoId).hide();
         }
     });
 }
 
-function openModalAddCart(produtoId) {
+
+function findProdutoAdmin(produtoId) {
+    realFindProduto("../../produtos/getProduto/" + parseInt(produtoId) , false, produtoId);
+}
+
+function openModalAddCart(produtoId, isAdmin) {
     $("#loading-" + produtoId).show();
     setTimeout(function () {
-        findProduto(produtoId);
+
+        if(isAdmin){
+            findProdutoAdmin(produtoId)
+        }else{
+            findProduto(produtoId);
+        }
         openModal();
         $("#loading-" + produtoId).hide();
     }, 50);
@@ -94,12 +113,20 @@ function showDescricao(idDescricao, event) {
 }
 
 function findLists(produtoId) {
+    findListsReal("../listas/getListas/" + parseInt(produtoId), produtoId);
+}
+
+function findListsAdmin(produtoId) {
+    findListsReal("../../listas/getListas/" + parseInt(produtoId), produtoId);
+}
+
+function findListsReal(url, produtoId) {
     var content = document.getElementById("contentOptions");
     while (content.firstChild) {
         content.removeChild(content.firstChild);
     }
     jQuery.ajax({
-        url: "../listas/getListas/" + parseInt(produtoId),
+        url: url,
         method: "GET",
         async: false,
         dataType: "json",
@@ -151,33 +178,53 @@ function readequaValorProduto() {
     $("#precoProduto").val((parseFloat(valorAdicional) + parseFloat(valorProduto)) * parseInt($("#quantidadeProduto").val()));
 }
 
+function montaDataPedidoItem(userId, pedidoId){
+    var quantidade = parseInt($("#quantidadeProduto").val());
+    if(quantidade <= 0 || isNaN(quantidade)){
+        alertify.alert('Atenção!','Informe um valor maior que zero para o campo quantidade do produto');
+        return;
+    }
+    var data = {};
+    if(userId){
+        data.userId = userId;
+    }
+    if(pedidoId){
+        data.pedidoId = pedidoId;
+    }
+    data.idProduto = $("#idProduto").val();
+    data.quantidade = $("#quantidadeProduto").val();
+    data.observacao = $("#observacaoDigitada").val();
+    data.opcionais = [];
+    if ($("select")) {
+        var selects = ($("select"));
+        for (var i = 0; i < selects.length; i++) {
+            var idLista = $(selects[i]).attr('id');
+            var optionsSelected = $("option:selected", selects[i]);
+            for (var j = 0; j < optionsSelected.length; j++) {
+                data.opcionais.push({'opcional': $(optionsSelected[j]).attr('idopcional'), 'lista': idLista});
+            }
+        }
+    }
+    return data;
+}
+
 function addItemToCart(userId) {
     var success = verificaMinimoOpcoes();
     if(success){
-        var quantidade = parseInt($("#quantidadeProduto").val());
-        if(quantidade <= 0 || isNaN(quantidade)){
-            alertify.alert('Atenção!','Informe um valor maior que zero para o campo quantidade do produto');
-            return;
-        }
-        var data = {};
-        data.userId = userId;
-        data.idProduto = $("#idProduto").val();
-        data.quantidade = $("#quantidadeProduto").val();
-        data.observacao = $("#observacaoDigitada").val();
-        data.opcionais = [];
-        if ($("select")) {
-            var selects = ($("select"));
-            for (var i = 0; i < selects.length; i++) {
-                var idLista = $(selects[i]).attr('id');
-                var optionsSelected = $("option:selected", selects[i]);
-                for (var j = 0; j < optionsSelected.length; j++) {
-                    data.opcionais.push({'opcional': $(optionsSelected[j]).attr('idopcional'), 'lista': idLista});
-                }
-            }
-        }
+        var data = montaDataPedidoItem(userId, false);
         enviteToCart(data);
     }
 }
+
+function addItemToPedido(pedidoId) {
+    var success = verificaMinimoOpcoes();
+    if(success){
+        var data = montaDataPedidoItem(false, pedidoId);
+        enviteToPedido(data);
+    }
+}
+
+
 function verificaMinimoOpcoes() {
     var selects = $('select');
     try{
@@ -209,6 +256,31 @@ function certificaMinimoPreechido(index, element) {
 function enviteToCart(data) {
     jQuery.ajax({
         url: "../itens-carrinhos/addProduto/",
+        method: "GET",
+        data: {postProduto: JSON.stringify(data)},
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            if (data.itemGravado) {
+                alertify.success('Item adicionado ao carrinho');
+                //Atualiza icone de carrinho;
+                var icone = $(".icon-cart-number");
+                var valorAtual = parseInt(icone.html());
+                icone.html(valorAtual + 1);
+                closeModal();
+            } else {
+                alertify.error('Não foi possivel adicionar o item ao carrinho');
+            }
+        },
+        error: function (data) {
+            alertify.error('Não foi possivel adicionar o item ao carrinho');
+        }
+    });
+}
+
+function enviteToPedido(data) {
+    jQuery.ajax({
+        url: "../../pedidos-produtos/addPedidoItem/",
         method: "GET",
         data: {postProduto: JSON.stringify(data)},
         async: false,

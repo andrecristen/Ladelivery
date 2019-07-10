@@ -22,9 +22,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
         <?php
         /** @var $pedido \App\Model\Entity\Pedido */
         foreach ($pedidos as $pedido){
-            /** @var $entrega \App\Model\Entity\PedidosEntrega*/
-            $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id'=> $pedido->id])->first();
-            /** @var $entregador \App\Model\Entity\User*/
+            $entrega = $pedido->getEntrega();
             $entregador = $tableLocator->get('Users')->find()->where(['id'=> $entrega->user_id])->first(); ?>
             <div class="col-sm-4">
                 <div class="card">
@@ -39,14 +37,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                             <br>
                             Tempo produção estimado: <?= $pedido->tempo_producao_aproximado_minutos?>
                             <br>
-                            Valor entrega: R$<?= $entrega->valor_entrega?>
-                            <br>
-                            <?php if($entrega){?>
-                                Valor Total: R$<?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
-                            <?php }else{ ?>
-                                Valor Total: R$<?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
-
-                            <?php }?>
+                            Valor Total: R$<?= ($pedido->getValorTotal())?>
                         </p>
                         <?= $this->Html->link(__(''), ['action' => 'setSaiuParaEntrega', $pedido->id], ['class' => 'fas fa-motorcycle btn btn-success btn-sm', 'title' => 'Pedido saiu para entrega']) ?>
                         <?= $this->Html->link(__(''), ['controller' => 'PedidosEntregas','action' => 'setEntregador',  $entrega->id], ['class' => 'far fa-address-card btn btn-warning btn-sm', 'title' => 'Definir entregador']) ?>

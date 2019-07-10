@@ -105,7 +105,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
                                     <?php
                                 }
                                 ?>
-                                <option value="retirar-no-local">NÃO PRECISO DE ENTREGA, IREI BUSCAR O PEDIDO</option>
+                                <option value="<?= \App\Model\Entity\Pedido::RETIRAR_NO_LOCAL?>">NÃO PRECISO DE ENTREGA, IREI BUSCAR O PEDIDO</option>
                             </select>
                         </div>
                         <div class="summary-checkout">

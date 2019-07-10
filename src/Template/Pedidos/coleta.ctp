@@ -21,10 +21,8 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
     <div class="row">
         <?php
         /** @var $pedido \App\Model\Entity\Pedido */
-        foreach ($pedidos as $pedido){
-            /** @var $entrega \App\Model\Entity\PedidosEntrega*/
-            $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id'=> $pedido->id])->first(); ?>
-            <div class="col-sm-4">
+        foreach ($pedidos as $pedido){ ?>
+           <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title"><i class="fas fa-user-alt"></i>&nbsp;<?= $pedido->user->nome_completo ?></h6>
@@ -35,12 +33,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                             <br>
                             Tempo produção estimado: <?= $pedido->tempo_producao_aproximado_minutos?>
                             <br>
-                            <?php if($entrega){?>
-                                Valor Total: R$<?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
-                            <?php }else{ ?>
-                                Valor Total: R$<?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
-
-                            <?php }?>
+                            Valor Total: R$<?= $pedido->getValorTotal() ?>
                         </p>
                         <?= $this->Html->link(__(''), ['action' => 'setColetado', $pedido->id], ['class' => 'fas fa-search-dollar btn btn-success btn-sm', 'title' => 'Coletado pelo cliente']) ?>
                         <?= $this->Html->link(__(''), ['action' => 'view', $pedido->id], ['class' => 'fas fa-eye btn btn-info btn-sm', 'title' => 'Visualizar']) ?>

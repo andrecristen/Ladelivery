@@ -17,7 +17,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '60px', 'pedido/id'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Cliente', 'user/nome_completo', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Pagamento', 'formas_pagamento/nome', \App\Model\Utils\DataGridGenerator::TYPE_TEXT, true, true, '100px'));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Valor Total', 'valor_total_cobrado', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Valor Produtos', 'valor_produtos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
     //$dataGrid->addField(new \App\Model\Utils\GridField('Tempo', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Data', 'data_pedido', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME, true, true, '150px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Troco Para', 'troco_para', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));

@@ -139,7 +139,7 @@ class PedidosController extends AppController
         $pedido->status_pedido = Pedido::STATUS_EM_ABERTURA;
         $pedido->tipo_pedido = Pedido::TIPO_PEDIDO_DELIVERY;
         $pedido->data_pedido = new \DateTime();
-        $pedido->valor_total_cobrado = 0;
+        $pedido->valor_produtos = 0;
         $pedido->valor_desconto = 0;
         $pedido->valor_acrescimo = 0;
         $pedido->troco_para = 0;
@@ -661,14 +661,14 @@ class PedidosController extends AppController
         }
     }
 
-    private function persistProdutosPedido($newPedido){
+    private function persistProdutosPedido(Pedido $newPedido){
         //Adiciona os itens que compoem este pedido
         $tableLocator = $this->getTableLocator();
         $itensCarrinhoTable = $tableLocator->get('ItensCarrinhos');
         $pedidosProdutosTable = $tableLocator->get('PedidosProdutos');
         $itensCarrinho = $itensCarrinhoTable->find()->where(['user_id' => $this->Auth->user('id')]);
         /** @var $item ItensCarrinho */
-        $valorCobradoPedido = 0;
+        $valoTotalProdutos = 0;
         foreach ($itensCarrinho as $item) {
             /** @var $newItem PedidosProduto */
             $newItem = $pedidosProdutosTable->newEntity();
@@ -676,7 +676,7 @@ class PedidosController extends AppController
             $newItem->produto_id = $item->produto_id;
             $newItem->quantidade = $item->quantidades;
             $newItem->valor_total_cobrado = $item->valor_total_cobrado;
-            $valorCobradoPedido = $valorCobradoPedido + $item->valor_total_cobrado;
+            $valoTotalProdutos = $valoTotalProdutos + $item->valor_total_cobrado;
             $newItem->observacao = $item->observacao;
             $newItem->opcionais = $item->opicionais;
             /** @var $produto Produto*/
@@ -691,7 +691,7 @@ class PedidosController extends AppController
             }
         }
         //Altera o valor final do pedido com base nos itens lidos.
-        $newPedido->valor_total_cobrado = $valorCobradoPedido;
+        $newPedido->valor_produtos = $valoTotalProdutos;
         return $newPedido;
     }
 
@@ -704,13 +704,13 @@ class PedidosController extends AppController
             $this->Pedidos->getConnection()->begin();
             $newPedido = $this->Pedidos->newEntity();
             $newPedido->user_id = $this->Auth->user('id');
-            $newPedido->valor_total_cobrado = 0;
+            $newPedido->valor_produtos = 0;
             $newPedido->status_pedido = Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE;
             $dateTime = new  \DateTime();
             $dateTime->setTime ( $dateTime->format("H"), $dateTime->format('i'), 0 );
             $newPedido->data_pedido = $dateTime;
             $newPedido->empresa_id = $this->empresaUtils->getEmpresaBase();
-            if ($endereco != 'retirar-no-local'){
+            if ($endereco != Pedido::RETIRAR_NO_LOCAL){
                 $tempoMedio = $tableLocator->get('TemposMedios')->find()->where(['ativo' => true, 'tipo' => TemposMedio::TIPO_PARA_ENTREGA]);
             }else{
                 $tempoMedio = $tableLocator->get('TemposMedios')->find()->where(['ativo' => true, 'tipo' => TemposMedio::TIPO_PARA_COLETA]);
@@ -828,7 +828,7 @@ class PedidosController extends AppController
             $pedido->formas_pagamento_id = $formaPagamento->id;
 
             if ($formaPagamento->aumenta_valor) {
-                $acrescimo = $pedido->valor_total_cobrado * ($formaPagamento->aumenta_valor / 100);
+                $acrescimo = $pedido->valor_produtos * ($formaPagamento->aumenta_valor / 100);
                 $pedido->valor_acrescimo = $acrescimo;
             } else {
                 $pedido->valor_acrescimo = 0;

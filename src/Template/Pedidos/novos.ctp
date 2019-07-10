@@ -21,10 +21,8 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
     <div class="row">
     <?php
     /** @var $pedido \App\Model\Entity\Pedido */
-    foreach ($pedidos as $pedido){
-        /** @var $entrega \App\Model\Entity\PedidosEntrega*/
-        $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id'=> $pedido->id])->first(); ?>
-      <div class="col-sm-4">
+    foreach ($pedidos as $pedido){?>
+        <div class="col-sm-4">
           <div class="card">
               <div class="card-body">
                   <h6 class="card-title"><i class="fas fa-user-alt"></i>&nbsp;<?= $pedido->user->nome_completo ?></h6>
@@ -39,18 +37,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                       <br>
                       Descontos: R$ <?= $pedido->valor_desconto ?>
                       <br>
-                      Produtos: R$ <?= $pedido->valor_total_cobrado ?>
-                      <br>
-                      <?php if($entrega){?>
-                      Entrega: R$<?= $entrega->valor_entrega ?></span>
-                      <br>
-                      Valor Total: R$<?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
-                  <?php }else{ ?>
-                      Entrega: Entrega não contratada
-                      <br>
-                      Valor Total: R$<?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
-
-                  <?php }?>
+                      Total: R$ <?= $pedido->getValorTotal() ?>
                   </p>
                   <?= $this->Html->link(__(''), ['action' => 'confirmar', $pedido->id], ['class' => 'far fa-check-square btn btn-success btn-sm', 'title' => 'Confirmar/Rejeitar o pedido']) ?>
               </div>

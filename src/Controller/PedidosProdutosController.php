@@ -148,7 +148,7 @@ class PedidosProdutosController extends AppController
         $pedidoTable =  $this->getTableLocator()->get('Pedidos');
         /** @var $pedido Pedido*/
         $pedido = $pedidoTable->find()->where(['id' => $newPedidoProduto->pedido_id])->first();
-        $pedido->valor_total_cobrado += $newPedidoProduto->valor_total_cobrado;
+        $pedido->valor_produtos += $newPedidoProduto->valor_total_cobrado;
         if (!$pedidoTable->save($pedido)){
             $success = false;
         }

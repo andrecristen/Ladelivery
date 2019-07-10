@@ -81,12 +81,6 @@ class PedidosTable extends Table
             ->maxLength('cliente', 450)
             ->allowEmptyString('cliente');
 
-
-        $validator
-            ->decimal('valor_total_cobrado')
-            ->requirePresence('valor_total_cobrado', 'create')
-            ->allowEmptyString('valor_total_cobrado', false);
-
         $validator
             ->integer('tempo_producao_aproximado_minutos')
             ->allowEmptyString('tempo_producao_aproximado_minutos');
@@ -100,6 +94,11 @@ class PedidosTable extends Table
             ->numeric('valor_desconto')
             ->requirePresence('valor_desconto', 'create')
             ->allowEmptyString('valor_desconto', false);
+
+        $validator
+            ->numeric('valor_produtos')
+            ->requirePresence('valor_produtos', 'create')
+            ->allowEmptyString('valor_produtos', false);
 
          $validator
              ->numeric('valor_acrescimo')

@@ -17,7 +17,7 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
     if ($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_DELIVERY) {
         echo '<h3>Pedido #' . h($pedido->id) . '</h3>';
         $status = $listUtils->returnListPosition($pedido->status_pedido, \App\Model\Entity\Pedido::getDeliveryStatusList());
-        if($entrega){
+        if ($entrega) {
             $createEntregaTable = true;
         }
     } else {
@@ -33,10 +33,10 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
         <tr>
             <th scope="row"><?= __('Cliente') ?></th>
             <?php if ($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_DELIVERY) { ?>
-                 <td><?= $pedido->has('user') ? $this->Html->link($pedido->user->nome_completo, ['controller' => 'Users', 'action' => 'view', $pedido->user->id]) : '' ?></td>
-            <?php }else{ ?>
+                <td><?= $pedido->has('user') ? $this->Html->link($pedido->user->nome_completo, ['controller' => 'Users', 'action' => 'view', $pedido->user->id]) : '' ?></td>
+            <?php } else { ?>
                 <td><?= h($pedido->cliente) ?></td>
-            <?php }?>
+            <?php } ?>
         </tr>
         <tr>
             <th scope="row"><?= __('Situação') ?></th>
@@ -44,7 +44,7 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
         </tr>
         <tr>
             <th scope="row"><?= __('Valor Produtos') ?></th>
-            <td><?= $this->Number->format($pedido->valor_total_cobrado) ?></td>
+            <td><?= $this->Number->format($pedido->valor_produtos) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Valor Acrescimo') ?></th>
@@ -54,21 +54,16 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
             <th scope="row"><?= __('Valor Desconto') ?></th>
             <td><?= $this->Number->format($pedido->valor_desconto) ?></td>
         </tr>
-        <?php if($createEntregaTable){?>
+        <?php if ($createEntregaTable) { ?>
             <tr>
                 <th scope="row"><?= __('Valor Entrega') ?></th>
                 <td><?= $this->Number->format($entrega->valor_entrega) ?></td>
             </tr>
-            <tr>
-                <th scope="row"><?= __('Valor Total') ?></th>
-                <td><?= $this->Number->format(($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto) ?></td>
-            </tr>
-        <?php }else{ ?>
-            <tr>
-                <th scope="row"><?= __('Valor Total') ?></th>
-                <td><?= $this->Number->format(($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto) ?></td>
-            </tr>
-        <?php }?>
+        <?php } ?>
+        <tr>
+            <th scope="row"><?= __('Valor Total') ?></th>
+            <td><?= $this->Number->format($pedido->getValorTotal()) ?></td>
+        </tr>
     </table>
     <?php
     if ($createEntregaTable) {
@@ -115,7 +110,7 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
     $listaStatus = \App\Model\Entity\PedidosProduto::getStatusList();
     $listaAmbiente = \App\Model\Entity\PedidosProduto::getAmbienteResponsavel();
     foreach ($itens as $item) { ?>
-        <h5>Item <?= $item->id?></h5>
+        <h5>Item <?= $item->id ?></h5>
         <table class="vertical-table">
             <tr>
                 <th scope="row"><?= __('Produto') ?></th>
@@ -152,8 +147,8 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
                     $adicionaisCount = 0;
                     $controller = new \App\Controller\PedidosController();
                     $adicionais = $controller->getAdicionais($item);
-                    foreach ($adicionais as $index => $adicional){
-                        $adicionaisCount = $adicionaisCount + 1;?>
+                    foreach ($adicionais as $index => $adicional) {
+                        $adicionaisCount = $adicionaisCount + 1; ?>
                         <fieldset>
                             <legend></legend>
                             <div class="form-group">
@@ -168,7 +163,7 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
                             <legend></legend>
                         </fieldset>
                     <?php }
-                    if($adicionaisCount < 1){
+                    if ($adicionaisCount < 1) {
                         echo '<div class="alert alert-info" style="text-align: center">Este item não possui adicionais</div>';
                     }
                     ?>

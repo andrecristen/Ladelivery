@@ -170,7 +170,7 @@ class FinanceiroController extends AppController
 
     private function getValorVendidoDelivery($empresa){
         $connection = ConnectionManager::get('default');
-        $sql = 'SELECT SUM(valor_total_cobrado) as valor_total
+        $sql = 'SELECT SUM(valor_produtos) as valor_total
                   FROM pedidos 
                  WHERE empresa_id = '.$empresa.'
                    AND status_pedido = '.Pedido::STATUS_ENTREGUE.'
@@ -184,7 +184,7 @@ class FinanceiroController extends AppController
 
     private function getValorVendidoComandas($empresa){
         $connection = ConnectionManager::get('default');
-        $results = $connection->execute('SELECT SUM(valor_total_cobrado) as valor_total
+        $results = $connection->execute('SELECT SUM(valor_produtos) as valor_total
                                                  FROM pedidos 
                                                 WHERE empresa_id = '.$empresa.'
                                                   AND status_pedido = '.Pedido::STATUS_FECHADA.' 

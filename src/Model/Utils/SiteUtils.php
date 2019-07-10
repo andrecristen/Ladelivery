@@ -387,6 +387,9 @@ class SiteUtils extends AppController
         echo '<li class="nav-item active">';
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-home')) . ' Início', array('controller' => 'pages', 'action' => ''), array('escape' => false, 'class' => 'nav-link'));
         echo '</li>';
+        echo '<li class="nav-item">';
+        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-id-card-alt')) . ' Quem Somos', array('controller' => 'pages', 'action' => 'empresa'), array('escape' => false, 'class' => 'nav-link'));
+        echo '</li>';
         echo '<li class="dropdown nav-item">';
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-th-list')) . ' Categorias', '#', array('escape' => false, 'class' => 'nav-link dropdown-toggle'));
         echo '<div class="dropdown-menu menu-site">';
@@ -402,9 +405,6 @@ class SiteUtils extends AppController
             echo '</li>';
             echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-cart')) . ' Carrinho' . $this->Html->tag('div', $itensCarrinhos, array('class' => 'icon-cart-number')), array('controller' => 'pages', 'action' => 'carrinho'), array('escape' => false, 'class' => 'nav-link'));
-            echo '</li>';
-            echo '<li class="nav-item">';
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-id-card-alt')) . ' Quem Somos', array('controller' => 'pages', 'action' => 'empresa'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
             echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-out-alt')) . ' Sair', array('controller' => 'users', 'action' => 'logout'), array('escape' => false, 'class' => 'nav-link'));

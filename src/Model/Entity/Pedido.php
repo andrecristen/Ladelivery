@@ -2,15 +2,16 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\Locator\TableLocator;
 
 /**
  * Pedido Entity
  *
  * @property int $id
  * @property int $user_id
- * @property float $valor_total_cobrado
  * @property int|null $tempo_producao_aproximado_minutos
  * @property float $troco_para
+ * @property float $valor_produtos
  * @property float $valor_desconto
  * @property float $valor_acrescimo
  * @property int $tipo_pedido
@@ -35,9 +36,7 @@ class Pedido extends Entity
     //Status para Lists pedidos tipo Delivery
     const STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE = 1;
     const STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA = 2;
-    const STATUS_EM_SEPARACAO_PARA_PRODUCAO = 3;
     const STATUS_EM_PRODUCAO = 4;
-    const STATUS_EM_PRODUCAO_CONCLUIDA = 5;
     const STATUS_AGUARDANDO_ENTREGADOR = 6;
     const STATUS_SAIU_PARA_ENTREGA = 7;
     const STATUS_AGUARDANDO_COLETA_CLIENTE = 8;
@@ -47,9 +46,10 @@ class Pedido extends Entity
     const STATUS_EM_ABERTURA = 12;
 
     //Status para Lists pedidos tipo Comanda
-    const STATUS_ABERTA = 11;
-    const STATUS_FECHADA = 12;
+    const STATUS_ABERTA = 13;
+    const STATUS_FECHADA = 14;
 
+    //Contante sem frete
     const RETIRAR_NO_LOCAL = 'retirar-no-local';
 
     public static function getTipoList(){
@@ -63,9 +63,7 @@ class Pedido extends Entity
         return [
             self::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE => 'Aguardando Confirmação Cliente',
             self::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA => 'Aguardando Confirmação',
-            self::STATUS_EM_SEPARACAO_PARA_PRODUCAO => 'Em Separação',
             self::STATUS_EM_PRODUCAO => 'Em Produção',
-            self::STATUS_EM_PRODUCAO_CONCLUIDA => 'Produção Concluida',
             self::STATUS_AGUARDANDO_ENTREGADOR => 'Aguardando Entregador',
             self::STATUS_SAIU_PARA_ENTREGA => 'Saiu para entrega',
             self::STATUS_AGUARDANDO_COLETA_CLIENTE => 'Aguardando Coleta Cliente',
@@ -86,6 +84,25 @@ class Pedido extends Entity
         ];
     }
 
+    public function getValorTotal(){
+        $entrega = $this->getEntrega();
+        $valorEntrega = 0;
+        if($entrega){
+            $valorEntrega = $entrega->valor_entrega;
+        }
+        $valorTotal = ($this->valor_produtos - $this->valor_desconto) + $this->valor_acrescimo + $valorEntrega;
+        return $valorTotal;
+    }
+
+    /**
+     * @return PedidosEntrega
+     */
+    public function getEntrega(){
+        $tableLocator = new TableLocator();
+        /** @var $entrega PedidosEntrega*/
+        $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id' => $this->id])->first();
+        return $entrega;
+    }
     public static function getComandaStatusList(){
         return [
             self::STATUS_ABERTA  => 'Aberta',
@@ -113,7 +130,6 @@ class Pedido extends Entity
     protected $_accessible = [
         'id',
         'user_id' => true,
-        'valor_total_cobrado' => true,
         'tempo_producao_aproximado_minutos' => true,
         'troco_para' => true,
         'tipo_pedido' => true,
@@ -125,6 +141,7 @@ class Pedido extends Entity
         'cupom_usado' => true,
         'valor_desconto' => true,
         'valor_acrescimo' => true,
+        'valor_produtos' => true,
         'formas_pagamento_id' => true,
         'formas_pagamentos' => true,
         'empresa_id' => true,

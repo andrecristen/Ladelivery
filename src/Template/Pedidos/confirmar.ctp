@@ -20,7 +20,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                 <span>Cliente: <?= $cliente->nome_completo ?></span>
             </div>
             <div class="form-group">
-                <span>Valor Produtos: R$<?= $pedido->valor_total_cobrado ?></span>
+                <span>Valor Produtos: R$<?= $pedido->valor_produtos ?></span>
             </div>
             <div class="form-group">
                 <span>Valor Acrescimo: R$<?= $pedido->valor_acrescimo ?></span>
@@ -32,17 +32,14 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                 <div class="form-group">
                     <span>Valor Entrega: R$<?= $entrega->valor_entrega ?></span>
                 </div>
-                <div class="form-group">
-                    <b>Valor Total: R$<?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?></b>
-                </div>
             <?php }else{ ?>
                 <div class="form-group">
                     <span>Valor Entrega: Entrega não contratada</span>
                 </div>
-                <div class="form-group">
-                    <b>Valor Total: R$<?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?></b>
-                </div>
             <?php }?>
+            <div class="form-group">
+                <b>Valor Total: R$<?= $pedido->getValorTotal() ?></b>
+            </div>
         </div>
     </fieldset>
     <fieldset class="entrega">

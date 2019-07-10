@@ -21,9 +21,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
     <div class="row">
         <?php
         /** @var $pedido \App\Model\Entity\Pedido */
-        foreach ($pedidos as $pedido){
-            /** @var $entrega \App\Model\Entity\PedidosEntrega*/
-            $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id'=> $pedido->id])->first(); ?>
+        foreach ($pedidos as $pedido){?>
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
@@ -41,16 +39,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                             <br>
                             Produtos: R$ <?= $pedido->valor_total_cobrado ?>
                             <br>
-                            <?php if($entrega){?>
-                                Entrega: R$<?= $entrega->valor_entrega ?></span>
-                                <br>
-                                Valor Total: R$<?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
-                            <?php }else{ ?>
-                                Entrega: Entrega não contratada
-                                <br>
-                                Valor Total: R$<?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
-
-                            <?php }?>
+                            Valor Total: R$<?= ($pedido->getValorTotal()) ?>
                         </p>
                         <?= $this->Html->link(__(''), ['action' => 'view', $pedido->id], ['class' => 'far fa-eye btn btn-info btn-sm', 'title' => 'Visualizar']) ?>
                     </div>

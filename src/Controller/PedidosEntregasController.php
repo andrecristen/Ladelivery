@@ -105,7 +105,7 @@ class PedidosEntregasController extends AppController
             $mensagem .= "O entregador deve levar a máquina de cartão, para o cliente realizar o pagamento. ";
         }
         if($formaPagamento->necessita_troco){
-            $mensagem .= "O entregador deve levar R$". ($pedidoModel->troco_para - $pedidoModel->valor_total_cobrado)." para troco.";
+            $mensagem .= "O entregador deve levar R$". ($pedidoModel->troco_para - $pedidoModel->getValorTotal())." para troco.";
         }
         $users = $this->PedidosEntregas->Users->find('list')->where(['tipo' => User::TIPO_ENTREGADOR]);
         $this->set(compact('pedidosEntrega', 'pedidos', 'users', 'mensagem'));

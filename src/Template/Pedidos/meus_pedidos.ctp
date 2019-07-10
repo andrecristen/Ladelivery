@@ -15,7 +15,7 @@ $siteUtils->menuSite();
         /** @var $pedido \App\Model\Entity\Pedido */
         foreach ($pedidos as $pedido){
             /** @var $entrega \App\Model\Entity\PedidosEntrega*/
-            $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id'=> $pedido->id])->first(); ?>
+            $entrega = $pedido->getEntrega()?>
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
@@ -33,17 +33,13 @@ $siteUtils->menuSite();
                             <br>
                             <b>Descontos: R$</b> <?= $pedido->valor_desconto ?>
                             <br>
-                            <b>Produtos: R$</b> <?= $pedido->valor_total_cobrado ?>
-                            <br>
                             <?php if($entrega){?>
                                 <b>Entrega: R$</b><?= $entrega->valor_entrega ?></span>
-                                <br>
-                                <b>Valor Total: R$</b><?= ($entrega->valor_entrega + $pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
                             <?php }else{ ?>
                                 <b>Entrega: Entrega não contratada</b>
-                                <br>
-                                <b>Valor Total: R$</b><?= ($pedido->valor_total_cobrado + $pedido->valor_acrescimo) - $pedido->valor_desconto?>
                             <?php }?>
+                            <br>
+                            <b>Valor Total: R$</b><?= $pedido->getValorTotal()?>
                         </p>
                         <?= $this->Html->link(__(' Acompanhar Pedido'), ['action' => 'verStatus', $pedido->id], ['class' => 'far fa-eye btn btn-info btn-sm', 'title' => 'Visualizar Pedido']) ?>
                     </div>

@@ -66,11 +66,11 @@ class EnderecosController extends AppController
         if ($this->request->is('post')) {
             $endereco = $this->Enderecos->patchEntity($endereco, $this->request->getData());
             if ($this->Enderecos->save($endereco)) {
-                $this->Flash->success(__('The endereco has been saved.'));
+                $this->Flash->success(__('Endereço salvo.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The endereco could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro ao salvar endereço, tente novamente.'));
         }
         $users = $this->Enderecos->Users->find('list');
         $this->set(compact('endereco', 'users'));
@@ -91,11 +91,11 @@ class EnderecosController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $endereco = $this->Enderecos->patchEntity($endereco, $this->request->getData());
             if ($this->Enderecos->save($endereco)) {
-                $this->Flash->success(__('The endereco has been saved.'));
+                $this->Flash->success(__('Endereço salvo.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The endereco could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro ao salvar endereço, tente novamente.'));
         }
         $users = $this->Enderecos->Users->find('list');
         $this->set(compact('endereco', 'users'));
@@ -113,9 +113,9 @@ class EnderecosController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $endereco = $this->Enderecos->get($id);
         if ($this->Enderecos->delete($endereco)) {
-            $this->Flash->success(__('The endereco has been deleted.'));
+            $this->Flash->success(__('Endereço excluído.'));
         } else {
-            $this->Flash->error(__('The endereco could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Erro ao excluir endereço, tente novamente.'));
         }
 
         return $this->redirect(['action' => 'index']);
@@ -153,7 +153,7 @@ class EnderecosController extends AppController
 
                 return $this->redirect(['action' => 'meusEnderecos']);
             }
-            $this->Flash->error(__('Erro ao adicionar endereco.'));
+            $this->Flash->error(__('Erro ao adicionar endereco, tente novamente'));
         }
         $this->set(compact('endereco', 'users'));
     }
@@ -163,12 +163,12 @@ class EnderecosController extends AppController
         $endereco = $this->Enderecos->get($id);
         if($endereco->user_id == $this->Auth->user('id')){
             if ($this->Enderecos->delete($endereco)) {
-                $this->Flash->success(__('Endereco excluido.'));
+                $this->Flash->success(__('Endereco excluído.'));
             } else {
-                $this->Flash->error(__('Nao foi possivel excluir o endereco tente novamente.'));
+                $this->Flash->error(__('Não foi possivel excluir o endereço, tente novamente.'));
             }
         }else {
-            $this->Flash->error(__('Este endereco nao pertence a voce portanto nao pode exclui-lo.'));
+            $this->Flash->error(__('Exclusão não autorizada.'));
         }
         return $this->redirect(['action' => 'meusEnderecos/'.$this->Auth->user('id')]);
     }

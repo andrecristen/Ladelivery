@@ -67,11 +67,11 @@ class CupomSiteController extends AppController
             $cupomSite = $this->CupomSite->patchEntity($cupomSite, $this->request->getData());
             $cupomSite->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->CupomSite->save($cupomSite)) {
-                $this->Flash->success(__('The cupom site has been saved.'));
+                $this->Flash->success(__('Cupom salvo.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The cupom site could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro ao salvar cupom, tente novamente.'));
         }
         $this->set(compact('cupomSite'));
     }
@@ -92,11 +92,10 @@ class CupomSiteController extends AppController
             $cupomSite = $this->CupomSite->patchEntity($cupomSite, $this->request->getData());
             $cupomSite->empresa_id = $this->empresaUtils->getUserEmpresaId();
             if ($this->CupomSite->save($cupomSite)) {
-                $this->Flash->success(__('The cupom site has been saved.'));
-
+                $this->Flash->success(__('Cupom salvo.'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The cupom site could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro ao salvar cupom, tente novamente.'));
         }
         $this->set(compact('cupomSite'));
     }
@@ -113,9 +112,9 @@ class CupomSiteController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $cupomSite = $this->CupomSite->get($id);
         if ($this->CupomSite->delete($cupomSite)) {
-            $this->Flash->success(__('The cupom site has been deleted.'));
+            $this->Flash->success(__('Cupom excluído.'));
         } else {
-            $this->Flash->error(__('The cupom site could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Erro ao excluir cupom, tente novamente'));
         }
 
         return $this->redirect(['action' => 'index']);

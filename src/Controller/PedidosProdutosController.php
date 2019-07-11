@@ -45,7 +45,7 @@ class PedidosProdutosController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function cozinha()
+    public function cozinha($agruparPorSituacao = false)
     {
         $this->paginate = [
             'contain' => ['Pedidos', 'Produtos']
@@ -57,15 +57,25 @@ class PedidosProdutosController extends AppController
             2 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
         ];
         $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
-
+        if ($agruparPorSituacao){
+            $pedidosProdutos = $this->agruparPedidosProdutos($pedidosProdutos);
+        }
         $this->set(compact('pedidosProdutos'));
     }
 
-    public function cozinhaKanban(){
-        $this->cozinha();
+    private function agruparPedidosProdutos($pedidosProdutos){
+        $produtosAgrupados = [];
+        foreach ($pedidosProdutos as $pedidoProduto){
+            $produtosAgrupados[$pedidoProduto->status][] = $pedidoProduto;
+        }
+        return $produtosAgrupados;
     }
 
-    public function bar()
+    public function cozinhaKanban(){
+        $this->cozinha(true);
+    }
+
+    public function bar($agruparPorSituacao = false)
     {
         $this->paginate = [
             'contain' => ['Pedidos', 'Produtos']
@@ -76,11 +86,15 @@ class PedidosProdutosController extends AppController
             2 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
         ];
         $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
+        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
+        if ($agruparPorSituacao){
+            $pedidosProdutos = $this->agruparPedidosProdutos($pedidosProdutos);
+        }
         $this->set(compact('pedidosProdutos'));
     }
 
     public function barKanban(){
-        $this->bar();
+        $this->bar(true);
     }
 
     /**

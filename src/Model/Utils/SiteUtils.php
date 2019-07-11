@@ -9,6 +9,7 @@ namespace App\Model\Utils;
 
 use App\Controller\AppController;
 use App\Model\Entity\CategoriasProduto;
+use App\Model\Entity\PedidosProduto;
 use App\View\AppView;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Response;
@@ -177,6 +178,23 @@ class SiteUtils extends AppController
         echo $this->Html->script('site-utils.js' . $cacheVersion);
     }
 
+    public function createQuadrosKanbanPedidosProdutos(PedidosProduto $pedidosProduto)
+    {
+        echo '<article class="kanban-entry grab" id="'.$pedidosProduto->id.'" draggable="true">
+                  <div class="kanban-entry-inner">
+                      <div class="kanban-label">
+                          <h2><a href="#">#Item: '.$pedidosProduto->id.'</a> <span>#Pedido: '.$pedidosProduto->pedido_id.'</span></h2>
+                          <p>Produto: '.$pedidosProduto->produto->nome_produto.'</p>
+                          <p>Quantidade: '.$pedidosProduto->quantidade.'</p>
+                          <p>Observação: '.$pedidosProduto->observacao.'</p>
+                          <br/>
+                          '.$this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-eye')) . '', array('controller' => 'PedidosProdutos', 'action' => 'view', $pedidosProduto->id), array('escape' => false, 'class' => 'btn btn-sm btn-info')).'
+                          '.$this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-exchange-alt')) . ' Quantidade Produzida', array('controller' => 'PedidosProdutos', 'action' => 'quantidadeProduzida', $pedidosProduto->id), array('escape' => false, 'class' => 'btn btn-sm btn-danger')).'
+                      </div>
+                  </div>
+              </article>';
+    }
+
     public final function mensagemLogarParaComprar()
     {
         echo '<div class="row">
@@ -210,7 +228,7 @@ class SiteUtils extends AppController
         $empresaUtils = new EmpresaUtils();
         $utilsPedido = new SiteUtilsPedido();
         $user = false;
-        if($setUser){
+        if ($setUser) {
             $user = $empresaUtils->getUserId();
         }
         echo '<button id="openModal" style="display: none" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal" data-backdrop="static" data-keyboard="false">Abre</button>';
@@ -272,12 +290,12 @@ class SiteUtils extends AppController
                     </div>';
         echo '</div>';
         if ($empresaUtils->getUserId() && $utilsPedido->empresaAberta()) {
-            if(!$diretoAoPedido){
+            if (!$diretoAoPedido) {
                 echo '<div class="modal-footer">
                         <button type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="button" onclick="addItemToCart(' . $user . ')" class="btn btn-primary">Confirmar</button>
                     </div>';
-            }else{
+            } else {
                 echo '<div class="modal-footer">
                         <button type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="button" onclick="addItemToPedido(' . $diretoAoPedido . ')" class="btn btn-primary">Confirmar</button>
@@ -291,7 +309,7 @@ class SiteUtils extends AppController
 
     public final function createProdutosCategoria($categoria, $showStars = true, $isAdmin = false, $showFoto = true, $titleButtonComprar = false)
     {
-        if(!$titleButtonComprar){
+        if (!$titleButtonComprar) {
             $titleButtonComprar = 'Comprar';
         }
         $siteUtilsPedido = new SiteUtilsPedido();
@@ -304,7 +322,7 @@ class SiteUtils extends AppController
         foreach ($produtos as $produto) {
             echo '<div style="cursor: pointer!important;" class="col-lg-3 col-md-4 col-sm-6 portfolio-item">';
             echo '<div class="card" style="margin-bottom: 5px">';
-            if($showFoto){
+            if ($showFoto) {
                 $midiaTable = $this->getTableLocator()->get('Midias');
                 $existMidia = $midiaTable->find();
                 $existMidia->where(['id' => $produto->midia_id]);
@@ -328,9 +346,9 @@ class SiteUtils extends AppController
             echo '</div>';
             echo '<div class="card-footer">';
             if ($this->Auth->user('id') && $siteUtilsPedido->empresaAberta()) {
-                echo '<button title="Adicionar ao carrinho" class="btn btn-sm btn-success" style="width: 45%" onclick="openModalAddCart(' . $produto->id . ','.$isAdmin.')"> <i class="fas fa-cart-plus"></i> '.$titleButtonComprar.' <i style="display: none" id="loading-' . $produto->id . '" class="fa fa-spinner fa-spin"></i> </button>';
+                echo '<button title="Adicionar ao carrinho" class="btn btn-sm btn-success" style="width: 45%" onclick="openModalAddCart(' . $produto->id . ',' . $isAdmin . ')"> <i class="fas fa-cart-plus"></i> ' . $titleButtonComprar . ' <i style="display: none" id="loading-' . $produto->id . '" class="fa fa-spinner fa-spin"></i> </button>';
             } else {
-                echo '<button title="Adicionar ao carrinho" disabled class="btn btn-sm btn-success" style="width: 45%"><i class="fas fa-cart-plus"></i> '.$titleButtonComprar.' <i style="display: none" id="loading-' . $produto->id . '" class="fa fa-spinner fa-spin"></i> </button>';
+                echo '<button title="Adicionar ao carrinho" disabled class="btn btn-sm btn-success" style="width: 45%"><i class="fas fa-cart-plus"></i> ' . $titleButtonComprar . ' <i style="display: none" id="loading-' . $produto->id . '" class="fa fa-spinner fa-spin"></i> </button>';
             }
             if ($showStars) {
                 echo '<a style="text-decoration-line: none;color: black; margin-left: 5px;" title="Avaliar Produto" href="../ProdutosAvaliacoes/listAvaliacoes/' . $produto->id . '">';

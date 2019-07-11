@@ -57,7 +57,7 @@ $menusAdmin = $_SESSION["menus"];
             <?= $this->Html->image('empresa/logoLaDev.png') ?>
         </div>
         <div class="item-info">
-            <i title="Usuário" class="fas fa-user-circle">&nbsp;</i><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'edit', $empresaUtils->getUserId()]) ?></span>
+            <i title="Usuário" class="fas fa-user-circle">&nbsp;</i><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'view', $empresaUtils->getUserId()]) ?></span>
             &nbsp;
         </div>
         <div class="item-info">

@@ -166,7 +166,7 @@ class AppController extends Controller
                                           </a>
                                           <a href="/" class="btn btn-success btn-lg">
                                              <span class="glyphicon glyphicon-envelope"></span> 
-                                              <i class="fas fa-home"></i>&nbsp;Site
+                                              <i class="fas fa-home"></i>&nbsp;Inicio
                                           </a>
                                       </div>
                                   </div>

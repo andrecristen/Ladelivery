@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 08-Jul-2019 às 22:51
+-- Generation Time: 11-Jul-2019 às 00:03
 -- Versão do servidor: 5.7.26
 -- versão do PHP: 7.2.18
 
@@ -432,7 +432,7 @@ CREATE TABLE IF NOT EXISTS `cupom_site` (
 --
 
 INSERT INTO `cupom_site` (`id`, `empresa_id`, `nome_cupom`, `vezes_usado`, `maximo_vezes_usar`, `valor_desconto`, `porcentagem`) VALUES
-(1, 1, 'DESCONTO', 13, 0, 15, 0);
+(1, 1, 'DESCONTO', 14, 0, 15, 0);
 
 -- --------------------------------------------------------
 
@@ -643,16 +643,7 @@ CREATE TABLE IF NOT EXISTS `itens_carrinhos` (
   `observacao` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `opicionais` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Extraindo dados da tabela `itens_carrinhos`
---
-
-INSERT INTO `itens_carrinhos` (`id`, `user_id`, `produto_id`, `quantidades`, `valor_total_cobrado`, `observacao`, `opicionais`) VALUES
-(23, 16, 100, 1, '5.00', '', '\"[]\"'),
-(24, 16, 100, 1, '5.00', '', '\"[]\"'),
-(25, 16, 98, 1, '128.00', '', '\"{\\\"133\\\":[\\\"15\\\",\\\"16\\\",\\\"17\\\"],\\\"134\\\":[\\\"15\\\",\\\"16\\\",\\\"18\\\"]}\"');
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -905,19 +896,19 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `cliente` varchar(450) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `empresa_id` int(11) NOT NULL,
-  `valor_total_cobrado` decimal(10,2) NOT NULL,
-  `formas_pagamento_id` int(11) DEFAULT NULL,
-  `valor_acrescimo` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `tempo_producao_aproximado_minutos` int(11) DEFAULT NULL,
-  `troco_para` decimal(10,2) NOT NULL DEFAULT '0.00',
   `tipo_pedido` int(11) NOT NULL DEFAULT '1',
+  `empresa_id` int(11) NOT NULL,
   `status_pedido` int(11) NOT NULL,
   `data_pedido` datetime NOT NULL,
   `cupom_usado` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `formas_pagamento_id` int(11) DEFAULT NULL,
+  `troco_para` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `tempo_producao_aproximado_minutos` int(11) DEFAULT NULL,
+  `valor_produtos` float NOT NULL DEFAULT '0',
+  `valor_acrescimo` decimal(10,2) NOT NULL DEFAULT '0.00',
   `valor_desconto` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -935,7 +926,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_entregas` (
   `endereco_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_pedido_entrega` (`pedido_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -955,7 +946,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_produtos` (
   `ambiente_producao_responsavel` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 

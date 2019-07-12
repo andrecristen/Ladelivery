@@ -26,19 +26,39 @@ function draggableInit() {
 
         if (sourceId != targetId) {
             var elementId = event.originalEvent.dataTransfer.getData("text/plain");
-
-            $('#processing-modal').modal('toggle'); //before post
-
-
-            // Post data
-            setTimeout(function () {
-                var element = document.getElementById(elementId);
-                children.prepend(element);
-                $('#processing-modal').modal('toggle'); // after post
-            }, 1000);
-
+            modalProcessando();
+            jQuery.ajax({
+                url: "../../pedidos-produtos/alterarSituacaoKanban",
+                data: {item: elementId , situacao: targetId},
+                method: "GET",
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if(data.success){
+                        var element = document.getElementById(elementId);
+                        children.prepend(element);
+                        alertify.success('Situação alterada');
+                    }else{
+                        alertify.alert('Error!','Erro ao alterar situação do item, tente novamente.');
+                        location.reload();
+                    }
+                    setTimeout(function () {
+                        modalProcessando();
+                    }, 1000);
+                },
+                error: function (data) {
+                    alertify.alert('Error!','Erro ao alterar situação do item, tente novamente.');
+                    location.reload();
+                    setTimeout(function () {
+                        modalProcessando();
+                    }, 1000);
+                }
+            });
         }
-
         event.preventDefault();
     });
+}
+
+function modalProcessando() {
+    $('#processing-modal').modal('toggle');
 }

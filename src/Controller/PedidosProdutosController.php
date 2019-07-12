@@ -22,6 +22,7 @@ class PedidosProdutosController extends AppController
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->setPublicAction('addPedidoItem');
+        $this->setPublicAction('alterarSituacaoKanban');
         $this->validateActions();
     }
 
@@ -215,6 +216,19 @@ class PedidosProdutosController extends AppController
             $this->Flash->error(__('Não foi possível alterar a situação, tente novamente.'));
         }
         $this->set(compact('pedidoProduto'));
+    }
+
+    public function alterarSituacaoKanban(){
+        $this->render(false);
+        $item = $_GET['item'];
+        $situacao =  $_GET['situacao'];
+        $pedidosProduto = $this->PedidosProdutos->get($item);
+        $pedidosProduto->status = str_replace('panel-', '', $situacao);
+        if($this->PedidosProdutos->save($pedidosProduto)){
+            echo json_encode(['success' => true]);
+        }else{
+            echo json_encode(['success' => false]);
+        }
     }
 
     /**

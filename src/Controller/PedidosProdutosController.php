@@ -46,7 +46,7 @@ class PedidosProdutosController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function cozinha($agruparPorSituacao = false)
+    public function cozinha($agruparPorSituacao = false, $title = false)
     {
         $this->paginate = [
             'contain' => ['Pedidos', 'Produtos']
@@ -61,7 +61,7 @@ class PedidosProdutosController extends AppController
         if ($agruparPorSituacao){
             $pedidosProdutos = $this->agruparPedidosProdutos($pedidosProdutos);
         }
-        $this->set(compact('pedidosProdutos'));
+        $this->set(compact('pedidosProdutos','title'));
     }
 
     private function agruparPedidosProdutos($pedidosProdutos){
@@ -73,10 +73,11 @@ class PedidosProdutosController extends AppController
     }
 
     public function cozinhaKanban(){
-        $this->cozinha(true);
+        $this->cozinha(true, 'Cozinha Kanban');
+        $this->render('kanban');
     }
 
-    public function bar($agruparPorSituacao = false)
+    public function bar($agruparPorSituacao = false, $title = false)
     {
         $this->paginate = [
             'contain' => ['Pedidos', 'Produtos']
@@ -91,11 +92,12 @@ class PedidosProdutosController extends AppController
         if ($agruparPorSituacao){
             $pedidosProdutos = $this->agruparPedidosProdutos($pedidosProdutos);
         }
-        $this->set(compact('pedidosProdutos'));
+        $this->set(compact('pedidosProdutos','title'));
     }
 
     public function barKanban(){
-        $this->bar(true);
+        $this->bar(true, 'Bar Kanban');
+        $this->render('kanban');
     }
 
     /**

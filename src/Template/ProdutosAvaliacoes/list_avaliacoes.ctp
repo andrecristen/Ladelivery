@@ -89,7 +89,7 @@ $siteUtils->menuSite();
                 <ui-input-star></ui-input-star>
             </div>
             <?php
-            echo $this->Form->control('comentario', ['type' => 'textarea']);
+            echo $this->Form->control('comentario', ['label'=> 'Comentário','type' => 'textarea']);
             ?>
         </fieldset>
         <?= $this->Form->button(__('Enviar Avaliação')) ?>

@@ -20,11 +20,25 @@ if($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_COMANDA){
 <?php echo $this->Html->css('tabs.css'); ?>
 <?php echo $this->Html->css('bloq.css'); ?>
 <div class="col-sm-12">
-    <div class="alert alert-info">
-        <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' '.$message, array('controller' => 'Pedidos', 'action' => 'confirmarAbertura/'.$pedido->id), array('escape' => false, 'class' => 'btn btn-danger'));?>
-        <br>
-        <strong>Confirme apenas após adicionar todos os itens.</strong>
-    </div>
+    <?php if ($pedido->status_pedido == \App\Model\Entity\Pedido::STATUS_EM_ABERTURA) { ?>
+        <div class="alert alert-info">
+            <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' '.$message, array('controller' => 'Pedidos', 'action' => 'confirmarAbertura/'.$pedido->id), array('escape' => false, 'class' => 'btn btn-danger'));?>
+            <br>
+            <strong>Confirme apenas após adicionar todos os itens.</strong>
+        </div>
+   <?php }else{
+        if($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_DELIVERY) { ?>
+            <div class="alert alert-info">
+                <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' Concluido', array('controller' => 'Pedidos', 'action' => 'listAll'), array('escape' => false, 'class' => 'btn btn-danger'));?>
+                <br>
+            </div>
+       <?php }else{ ?>
+            <div class="alert alert-info">
+                <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' Concluido', array('controller' => 'Pedidos', 'action' => 'comandas'), array('escape' => false, 'class' => 'btn btn-danger'));?>
+                <br>
+            </div>
+       <?php }?>
+    <?php }?>
     <div class="row">
         <?php $siteUtils->createFormAdicionarProduto(false, $pedido->id)?>
         <?php $siteUtils->createProdutosCategoria(false, false, true, false,'Adicionar')?>

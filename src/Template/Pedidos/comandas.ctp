@@ -14,14 +14,16 @@
     $dataGrid->bloqActionDelete();
     $dataGrid->bloqActionEdit();
     $dataGrid->setPaginator($this->Paginator);
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '60px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Cliente', 'cliente', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Valor Produtos', 'valor_produtos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
+    //$dataGrid->addField(new \App\Model\Utils\GridField('Valor Produtos', 'valor_produtos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Tempo de Producao', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '200px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Data', 'data_pedido', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME, true, true, '150px'));
     $status = new \App\Model\Utils\GridField('Status', 'status_pedido', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
     $status->setList($pedidoModel->getComandaStatusList());
     $dataGrid->addField($status);
-    $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Pedido'], false, 'id');
+    $dataGrid->addActionRow('', ['action' => 'addItem'], ['class' => 'fas fa-plus-square btn btn-danger btn-sm', 'title' => 'Adicionar Item a Comanda'], false, 'id');
+    $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao da Comanda'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'imprimir'], ['class' => 'fa fa-print btn btn-info btn-sm', 'title' => 'Imprimir Guias de Pedido'], false, 'id');
     $dataGrid->setCallBackActionLimpar('comandas');
     $dataGrid->setController($this->name);

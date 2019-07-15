@@ -9,6 +9,7 @@ $siteUtils = new \App\Model\Utils\SiteUtils();
 <link rel="stylesheet" href="/ladev/alert/css/alertify.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
 <link rel="stylesheet" href="/ladev/alert/css/themes/bootstrap.min.css<?= h($cacheControl->getCacheVersion()) ?>" />
 <div class="col-sm-12">
+    <h2><?= $title ?></h2>
     <div class="container-fluid">
         <div class="row">
             <div class="panel panel-primary kanban-col">
@@ -17,9 +18,9 @@ $siteUtils = new \App\Model\Utils\SiteUtils();
                 </div>
                 <div class="panel-body">
                     <div id="panel-<?= \App\Model\Entity\PedidosProduto::STATUS_EM_FILA_PRODUCAO ?>" class="kanban-centered">
-                       <?php foreach ($pedidosProdutos[\App\Model\Entity\PedidosProduto::STATUS_EM_FILA_PRODUCAO] as $pedidoProduto){
-                           $siteUtils->createQuadrosKanbanPedidosProdutos($pedidoProduto);
-                       }?>
+                        <?php foreach ($pedidosProdutos[\App\Model\Entity\PedidosProduto::STATUS_EM_FILA_PRODUCAO] as $pedidoProduto){
+                            $siteUtils->createQuadrosKanbanPedidosProdutos($pedidoProduto);
+                        }?>
                     </div>
                 </div>
             </div>

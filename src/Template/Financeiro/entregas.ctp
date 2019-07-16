@@ -9,7 +9,10 @@
         <span>Listagem referentes a dados deste mês, para dados gerais utilize:  <?= $this->Html->link(__('Todos Períodos'), ['controller' => 'Financeiro', 'action' => 'entregasGeral'], ['class' => 'btn btn-primary btn-sm'])?></span>
     </div>
     <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-cash-register')) . ' Gerar Comissões', array('controller' => 'Financeiro', 'action' => 'comissaoEntregador'), array('escape' => false, 'class' => 'btn btn-success btn-sm'))?>
+    <br/>
+    <br/>
     <h3>Métricas de entregas deste mês</h3>
+    <br/>
     <div class="row">
         <?php
         /** @var $pedido \App\Model\Entity\Pedido */

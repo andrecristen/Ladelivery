@@ -125,7 +125,7 @@ class DataGridGenerator extends View implements TypeFields
     <?php } ?>
         <?php foreach ($this->actions as $action) {
         if ($this->isShowActions() && $this->appController->validateActionView($action['controller'], $action['action'])) {
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])) . ' ' . $action['titulo'], ['controller' => $action['controller'], 'action' => $action['action']], array('escape' => false, 'class' => $action['class'] . ' btn-sm'));
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])) . ' ' . $action['titulo'], ['controller' => $action['controller'], 'action' => $action['action'], $action['params']], array('escape' => false, 'class' => $action['class'] . ' btn-sm'));
         } ?>
     <?php } ?>
         <?php
@@ -294,9 +294,9 @@ class DataGridGenerator extends View implements TypeFields
     /**
      * @param array $fields
      */
-    public function addAction($controller, $action, $titulo, $class = 'btn btn-primary', $icon = ' ')
+    public function addAction($controller, $action, $titulo, $class = 'btn btn-primary', $icon = ' ', $params = '')
     {
-        $this->actions[] = ['titulo' => $titulo, 'action' => $action, 'controller' => $controller, 'class' => $class, 'icon' => $icon];
+        $this->actions[] = ['titulo' => $titulo, 'action' => $action, 'params' => $params, 'controller' => $controller, 'class' => $class, 'icon' => $icon];
     }
 
     /**

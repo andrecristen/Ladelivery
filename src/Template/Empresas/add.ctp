@@ -18,6 +18,15 @@
         ?>
         <br/>
     </fieldset>
+    <fieldset>
+        <div ng-app="web-app">
+            <script type="text/ng-template" id="contatos.html">
+                <?php echo $this->Form->control('tipo_contato', ['ng-model' => 'tipo_contato', 'options' => \App\Model\Entity\Empresa::getTipoContatoList()]);?>
+                <?php echo $this->Form->control('valor_contato', ['ng-model' => 'valor_contato']);?>
+            </script>
+            <ui-grid-form ng-model="contatos" title="Contatos"></ui-grid-form>
+        </div>
+    </fieldset>
     <?= $this->Form->button(__('Adicionar')) ?>
     <?= $this->Form->end() ?>
 </div>

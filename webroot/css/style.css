@@ -146,6 +146,16 @@ table td {
     font-size: 12px!important;
 }
 
+@media(max-width: 640px) {
+    table td {
+        font-size: 9px!important;
+    }
+
+    table thead tr th, table thead tr td {
+        font-size: 11px!important;
+    }
+}
+
 table th{
     border-right: 0.5px solid #49505782;
     white-space: nowrap;

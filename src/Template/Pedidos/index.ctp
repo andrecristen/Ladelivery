@@ -24,6 +24,7 @@
     $status = new \App\Model\Utils\GridField('Status', 'status_pedido', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
     $status->setList($pedidoModel->getDeliveryStatusList());
     $dataGrid->addField($status);
+    $dataGrid->addAction('Pedidos', 'add', 'Abrir Pedido', 'btn-success', 'fas fa-cart-plus');
     $dataGrid->addActionRow('', ['action' => 'addItem'], ['class' => 'fas fa-plus-square btn btn-danger btn-sm', 'title' => 'Adicionar Item ao Pedido'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'confirmar'], ['class' => 'far fa-check-square btn btn-primary btn-sm', 'title' => 'Confirmar/Rejeitar Recebimento do Pedido'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Pedido'], false, 'id');

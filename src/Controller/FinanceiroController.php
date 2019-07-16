@@ -82,7 +82,9 @@ class FinanceiroController extends AppController
                 $produtos[] = ['quantidade' => $produtoMaisComprado['total'], 'nome' => $produtoMaisComprado['nome_produto']];
             }
         }
-        $this->set(compact('produtos'));
+        $categorias = $this->getCategoriasMaisCompradas();
+        $entregas = $this->getEntregasMetricas();
+        $this->set(compact('produtos', 'categorias', 'entregas'));
     }
 
     private function getEntregasTotal($empresa){
@@ -119,6 +121,24 @@ class FinanceiroController extends AppController
         return $results;
     }
 
+    private function getEntregasMetricas(){
+        $connection = ConnectionManager::get('default');
+        $sql = 'SELECT AVG(valor_entrega) AS media, 
+                       COUNT(pedidos_entregas.id) realizadas,
+                       MIN(valor_entrega) barata,
+                       MAX(valor_entrega) cara
+                  FROM pedidos_entregas 
+                  JOIN pedidos 
+                    ON pedidos_entregas.pedido_id = pedidos.id
+                 WHERE MONTH(data_pedido) = MONTH(CURRENT_TIMESTAMP)
+                   AND YEAR(data_pedido) = YEAR(CURRENT_TIMESTAMP)';
+        $results = $connection->execute($sql)->fetchAll('assoc');
+        if(isset($results[0])){
+            $results = $results[0];
+        }
+        return $results;
+    }
+
     private function getProdutosMaisComprados()
     {
         $connection = ConnectionManager::get('default');
@@ -134,6 +154,25 @@ class FinanceiroController extends AppController
                                                       AND YEAR(data_pedido) = YEAR(CURRENT_TIMESTAMP) 
                                                       GROUP BY 1 
                                                       ORDER BY 2 
+                                                      DESC LIMIT 10')->fetchAll('assoc');
+        return $results;
+    }
+
+    private function getCategoriasMaisCompradas(){
+        $connection = ConnectionManager::get('default');
+        $results = $connection->execute('SELECT categorias_produtos.*, 
+                                                      sum(quantidade) AS total
+                                                      FROM pedidos_produtos 
+                                                      JOIN pedidos 
+                                                      ON pedidos.id = pedidos_produtos.pedido_id 
+                                                      JOIN produtos 
+                                                      ON produtos.id = pedidos_produtos.produto_id
+                                                      JOIN categorias_produtos 
+                                                      ON produtos.categorias_produto_id = categorias_produtos.id 
+                                                      WHERE MONTH(data_pedido) = MONTH(CURRENT_TIMESTAMP) 
+                                                      AND YEAR(data_pedido) = YEAR(CURRENT_TIMESTAMP) 
+                                                      GROUP BY 1
+                                                      ORDER BY total 
                                                       DESC LIMIT 10')->fetchAll('assoc');
         return $results;
     }

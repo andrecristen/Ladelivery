@@ -81,6 +81,9 @@ class EmpresasTable extends Table
             ->requirePresence('ativa', 'create')
             ->allowEmptyString('ativa', false);
 
+        $validator
+            ->allowEmptyString('contatos');
+
         return $validator;
     }
 

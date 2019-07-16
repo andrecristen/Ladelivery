@@ -5,8 +5,12 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($menu->id) ?></h3>
+    <h3>Menu #<?= h($menu->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('#') ?></th>
+            <td><?= $this->Number->format($menu->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('Modulo') ?></th>
             <td><?= $menu->has('modulo') ? $this->Html->link($menu->modulo->id, ['controller' => 'Modulos', 'action' => 'view', $menu->modulo->id]) : '' ?></td>
@@ -22,10 +26,6 @@
         <tr>
             <th scope="row"><?= __('Icon Menu') ?></th>
             <td><?= h($menu->icon_menu) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($menu->id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Ordem Menu') ?></th>

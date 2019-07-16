@@ -3,12 +3,16 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  */
-$listTipo = \App\Model\Entity\User::getTipoListCRUD();
+$listTipo = \App\Model\Entity\User::getTipoListAll();
 $listTipoContato =\App\Model\Entity\UsersContato::getTipoList();
 ?>
 <div class="col-sm-12">
     <h3>Usuário #<?= h($user->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('#') ?></th>
+            <td><?= $this->Number->format($user->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('Nome Completo') ?></th>
             <td><?= h($user->nome_completo) ?></td>
@@ -20,10 +24,6 @@ $listTipoContato =\App\Model\Entity\UsersContato::getTipoList();
         <tr>
             <th scope="row"><?= __('Login') ?></th>
             <td><?= h($user->login) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($user->id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Tipo') ?></th>

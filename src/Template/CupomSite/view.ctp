@@ -5,15 +5,15 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($cupomSite->id) ?></h3>
+    <h3>Cupom #<?= h($cupomSite->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('#') ?></th>
+            <td><?= $this->Number->format($cupomSite->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('Nome Cupom') ?></th>
             <td><?= h($cupomSite->nome_cupom) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($cupomSite->id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Vezes Usado') ?></th>

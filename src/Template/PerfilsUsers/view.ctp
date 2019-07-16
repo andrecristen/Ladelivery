@@ -5,10 +5,10 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($perfilsUser->id) ?></h3>
+    <h3>Perfil x User #<?= h($perfilsUser->id) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
+            <th scope="row"><?= __('#') ?></th>
             <td><?= $this->Number->format($perfilsUser->id) ?></td>
         </tr>
         <tr>

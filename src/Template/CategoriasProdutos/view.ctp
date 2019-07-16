@@ -5,15 +5,15 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3>Visualizar Categoria #<?= h($categoriasProduto->id) ?></h3>
+    <h3>Categoria #<?= h($categoriasProduto->id) ?></h3>
     <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Nome Categoria') ?></th>
-            <td><?= h($categoriasProduto->nome_categoria) ?></td>
-        </tr>
         <tr>
             <th scope="row"><?= __('#') ?></th>
             <td><?= $this->Number->format($categoriasProduto->id) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Nome Categoria') ?></th>
+            <td><?= h($categoriasProduto->nome_categoria) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Descrição') ?></th>

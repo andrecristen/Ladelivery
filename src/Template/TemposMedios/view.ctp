@@ -5,7 +5,7 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($temposMedio->id) ?></h3>
+    <h3>Tempo Produção #<?= h($temposMedio->id) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('#') ?></th>

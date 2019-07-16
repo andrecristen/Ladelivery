@@ -5,8 +5,12 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($action->id) ?></h3>
+    <h3>Action #<?= h($action->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('#') ?></th>
+            <td><?= $this->Number->format($action->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('Controller') ?></th>
             <td><?= $action->has('controller') ? $this->Html->link($action->controller->nome_controlador, ['controller' => 'Controllers', 'action' => 'view', $action->controller->id]) : '' ?></td>
@@ -16,12 +20,8 @@
             <td><?= h($action->nome_action) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($action->id) ?></td>
+            <th scope="row"><?= __('Descrição') ?></th>
+            <td><?= h($action->descricao_action) ?></td>
         </tr>
     </table>
-    <div class="row">
-        <h4><?= __('Descricao Action') ?></h4>
-        <?= $this->Text->autoParagraph(h($action->descricao_action)); ?>
-    </div>
 </div>

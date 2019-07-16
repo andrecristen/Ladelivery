@@ -27,7 +27,7 @@ $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $p
     ?>
     <table class="vertical-table">
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
+            <th scope="row"><?= __('#') ?></th>
             <td><?= $this->Number->format($pedido->id) ?></td>
         </tr>
         <tr>

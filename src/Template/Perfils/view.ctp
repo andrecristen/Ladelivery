@@ -5,7 +5,7 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($perfil->id) ?></h3>
+    <h3>Perfil #<?= h($perfil->id) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('#') ?></th>

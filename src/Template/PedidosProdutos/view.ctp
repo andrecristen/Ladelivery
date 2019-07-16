@@ -5,8 +5,12 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($pedidosProduto->id) ?></h3>
+    <h3>Pedido Item #<?= h($pedidosProduto->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('#') ?></th>
+            <td><?= $this->Number->format($pedidosProduto->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('Pedido') ?></th>
             <td><?= $pedidosProduto->has('pedido') ? $this->Html->link($pedidosProduto->pedido->id, ['controller' => 'Pedidos', 'action' => 'view', $pedidosProduto->pedido->id]) : '' ?></td>
@@ -47,10 +51,6 @@
                 }
                 ?>
             </td>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($pedidosProduto->id) ?></td>
-        </tr>
         <tr>
             <th scope="row"><?= __('Quantidade') ?></th>
             <td><?= $this->Number->format($pedidosProduto->quantidade) ?></td>

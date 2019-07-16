@@ -5,8 +5,12 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($formasPagamento->id) ?></h3>
+    <h3>Forma Pagamento #<?= h($formasPagamento->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('#') ?></th>
+            <td><?= $this->Number->format($formasPagamento->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('Empresa') ?></th>
             <td><?= $formasPagamento->has('empresa') ? $this->Html->link($formasPagamento->empresa->nome_fantasia, ['controller' => 'Empresas', 'action' => 'view', $formasPagamento->empresa->id]) : '' ?></td>
@@ -14,10 +18,6 @@
         <tr>
             <th scope="row"><?= __('Nome') ?></th>
             <td><?= h($formasPagamento->nome) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($formasPagamento->id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Necesista Maquina Cartao') ?></th>

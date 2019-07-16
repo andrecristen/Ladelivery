@@ -5,10 +5,10 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($taxasEntregasCotacao->id) ?></h3>
+    <h3>Taxa Cotação #<?= h($taxasEntregasCotacao->id) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
+            <th scope="row"><?= __('#') ?></th>
             <td><?= $this->Number->format($taxasEntregasCotacao->id) ?></td>
         </tr>
         <tr>

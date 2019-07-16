@@ -5,8 +5,12 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($modulo->id) ?></h3>
+    <h3>Módulo #<?= h($modulo->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('#') ?></th>
+            <td><?= $this->Number->format($modulo->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('Nome') ?></th>
             <td><?= h($modulo->nome) ?></td>
@@ -14,10 +18,6 @@
         <tr>
             <th scope="row"><?= __('Icon Class') ?></th>
             <td><?= h($modulo->icon_class) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($modulo->id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Ordem') ?></th>

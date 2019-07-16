@@ -7,10 +7,10 @@ $listTipo = \App\Model\Entity\Empresa::getTipoList();
 $listTipoFrete = \App\Model\Entity\Empresa::getTipoFreteList();
 ?>
 <div class="col-sm-12">
-    <h3><?= h($empresa->id) ?></h3>
+    <h3>Empresa #<?= h($empresa->id) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th scope="row"><?= __('Id') ?></th>
+            <th scope="row"><?= __('#') ?></th>
             <td><?= $this->Number->format($empresa->id) ?></td>
         </tr>
         <tr>

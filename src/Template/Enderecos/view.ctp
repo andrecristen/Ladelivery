@@ -5,8 +5,12 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($endereco->id) ?></h3>
+    <h3>Endereço #<?= h($endereco->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('#') ?></th>
+            <td><?= $this->Number->format($endereco->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('User') ?></th>
             <td><?= $endereco->has('user') ? $this->Html->link($endereco->user->nome_completo, ['controller' => 'Users', 'action' => 'view', $endereco->user->id]) : '' ?></td>
@@ -34,14 +38,6 @@
         <tr>
             <th scope="row"><?= __('Estado') ?></th>
             <td><?= h($endereco->estado) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($endereco->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Tipo Endereco') ?></th>
-            <td><?= $this->Number->format($endereco->tipo_endereco) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Numero') ?></th>

@@ -6,6 +6,7 @@
 $tableLocator = new \Cake\ORM\Locator\TableLocator();
 ?>
 <div class="col-sm-12">
+    <?=$this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-home')) . ' Todos', array('controller' => 'pedidos', 'action' => 'listAll'), array('escape' => false, 'class' => 'btn btn-sm btn-danger')) ?>
     <h3><?= $title ?></h3>
     <div class="content-filter">
         <form style="padding: 0px!important;" method="get" accept-charset="utf-8" action="/pedidos/coleta">

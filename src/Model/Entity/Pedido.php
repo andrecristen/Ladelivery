@@ -103,6 +103,15 @@ class Pedido extends Entity
         $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id' => $this->id])->first();
         return $entrega;
     }
+
+    public function getValorEntrega(){
+        $entrega = $this->getEntrega();
+        if($entrega){
+            return $entrega->valor_entrega;
+        }
+        return 0.00;
+    }
+
     public static function getComandaStatusList(){
         return [
             self::STATUS_ABERTA  => 'Aberta',

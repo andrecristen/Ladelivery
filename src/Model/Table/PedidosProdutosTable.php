@@ -1,7 +1,9 @@
 <?php
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
+use App\Model\Entity\Pedido;
+use App\Model\Entity\PedidosProduto;
+use Cake\ORM\Locator\TableLocator;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -12,6 +14,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\PedidosTable|\Cake\ORM\Association\BelongsTo $Pedidos
  * @property \App\Model\Table\ProdutosTable|\Cake\ORM\Association\BelongsTo $Produtos
  *
+ * @method Table::afterSave(Event $event, EntityInterface $entity, ArrayObject $options)
  * @method \App\Model\Entity\PedidosProduto get($primaryKey, $options = [])
  * @method \App\Model\Entity\PedidosProduto newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\PedidosProduto[] newEntities(array $data, array $options = [])
@@ -23,6 +26,36 @@ use Cake\Validation\Validator;
  */
 class PedidosProdutosTable extends Table
 {
+    /**
+     * Verifica se temos todos os itens produzidos, para entao alterar a situacao do pedido
+     *
+     * @param $event
+     * @param $entity
+     * @param $options
+     */
+    public function afterSave($event, $entity, $options) {
+        $tableLocator = new TableLocator();
+        $pedidosProdutos = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $entity->pedido_id]);
+        $itens = 0;
+        $itensProduzidos = 0;
+        foreach ($pedidosProdutos as $pedidosProduto){
+            if($pedidosProduto->status == PedidosProduto::STATUS_PRODUCAO_CONCLUIDA){
+                $itensProduzidos++;
+            }
+            $itens++;
+        }
+        if($itens == $itensProduzidos){
+            $pedidoTable = $tableLocator->get('Pedidos');
+            /** @var $pedido Pedido*/
+            $pedido = $pedidoTable->find()->where(['id' => $entity->pedido_id])->first();
+            if($pedido->getEntrega()){
+                $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_ENTREGADOR;
+            }else{
+                $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE;
+            }
+            $pedidoTable->save($pedido);
+        }
+    }
 
     /**
      * Initialize method
@@ -64,6 +97,10 @@ class PedidosProdutosTable extends Table
             ->integer('quantidade')
             ->requirePresence('quantidade', 'create')
             ->allowEmptyString('quantidade', false);
+
+        $validator
+            ->requirePresence('quantidade_produzida', 'create')
+            ->allowEmptyString('quantidade_produzida', false);
 
         $validator
             ->decimal('valor_total_cobrado')

@@ -38,6 +38,9 @@ function draggableInit() {
                         var element = document.getElementById(elementId);
                         children.prepend(element);
                         alertify.success('Situação alterada');
+                        if(data.reload){
+                            location.reload();
+                        }
                     }else{
                         alertify.alert('Error!','Erro ao alterar situação do item, tente novamente.');
                         location.reload();

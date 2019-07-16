@@ -54,8 +54,9 @@ class PedidosProdutosController extends AppController
 
         $filtersFixed = [
             0 => ['produtos.ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_COZINHA],
-            1 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
-            2 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
+            1 => ['pedidos.status_pedido' => Pedido::STATUS_EM_PRODUCAO],
+            2 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
+            3 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
         ];
         $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
         if ($agruparPorSituacao){
@@ -84,8 +85,9 @@ class PedidosProdutosController extends AppController
         ];
         $filtersFixed = [
             0 => ['produtos.ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_BAR],
-            1 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
-            2 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
+            1 => ['pedidos.status_pedido' => Pedido::STATUS_EM_PRODUCAO],
+            2 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
+            3 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
         ];
         $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
         $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
@@ -203,6 +205,35 @@ class PedidosProdutosController extends AppController
         $this->set(compact('pedidosProduto', 'pedidos', 'produtos'));
     }
 
+    public function quantidadeProduzida($id = null){
+        $pedidosProduto = $this->PedidosProdutos->get($id, [
+            'contain' => ['Pedidos', 'Produtos']
+        ]);
+        $this->set(compact('pedidosProduto'));
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $pedidosProduto = $this->PedidosProdutos->patchEntity($pedidosProduto, $this->request->getData());
+            if($pedidosProduto->quantidade_produzida > $pedidosProduto->quantidade){
+                $this->Flash->error(__('Quantidade produzida não pode ser maior que a quantidade solicitada pelo cliente.'));
+                return;
+            }
+            $success = 'Alterada Quantidade Produzida.';
+            if($pedidosProduto->quantidade_produzida == $pedidosProduto->quantidade){
+                $success = "Foram produzidas todas quantidades, item movido para situação de produção concluída.";
+                $pedidosProduto->status = PedidosProduto::STATUS_PRODUCAO_CONCLUIDA;
+            }
+            if ($this->PedidosProdutos->save($pedidosProduto)) {
+                $this->Flash->success(__($success));
+
+                if($pedidosProduto->ambiente_producao_responsavel == PedidosProduto::RESPONSAVEL_BAR){
+                    return $this->redirect(['action' => 'barKanban']);
+                }else{
+                    return $this->redirect(['action' => 'cozinhaKanban']);
+                }
+            }
+            $this->Flash->error(__('Erro, tente novamente.'));
+        }
+    }
+
     public function alterarSituacao($id = null){
         $pedidoProduto = $this->PedidosProdutos->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -227,7 +258,14 @@ class PedidosProdutosController extends AppController
         $pedidosProduto = $this->PedidosProdutos->get($item);
         $pedidosProduto->status = str_replace('panel-', '', $situacao);
         if($this->PedidosProdutos->save($pedidosProduto)){
-            echo json_encode(['success' => true]);
+            //Vamos ver se o pedido foi alterado a situacao...
+            /** @var $pedido Pedido*/
+            $reload = false;
+            $pedido = $this->getTableLocator()->get('Pedidos')->find()->where(['id' => $pedidosProduto->pedido_id])->first();
+            if(($pedido->status_pedido == Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE) || ($pedido->status_pedido == Pedido::STATUS_AGUARDANDO_ENTREGADOR)){
+                $reload = true;
+            }
+            echo json_encode(['success' => true, 'reload' => $reload]);
         }else{
             echo json_encode(['success' => false]);
         }

@@ -186,6 +186,7 @@ class SiteUtils extends AppController
                           <h2><a href="#">#Item: '.$pedidosProduto->id.'</a> <span>#Pedido: '.$pedidosProduto->pedido_id.'</span></h2>
                           <p>Produto: '.$pedidosProduto->produto->nome_produto.'</p>
                           <p>Quantidade: '.$pedidosProduto->quantidade.'</p>
+                          <p>Produzidos: '.$pedidosProduto->quantidade_produzida.'</p>
                           <p>Observação: '.$pedidosProduto->observacao.'</p>
                           <br/>
                           '.$this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-eye')) . '', array('controller' => 'PedidosProdutos', 'action' => 'view', $pedidosProduto->id), array('escape' => false, 'class' => 'btn btn-sm btn-info')).'

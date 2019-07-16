@@ -6,6 +6,7 @@
 $tableLocator = new \Cake\ORM\Locator\TableLocator();
 ?>
 <div class="col-sm-12">
+    <?=$this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-home')) . ' Todos', array('controller' => 'pedidos', 'action' => 'listAll'), array('escape' => false, 'class' => 'btn btn-sm btn-danger')) ?>
     <h3><?= $title ?></h3>
     <div class="content-filter">
         <form style="padding: 0px!important;" method="get" accept-charset="utf-8" action="/pedidos/entregues">
@@ -37,7 +38,9 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                             <br>
                             Descontos: R$ <?= $pedido->valor_desconto ?>
                             <br>
-                            Produtos: R$ <?= $pedido->valor_total_cobrado ?>
+                            Produtos: R$ <?= $pedido->valor_produtos ?>
+                            <br>
+                            Entrega: R$ <?= $pedido->getValorEntrega() ?>
                             <br>
                             Valor Total: R$<?= ($pedido->getValorTotal()) ?>
                         </p>

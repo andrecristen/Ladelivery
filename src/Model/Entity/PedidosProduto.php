@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  * @property int $pedido_id
  * @property int $produto_id
  * @property int $quantidade
+ * @property int $quantidade_produzida
  * @property float $valor_total_cobrado
  * @property string|null $observacao
  * @property array|null $opcionais
@@ -76,9 +77,11 @@ class PedidosProduto extends Entity
      * @var array
      */
     protected $_accessible = [
+        'id' => true,
         'pedido_id' => true,
         'produto_id' => true,
         'quantidade' => true,
+        'quantidade_produzida' => true,
         'valor_total_cobrado' => true,
         'observacao' => true,
         'opcionais' => true,

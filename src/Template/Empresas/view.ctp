@@ -26,6 +26,10 @@ $listTipoFrete = \App\Model\Entity\Empresa::getTipoFreteList();
             <td><?= h($empresa->ie) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Valor Erro Frete') ?></th>
+            <td><?= h($empresa->valor_base_erro_frete) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Tipo') ?></th>
             <td><?= $listTipo[$empresa->tipo_empresa] ?></td>
         </tr>

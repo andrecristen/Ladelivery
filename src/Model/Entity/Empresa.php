@@ -13,6 +13,7 @@ use Cake\ORM\Entity;
  * @property bool $ativa
  * @property int $tipo_empresa
  * @property int $tipo_frete
+ * @property float $valor_base_erro_frete
  * @property array|null $contatos
  *
  * @property \App\Model\Entity\TemposMedio[] $tempos_medios
@@ -30,8 +31,6 @@ class Empresa extends Entity
 
     const FRETE_TIPO_KM = 1;
     const FRETE_TIPO_FAIXA = 2;
-    const FRETE_TIPO_BAIRRO = 3;
-    const FRETE_SEM_ENTREGA= 4;
 
     public static function getTipoList(){
         return [
@@ -62,8 +61,6 @@ class Empresa extends Entity
         return [
             self::FRETE_TIPO_KM => 'Valor Por KM',
             self::FRETE_TIPO_FAIXA => 'Valor Por Faixa de Distância',
-            self::FRETE_TIPO_BAIRRO => 'Valor Por Bairro',
-            self::FRETE_SEM_ENTREGA => 'Sem Entrega',
         ];
     }
 
@@ -82,6 +79,7 @@ class Empresa extends Entity
         'ie' => true,
         'tipo_empresa' => true,
         'tipo_frete' => true,
+        'valor_base_erro_frete' => true,
         'ativa' => true,
         'tempos_medios' => true,
         'contatos' => true

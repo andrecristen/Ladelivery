@@ -84,6 +84,11 @@ class EmpresasTable extends Table
         $validator
             ->allowEmptyString('contatos');
 
+        $validator
+            ->decimal('valor_base_erro_frete')
+            ->requirePresence('valor_base_erro_frete', 'create')
+            ->allowEmptyString('valor_base_erro_frete', false);
+
         return $validator;
     }
 

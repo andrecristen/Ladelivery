@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Model\Entity\CupomSite;
+use App\Model\Entity\Empresa;
 use App\Model\Entity\Endereco;
 use App\Model\Entity\EnderecosEmpresa;
 use App\Model\Entity\FormasPagamento;
@@ -16,6 +17,7 @@ use App\Model\Entity\PedidosEntrega;
 use App\Model\Entity\PedidosProduto;
 use App\Model\Entity\Produto;
 use App\Model\Entity\TaxasEntregasCotacao;
+use App\Model\Entity\TaxasEntregasCotacaoFaixa;
 use App\Model\Entity\TemposMedio;
 use App\Model\Entity\User;
 use App\Model\ExceptionSQLMessage;
@@ -619,26 +621,39 @@ class PedidosController extends AppController
                     }
                 }
             }
-            /** @var $cotacaoEntrega TaxasEntregasCotacao */
-            $cotacaoEntrega = $tableLocator->get('TaxasEntregasCotacao')->find()->where(['empresa_id' => $newPedido->empresa_id, 'ativo' => 1])->first();
             if (isset($cotacao['rows']['0']['elements']['0'])) {
                 $newPedidoEntrega->cotacao_maps = json_encode($cotacao['rows']['0']['elements']['0']);
             }
-            if ($cotacaoSuccess && $cotacaoKms) {
-                $valorEntrega = ($cotacaoEntrega->valor_km * $cotacaoKms);
-                //Arrendonda pro mais perto
-                if ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_CENTRAL) {
-                    $valorEntrega = round($valorEntrega);
-                    //Arrendonda pra cima
-                } elseif ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_SUPERIOR) {
-                    $valorEntrega = floor($valorEntrega);
-                    //Arrendonda pra baixo
-                } elseif ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_INFERIOR) {
-                    $valorEntrega = ceil($valorEntrega);
+            $empresa = $this->empresaUtils->getEmpresaBaseModel();
+            if($empresa->tipo_frete == Empresa::FRETE_TIPO_KM){
+                /** @var $cotacaoEntrega TaxasEntregasCotacao */
+                $cotacaoEntrega = $tableLocator->get('TaxasEntregasCotacao')->find()->where(['empresa_id' => $newPedido->empresa_id, 'ativo' => 1])->first();
+                if ($cotacaoSuccess && $cotacaoKms && $cotacaoEntrega) {
+                    $valorEntrega = ($cotacaoEntrega->valor_km * $cotacaoKms);
+                    //Arrendonda pro mais perto
+                    if ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_CENTRAL) {
+                        $valorEntrega = round($valorEntrega);
+                        //Arrendonda pra cima
+                    } elseif ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_SUPERIOR) {
+                        $valorEntrega = floor($valorEntrega);
+                        //Arrendonda pra baixo
+                    } elseif ($cotacaoEntrega->arredondamento_tipo === TaxasEntregasCotacao::TIPO_INFERIOR) {
+                        $valorEntrega = ceil($valorEntrega);
+                    }
+                    $newPedidoEntrega->valor_entrega = $valorEntrega;
+                } else {
+                    $newPedidoEntrega->valor_entrega = $empresa->valor_base_erro_frete;
                 }
-                $newPedidoEntrega->valor_entrega = $valorEntrega;
-            } else {
-                $newPedidoEntrega->valor_entrega = $cotacaoEntrega->valor_base_erro;
+            }elseif ($empresa->tipo_frete == Empresa::FRETE_TIPO_FAIXA){
+                /** @var $cotacaoEntregaFaixa TaxasEntregasCotacaoFaixa */
+                $cotacaoEntregaFaixa = $tableLocator->get('TaxasEntregasCotacaoFaixas')->find()->where(['empresa_id' => $newPedido->empresa_id, 'ativo' => true, 'kilometro_inicio <=' => $cotacaoKms,  'kilometro_fim >=' => $cotacaoKms])->first();
+                if ($cotacaoSuccess && $cotacaoKms !== false && $cotacaoEntregaFaixa) {
+                    $newPedidoEntrega->valor_entrega = $cotacaoEntregaFaixa->valor;
+                } else {
+                    $newPedidoEntrega->valor_entrega = $empresa->valor_base_erro_frete;
+                }
+            }else{
+                throw new \Exception('Empresa sem configuração de frete, informe a empresa para solução do problema.');
             }
         }
         if (!$pedidoEntregaTable->save($newPedidoEntrega)) {

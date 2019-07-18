@@ -15,6 +15,7 @@ $configuracaoJson = json_encode($empresa->contatos);
         echo $this->Form->control('ie');
         echo $this->Form->control('tipo_empresa', ['options' => \App\Model\Entity\Empresa::getTipoList()]);
         echo $this->Form->control('tipo_frete', ['options' => \App\Model\Entity\Empresa::getTipoFreteList()]);
+        echo $this->Form->control('valor_base_erro_frete');
         echo $this->Form->control('ativa');
         ?>
         <br/>

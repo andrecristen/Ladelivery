@@ -17,7 +17,6 @@
     $tipoArredondamento->setList(\App\Model\Entity\TaxasEntregasCotacao::getListTipoArredondamentoConsulta());
     $dataGrid->addField($tipoArredondamento);
     $dataGrid->addField(new \App\Model\Utils\GridField('Ativo', 'ativo', \App\Model\Utils\DataGridGenerator::TYPE_BOOLEAN));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Valor base em caso de erro', 'valor_base_erro', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->setController($this->name);
     $dataGrid->display();
     ?>

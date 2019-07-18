@@ -69,10 +69,6 @@ class TaxasEntregasCotacaoTable extends Table
             ->requirePresence('ativo', 'create')
             ->allowEmptyString('ativo', false);
 
-        $validator
-            ->decimal('valor_base_erro')
-            ->allowEmptyString('valor_base_erro');
-
         return $validator;
     }
 

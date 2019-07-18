@@ -20,10 +20,6 @@
             <td><?= $this->Number->format($taxasEntregasCotacao->arredondamento_tipo) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Valor Base Erro') ?></th>
-            <td><?= $this->Number->format($taxasEntregasCotacao->valor_base_erro) ?></td>
-        </tr>
-        <tr>
             <th scope="row"><?= __('Ativo') ?></th>
             <td><?= $taxasEntregasCotacao->ativo ? __('Sim') : __('Nao'); ?></td>
         </tr>

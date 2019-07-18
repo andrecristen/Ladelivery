@@ -12,7 +12,6 @@ use Cake\ORM\Entity;
  * @property float $valor_km
  * @property int|null $arredondamento_tipo
  * @property bool $ativo
- * @property float|null $valor_base_erro
  *
  * @property \App\Model\Entity\Empresa empresa
  */
@@ -53,7 +52,6 @@ class TaxasEntregasCotacao extends Entity
         'valor_km' => true,
         'arredondamento_tipo' => true,
         'ativo' => true,
-        'valor_base_erro' => true,
         'empresa_id' => true,
         'empresa' => true,
     ];

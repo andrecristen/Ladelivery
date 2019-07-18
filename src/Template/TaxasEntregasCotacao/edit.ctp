@@ -20,7 +20,6 @@
         echo $this->Form->control('valor_km');
         echo $this->Form->control('arredondamento_tipo', ['options' => \App\Model\Entity\TaxasEntregasCotacao::getListTipoArredondamento(), 'required'=>'required']);
         echo $this->Form->control('ativo');
-        echo $this->Form->control('valor_base_erro', ['required'=>'required']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Salvar')) ?>

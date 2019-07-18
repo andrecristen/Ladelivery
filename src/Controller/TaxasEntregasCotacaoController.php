@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\Empresa;
 use App\Model\Entity\TaxasEntregasCotacao;
 use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
@@ -32,6 +33,9 @@ class TaxasEntregasCotacaoController extends AppController
      */
     public function index()
     {
+        if ($this->empresaUtils->getUserEmpresaModel()->tipo_frete == Empresa::FRETE_TIPO_FAIXA){
+            return $this->redirect(['controller' => 'TaxasEntregasCotacaoFaixas','action' => 'index']);
+        }
         $this->paginate = [
             'contain' => ['Empresas']
         ];

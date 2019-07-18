@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 16-Jul-2019 às 21:06
+-- Generation Time: 18-Jul-2019 às 00:21
 -- Versão do servidor: 5.7.26
 -- versão do PHP: 7.2.18
 
@@ -478,15 +478,15 @@ CREATE TABLE IF NOT EXISTS `empresas` (
   `contatos` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_empresa_cnpj` (`cnpj`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `empresas`
 --
 
 INSERT INTO `empresas` (`id`, `nome_fantasia`, `cnpj`, `ie`, `tipo_empresa`, `tipo_frete`, `ativa`, `contatos`) VALUES
-(1, 'Empresa Demonstração', '00.000.000/0000-00', '000.000.000', 2, 1, 1, '[{\"tipo_contato\": \"1\", \"valor_contato\": \"www.facebook.com/deckpizzariaechopperia\"}, {\"tipo_contato\": \"3\", \"valor_contato\": \"(47) 3357-2825\"}, {\"tipo_contato\": \"2\", \"valor_contato\": \"(47) 9780-2814\"}, {\"tipo_contato\": \"4\", \"valor_contato\": \"ladev.sistemas@gmail.com\"}]'),
-(2, 'LaDelivery', '', '', 1, 4, 1, NULL);
+(1, 'Empresa Demonstração', '00.000.000/0000-00', '000.000.000', 2, 1, 1, '[{\"tipo_contato\": \"1\", \"valor_contato\": \"www.facebook.com/BaiucasIbirama/\"}, {\"tipo_contato\": \"3\", \"valor_contato\": \"(47) 3357-2825\"}, {\"tipo_contato\": \"2\", \"valor_contato\": \"(47) 9780-2814\"}, {\"tipo_contato\": \"4\", \"valor_contato\": \"ladev.sistemas@gmail.com\"}]'),
+(2, 'LaDelivery', '', '', 1, 4, 1, '[{\"tipo_contato\": \"? undefined:undefined ?\", \"valor_contato\": \"\"}]');
 
 -- --------------------------------------------------------
 
@@ -648,7 +648,7 @@ CREATE TABLE IF NOT EXISTS `itens_carrinhos` (
   `observacao` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
   `opicionais` json DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -739,6 +739,51 @@ INSERT INTO `listas_produtos` (`id`, `produto_id`, `lista_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `logs`
+--
+
+DROP TABLE IF EXISTS `logs`;
+CREATE TABLE IF NOT EXISTS `logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `descricao` text COLLATE utf8_unicode_ci,
+  `data_hora` datetime NOT NULL,
+  `situacao` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Extraindo dados da tabela `logs`
+--
+
+INSERT INTO `logs` (`id`, `tipo`, `user_id`, `descricao`, `data_hora`, `situacao`) VALUES
+(1, 1, 16, 'Seu pedido teve uma alteração de situação. A nova situação é: Aguardando Coleta Cliente', '2019-07-17 16:26:01', 1),
+(2, 1, 16, 'Seu pedido teve uma alteração de situação. A nova situação é: Em Produção.', '2019-07-17 16:49:02', 1),
+(3, 1, 16, 'Seu pedido teve uma alteração de situação. A nova situação é: Aguardando Coleta Cliente.', '2019-07-17 17:01:07', 1),
+(4, 1, 16, 'Seu pedido #12, teve uma alteração de situação. A nova situação é: Entregue.', '2019-07-17 17:02:01', 1),
+(5, 1, 16, 'Seu pedido #10, teve uma alteração de situação. A nova situação é: Entregue.', '2019-07-17 17:02:03', 1),
+(6, 1, 16, 'Seu pedido #11, teve uma alteração de situação. A nova situação é: Entregue.', '2019-07-17 17:02:04', 1),
+(7, 1, 16, 'Seu pedido #13, teve uma alteração de situação. A nova situação é: Aguardando Confirmação.', '2019-07-17 20:06:08', 1),
+(8, 1, 16, 'Seu pedido #14, teve uma alteração de situação. A nova situação é: Aguardando Confirmação.', '2019-07-17 20:08:18', 1),
+(9, 1, 16, 'Seu pedido #15, teve uma alteração de situação. A nova situação é: Aguardando Confirmação.', '2019-07-17 20:19:00', 1),
+(10, 1, 16, 'Seu pedido #13, teve uma alteração de situação. A nova situação é: Em Produção.', '2019-07-17 20:23:09', 1),
+(11, 1, 16, 'Seu pedido #14, teve uma alteração de situação. A nova situação é: Em Produção.', '2019-07-17 20:23:12', 1),
+(12, 1, 16, 'Seu pedido #15, teve uma alteração de situação. A nova situação é: Em Produção.', '2019-07-17 20:23:14', 1),
+(13, 1, 16, 'Seu pedido #15, teve uma alteração de situação. A nova situação é: Aguardando Entregador.', '2019-07-17 20:54:15', 2),
+(14, 1, 16, 'Seu pedido #14, teve uma alteração de situação. A nova situação é: Aguardando Entregador.', '2019-07-17 20:54:17', 2),
+(15, 1, 16, 'Seu pedido #13, teve uma alteração de situação. A nova situação é: Aguardando Coleta Cliente.', '2019-07-17 20:54:17', 2),
+(16, 1, 16, 'Seu pedido #15, teve uma alteração de situação. A nova situação é: Saiu para entrega.', '2019-07-17 20:54:27', 2),
+(17, 1, 16, 'Seu pedido #14, teve uma alteração de situação. A nova situação é: Saiu para entrega.', '2019-07-17 20:54:30', 2),
+(18, 1, 16, 'Seu pedido #15, teve uma alteração de situação. A nova situação é: Entregue.', '2019-07-17 20:54:35', 2),
+(19, 1, 16, 'Seu pedido #14, teve uma alteração de situação. A nova situação é: Entregue.', '2019-07-17 20:54:38', 2),
+(20, 1, 16, 'Seu pedido #13, teve uma alteração de situação. A nova situação é: Entregue.', '2019-07-17 20:54:44', 2),
+(21, 1, 30, 'Seu pedido #16, teve uma alteração de situação. A nova situação é: .', '2019-07-17 20:55:15', 2),
+(22, 1, 30, 'Seu pedido #16, teve uma alteração de situação. A nova situação é: .', '2019-07-17 20:55:38', 2);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `menus`
 --
 
@@ -785,7 +830,7 @@ INSERT INTO `menus` (`id`, `modulo_id`, `action_id`, `nome_menu`, `ativo_menu`, 
 (24, 8, 80, 'Formas Pagamento', 1, 3, ''),
 (25, 8, 85, 'Horários Atendimento', 1, 4, ''),
 (26, 8, 90, 'Dias Fechado', 1, 5, ''),
-(27, 9, 65, 'Empresas', 1, 1, ''),
+(27, 8, 65, 'Empresas', 1, 6, ''),
 (28, 9, 95, 'Google Maps Api Keys', 1, 2, ''),
 (29, 9, 155, 'Módulos', 1, 3, ''),
 (30, 9, 162, 'Menus', 1, 4, ''),
@@ -902,6 +947,7 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `user_id` int(11) DEFAULT NULL,
   `cliente` varchar(450) COLLATE utf8_unicode_ci DEFAULT NULL,
   `tipo_pedido` int(11) NOT NULL DEFAULT '1',
+  `origem` int(11) DEFAULT NULL,
   `empresa_id` int(11) NOT NULL,
   `status_pedido` int(11) NOT NULL,
   `data_pedido` datetime NOT NULL,
@@ -913,15 +959,22 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `valor_acrescimo` decimal(10,2) NOT NULL DEFAULT '0.00',
   `valor_desconto` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `pedidos`
 --
 
-INSERT INTO `pedidos` (`id`, `user_id`, `cliente`, `tipo_pedido`, `empresa_id`, `status_pedido`, `data_pedido`, `cupom_usado`, `formas_pagamento_id`, `troco_para`, `tempo_producao_aproximado_minutos`, `valor_produtos`, `valor_acrescimo`, `valor_desconto`) VALUES
-(8, 16, NULL, 1, 1, 9, '2019-07-16 17:27:00', NULL, 1, '150.00', 45, '103.00', '0.00', '0.00'),
-(9, 16, NULL, 1, 1, 9, '2019-07-16 17:39:00', NULL, 4, '0.00', 45, '159.00', '3.18', '0.00');
+INSERT INTO `pedidos` (`id`, `user_id`, `cliente`, `tipo_pedido`, `origem`, `empresa_id`, `status_pedido`, `data_pedido`, `cupom_usado`, `formas_pagamento_id`, `troco_para`, `tempo_producao_aproximado_minutos`, `valor_produtos`, `valor_acrescimo`, `valor_desconto`) VALUES
+(8, 16, NULL, 1, NULL, 1, 9, '2019-07-16 17:27:00', NULL, 1, '150.00', 45, '103.00', '0.00', '0.00'),
+(9, 16, NULL, 1, NULL, 1, 9, '2019-07-16 17:39:00', NULL, 4, '0.00', 45, '159.00', '3.18', '0.00'),
+(10, 16, NULL, 1, 3, 1, 9, '2019-07-17 15:49:00', NULL, 1, '119.00', 35, '119.00', '0.00', '0.00'),
+(11, 16, NULL, 1, 2, 1, 9, '2019-07-17 15:49:37', NULL, 1, '0.00', NULL, '109.00', '0.00', '0.00'),
+(12, 16, NULL, 1, 2, 1, 9, '2019-07-17 16:39:22', NULL, 1, '0.00', 35, '109.00', '0.00', '0.00'),
+(13, 16, NULL, 1, 3, 1, 9, '2019-07-17 20:04:00', NULL, 1, '0.00', 35, '240.00', '0.00', '0.00'),
+(14, 16, NULL, 1, 3, 1, 9, '2019-07-17 20:07:00', NULL, 2, '0.00', 45, '5.00', '0.25', '0.00'),
+(15, 16, NULL, 1, 3, 1, 9, '2019-07-17 20:09:00', NULL, 1, '15.00', 45, '5.00', '0.00', '0.00'),
+(16, 30, 'Dolsan', 2, 2, 1, 14, '2019-07-17 20:55:10', NULL, NULL, '0.00', NULL, '10.00', '0.00', '0.00');
 
 -- --------------------------------------------------------
 
@@ -939,7 +992,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_entregas` (
   `endereco_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_pedido_entrega` (`pedido_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `pedidos_entregas`
@@ -947,7 +1000,9 @@ CREATE TABLE IF NOT EXISTS `pedidos_entregas` (
 
 INSERT INTO `pedidos_entregas` (`id`, `pedido_id`, `user_id`, `valor_entrega`, `cotacao_maps`, `endereco_id`) VALUES
 (3, 8, 27, '9.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4249},\"duration\":{\"text\":\"8 minutos\",\"value\":484},\"status\":\"OK\"}', 16),
-(4, 9, 27, '4.00', '{\"distance\":{\"text\":\"1,6 km\",\"value\":1627},\"duration\":{\"text\":\"3 minutos\",\"value\":196},\"status\":\"OK\"}', 23);
+(4, 9, 27, '4.00', '{\"distance\":{\"text\":\"1,6 km\",\"value\":1627},\"duration\":{\"text\":\"3 minutos\",\"value\":196},\"status\":\"OK\"}', 23),
+(5, 14, 27, '9.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4249},\"duration\":{\"text\":\"8 minutos\",\"value\":484},\"status\":\"OK\"}', 16),
+(6, 15, 27, '9.00', '{\"distance\":{\"text\":\"4,2 km\",\"value\":4249},\"duration\":{\"text\":\"8 minutos\",\"value\":484},\"status\":\"OK\"}', 16);
 
 -- --------------------------------------------------------
 
@@ -968,7 +1023,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_produtos` (
   `ambiente_producao_responsavel` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `pedidos_produtos`
@@ -978,7 +1033,18 @@ INSERT INTO `pedidos_produtos` (`id`, `pedido_id`, `produto_id`, `quantidade`, `
 (13, 8, 100, 2, 0, '10.00', '', '\"[]\"', 2, 5),
 (14, 8, 98, 1, 0, '93.00', '', '\"{\\\"133\\\":[\\\"15\\\",\\\"16\\\"],\\\"134\\\":[\\\"18\\\"]}\"', 1, 5),
 (15, 9, 98, 1, 1, '149.00', '', '\"{\\\"133\\\":[\\\"15\\\",\\\"16\\\",\\\"17\\\",\\\"18\\\",\\\"19\\\"],\\\"134\\\":[\\\"15\\\",\\\"16\\\",\\\"17\\\"]}\"', 1, 5),
-(16, 9, 100, 2, 2, '10.00', '', '\"[]\"', 2, 5);
+(16, 9, 100, 2, 2, '10.00', '', '\"[]\"', 2, 5),
+(17, 10, 100, 1, 0, '5.00', '', '\"[]\"', 2, 3),
+(18, 10, 98, 1, 0, '109.00', 'Sem tomate', '\"{\\\"133\\\":[\\\"15\\\",\\\"16\\\"],\\\"134\\\":[\\\"15\\\",\\\"16\\\"]}\"', 1, 3),
+(19, 10, 100, 1, 0, '5.00', '', '\"[]\"', 2, 3),
+(20, 11, 98, 1, 0, '109.00', '', '\"{\\\"133\\\":[\\\"15\\\",\\\"16\\\"],\\\"134\\\":[\\\"15\\\",\\\"16\\\"]}\"', 1, 3),
+(21, 12, 98, 1, 0, '109.00', '', '\"{\\\"133\\\":[\\\"15\\\",\\\"16\\\"],\\\"134\\\":[\\\"15\\\",\\\"16\\\"]}\"', 1, 3),
+(22, 13, 98, 1, 0, '125.00', '', '\"{\\\"133\\\":[\\\"15\\\",\\\"16\\\",\\\"17\\\"],\\\"134\\\":[\\\"15\\\",\\\"16\\\",\\\"17\\\"]}\"', 1, 3),
+(23, 13, 99, 1, 0, '115.00', '', '\"{\\\"133\\\":[\\\"15\\\",\\\"16\\\"],\\\"134\\\":[\\\"15\\\",\\\"16\\\",\\\"18\\\"]}\"', 1, 3),
+(24, 14, 100, 1, 0, '5.00', '', '\"[]\"', 2, 3),
+(25, 15, 100, 1, 0, '5.00', '', '\"[]\"', 2, 3),
+(26, 16, 100, 1, 0, '5.00', '', '\"[]\"', 2, 3),
+(27, 16, 100, 1, 0, '5.00', '', '\"[]\"', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1016,7 +1082,7 @@ CREATE TABLE IF NOT EXISTS `perfils_actions` (
   `action_id` int(11) NOT NULL,
   `perfil_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=178 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=181 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `perfils_actions`
@@ -1188,7 +1254,10 @@ INSERT INTO `perfils_actions` (`id`, `action_id`, `perfil_id`) VALUES
 (170, 164, 3),
 (171, 165, 3),
 (172, 166, 3),
-(177, 170, 2);
+(177, 170, 2),
+(178, 65, 5),
+(179, 68, 5),
+(180, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -1202,7 +1271,7 @@ CREATE TABLE IF NOT EXISTS `perfils_users` (
   `perfil_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `perfils_users`
@@ -1215,7 +1284,8 @@ INSERT INTO `perfils_users` (`id`, `perfil_id`, `user_id`) VALUES
 (4, 5, 8),
 (5, 2, 20),
 (6, 5, 20),
-(7, 4, 20);
+(7, 4, 20),
+(11, 2, 30);
 
 -- --------------------------------------------------------
 
@@ -1385,7 +1455,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `ano_nascimento` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `users`
@@ -1395,7 +1465,8 @@ INSERT INTO `users` (`id`, `nome_completo`, `tipo`, `empresa_id`, `created`, `mo
 (8, 'LaDev Sistemas', 3, 2, '2019-01-28 23:59:32', '2019-06-24 16:52:11', 'LaDev', 'master@ladev.com', '$2y$10$wWXWh1YjSOH5t4.zPo7/TOIkL7pxVsxgIl84MyqxH6x2aOg5d9WBe', 3, 9, 2000),
 (16, 'Cliente Ladev', 1, 2, '2019-02-05 22:14:18', '2019-06-24 17:33:10', 'Cliente Fiel', 'cliente@ladev.com', '$2y$10$/0aptDhXOOqgE36oL1SBqe3t7KhyVYbJMzyQLbOyxNIHoS46F.zWO', 3, 9, 2000),
 (20, 'Empresa', 2, 1, '2019-02-14 21:40:09', '2019-07-08 19:48:21', 'Demonstração Lanches e Delivery', 'empresa@ladev.com', '$2y$10$xL/DkDmDdVeZsX6ccQPnmOa7i0YyQxsgMLr41A96WdTHQ4ws4jZaG', 10, 10, 2018),
-(27, 'Entregador', 4, 1, '2019-04-27 14:07:43', '2019-06-24 17:01:15', 'Entregador Teste', 'entregador@ladev.com', '$2y$10$hjD5nvw5NHwUsDO.DVYBMOEjAAOiy3CZscdhofnFxrilG30wa0u0W', 12, 11, 1987);
+(27, 'Entregador', 4, 1, '2019-04-27 14:07:43', '2019-06-24 17:01:15', 'Entregador Teste', 'entregador@ladev.com', '$2y$10$hjD5nvw5NHwUsDO.DVYBMOEjAAOiy3CZscdhofnFxrilG30wa0u0W', 12, 11, 1987),
+(30, 'Operador', 2, 1, '2019-07-17 20:51:30', '2019-07-17 20:51:30', 'Operador', 'operador@ladev.com', '$2y$10$b7.JSKDwkwfCO8RH8A/qqOAVjgoLBF3CvU2qIKJVIiaOPz7AiNWum', 3, 9, 2000);
 
 -- --------------------------------------------------------
 

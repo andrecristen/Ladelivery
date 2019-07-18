@@ -15,6 +15,7 @@ use Cake\ORM\Locator\TableLocator;
  * @property float $valor_desconto
  * @property float $valor_acrescimo
  * @property int $tipo_pedido
+ * @property int $origem
  * @property int $status_pedido
  * @property int $formas_pagamento_id
  * @property int $empresa_id
@@ -32,6 +33,11 @@ class Pedido extends Entity
     //Tipos de pedidos
     const TIPO_PEDIDO_DELIVERY = 1;
     const TIPO_PEDIDO_COMANDA = 2;
+
+    //Origens Pedido
+    const ORIGEM_SITE_CLIENTE = 1;
+    const ORIGEM_SITE_ADMIN = 2;
+    const ORIGEM_APP_CLIENTE = 3;
 
     //Status para Lists pedidos tipo Delivery
     const STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE = 1;
@@ -120,6 +126,15 @@ class Pedido extends Entity
         ];
     }
 
+
+    public static function getOrigemList(){
+        return [
+            self::ORIGEM_APP_CLIENTE  => 'APP',
+            self::ORIGEM_SITE_ADMIN => 'Admin',
+            self::ORIGEM_SITE_CLIENTE => 'Site',
+        ];
+    }
+
     public static function getComandaAlterStatusList(){
         return [
             self::STATUS_ABERTA  => 'Aberta',
@@ -142,6 +157,7 @@ class Pedido extends Entity
         'tempo_producao_aproximado_minutos' => true,
         'troco_para' => true,
         'tipo_pedido' => true,
+        'origem' => true,
         'status_pedido' => true,
         'data_pedido' => true,
         'user' => true,

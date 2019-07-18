@@ -67,6 +67,7 @@ class PedidosController extends AppController
 
     public function add($isComanda = false)
     {
+        /** @var $pedido Pedido */
         $pedido = $this->instanceNewPedido($isComanda);
         if ($this->request->is('post')) {
             if ($isComanda) {
@@ -74,7 +75,7 @@ class PedidosController extends AppController
             } else {
                 $pedido = $this->beanModelPedido($pedido, $this->request->getData());
             }
-
+            $pedido->origem = Pedido::ORIGEM_SITE_ADMIN;
             if ($this->Pedidos->save($pedido)) {
                 $this->Flash->success(__('Pedido aberto com sucesso.'));
                 if ($isComanda) {
@@ -95,41 +96,59 @@ class PedidosController extends AppController
         $this->set(compact('pedido', 'isComanda', 'users', 'formasPagamento'));
     }
 
-    public function addItem($id = null){
+    public function addItem($id = null)
+    {
         $pedido = $this->Pedidos->get($id, [
             'contain' => []
         ]);
         $this->set(compact('pedido'));
     }
 
-    public function defineEntrega($id = null){
+    public function defineEntrega($id = null)
+    {
         $pedido = $this->Pedidos->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $dados = $this->request->getData();
             $valorEntregaFixed = false;
-            if(is_float($dados['valor_entrega'])){
+            if (is_float($dados['valor_entrega'])) {
                 $valorEntregaFixed = floatval($dados['valor_entrega']);
             }
-            try{
+            try {
                 $this->calcularEntrega($dados['endereco_id'], $pedido, $valorEntregaFixed);
-                $this->Flash->success(__('Entrega vinculada com sucesso.'));
-                return $this->redirect(['action' => 'addItem', $pedido->id]);
-            }catch (\Exception $exception){
+                $temposMediosTable = $this->getTableLocator()->get('TemposMedios');
+                if ($dados['endereco_id'] == Pedido::RETIRAR_NO_LOCAL) {
+                    $tempoMedio = $pedido->tempo_producao_aproximado_minutos = $temposMediosTable->find()->where(['ativo' => true, 'tipo' => TemposMedio::TIPO_PARA_COLETA, 'empresa_id' => $pedido->empresa_id])->first();
+                } else {
+                    $tempoMedio = $temposMediosTable->find()->where(['ativo' => true, 'tipo' => TemposMedio::TIPO_PARA_ENTREGA, 'empresa_id' => $pedido->empresa_id])->first();
+                }
+                $tempoMinutos = 60;
+                if($tempoMedio){
+                    /** @var $tempoMedio TemposMedio */
+                    $tempoMinutos = $tempoMedio->tempo_medio_producao_minutos;
+                }
+                $pedido->tempo_producao_aproximado_minutos = $tempoMinutos;
+                if($this->Pedidos->save($pedido)){
+                    $this->Flash->success(__('Entrega vinculada com sucesso.'));
+                    return $this->redirect(['action' => 'addItem', $pedido->id]);
+                }else{
+                    throw new \Exception('Erro ao salvar pedido');
+                }
+            } catch (\Exception $exception) {
                 $exMessage = new ExceptionSQLMessage();
                 $this->Flash->error(__($exMessage->getMessage($exception)));
             }
         }
         $users = $this->getTableLocator()->get('Users')->find('list')->where(['tipo' => User::TIPO_CLIENTE]);
-        /** @var $enderecosClienteModel Endereco[]*/
+        /** @var $enderecosClienteModel Endereco[] */
         $enderecosClienteModel = $this->getTableLocator()->get('Enderecos')->find()->where(['user_id' => $pedido->user_id]);
         $enderecosCliente = [];
-        foreach ($enderecosClienteModel as $endereco){
-            $enderecosCliente[$endereco->id] = "Rua: ".$endereco->rua." Número: ". $endereco->numero." Bairro: ".$endereco->bairro.", ".$endereco->cidade."-".$endereco->estado;
+        foreach ($enderecosClienteModel as $endereco) {
+            $enderecosCliente[$endereco->id] = "Rua: " . $endereco->rua . " Número: " . $endereco->numero . " Bairro: " . $endereco->bairro . ", " . $endereco->cidade . "-" . $endereco->estado;
         }
         $enderecosCliente[Pedido::RETIRAR_NO_LOCAL] = 'Cliente irá buscar o pedido';
-        $this->set(compact('pedido','users', 'enderecosCliente'));
+        $this->set(compact('pedido', 'users', 'enderecosCliente'));
     }
 
     private function instanceNewPedido($isComanda)
@@ -190,7 +209,7 @@ class PedidosController extends AppController
             'status_pedido' => Pedido::STATUS_EM_PRODUCAO,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
-        $coleta  = $this->Pedidos->find()->where([
+        $coleta = $this->Pedidos->find()->where([
             'status_pedido' => Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
@@ -198,11 +217,11 @@ class PedidosController extends AppController
             'status_pedido' => Pedido::STATUS_AGUARDANDO_ENTREGADOR,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
-        $emRota  = $this->Pedidos->find()->where([
+        $emRota = $this->Pedidos->find()->where([
             'status_pedido' => Pedido::STATUS_SAIU_PARA_ENTREGA,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
-        $entregue =  $this->Pedidos->find()->where([
+        $entregue = $this->Pedidos->find()->where([
             'status_pedido' => Pedido::STATUS_ENTREGUE,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
@@ -220,7 +239,7 @@ class PedidosController extends AppController
         ];
         $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('data_pedido', SORT_ASC);
         $title = $this->getTituloPage(self::PEDIDOS_NOVOS);
-        $this->set(compact('pedidos','title'));
+        $this->set(compact('pedidos', 'title'));
     }
 
     public function entregues()
@@ -234,7 +253,7 @@ class PedidosController extends AppController
         ];
         $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('data_pedido', SORT_ASC);
         $title = $this->getTituloPage(self::PEDIDOS_ENTREGUES);
-        $this->set(compact('pedidos','title'));
+        $this->set(compact('pedidos', 'title'));
     }
 
     public function producao()
@@ -248,7 +267,7 @@ class PedidosController extends AppController
         ];
         $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
         $title = $this->getTituloPage(self::PEDIDOS_EM_PRODUCAO);
-        $this->set(compact('pedidos','title'));
+        $this->set(compact('pedidos', 'title'));
     }
 
     public function coleta()
@@ -262,7 +281,7 @@ class PedidosController extends AppController
         ];
         $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
         $title = $this->getTituloPage(self::PEDIDOS_AGUARDANDO_COLETA_CLIENTE);
-        $this->set(compact('pedidos','title'));
+        $this->set(compact('pedidos', 'title'));
     }
 
     public function entrega()
@@ -276,7 +295,7 @@ class PedidosController extends AppController
         ];
         $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
         $title = $this->getTituloPage(self::PEDIDOS_AGUARDANDO_ENTREGA);
-        $this->set(compact('pedidos','title'));
+        $this->set(compact('pedidos', 'title'));
     }
 
     public function emRota()
@@ -290,56 +309,60 @@ class PedidosController extends AppController
         ];
         $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
         $title = $this->getTituloPage(self::PEDIDOS_EM_ROTA);
-        $this->set(compact('pedidos','title'));
+        $this->set(compact('pedidos', 'title'));
     }
 
 
-    public function concluirPedido($id = null){
+    public function concluirPedido($id = null)
+    {
         $pedido = $this->Pedidos->get($id, [
             'contain' => []
         ]);
         $entrega = $this->getTableLocator()->get('PedidosEntregas')->find()->where(['pedido_id' => $pedido->id])->first();
         $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE;
-        if($entrega){
+        if ($entrega) {
             $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_ENTREGADOR;
         }
-        if($this->Pedidos->save($pedido)){
+        if ($this->Pedidos->save($pedido)) {
             $this->Flash->success(__('Produção do pedido concluida com sucesso.'));
             return $this->redirect(['action' => 'producao']);
         }
         $this->Flash->error(__('Não foi possivel colocar o status do pedido para o esperado.'));
     }
 
-    public function setColetado($id = null){
+    public function setColetado($id = null)
+    {
         $pedido = $this->Pedidos->get($id, [
             'contain' => []
         ]);
         $pedido->status_pedido = Pedido::STATUS_ENTREGUE;
-        if($this->Pedidos->save($pedido)){
+        if ($this->Pedidos->save($pedido)) {
             $this->Flash->success(__('Pedido definido como coletado pelo cliente.'));
             return $this->redirect(['action' => 'coleta']);
         }
         $this->Flash->error(__('Não foi possivel colocar o status do pedido para o esperado.'));
     }
 
-    public function setEntregue($id = null){
+    public function setEntregue($id = null)
+    {
         $pedido = $this->Pedidos->get($id, [
             'contain' => []
         ]);
         $pedido->status_pedido = Pedido::STATUS_ENTREGUE;
-        if($this->Pedidos->save($pedido)){
+        if ($this->Pedidos->save($pedido)) {
             $this->Flash->success(__('Pedido definido como entregue ao cliente.'));
             return $this->redirect(['action' => 'emRota']);
         }
         $this->Flash->error(__('Não foi possivel colocar o status do pedido para o esperado.'));
     }
 
-    public function setSaiuParaEntrega($id = null){
+    public function setSaiuParaEntrega($id = null)
+    {
         $pedido = $this->Pedidos->get($id, [
             'contain' => []
         ]);
         $pedido->status_pedido = Pedido::STATUS_SAIU_PARA_ENTREGA;
-        if($this->Pedidos->save($pedido)){
+        if ($this->Pedidos->save($pedido)) {
             $this->Flash->success(__('Pedido definido em rota de entrega.'));
             return $this->redirect(['action' => 'entrega']);
         }
@@ -547,8 +570,9 @@ class PedidosController extends AppController
         }
     }
 
-    private function calcularEntrega($endereco, $newPedido, $valorEntregaFixed = false){
-        if($endereco == Pedido::RETIRAR_NO_LOCAL){
+    private function calcularEntrega($endereco, $newPedido, $valorEntregaFixed = false)
+    {
+        if ($endereco == Pedido::RETIRAR_NO_LOCAL) {
             return;
         }
         $tableLocator = $this->getTableLocator();
@@ -559,9 +583,9 @@ class PedidosController extends AppController
         $newPedidoEntrega = $pedidoEntregaTable->newEntity();
         $newPedidoEntrega->pedido_id = $newPedido->id;
         $newPedidoEntrega->endereco_id = $enderecoClienteModel->id;
-        if($valorEntregaFixed){
+        if ($valorEntregaFixed) {
             $newPedidoEntrega->valor_entrega = $valorEntregaFixed;
-        }else{
+        } else {
             $ruaFinal = str_replace(' ', '%20', $enderecoClienteModel->rua);
             $numeroFinal = str_replace(' ', '%20', $enderecoClienteModel->numero);
             $bairroFinal = str_replace(' ', '%20', $enderecoClienteModel->bairro);
@@ -622,15 +646,21 @@ class PedidosController extends AppController
         }
     }
 
-    public function confirmarAbertura($pedido){
+    public function confirmarAbertura($pedido)
+    {
         $this->render(false);
         $this->Pedidos->getConnection()->begin();
-        /** @var $pedido Pedido*/
+        /** @var $pedido Pedido */
         $pedido = $this->Pedidos->find()->where(['id' => $pedido])->first();
+        $pedidosProdutos = $this->getTableLocator()->get('PedidosProdutos')->find()->where(['pedido_id' => $pedido->id])->count();
+        if ($pedidosProdutos < 1) {
+            $this->Flash->error(__('Não foi possível confirmar um pedido sem itens, por favor recarregue a pagina usando a tecla F5.'));
+            return $this->redirect(['action' => 'addItem', $pedido->id]);
+        }
         $successStatus = false;
-        if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA){
+        if ($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA) {
             $pedido->status_pedido = Pedido::STATUS_ABERTA;
-        }else{
+        } else {
             $pedido->status_pedido = Pedido::STATUS_EM_PRODUCAO;
         }
         if ($this->Pedidos->save($pedido)) {
@@ -649,7 +679,7 @@ class PedidosController extends AppController
         }
         if ($gravouTodosItens && $successStatus) {
             $this->Pedidos->getConnection()->commit();
-            if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA){
+            if ($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA) {
                 $this->Flash->success(__('Comanda Confirmada Com Sucesso.'));
                 return $this->redirect(['action' => 'comandas']);
             }
@@ -661,7 +691,8 @@ class PedidosController extends AppController
         }
     }
 
-    private function persistProdutosPedido(Pedido $newPedido){
+    private function persistProdutosPedido(Pedido $newPedido)
+    {
         //Adiciona os itens que compoem este pedido
         $tableLocator = $this->getTableLocator();
         $itensCarrinhoTable = $tableLocator->get('ItensCarrinhos');
@@ -679,14 +710,14 @@ class PedidosController extends AppController
             $valoTotalProdutos = $valoTotalProdutos + $item->valor_total_cobrado;
             $newItem->observacao = $item->observacao;
             $newItem->opcionais = $item->opicionais;
-            /** @var $produto Produto*/
+            /** @var $produto Produto */
             $produto = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $item->produto_id])->first();
             $newItem->ambiente_producao_responsavel = $produto->ambiente_producao_responsavel;
             $newItem->status = PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO;
             if (!$pedidosProdutosTable->save($newItem)) {
                 throw new \Exception('Erro ao cadastrar item');
             }
-            if(!$itensCarrinhoTable->delete($item)){
+            if (!$itensCarrinhoTable->delete($item)) {
                 throw new \Exception('Erro ao excluir item do carrinho');
             }
         }
@@ -707,12 +738,13 @@ class PedidosController extends AppController
             $newPedido->valor_produtos = 0;
             $newPedido->status_pedido = Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE;
             $dateTime = new  \DateTime();
-            $dateTime->setTime ( $dateTime->format("H"), $dateTime->format('i'), 0 );
+            $dateTime->setTime($dateTime->format("H"), $dateTime->format('i'), 0);
             $newPedido->data_pedido = $dateTime;
             $newPedido->empresa_id = $this->empresaUtils->getEmpresaBase();
-            if ($endereco != Pedido::RETIRAR_NO_LOCAL){
+            $newPedido->origem = Pedido::ORIGEM_APP_CLIENTE;
+            if ($endereco != Pedido::RETIRAR_NO_LOCAL) {
                 $tempoMedio = $tableLocator->get('TemposMedios')->find()->where(['ativo' => true, 'tipo' => TemposMedio::TIPO_PARA_ENTREGA]);
-            }else{
+            } else {
                 $tempoMedio = $tableLocator->get('TemposMedios')->find()->where(['ativo' => true, 'tipo' => TemposMedio::TIPO_PARA_COLETA]);
             }
             $tempoFinal = 0;
@@ -725,9 +757,9 @@ class PedidosController extends AppController
             $this->render(false);
             if ($this->Pedidos->save($newPedido)) {
                 $newPedido = $this->persistProdutosPedido($newPedido);
-                if($this->Pedidos->save($newPedido)){
+                if ($this->Pedidos->save($newPedido)) {
                     $this->calcularEntrega($endereco, $newPedido);
-                }else{
+                } else {
                     throw new \Exception('Erro ao cadastrar pedido');
                 }
             } else {
@@ -895,14 +927,16 @@ class PedidosController extends AppController
         echo json_encode(['success' => $success]);
     }
 
-    public function meusPedidos(){
+    public function meusPedidos()
+    {
         $pedidos = $this->Pedidos->find()->where(['user_id' => $this->empresaUtils->getUserId()])->orderDesc('id');
         $this->set(compact('pedidos'));
     }
 
-    public function verStatus($id = null){
+    public function verStatus($id = null)
+    {
         $pedido = $this->Pedidos->get($id);
-        if($pedido->user_id !== $this->empresaUtils->getUserId()){
+        if ($pedido->user_id !== $this->empresaUtils->getUserId()) {
             $this->Flash->error(__('O pedido informado não pertence ao seu usuário.'));
             return $this->redirect(['action' => 'meusPedidos']);
         }
@@ -912,7 +946,7 @@ class PedidosController extends AppController
     public function view($id = null)
     {
         $pedido = $this->Pedidos->get($id);
-        if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_DELIVERY){
+        if ($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_DELIVERY) {
             $pedido->user = $this->getTableLocator()->get('Users')->find()->where(['id' => $pedido->user_id])->first();
         }
         $this->set('pedido', $pedido);

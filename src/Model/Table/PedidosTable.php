@@ -1,6 +1,9 @@
 <?php
 namespace App\Model\Table;
 
+use App\Controller\LogsController;
+use App\Model\Entity\Log;
+use App\Model\Entity\Pedido;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -25,6 +28,24 @@ use Cake\Validation\Validator;
  */
 class PedidosTable extends Table
 {
+
+    /**
+     * Verifica se tivemos alteração da situacao, para criar a notificacao para o usuário
+     *
+     * @param $event
+     * @param $entity
+     * @param $options
+     */
+    public function afterSave($event, $entity, $options) {
+        /** @var $entity Pedido*/
+        $statusAnterior = $entity->getOriginal('status_pedido');
+        $statusAtual = $entity->status_pedido;
+        if(($statusAnterior != $statusAtual) && $entity->tipo_pedido = Pedido::TIPO_PEDIDO_DELIVERY){
+            //Vamos gerar a notificacao
+            $situacaoList = Pedido::getDeliveryStatusList();
+            LogsController::newInstanceLog(Log::TIPO_NOTIFICACAO_USUARIO, 'Seu pedido #'.$entity->id.', teve uma alteração de situação. A nova situação é: '.$situacaoList[$statusAtual].'.', $entity->user_id);
+        }
+    }
 
     /**
      * Initialize method
@@ -109,6 +130,10 @@ class PedidosTable extends Table
             ->integer('tipo_pedido')
             ->requirePresence('tipo_pedido', 'create')
             ->allowEmptyString('tipo_pedido', false);
+
+        $validator
+            ->integer('origem')
+            ->allowEmptyString('origem', false);
 
         $validator
             ->integer('status_pedido')

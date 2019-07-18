@@ -8,7 +8,9 @@ namespace App\Model\Utils;
 
 
 use App\Controller\AppController;
+use App\Controller\LogsController;
 use App\Model\Entity\CategoriasProduto;
+use App\Model\Entity\Log;
 use App\Model\Entity\PedidosProduto;
 use App\View\AppView;
 use Cake\Datasource\ConnectionManager;
@@ -398,6 +400,7 @@ class SiteUtils extends AppController
         /** @var $categorias CategoriasProduto[] */
         $categorias = $this->getTableLocator()->get('CategoriasProdutos')->find();
         $itensCarrinhos = $this->getTableLocator()->get('ItensCarrinhos')->find()->where(['user_id' => $this->Auth->user('id')])->count();
+        $notificacoes = $this->getTableLocator()->get('Logs')->find()->where(['user_id' => $this->Auth->user('id'), 'situacao' => Log::SITUACAO_PENDENTE])->count();
         echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">';
         echo $this->Html->link(($cakeDescription), ['controller' => 'pages', 'action' => ''], ['class' => 'navbar-brand']);
         echo '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>';
@@ -419,6 +422,9 @@ class SiteUtils extends AppController
         echo '</div>';
         echo '</li>';
         if ($this->Auth->user('id')) {
+            echo '<li class="nav-item">';
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-bell')) . ' Notificações' . $this->Html->tag('div', $notificacoes, array('class' => 'icon-notify-number')), array('controller' => 'pages', 'action' => 'notificacao'), array('escape' => false, 'class' => 'nav-link'));
+            echo '</li>';
             echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-circle')) . ' Minha Conta', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';

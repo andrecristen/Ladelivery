@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use App\Model\Entity\User;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -84,14 +85,19 @@ class EmpresasController extends AppController
         $empresa = $this->Empresas->get($id, [
             'contain' => []
         ]);
+        $empresaUtils = new EmpresaUtils();
+        if($empresa->id != $empresaUtils->getUserEmpresaId()){
+            $this->Flash->error(__('Você não pode editar esta empresa, você só pode editar a sua empresa.'));
+            return $this->redirect(['action' => 'index']);
+        }
         if ($this->request->is(['patch', 'post', 'put'])) {
             $empresa = $this->Empresas->patchEntity($empresa, $this->request->getData());
             if ($this->Empresas->save($empresa)) {
-                $this->Flash->success(__('The empresa has been saved.'));
+                $this->Flash->success(__('Empresa salva com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The empresa could not be saved. Please, try again.'));
+            $this->Flash->error(__('Erro, tente novamente.'));
         }
         $this->set(compact('empresa'));
     }

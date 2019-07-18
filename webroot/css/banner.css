@@ -17,6 +17,15 @@
     margin-left: 5px;
     background: white;
 }
+.icon-notify-number{
+    border-radius: 50%;
+    color: black;
+    float: right;
+    width: 27px;
+    text-align: center;
+    margin-left: 5px;
+    background: white;
+}
 
 .menu-site{
     background: #343a40!important;

@@ -66,7 +66,8 @@ class UsersController extends AppController
             'contain' => []
         ]);
         $contatos = $this->getTableLocator()->get('UsersContatos')->find()->where(['user_id' => $user->id]);
-        $this->set(compact('user','contatos'));
+        $enderecos = $this->getTableLocator()->get('Enderecos')->find()->where(['user_id' => $user->id]);
+        $this->set(compact('user','contatos', 'enderecos'));
     }
 
     public function profile(){
@@ -119,7 +120,7 @@ class UsersController extends AppController
                 $perilsIniciais = $perilsIniciaisTable->find()->where(['padrao_novos_users' => true]);
                 foreach ($perilsIniciais as $perfilInicial){
                     $userPerfil = new PerfilsUser();
-                    $userPerfil->user_id = $this->empresaUtils->getUserId();
+                    $userPerfil->user_id = $user->id;
                     $userPerfil->perfil_id = $perfilInicial->id;
                     $this->getTableLocator()->get('PerfilsUsers')->save($userPerfil);
                 }

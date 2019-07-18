@@ -43,6 +43,33 @@ $listTipoContato =\App\Model\Entity\UsersContato::getTipoList();
         </tr>
     </table>
     <div class="related">
+        <h4><?= __('Endereços:') ?></h4>
+        <?php if (!empty($enderecos)): ?>
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <th scope="col"><?= __('Rua') ?></th>
+                    <th scope="col"><?= __('Núm.') ?></th>
+                    <th scope="col"><?= __('Bairro') ?></th>
+                    <th scope="col"><?= __('Cidade') ?></th>
+                    <th scope="col"><?= __('Estado') ?></th>
+                    <th scope="col"><?= __('CEP') ?></th>
+                    <th scope="col"><?= __('Complemento') ?></th>
+                </tr>
+                <?php foreach ($enderecos as $enderecos): ?>
+                    <tr>
+                        <td><?= h($enderecos->rua) ?></td>
+                        <td><?= h($enderecos->numero) ?></td>
+                        <td><?= h($enderecos->bairro) ?></td>
+                        <td><?= h($enderecos->cidade) ?></td>
+                        <td><?= h($enderecos->estado) ?></td>
+                        <td><?= h($enderecos->cep) ?></td>
+                        <td><?= h($enderecos->complemento) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php endif; ?>
+    </div>
+    <div class="related">
         <h4><?= __('Contatos:') ?></h4>
         <?php if (!empty($contatos)): ?>
             <table cellpadding="0" cellspacing="0">

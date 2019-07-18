@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $empresa_id
  * @property int $ambiente_producao_responsavel
+ * @property int $ambiente_venda
  * @property int $midia_id
  * @property string $nome_produto
  * @property int $categorias_produto_id
@@ -24,6 +25,17 @@ use Cake\ORM\Entity;
  */
 class Produto extends Entity
 {
+    const VENDA_AMBOS = 1;
+    const VENDA_COMANDA = 2;
+    const VENDA_DELIVERY = 3;
+
+    public static function getAmbienteVendaList(){
+        return [
+          self::VENDA_AMBOS => 'Ambos',
+          self::VENDA_COMANDA => 'Somente Comanda',
+          self::VENDA_DELIVERY => 'Somente Delivery',
+        ];
+    }
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -39,6 +51,7 @@ class Produto extends Entity
         'midia_id' => true,
         'empresa_id' => true,
         'ambiente_producao_responsavel' => true,
+        'ambiente_venda' => true,
         'categorias_produto_id' => true,
         'descricao_produto' => true,
         'preco_produto' => true,

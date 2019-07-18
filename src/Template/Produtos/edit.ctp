@@ -20,6 +20,7 @@ $listasJson = json_encode($produto->listas);
             echo $this->Form->control('categorias_produto_id', ['options' => $categoriasProdutos, 'label' => 'Categoria', 'required' => 'required']);
             echo $this->Form->control('descricao_produto', ['label' => 'Descrição', 'required' => 'required']);
             echo $this->Form->control('ambiente_producao_responsavel', ['options' => \App\Model\Entity\PedidosProduto::getAmbienteResponsavel()]);
+            echo $this->Form->control('ambiente_venda', ['options' => \App\Model\Entity\Produto::getAmbienteVendaList()]);
             echo $this->Form->control('preco_produto', ['label' => 'Preço', 'required' => 'required']);
             echo $this->Form->control('ativo_produto', ['label' => 'Ativo']);
             echo '<br />';

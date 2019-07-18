@@ -134,7 +134,7 @@ $empresa = $empresaUtils->getEmpresaBaseModel()
     </div>
     <!-- Copyright -->
     <div style="color: white" class="footer-copyright text-center py-3">
-        © 2019 Sistema desenvolvido por <a target="_blank" href="https://sites.google.com/view/ladev"> LaDev</a>
+        © 2019 Sistema desenvolvido por <a target="_blank" href="http://ladevsistemas.com.br"> LaDev</a>
     </div>
     <div class="footer-copyright text-center py-3">
         <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-shield')).' Painel Administrador', array('controller' => 'Financeiro', 'action' => 'painel'), array('escape' => false , 'class' => 'btn btn-sm btn-info')) ?>

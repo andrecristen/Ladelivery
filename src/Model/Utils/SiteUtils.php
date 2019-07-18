@@ -12,6 +12,7 @@ use App\Controller\LogsController;
 use App\Model\Entity\CategoriasProduto;
 use App\Model\Entity\Log;
 use App\Model\Entity\PedidosProduto;
+use App\Model\Entity\Produto;
 use App\View\AppView;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Response;
@@ -310,7 +311,7 @@ class SiteUtils extends AppController
         echo '</div>';
     }
 
-    public final function createProdutosCategoria($categoria, $showStars = true, $isAdmin = false, $showFoto = true, $titleButtonComprar = false)
+    public final function createProdutosCategoria($categoria, $showStars = true, $isAdmin = false, $showFoto = true, $titleButtonComprar = false, $ambienteVenda = Produto::VENDA_DELIVERY)
     {
         if (!$titleButtonComprar) {
             $titleButtonComprar = 'Comprar';
@@ -320,6 +321,7 @@ class SiteUtils extends AppController
         if ($categoria) {
             $condicao['categorias_produto_id'] = intval($categoria);
         }
+        $condicao['ambiente_venda in'] = [$ambienteVenda, Produto::VENDA_AMBOS];
         $produtos = $this->getTableLocator()->get('Produtos')->find()->where($condicao);
         $produtoscount = 0;
         foreach ($produtos as $produto) {

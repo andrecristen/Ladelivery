@@ -22,6 +22,7 @@ class TaxasEntregasCotacaoFaixasController extends AppController
     {
         parent::__construct($request, $response, $name, $eventManager, $components);
         $this->empresaUtils = new EmpresaUtils();
+        $this->validateActions();
     }
 
     /**
@@ -34,7 +35,7 @@ class TaxasEntregasCotacaoFaixasController extends AppController
         $this->paginate = [
             'contain' => ['Empresas']
         ];
-        $taxasEntregasCotacaoFaixas = $this->paginate($this->TaxasEntregasCotacaoFaixas);
+        $taxasEntregasCotacaoFaixas = $this->paginate($this->TaxasEntregasCotacaoFaixas->find()->where($this->generateConditionsFind()));
 
         $this->set(compact('taxasEntregasCotacaoFaixas'));
     }

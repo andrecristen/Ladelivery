@@ -23,6 +23,8 @@ class UsersContatosController extends AppController
         $this->empresaUtils = new EmpresaUtils();
         $this->setPublicAction('meusContatos');
         $this->setPublicAction('addContatoCliente');
+        $this->setPublicAction('editarContatoCliente');
+        $this->setPublicAction('excluirContatoCliente');
         $this->validateActions();
     }
 
@@ -77,6 +79,42 @@ class UsersContatosController extends AppController
             $this->Flash->error(__('Não foi possivel salvar o contato.'));
         }
         $this->set(compact('usersContato'));
+    }
+
+    public function editarContatoCliente($id = null){
+        $usersContato = $this->UsersContatos->get($id, [
+            'contain' => []
+        ]);
+        if($usersContato->user_id == $this->empresaUtils->getUserId()){
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                $usersContato = $this->UsersContatos->patchEntity($usersContato, $this->request->getData());
+                if ($this->UsersContatos->save($usersContato)) {
+                    $this->Flash->success(__('Contato salvo.'));
+
+                    return $this->redirect(['action' => 'meusContatos']);
+                }
+                $this->Flash->error(__('Erro ao salvar contato, tente novamente.'));
+            }
+        }else{
+            $this->Flash->error(__('Não autorizada edição.'));
+            return $this->redirect(['action' => 'meusContatos']);
+        }
+        $this->set(compact('usersContato'));
+    }
+
+    public function excluirContatoCliente($id = null){
+        $this->render(false);
+        $usersContato = $this->UsersContatos->get($id);
+        if($usersContato->user_id == $this->empresaUtils->getUserId()){
+            if ($this->UsersContatos->delete($usersContato)) {
+                $this->Flash->success(__('Contato excluído.'));
+            } else {
+                $this->Flash->error(__('Não foi possivel excluir o contato, tente novamente..'));
+            }
+        }else{
+            $this->Flash->error(__('Exclusão não autorizada.'));
+        }
+        return $this->redirect(['action' => 'meusContatos']);
     }
 
     /**

@@ -1,8 +1,4 @@
 <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Endereco $endereco
- */
 $siteUtils = new \App\Model\Utils\SiteUtils();
 $siteUtils->menuSite();
 ?>
@@ -17,18 +13,18 @@ $siteUtils->menuSite();
     <br/>
     <?= $this->Form->create($endereco) ?>
     <fieldset>
-        <legend><?= __('Adicionar Endereço') ?></legend>
+        <legend>Editar Endereço</legend>
         <?php
         echo $this->Form->control('rua');
-        echo $this->Form->control('numero', ['required'=>'required']);
+        echo $this->Form->control('numero', ['required' => 'required']);
         echo $this->Form->control('bairro');
         echo $this->Form->control('cidade');
         echo $this->Form->control('cep', ['label'=>'CEP']);
         echo $this->Form->control('complemento', ['required'=>'required']);
-        echo $this->Form->control('estado', ['options' => $endereco->getEstados()]);
+        echo $this->Form->control('estado', ['options' => \App\Model\Entity\Endereco::getEstados()]);
         ?>
         <br/>
     </fieldset>
-    <?= $this->Form->button(__('Adicionar')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

@@ -21,12 +21,16 @@ $empresa = $empresaUtils->getEmpresaBaseModel();
 /** @var $empresaEndereco \App\Model\Entity\EnderecosEmpresa*/
 $empresaEndereco = $empresaUtils->getEmpresaBaseEnderecoModel();
 $iconsContato = \App\Model\Entity\Empresa::getTipoContatoIconList();
+/** @var $horariosAtendimento \App\Model\Entity\HorariosAtendimento[]*/
+$horariosAtendimento = $tableLocator->get('HorariosAtendimentos')->find()->where(['empresa_id' => $empresaUtils->getEmpresaBase()])->orderAsc('dia_semana')->orderAsc('turno');
+$diaSemanaList = \App\Model\Entity\HorariosAtendimento::getDiaSemanaList();
+$turnoList = \App\Model\Entity\HorariosAtendimento::getTurnoList();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <?php $siteUtils->ambiguousHeadImportsSite() ?>
-    <title>Quem Somos</title>
+    <title>Sobre Nós</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -65,6 +69,11 @@ $iconsContato = \App\Model\Entity\Empresa::getTipoContatoIconList();
                     break;
             }
             ?>
+        <?php }?>
+        <h2>Horários de Atendimento</h2>
+        <?php foreach ($horariosAtendimento as $horario){
+            ?>
+            <h5><?= $diaSemanaList[$horario->dia_semana]?> - <?= $horario->hora_inicio->format('H:i')?>h às  <?= $horario->hora_fim->format('H:i')?>h</h5>
         <?php }?>
     </div>
 </div>

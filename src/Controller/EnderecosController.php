@@ -21,6 +21,7 @@ class EnderecosController extends AppController
         $this->setPublicAction('meusEnderecos');
         $this->setPublicAction('addEnderecoCliente');
         $this->setPublicAction('excluirEnderecoCliente');
+        $this->setPublicAction('editarEnderecoCliente');
         $this->validateActions();
     }
 
@@ -170,6 +171,26 @@ class EnderecosController extends AppController
         }else {
             $this->Flash->error(__('Exclusão não autorizada.'));
         }
-        return $this->redirect(['action' => 'meusEnderecos/'.$this->Auth->user('id')]);
+        return $this->redirect(['action' => 'meusEnderecos']);
+    }
+
+    public function editarEnderecoCliente($id = null){
+        $endereco = $this->Enderecos->get($id, [
+            'contain' => []
+        ]);
+        if($endereco->user_id == $this->Auth->user('id')){
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                $endereco = $this->Enderecos->patchEntity($endereco, $this->request->getData());
+                if ($this->Enderecos->save($endereco)) {
+                    $this->Flash->success(__('Endereço salvo.'));
+                    return $this->redirect(['action' => 'meusEnderecos']);
+                }
+                $this->Flash->error(__('Erro ao salvar endereço, tente novamente.'));
+            }
+            $this->set(compact('endereco'));
+        }else{
+            $this->Flash->error(__('Não autorizada edição.'));
+            return $this->redirect(['action' => 'meusEnderecos']);
+        }
     }
 }

@@ -13,16 +13,14 @@ $siteUtils->menuSite();
                     class="fas fa-user-circle"></i> Minha Conta</a>
         <a href="/users-contatos/meus-contatos" class="btn btn-primary"><i class="fas fa-phone"></i> Contatos</a>
     </div>
-    <br/>
-    <br/>
     <?= $this->Form->create($usersContato) ?>
     <fieldset>
-        <legend><?= __('Adicionar Contato') ?></legend>
+        <legend><?= __('Editar Contato') ?></legend>
         <?php
         echo $this->Form->control('tipo',  ['options' => \App\Model\Entity\UsersContato::getTipoList()]);
         echo $this->Form->control('contato');
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Adicionar')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>

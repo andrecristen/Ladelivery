@@ -9,7 +9,7 @@ $siteUtils->menuSite();
 <div style="margin-top: 67px;" class="col-sm-12">
     <?= $this->Form->create($alteracaoSenha) ?>
     <fieldset>
-        <legend><?= __('Alterar Senha') ?></legend>
+        <legend><?= __('Solicitar alteração de senha') ?></legend>
         <?php
         echo $this->Form->control('email', ['type'=> 'email', 'required' => 'required']);
         ?>

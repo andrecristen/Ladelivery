@@ -48,12 +48,14 @@ class PedidosProdutosTable extends Table
             $pedidoTable = $tableLocator->get('Pedidos');
             /** @var $pedido Pedido*/
             $pedido = $pedidoTable->find()->where(['id' => $entity->pedido_id])->first();
-            if($pedido->getEntrega()){
-                $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_ENTREGADOR;
-            }else{
-                $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE;
+            if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_DELIVERY){
+                if($pedido->getEntrega()){
+                    $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_ENTREGADOR;
+                }else{
+                    $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE;
+                }
+                $pedidoTable->save($pedido);
             }
-            $pedidoTable->save($pedido);
         }
     }
 

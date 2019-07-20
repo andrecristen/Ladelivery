@@ -11,6 +11,7 @@ use App\Controller\AppController;
 use App\Controller\LogsController;
 use App\Model\Entity\CategoriasProduto;
 use App\Model\Entity\Log;
+use App\Model\Entity\Pedido;
 use App\Model\Entity\PedidosProduto;
 use App\Model\Entity\Produto;
 use App\View\AppView;
@@ -183,17 +184,21 @@ class SiteUtils extends AppController
 
     public function createQuadrosKanbanPedidosProdutos(PedidosProduto $pedidosProduto)
     {
-        echo '<article class="kanban-entry grab" id="'.$pedidosProduto->id.'" draggable="true">
+        $tipo = 'Pedido';
+        if($pedidosProduto->pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA){
+            $tipo = 'Comanda';
+        }
+        echo '<article class="kanban-entry grab" id="' . $pedidosProduto->id . '" draggable="true">
                   <div class="kanban-entry-inner">
                       <div class="kanban-label">
-                          <h2><a href="#">#Item: '.$pedidosProduto->id.'</a> <span>#Pedido: '.$pedidosProduto->pedido_id.'</span></h2>
-                          <p>Produto: '.$pedidosProduto->produto->nome_produto.'</p>
-                          <p>Quantidade: '.$pedidosProduto->quantidade.'</p>
-                          <p>Produzidos: '.$pedidosProduto->quantidade_produzida.'</p>
-                          <p>Observação: '.$pedidosProduto->observacao.'</p>
+                          <h2><a href="#">#Item: ' . $pedidosProduto->id . '</a> <span>#'.$tipo.': ' . $pedidosProduto->pedido_id . '</span></h2>
+                          <p>Produto: ' . $pedidosProduto->produto->nome_produto . '</p>
+                          <p>Quantidade: ' . $pedidosProduto->quantidade . '</p>
+                          <p>Produzidos: ' . $pedidosProduto->quantidade_produzida . '</p>
+                          <p>Observação: ' . $pedidosProduto->observacao . '</p>
                           <br/>
-                          '.$this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-eye')) . '', array('controller' => 'PedidosProdutos', 'action' => 'view', $pedidosProduto->id), array('escape' => false, 'class' => 'btn btn-sm btn-info')).'
-                          '.$this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-exchange-alt')) . ' Quantidade Produzida', array('controller' => 'PedidosProdutos', 'action' => 'quantidadeProduzida', $pedidosProduto->id), array('escape' => false, 'class' => 'btn btn-sm btn-danger')).'
+                          ' . $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-eye')) . '', array('controller' => 'PedidosProdutos', 'action' => 'view', $pedidosProduto->id), array('escape' => false, 'class' => 'btn btn-sm btn-info')) . '
+                          ' . $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-exchange-alt')) . ' Quantidade Produzida', array('controller' => 'PedidosProdutos', 'action' => 'quantidadeProduzida', $pedidosProduto->id), array('escape' => false, 'class' => 'btn btn-sm btn-danger')) . '
                       </div>
                   </div>
               </article>';
@@ -201,16 +206,16 @@ class SiteUtils extends AppController
 
     public final function mensagemLogarParaComprar()
     {
-        echo '<div class="row">
+        echo '<div style="padding-left: 10px!important; padding-right: 10px!important;" class="row">
             <div style="width: 100%" class="alert alert-info">
-                <h4><i class="fas fa-exclamation-triangle fa-fw" style="color: #ff1b2e"></i>Para poder adicionar ao carrinho, por favor entre com sua conta! ' . $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')) . ' Entre Agora', array('controller' => 'Users', 'action' => 'login'), array('escape' => false, 'class' => '')) . '</h4>
+                <h4>Para poder adicionar ao carrinho, por favor entre com sua conta! ' . $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')) . ' Entre Agora', array('controller' => 'Users', 'action' => 'login'), array('escape' => false, 'class' => '')) . '</h4>
             </div>
         </div>';
     }
 
     public final function mensagemPedidoAberto()
     {
-        echo '<div class="row">
+        echo '<div style="padding-left: 10px!important; padding-right: 10px!important;" class="row">
                <div style="width: 100%" class="alert alert-info">
                 <h4>Você possui pedidos aguardando sua confirmação ou cancelamento, certifique-se de concluir primeiro este pedido antes de iniciar um novo!' . $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-basket')) . ' Ver Pedido', array('controller' => 'pages', 'action' => 'confirmar'), array('escape' => false, 'class' => '')) . '</h4>
                 </div>
@@ -219,12 +224,11 @@ class SiteUtils extends AppController
 
     public final function mensagemEmpresaFechada()
     {
-        echo '
-        <div class="row">
-            <div style="width: 100%" class="alert alert-danger">
-                <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos novos  <i class="fas fa-sad-cry fa-2x"></i></h4>
-            </div>
-        </div>';
+        echo '<div style="padding-left: 10px!important; padding-right: 10px!important;" class="row">
+                  <div style="width: 100%" class="alert alert-danger">
+                      <h4>Olá, ainda não estamos abertos, ou seja não é possível realizar pedidos novos  <i class="fas fa-sad-cry fa-2x"></i></h4>
+                  </div>
+              </div>';
     }
 
     public final function createFormAdicionarProduto($setUser = false, $diretoAoPedido = false)

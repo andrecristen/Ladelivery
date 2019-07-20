@@ -15,7 +15,7 @@ $siteUtils->menuSite();
         echo $this->Form->control('confirm_password', ['label'=>'Confirmar Senha', 'type'=>'password', 'required'=>'required']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Adicionar')) ?>
+    <?= $this->Form->button(__('Salvar')) ?>
     <?= $this->Form->end() ?>
 </div>
 

@@ -54,11 +54,11 @@ class PedidosProdutosController extends AppController
 
         $filtersFixed = [
             0 => ['produtos.ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_COZINHA],
-            1 => ['pedidos.status_pedido' => Pedido::STATUS_EM_PRODUCAO],
+            1 => ['pedidos.status_pedido in' => [Pedido::STATUS_EM_PRODUCAO, Pedido::STATUS_ABERTA]],
             2 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
             3 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
         ];
-        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
+        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_ASC);
         if ($agruparPorSituacao){
             $pedidosProdutos = $this->agruparPedidosProdutos($pedidosProdutos);
         }
@@ -85,12 +85,11 @@ class PedidosProdutosController extends AppController
         ];
         $filtersFixed = [
             0 => ['produtos.ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_BAR],
-            1 => ['pedidos.status_pedido' => Pedido::STATUS_EM_PRODUCAO],
+            1 => ['pedidos.status_pedido in' => [Pedido::STATUS_EM_PRODUCAO, Pedido::STATUS_ABERTA]],
             2 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
             3 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
         ];
-        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
-        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
+        $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_ASC);
         if ($agruparPorSituacao){
             $pedidosProdutos = $this->agruparPedidosProdutos($pedidosProdutos);
         }

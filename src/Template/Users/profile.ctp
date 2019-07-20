@@ -12,7 +12,7 @@ $siteUtils->menuSite();
             <div class="text-center">
                 <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
                 <div class="btn-group-top">
-                    <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-cart-arrow-down')).' Pedidos', array('controller' => 'pedidos', 'action' => 'meusPedidos'), array('escape' => false , 'class' => 'btn btn-success')) ?>
+                    <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-cart-arrow-down')).' Meus Pedidos', array('controller' => 'pedidos', 'action' => 'meusPedidos'), array('escape' => false , 'class' => 'btn btn-success')) ?>
                     <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-map-marked-alt')).' Endereços', array('controller' => 'enderecos', 'action' => 'meusEnderecos'), array('escape' => false , 'class' => 'btn btn-primary')) ?>
                     <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-phone')).' Contatos', array('controller' => 'usersContatos', 'action' => 'meusContatos'), array('escape' => false , 'class' => 'btn btn-danger')) ?>
                     <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-key')).' Senha', array('controller' => 'users', 'action' => 'alterarSenha'), array('escape' => false , 'class' => 'btn btn-dark', 'style' => 'color: #fff')) ?>

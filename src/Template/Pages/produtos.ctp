@@ -51,10 +51,11 @@ $produtoOpen = $params['?']['openProduto'];
     <?php }else{
         $siteUtils->createFormAdicionarProduto();
     ?>
-    <h4 class="my-4">Produtos da Categoria: <?= strtoupper($categoriaNome) ?></h4>
     <?php if (!$empresaUtils->getUserId()) {
         $siteUtils->mensagemLogarParaComprar()?>
     <?php } ?>
+    <h4 style="text-align: center">Produtos da Categoria: <?= strtoupper($categoriaNome) ?></h4>
+    <br>
     <div class="row">
         <?php
             $siteUtils->createProdutosCategoria($categoria);

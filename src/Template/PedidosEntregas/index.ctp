@@ -15,6 +15,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('#Endereco', 'endereco/id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
     $dataGrid->addField(new \App\Model\Utils\GridField('Entregador', 'user/nome_completo', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->setController($this->name);
+    $dataGrid->addActionRow('', ['action' => 'setEntregador'], ['class' => 'far fa-address-card btn btn-warning btn-sm', 'title' => 'Definir Entregador'], false, 'id');
     $dataGrid->display();
     ?>
 </div>

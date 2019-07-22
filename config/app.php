@@ -212,10 +212,10 @@ return [
         ],
         'gmail' => [
             'className' => 'Smtp',
-            'host' => 'ssl://smtp.gmail.com',
+            'host' => 'ssl://ladevsistemas.com.br',
             'port' => 465,
             'timeout' => 60,
-            'username' => 'ladev.sistemas@gmail.com',
+            'username' => 'noreply@ladevsistemas.com.br',
             'password' => 'Isoechato!2',
             'context' => [
                 'ssl' => [
@@ -239,7 +239,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'gmail',
-            'from' => 'ladev.sistemas@gmail.com',
+            'from' => 'noreply@ladevsistemas.com.br',
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],

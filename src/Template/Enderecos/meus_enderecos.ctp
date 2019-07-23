@@ -21,7 +21,7 @@ $listaEstados = $enderecoModel->getEstados();
             $enderecosCount = $enderecosCount + 1;
             ?>
             <div class="col-sm-6">
-                <div class="alert alert-info">
+                <div class="alert border">
                     <strong><?= 'Endereço Nº' . $enderecosCount ?></strong>
                     <fieldset>
                         <legend></legend>

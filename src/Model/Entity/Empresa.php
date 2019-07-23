@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property int $tipo_empresa
  * @property int $tipo_frete
  * @property float $valor_base_erro_frete
- * @property array|null $contatos
+ * @property string|null $contatos
  *
  * @property \App\Model\Entity\TemposMedio[] $tempos_medios
  */

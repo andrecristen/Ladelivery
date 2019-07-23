@@ -61,7 +61,7 @@ class EnderecosTable extends Table
 
         $validator
             ->scalar('rua')
-            ->maxLength('rua', 500)
+            ->maxLength('rua', 250)
             ->requirePresence('rua', 'create')
             ->allowEmptyString('rua', false);
 

@@ -99,7 +99,7 @@ class PedidosTable extends Table
 
         $validator
             ->scalar('cliente')
-            ->maxLength('cliente', 450)
+            ->maxLength('cliente', 250)
             ->allowEmptyString('cliente');
 
         $validator

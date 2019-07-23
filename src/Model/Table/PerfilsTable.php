@@ -50,7 +50,7 @@ class PerfilsTable extends Table
 
         $validator
             ->scalar('nome_perfil')
-            ->maxLength('nome_perfil', 300)
+            ->maxLength('nome_perfil', 200)
             ->requirePresence('nome_perfil', 'create')
             ->allowEmptyString('nome_perfil', false);
 

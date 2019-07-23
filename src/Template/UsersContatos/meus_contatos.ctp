@@ -20,7 +20,7 @@ $tipoContatoList = \App\Model\Entity\UsersContato::getTipoList();
             $contatosCount = $contatosCount + 1;
             ?>
             <div class="col-sm-6">
-                <div class="alert alert-info">
+                <div class="alert border">
                     <strong><?= 'Contato Nº' . $contatosCount ?></strong>
                     <fieldset>
                         <legend></legend>

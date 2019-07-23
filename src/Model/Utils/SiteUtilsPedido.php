@@ -35,7 +35,7 @@ class SiteUtilsPedido
         return false;
     }
 
-    public function getProdutosMaisVendidos($limit = 5){
+    public function getProdutosMaisVendidos($limit = 3){
         $sql = 'SELECT produto_id, COUNT(produto_id) as quantidade FROM pedidos_produtos GROUP BY produto_id ORDER BY quantidade DESC LIMIT '.$limit;
         $connection = ConnectionManager::get('default');
         $results = $connection->execute($sql)

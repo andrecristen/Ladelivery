@@ -63,6 +63,10 @@ class EmpresasController extends AppController
         $empresa = $this->Empresas->newEntity();
         if ($this->request->is('post')) {
             $empresa = $this->Empresas->patchEntity($empresa, $this->request->getData());
+            $contatos = $this->getRequest()->getData('contatos');
+            if($contatos){
+                $empresa->contatos = json_encode($contatos);
+            }
             if ($this->Empresas->save($empresa)) {
                 $this->Flash->success(__('The empresa has been saved.'));
 
@@ -92,6 +96,10 @@ class EmpresasController extends AppController
         }
         if ($this->request->is(['patch', 'post', 'put'])) {
             $empresa = $this->Empresas->patchEntity($empresa, $this->request->getData());
+            $contatos = $this->getRequest()->getData('contatos');
+            if($contatos){
+                $empresa->contatos = json_encode($contatos);
+            }
             if ($this->Empresas->save($empresa)) {
                 $this->Flash->success(__('Empresa salva com sucesso.'));
 

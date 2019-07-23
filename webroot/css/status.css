@@ -1,0 +1,22 @@
+.icon-item {
+    width: 20%;
+    float: left;
+    text-align: right;
+}
+
+.icon-obs {
+    padding: 15px;
+    color: black !important;
+}
+
+.four-div {
+    width: 25% !important;
+}
+
+.form-group {
+    margin-bottom: 4px !important;
+}
+
+h6 {
+    padding-left: 0px !important;
+}

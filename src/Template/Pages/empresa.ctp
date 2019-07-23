@@ -53,7 +53,9 @@ $turnoList = \App\Model\Entity\HorariosAtendimento::getTurnoList();
         <h5>Cidade: <?= $empresaEndereco->cidade?></h5>
         <h5>UF: <?= $empresaEndereco->estado?></h5>
         <h2>Contatos</h2>
-        <?php foreach ($empresa->contatos as $contato){
+        <?php
+        $contatos = json_decode($empresa->contatos, true);
+        foreach ($contatos as $contato){
             switch ($contato['tipo_contato']){
                 case \App\Model\Entity\Empresa::TIPO_CONTATO_FACEBOOK:
                     ?> <h5><a target="_blank" href="https://<?= $contato['valor_contato']?>"><i class="<?= $iconsContato[$contato['tipo_contato']]?>"></i> <?= $contato['valor_contato']?></a></h5><?php

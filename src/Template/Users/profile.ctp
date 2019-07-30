@@ -26,7 +26,7 @@ $siteUtils->menuSite();
             <fieldset>
                 <legend><?= __('Pessoa') ?></legend>
                 <?php
-                echo $this->Form->control('nome_completo');
+                echo $this->Form->control('nome_completo', ['type' => 'text']);
                 echo $this->Form->control('apelido');
                 ?>
             </fieldset>

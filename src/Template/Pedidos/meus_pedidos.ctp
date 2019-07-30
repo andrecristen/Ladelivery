@@ -12,7 +12,7 @@ $cacheVersion = $cacheControl->getCacheVersion();
 echo $this->Html->css('status.css' . $cacheVersion);
 ?>
 <div style="margin-top: 67px;" class="col-sm-12">
-    <h3 style="text-align: center">Em Andamento</h3>
+    <h2 style="text-align: center">Em Andamento</h2>
     <div style="margin-bottom: 15px!important;" class="col-sm-12">
         <?php
         $pedidosCount = 0;
@@ -22,10 +22,10 @@ echo $this->Html->css('status.css' . $cacheVersion);
             /** @var $entrega \App\Model\Entity\PedidosEntrega*/
             $entrega = $pedido->getEntrega()?>
             <div class="col-sm-12">
-                <h5 style="text-align: center">#Pedido: <?= $pedido->id?></h5>
+                <h4 style="text-align: center">#Pedido: <?= $pedido->id?></h4>
             </div>
-            <div class="col-sm-12 min-heigth">
-                <div class="col-sm-3 left">
+            <div class="row">
+                <div class="col-sm-4">
                     <div class="card min-heigth padding">
                         <p class="card-text">
                             <br>
@@ -47,19 +47,19 @@ echo $this->Html->css('status.css' . $cacheVersion);
                             <br>
                             <b>Valor Total: R$</b><?= $pedido->getValorTotal()?>
                         </p>
+                        <?= $this->Html->link(__(' Acompanhar Pedido'), ['action' => 'verStatus', $pedido->id], ['class' => 'far fa-eye btn btn-info btn-sm', 'title' => 'Visualizar Pedido']) ?>
                     </div>
                 </div>
-                <div class="col-sm-9 right ">
+                <div class="col-sm-8">
                     <div class="card min-heigth padding">
-                        <span>Resumo</span>
+                        <span style="font-weight: bold">Situação</span>
                         <br/>
                         <br/>
                         <br/>
                         <?php $siteUtils->createStatusPedido($pedido, false)?>
-                        <?= $this->Html->link(__(' Acompanhar Pedido'), ['action' => 'verStatus', $pedido->id], ['class' => 'far fa-eye btn btn-info btn-sm', 'title' => 'Visualizar Pedido']) ?>
+                        <br/>
                     </div>
                 </div>
-                <br/>
             </div>
         <?php }?>
     </div>
@@ -78,13 +78,4 @@ echo $this->Html->css('status.css' . $cacheVersion);
     <br>
 </div>
 <style>
-    .card{
-        text-align: center;
-    }
-    .padding{
-        padding: 15px;
-    }
-    .min-heigth{
-        min-height: 300px!important;
-    }
 </style>

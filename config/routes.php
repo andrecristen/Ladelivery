@@ -22,6 +22,11 @@ use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
 
+Router::scope('/api', function (RouteBuilder $routes) {
+    $routes->connect('/comandas/:action/*', array('controller' => 'Comandas'));
+    $routes->setExtensions(['json']);
+    $routes->resources('Comandas');
+});
 /**
  * The default class to use for all routes
  *

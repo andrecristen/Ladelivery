@@ -453,48 +453,145 @@ class SiteUtils extends AppController
     {
         $entrega = $pedido->getEntrega();
         if ($entrega) {
-            $this->createIconsEntrega($pedido);
-            echo '<br>';
-            $this->createProgressEntrega($pedido);
+            $this->createStatusEntrega($pedido);
             if ($showLegends) {
                 $this->createLegendsEntrega();
             }
         } else {
-            $this->createIconsColeta($pedido);
-            $this->createProgressColeta($pedido);
+            $this->createStatusColeta($pedido);
             if ($showLegends) {
-                $this->createLegendsColeta();
+                $this->createLegendsColeta($pedido);
             }
         }
     }
 
-    private function createIconsEntrega(Pedido $pedido)
+    private function createStatusEntrega(Pedido $pedido)
     {
-        echo '<div class="col-sm-12">';
-        if ($pedido->status_pedido == \App\Model\Entity\Pedido::STATUS_REJEITADO) {
-            echo '<div class="icon-item"><i class="fas fa-times-circle fa-fw"></i></div>';
-        } else {
-            echo '<div class="icon-item"><i class="fas fa-stopwatch fa-fw"></i></div>';
+        switch ($pedido->status_pedido) {
+            case Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA:
+                echo '<div class="container width-vinte">
+                          <ul class="progressbar">
+                              <li class="active atual"><i class="fas fa-hourglass-half fa-2x"></i></li>
+                              <li><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li><i class="fas fa-motorcycle fa-2x"></i></li>
+                              <li><i class="fas fa-route fa-2x"></i></li>
+                              <li><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+            case Pedido::STATUS_REJEITADO:
+                echo '<div class="container">
+                          <ul class="progressbar width-vinte">
+                              <li class="active danger"><i class="far fa-times-circle fa-2x"></i></li>
+                              <li><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li><i class="fas fa-motorcycle fa-2x"></i></li>
+                              <li><i class="fas fa-route fa-2x"></i></li>
+                              <li><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+            case Pedido::STATUS_EM_PRODUCAO:
+                echo '<div class="container">
+                          <ul class="progressbar width-vinte">
+                              <li class="active"><i class="fas fa-hourglass-half fa-2x"></i></li>
+                              <li class="active atual"><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li><i class="fas fa-motorcycle fa-2x"></i></li>
+                              <li><i class="fas fa-route fa-2x"></i></li>
+                              <li><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+            case Pedido::STATUS_AGUARDANDO_ENTREGADOR:
+                echo '<div class="container">
+                          <ul class="progressbar width-vinte">
+                              <li class="active"><i class="fas fa-hourglass-half fa-2x"></i></li>
+                              <li class="active"><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li class="active atual"><i class="fas fa-motorcycle fa-2x"></i></li>
+                              <li><i class="fas fa-route fa-2x"></i></li>
+                              <li><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+            case Pedido::STATUS_SAIU_PARA_ENTREGA:
+                echo '<div class="container">
+                          <ul class="progressbar width-vinte">
+                              <li class="active"><i class="fas fa-hourglass-half fa-2x"></i></li>
+                              <li class="active"><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li class="active"><i class="fas fa-motorcycle fa-2x"></i></li>
+                              <li class="active atual"><i class="fas fa-route fa-2x"></i></li>
+                              <li><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+            case Pedido::STATUS_ENTREGUE:
+                echo '<div class="container">
+                          <ul class="progressbar width-vinte">
+                              <li class="active"><i class="fas fa-hourglass-half fa-2x"></i></li>
+                              <li class="active"><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li class="active"><i class="fas fa-motorcycle fa-2x"></i></li>
+                              <li class="active"><i class="fas fa-route fa-2x"></i></li>
+                              <li class="active atual"><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
         }
-        echo '<div class="icon-item"><i class="fas fa-blender fa-fw"></i></div>';
-        echo '<div class="icon-item"><i class="fas fa-motorcycle fa-fw"></i></div>';
-        echo '<div class="icon-item"><i class="fas fa-road fa-fw"></i></div>';
-        echo '<div class="icon-item"><i class="fas fa-smile-wink fa-fw"></i></div>';
-        echo '</div>';
     }
 
-    private function createIconsColeta(Pedido $pedido)
+    private function createStatusColeta(Pedido $pedido)
     {
-        echo '<div class="col-sm-12">';
-        if ($pedido->status_pedido == \App\Model\Entity\Pedido::STATUS_REJEITADO) {
-            echo '<div class="icon-item four-div"><i class="fas fa-times-circle fa-fw"></i></div>';
-        } else {
-            echo '<div class="icon-item four-div"><i class="fas fa-stopwatch fa-fw"></i></div>';
+        switch ($pedido->status_pedido) {
+            case Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA:
+                echo '<div class="container">
+                          <ul class="progressbar">
+                              <li class="active atual"><i class="fas fa-hourglass-half fa-2x"></i></li>
+                              <li><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li><i class="fas fa-hand-holding-heart fa-2x"></i></li>
+                              <li><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+            case Pedido::STATUS_REJEITADO:
+                echo '<div class="container">
+                          <ul class="progressbar">
+                              <li class="active danger"><i class="far fa-times-circle fa-2x"></i></li>
+                              <li><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li><i class="fas fa-hand-holding-heart fa-2x"></i></li>
+                              <li><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+            case Pedido::STATUS_EM_PRODUCAO:
+                echo '<div class="container">
+                          <ul class="progressbar">
+                              <li class="active"><i class="fas fa-hourglass-half fa-2x"></i></li>
+                              <li class="active atual"><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li><i class="fas fa-hand-holding-heart fa-2x"></i></li>
+                              <li><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+            case Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE:
+                echo '<div class="container">
+                          <ul class="progressbar">
+                              <li class="active"><i class="fas fa-hourglass-half fa-2x"></i></li>
+                              <li class="active"><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li class="active atual"><i class="fas fa-hand-holding-heart fa-2x"></i></li>
+                              <li><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+            case Pedido::STATUS_ENTREGUE:
+                echo '<div class="container">
+                          <ul class="progressbar">
+                              <li class="active"><i class="fas fa-hourglass-half fa-2x"></i></li>
+                              <li class="active"><i class="fas fa-pizza-slice fa-2x"></i></li>
+                              <li class="active"><i class="fas fa-hand-holding-heart fa-2x"></i></li>
+                              <li class="active atual"><i class="far fa-smile-beam fa-2x"></i></li>
+                          </ul>
+                      </div>';
+                break;
+
         }
-        echo '<div class="icon-item four-div"><i class="fas fa-blender fa-fw"></i></div>';
-        echo '<div class="icon-item four-div"><i class="fas fa-clock fa-fw"></i></div>';
-        echo '<div class="icon-item four-div"><i class="fas fa-smile-wink fa-fw"></i></div>';
-        echo '</div>';
     }
 
     private function createProgressEntrega(Pedido $pedido)
@@ -559,102 +656,51 @@ class SiteUtils extends AppController
         echo '</div>';
     }
 
-    private function createProgressColeta(Pedido $pedido)
-    {
-        echo '<div class="col-sm-12">';
-        switch ($pedido->status_pedido) {
-            case Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA:
-                echo '<div class="col-sm-12">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                 role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                                 style="width: 25%"></div>
-                        </div>
-                    </div>';
-                break;
-            case Pedido::STATUS_REJEITADO:
-                echo '<div class="col-sm-12">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
-                                 role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                                 style="width: 25%"></div>
-                        </div>
-                    </div>';
-                break;
-            case Pedido::STATUS_EM_PRODUCAO:
-                echo '<div class="col-sm-12">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                 role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                                 style="width: 50%"></div>
-                        </div>
-                    </div>';
-                break;
-            case Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE:
-                echo '<div class="col-sm-12">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                 role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                                 style="width: 75%"></div>
-                        </div>
-                    </div>';
-                break;
-            case Pedido::STATUS_ENTREGUE:
-                echo '<div class="col-sm-12">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                 role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
-                                 style="width: 100%"></div>
-                        </div>
-                    </div>';
-                break;
-        }
-        echo '</div>';
-    }
-
     private function createLegendsEntrega()
     {
         echo '<div class="col-sm-12 alert">
-            <div class="icon-obs">
-                <i class="fas fa-times-circle fa-fw"></i> - O pedido não foi aceito pela empresa.
+            <div class="form-group">
+                <b><i class="fas fa-hourglass-half fa-2x"></i></b> - Seu pedido foi enviado para a empresa e está aguardando a confirmação de produção.
             </div>
-            <div class="icon-obs">
-                <i class="fas fa-stopwatch fa-fw"></i> - O pedido está aguardando aprovação da empresa.
+            <div class="form-group">
+                <b><i class="fas fa-pizza-slice fa-2x"></i></b> - Seu pedido foi aceito pela empresa e está em produção.
             </div>
-            <div class="icon-obs">
-                <i class="fas fa-blender fa-fw"></i> - O pedido está sendo produzido.
+            <div class="form-group">
+                <b><i class="fas fa-motorcycle fa-2x"></i></b> - Seu pedido foi totalmente produzido e está aguardando um dos entregadores busca-lo para entregar à você.
             </div>
-            <div class="icon-obs">
-                <i class="fas fa-motorcycle fa-fw"></i> - Produção concluída, aguardando entregador coletar seu pedido.
+            <div class="form-group">
+                <b><i class="fas fa-route fa-2x"></i></b> - Seu pedido foi coletado pelo entregador e está indo em direção ao endereço de entrega.
             </div>
-            <div class="icon-obs">
-                <i class="fas fa-road fa-fw"></i> - Pedido coletado, saiu para entrega.
-            </div>
-            <div class="icon-obs">
-                <i class="fas fa-smile-wink fa-fw"></i> - Entregue ao cliente.
+            <div class="form-group">
+                <b><i class="far fa-smile-beam fa-2x"></i></b> - Seu pedido foi entregue.
             </div>
         </div>';
     }
 
-    private function createLegendsColeta()
+    private function createLegendsColeta(Pedido $pedido)
     {
-        echo '<div class="col-sm-12 alert">
-            <div class="icon-obs">
-                <i class="fas fa-times-circle fa-fw"></i> - O pedido não foi aceito pela empresa.
+        if ($pedido->status_pedido == Pedido::STATUS_REJEITADO){
+            $this->createMessagePedidoRejeitado();
+        }else{
+            echo '<div class="col-sm-12 alert">
+            <div class="form-group">
+                <b><i class="fas fa-hourglass-half fa-2x"></i></b> - Seu pedido foi enviado para a empresa e está aguardando a confirmação de produção.
             </div>
-            <div class="icon-obs">
-                <i class="fas fa-stopwatch fa-fw"></i> - O pedido está aguardando aprovação da empresa.
+            <div class="form-group">
+                <b><i class="fas fa-pizza-slice fa-2x"></i></b> - Seu pedido foi aceito pela empresa e está em produção.
             </div>
-            <div class="icon-obs">
-                <i class="fas fa-blender fa-fw"></i> - O pedido está sendo produzido.
+            <div class="form-group">
+                <b><i class="fas fa-hand-holding-heart fa-2x"></i></b> - Seu pedido foi totalmente produzido e está aguardando você busca-lo na empresa.
             </div>
-            <div class="icon-obs">
-                <i class="fas fa-clock fa-fw"></i> - Produção concluída, você pode retirar o pedido na empresa.
-            </div>
-            <div class="icon-obs">
-                <i class="fas fa-smile-wink fa-fw"></i> - Entregue ao cliente
+            <div class="form-group">
+                <b><i class="far fa-smile-beam fa-2x"></i></b> - Você já coletou seu pedido na empresa.
             </div>
         </div>';
+        }
+    }
+
+    private function createMessagePedidoRejeitado(){
+        echo '<div class="alert alert-danger ">Seu pedido foi rejeitado pela empresa e não será mais produzido.</div>';
     }
 
 }

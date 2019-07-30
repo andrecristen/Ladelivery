@@ -9,7 +9,7 @@ $siteUtils = new \App\Model\Utils\SiteUtils();
 $siteUtils->menuSite();
 ?>
 <div style="margin-top: 67px;" class="col-sm-12">
-    <h3>Seus Pedidos</h3>
+    <h3 style="text-align: center">Histórico completo de pedidos</h3>
     <div class="row">
         <?php
         /** @var $pedido \App\Model\Entity\Pedido */
@@ -41,6 +41,7 @@ $siteUtils->menuSite();
                             <br>
                             <b>Valor Total: R$</b><?= $pedido->getValorTotal()?>
                         </p>
+                        <?= $this->Html->link(__(' Visualizar Status'), ['action' => 'verStatus', $pedido->id], ['class' => 'far fa-eye btn btn-info btn-sm', 'title' => 'Visualizar Pedido']) ?>
                     </div>
                 </div>
             </div>

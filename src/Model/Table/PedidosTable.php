@@ -149,6 +149,10 @@ class PedidosTable extends Table
             ->maxLength('cupom_usado', 200)
             ->allowEmptyString('cupom_usado');
 
+        $validator
+            ->scalar('motivo_rejeicao')
+            ->allowEmptyString('motivo_rejeicao');
+
         return $validator;
     }
 

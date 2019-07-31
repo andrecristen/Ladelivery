@@ -21,6 +21,7 @@ use Cake\ORM\Locator\TableLocator;
  * @property int $empresa_id
  * @property string $cupom_usado
  * @property string $cliente
+ * @property string $motivo_rejeicao
  * @property \Cake\I18n\FrozenTime $data_pedido
  *
  * @property \App\Model\Entity\User $user
@@ -172,5 +173,6 @@ class Pedido extends Entity
         'empresa_id' => true,
         'empresa' => true,
         'cliente' => true,
+        'motivo_rejeicao' => true,
     ];
 }

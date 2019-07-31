@@ -36,9 +36,9 @@ if (Configure::read('debug')) :
     $this->end();
 endif;
 ?>
-<h2><?= __d('cake', "Ocorreu um erro interno! Lamentamos :(") ?></h2>
+<h2><?= __d('cake', "Ocorreu um erro interno. Lamentamos!") ?></h2>
 <p class="error">
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= h($message) ?>
-    <?= h('Algo de errado aconteceu, você tem certeza que esta navegando nas águas corretas marinheiro') ?>
+    <?= h('Algo de errado aconteceu, verifique o endereço digitado e tente novamente') ?>
 </p>

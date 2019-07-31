@@ -543,34 +543,39 @@ class PedidosController extends AppController
     public function rejeitar($id = null)
     {
         $success = true;
-        $tableLocator = new TableLocator();
+        $tableLocator = $this->getTableLocator();
         $pedido = $this->Pedidos->get($id);
-        $pedido->status_pedido = Pedido::STATUS_REJEITADO;
-        $this->Pedidos->getConnection()->begin();
-        /** @var $produtosPedidoTable PedidosProdutosTable */
-        $produtosPedidoTable = $tableLocator->get('PedidosProdutos');
-        $produtosPedido = $produtosPedidoTable->find()->where(['pedido_id' => $pedido->id]);
-        $produtosPedidoTable->getConnection()->begin();
-        /** @var $produto PedidosProduto */
-        foreach ($produtosPedido as $produto) {
-            $produto->status = PedidosProduto::STATUS_PEDIDO_REJEITADO;
-            if (!$produtosPedidoTable->save($produto)) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $this->Pedidos->getConnection()->begin();
+            $pedido->status_pedido = Pedido::STATUS_REJEITADO;
+            $pedido->motivo_rejeicao = $this->getRequest()->getData('motivo_rejeicao');
+            /** @var $produtosPedidoTable PedidosProdutosTable */
+            $produtosPedidoTable = $tableLocator->get('PedidosProdutos');
+            $produtosPedido = $produtosPedidoTable->find()->where(['pedido_id' => $pedido->id]);
+            $produtosPedidoTable->getConnection()->begin();
+            /** @var $produto PedidosProduto */
+            foreach ($produtosPedido as $produto) {
+                $produto->status = PedidosProduto::STATUS_PEDIDO_REJEITADO;
+                if (!$produtosPedidoTable->save($produto)) {
+                    $success = false;
+                };
+            }
+            if (!$this->Pedidos->save($pedido)) {
                 $success = false;
-            };
+            }
+            if ($success) {
+                $this->Flash->success(__('Pedido Rejeitado Com Sucesso.'));
+                $produtosPedidoTable->getConnection()->commit();
+                $this->Pedidos->getConnection()->commit();
+                return $this->redirect(['action' => 'novos']);
+            } else {
+                $produtosPedidoTable->getConnection()->rollback();
+                $this->Pedidos->getConnection()->rollback();
+                $this->Flash->error(__('Não foi possível rejeitar o pedido, tente novamente.'));
+            }
         }
-        if (!$this->Pedidos->save($pedido)) {
-            $success = false;
-        }
-        if ($success) {
-            $this->Flash->success(__('Pedido Rejeitado Com Sucesso.'));
-            $produtosPedidoTable->getConnection()->commit();
-            $this->Pedidos->getConnection()->commit();
-            return $this->redirect(['action' => 'novos']);
-        } else {
-            $produtosPedidoTable->getConnection()->rollback();
-            $this->Pedidos->getConnection()->rollback();
-            $this->Flash->error(__('Não foi possível rejeitar o pedido, tente novamente.'));
-        }
+        $users = $this->getTableLocator()->get('Users')->find('list')->where(['id' => $pedido->user_id]);
+        $this->set(compact('pedido', 'users'));
     }
 
     private function calcularEntrega($endereco, $newPedido, $valorEntregaFixed = false)

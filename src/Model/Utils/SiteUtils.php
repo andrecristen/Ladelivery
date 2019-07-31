@@ -659,7 +659,7 @@ class SiteUtils extends AppController
     private function createLegendsEntrega(Pedido $pedido)
     {
         if ($pedido->status_pedido == Pedido::STATUS_REJEITADO){
-            $this->createMessagePedidoRejeitado();
+            $this->createMessagePedidoRejeitado($pedido);
         }else{
             echo '<div class="col-sm-12 alert">
             <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA).'">
@@ -684,7 +684,7 @@ class SiteUtils extends AppController
     private function createLegendsColeta(Pedido $pedido)
     {
         if ($pedido->status_pedido == Pedido::STATUS_REJEITADO){
-            $this->createMessagePedidoRejeitado();
+            $this->createMessagePedidoRejeitado($pedido);
         }else{
             echo '<div class="col-sm-12 alert">
             <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA).'">
@@ -707,8 +707,12 @@ class SiteUtils extends AppController
         return ($pedido->status_pedido == $situacao) ? 'active-group': '';
     }
 
-    private function createMessagePedidoRejeitado(){
-        echo '<div class="alert alert-danger ">Seu pedido foi rejeitado pela empresa e não será mais produzido.</div>';
+    private function createMessagePedidoRejeitado(Pedido $pedido){
+        if($pedido->motivo_rejeicao){
+            echo '<div class="alert alert-danger ">Seu pedido foi rejeitado pela empresa e não será mais produzido, o motivo da rejeição é: '.$pedido->motivo_rejeicao.'.</div>';
+        }else{
+            echo '<div class="alert alert-danger ">Seu pedido foi rejeitado pela empresa e não será mais produzido.</div>';
+        }
     }
 
 }

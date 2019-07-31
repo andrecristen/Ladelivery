@@ -87,3 +87,14 @@ h6 {
 .min-heigth{
     min-height: 300px!important;
 }
+.form-group{
+    color: #7d7d7d;
+}
+
+.form-group i{
+    font-size: 25px!important;
+    padding-right: 20px!important;
+}
+.active-group{
+    color: green;
+}

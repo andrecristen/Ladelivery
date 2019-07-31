@@ -22,7 +22,7 @@ echo $this->Html->css('status.css' . $cacheVersion);
             /** @var $entrega \App\Model\Entity\PedidosEntrega*/
             $entrega = $pedido->getEntrega()?>
             <div class="col-sm-12">
-                <h4 style="text-align: center">#Pedido: <?= $pedido->id?></h4>
+                <h4 style="text-align: center">Pedido: #<?= $pedido->id?></h4>
             </div>
             <div class="row">
                 <div class="col-sm-4">

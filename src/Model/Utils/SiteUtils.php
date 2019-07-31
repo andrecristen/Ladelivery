@@ -455,7 +455,7 @@ class SiteUtils extends AppController
         if ($entrega) {
             $this->createStatusEntrega($pedido);
             if ($showLegends) {
-                $this->createLegendsEntrega();
+                $this->createLegendsEntrega($pedido);
             }
         } else {
             $this->createStatusColeta($pedido);
@@ -656,25 +656,29 @@ class SiteUtils extends AppController
         echo '</div>';
     }
 
-    private function createLegendsEntrega()
+    private function createLegendsEntrega(Pedido $pedido)
     {
-        echo '<div class="col-sm-12 alert">
-            <div class="form-group">
-                <b><i class="fas fa-hourglass-half fa-2x"></i></b> - Seu pedido foi enviado para a empresa e está aguardando a confirmação de produção.
+        if ($pedido->status_pedido == Pedido::STATUS_REJEITADO){
+            $this->createMessagePedidoRejeitado();
+        }else{
+            echo '<div class="col-sm-12 alert">
+            <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA).'">
+                <b><i class="fas fa-hourglass-half fa-fw"></i></b> Seu pedido foi enviado para a empresa e está aguardando a confirmação de produção.
             </div>
-            <div class="form-group">
-                <b><i class="fas fa-pizza-slice fa-2x"></i></b> - Seu pedido foi aceito pela empresa e está em produção.
+            <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_EM_PRODUCAO).'">
+                <b><i class="fas fa-pizza-slice fa-fw"></i></b> Seu pedido foi aceito pela empresa e está em produção.
             </div>
-            <div class="form-group">
-                <b><i class="fas fa-motorcycle fa-2x"></i></b> - Seu pedido foi totalmente produzido e está aguardando um dos entregadores busca-lo para entregar à você.
+            <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_AGUARDANDO_ENTREGADOR).'">
+                <b><i class="fas fa-motorcycle fa-fw"></i></b> Seu pedido foi totalmente produzido e está aguardando um dos entregadores busca-lo para entregar à você.
             </div>
-            <div class="form-group">
-                <b><i class="fas fa-route fa-2x"></i></b> - Seu pedido foi coletado pelo entregador e está indo em direção ao endereço de entrega.
+            <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_SAIU_PARA_ENTREGA).'">
+                <b><i class="fas fa-route fa-fw"></i></b> Seu pedido foi coletado pelo entregador e está indo em direção ao endereço de entrega.
             </div>
-            <div class="form-group">
-                <b><i class="far fa-smile-beam fa-2x"></i></b> - Seu pedido foi entregue.
+            <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_ENTREGUE).'">
+                <b><i class="far fa-smile-beam fa-fw"></i></b> Seu pedido foi entregue.
             </div>
         </div>';
+        }
     }
 
     private function createLegendsColeta(Pedido $pedido)
@@ -683,20 +687,24 @@ class SiteUtils extends AppController
             $this->createMessagePedidoRejeitado();
         }else{
             echo '<div class="col-sm-12 alert">
-            <div class="form-group">
-                <b><i class="fas fa-hourglass-half fa-2x"></i></b> - Seu pedido foi enviado para a empresa e está aguardando a confirmação de produção.
+            <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA).'">
+                <b><i class="fas fa-hourglass-half fa-fw"></i></b> Seu pedido foi enviado para a empresa e está aguardando a confirmação de produção.
             </div>
-            <div class="form-group">
-                <b><i class="fas fa-pizza-slice fa-2x"></i></b> - Seu pedido foi aceito pela empresa e está em produção.
+            <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_EM_PRODUCAO).'">
+                <b><i class="fas fa-pizza-slice fa-fw"></i></b> Seu pedido foi aceito pela empresa e está em produção.
             </div>
-            <div class="form-group">
-                <b><i class="fas fa-hand-holding-heart fa-2x"></i></b> - Seu pedido foi totalmente produzido e está aguardando você busca-lo na empresa.
+            <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE).'">
+                <b><i class="fas fa-hand-holding-heart fa-fw"></i></b> Seu pedido foi totalmente produzido e está aguardando você busca-lo na empresa.
             </div>
-            <div class="form-group">
-                <b><i class="far fa-smile-beam fa-2x"></i></b> - Você já coletou seu pedido na empresa.
+            <div class="form-group '.$this->addClassActive($pedido, Pedido::STATUS_ENTREGUE).'">
+                <b><i class="far fa-smile-beam fa-fw"></i></b>&nbsp;Você já coletou seu pedido na empresa.
             </div>
         </div>';
         }
+    }
+
+    private function addClassActive(Pedido $pedido, $situacao){
+        return ($pedido->status_pedido == $situacao) ? 'active-group': '';
     }
 
     private function createMessagePedidoRejeitado(){

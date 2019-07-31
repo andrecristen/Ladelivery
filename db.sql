@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 23-Jul-2019 às 02:24
+-- Generation Time: 31-Jul-2019 às 20:12
 -- Versão do servidor: 5.7.26
 -- versão do PHP: 7.2.18
 
@@ -364,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `contas` (
   `data_pagamento` date DEFAULT NULL,
   `data_vencimento` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -443,7 +443,7 @@ CREATE TABLE IF NOT EXISTS `cupom_site` (
 --
 
 INSERT INTO `cupom_site` (`id`, `empresa_id`, `nome_cupom`, `vezes_usado`, `maximo_vezes_usar`, `valor_desconto`, `porcentagem`) VALUES
-(1, 1, 'DESCONTO', 16, 30, 15, 0);
+(1, 1, 'DESCONTO', 18, 30, 15, 0);
 
 -- --------------------------------------------------------
 
@@ -487,14 +487,14 @@ CREATE TABLE IF NOT EXISTS `empresas` (
   `valor_base_erro_frete` double NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_empresa_cnpj` (`cnpj`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `empresas`
 --
 
 INSERT INTO `empresas` (`id`, `nome_fantasia`, `cnpj`, `ie`, `tipo_empresa`, `tipo_frete`, `ativa`, `contatos`, `valor_base_erro_frete`) VALUES
-(1, 'Empresa Demonstração', '00.000.000/0000-00', '000.000.000', 2, 1, 1, '[{\"tipo_contato\":\"1\",\"valor_contato\":\"Tico e Teco\"}]', 10),
+(1, 'Empresa Demonstração', '00.000.000/0000-00', '000.000.000', 2, 1, 1, '[{\"tipo_contato\":\"1\",\"valor_contato\":\"facebook.com\\/andre.cristen\"},{\"tipo_contato\":\"4\",\"valor_contato\":\"andre.cristen@ladevsistemas.com.br\"}]', 10),
 (2, 'LaDelivery', '', '', 1, 4, 1, '[{\"tipo_contato\": \"? undefined:undefined ?\", \"valor_contato\": \"\"}]', 0);
 
 -- --------------------------------------------------------
@@ -516,7 +516,7 @@ CREATE TABLE IF NOT EXISTS `enderecos` (
   `complemento` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `enderecos`
@@ -656,7 +656,7 @@ CREATE TABLE IF NOT EXISTS `itens_carrinhos` (
   `observacao` text COLLATE utf8_unicode_ci,
   `opicionais` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -765,7 +765,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `data_hora` datetime NOT NULL,
   `situacao` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `logs`
@@ -841,7 +841,15 @@ INSERT INTO `logs` (`id`, `tipo`, `user_id`, `descricao`, `data_hora`, `situacao
 (67, 1, 31, 'Seu pedido #32, teve uma alteração de situação. A nova situação é: Cancelado.', '2019-07-22 19:08:37', 1),
 (68, 1, 31, 'Seu pedido #32, teve uma alteração de situação. A nova situação é: Em Produção.', '2019-07-22 19:14:57', 1),
 (69, 1, 31, 'Seu pedido #32, teve uma alteração de situação. A nova situação é: Entregue.', '2019-07-22 19:16:39', 1),
-(70, 1, 16, 'Seu pedido #33, teve uma alteração de situação. A nova situação é: Aguardando Confirmação.', '2019-07-22 23:11:51', 1);
+(70, 1, 16, 'Seu pedido #33, teve uma alteração de situação. A nova situação é: Aguardando Confirmação.', '2019-07-22 23:11:51', 1),
+(71, 1, 16, 'Seu pedido #34, teve uma alteração de situação. A nova situação é: Aguardando Confirmação.', '2019-07-22 23:29:34', 1),
+(72, 1, 16, 'Seu pedido #33, teve uma alteração de situação. A nova situação é: Em Produção.', '2019-07-30 17:27:31', 1),
+(73, 1, 16, 'Seu pedido #33, teve uma alteração de situação. A nova situação é: Aguardando Entregador.', '2019-07-30 17:27:52', 1),
+(74, 1, 16, 'Seu pedido #33, teve uma alteração de situação. A nova situação é: Saiu para entrega.', '2019-07-30 17:28:02', 1),
+(75, 1, 16, 'Seu pedido #33, teve uma alteração de situação. A nova situação é: Entregue.', '2019-07-30 17:28:12', 1),
+(76, 1, 16, 'Seu pedido #34, teve uma alteração de situação. A nova situação é: Rejeitado.', '2019-07-30 18:04:14', 1),
+(77, 1, 16, 'Seu pedido #35, teve uma alteração de situação. A nova situação é: Aguardando Confirmação.', '2019-07-31 16:53:52', 1),
+(78, 1, 16, 'Seu pedido #35, teve uma alteração de situação. A nova situação é: Rejeitado.', '2019-07-31 17:06:29', 1);
 
 -- --------------------------------------------------------
 
@@ -1022,39 +1030,42 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `valor_produtos` decimal(10,2) NOT NULL DEFAULT '0.00',
   `valor_acrescimo` decimal(10,2) NOT NULL DEFAULT '0.00',
   `valor_desconto` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `motivo_rejeicao` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `pedidos`
 --
 
-INSERT INTO `pedidos` (`id`, `user_id`, `cliente`, `tipo_pedido`, `origem`, `empresa_id`, `status_pedido`, `data_pedido`, `cupom_usado`, `formas_pagamento_id`, `troco_para`, `tempo_producao_aproximado_minutos`, `valor_produtos`, `valor_acrescimo`, `valor_desconto`) VALUES
-(8, 16, NULL, 1, NULL, 1, 9, '2019-07-16 17:27:00', NULL, 1, '150.00', 45, '103.00', '0.00', '0.00'),
-(9, 16, NULL, 1, NULL, 1, 9, '2019-07-16 17:39:00', NULL, 4, '0.00', 45, '159.00', '3.18', '0.00'),
-(10, 16, NULL, 1, 3, 1, 9, '2019-07-17 15:49:00', NULL, 1, '119.00', 35, '119.00', '0.00', '0.00'),
-(11, 16, NULL, 1, 2, 1, 9, '2019-07-17 15:49:37', NULL, 1, '0.00', NULL, '109.00', '0.00', '0.00'),
-(12, 16, NULL, 1, 2, 1, 9, '2019-07-17 16:39:22', NULL, 1, '0.00', 35, '109.00', '0.00', '0.00'),
-(13, 16, NULL, 1, 3, 1, 9, '2019-07-17 20:04:00', NULL, 1, '0.00', 35, '240.00', '0.00', '0.00'),
-(14, 16, NULL, 1, 3, 1, 9, '2019-07-17 20:07:00', NULL, 2, '0.00', 45, '5.00', '0.25', '0.00'),
-(15, 16, NULL, 1, 3, 1, 9, '2019-07-17 20:09:00', NULL, 1, '15.00', 45, '5.00', '0.00', '0.00'),
-(16, 30, 'Dolsan', 2, 2, 1, 14, '2019-07-17 20:55:10', NULL, NULL, '0.00', NULL, '10.00', '0.00', '0.00'),
-(18, 16, NULL, 1, 3, 1, 10, '2019-07-18 19:52:00', NULL, 1, '1500.00', 45, '104.00', '0.00', '0.00'),
-(19, 16, NULL, 1, 3, 1, 10, '2019-07-18 19:52:00', NULL, 4, '0.00', 45, '5.00', '0.10', '0.00'),
-(20, 16, NULL, 1, 3, 1, 10, '2019-07-18 19:59:00', NULL, 1, '60.00', 45, '50.00', '0.00', '0.00'),
-(21, 16, NULL, 1, 3, 1, 10, '2019-07-18 20:00:00', NULL, 2, '0.00', 45, '109.00', '5.45', '0.00'),
-(22, 16, NULL, 1, 3, 1, 10, '2019-07-18 20:02:00', NULL, 1, '0.00', 45, '120.00', '0.00', '0.00'),
-(23, 16, NULL, 1, 3, 1, 10, '2019-07-18 20:03:00', NULL, 4, '0.00', 45, '109.00', '2.18', '0.00'),
-(24, 16, NULL, 1, 3, 1, 10, '2019-07-18 20:04:00', NULL, 2, '0.00', 45, '5.00', '0.25', '0.00'),
-(25, 16, NULL, 1, 3, 1, 4, '2019-07-19 17:43:00', NULL, 4, '0.00', 35, '5.00', '0.10', '0.00'),
-(26, 16, NULL, 1, 3, 1, 9, '2019-07-19 17:45:00', NULL, 1, '15.00', 45, '5.00', '0.00', '0.00'),
-(27, 16, NULL, 1, 3, 1, 9, '2019-07-19 21:43:00', NULL, 4, '0.00', 45, '202.00', '4.04', '0.00'),
-(28, 16, NULL, 1, 3, 1, 9, '2019-07-19 21:55:00', 'DESCONTO', 4, '0.00', 45, '46.50', '0.93', '15.00'),
-(29, 16, NULL, 1, 3, 1, 9, '2019-07-19 22:31:00', 'DESCONTO', 2, '0.00', 45, '24.50', '1.23', '15.00'),
-(30, 16, NULL, 1, 2, 1, 7, '2019-07-19 23:20:46', NULL, 1, '0.00', 45, '117.00', '0.00', '0.00'),
-(31, 20, 'DOLSANSINHO', 2, 2, 1, 14, '2019-07-19 23:21:58', NULL, NULL, '0.00', NULL, '119.00', '0.00', '0.00'),
-(32, 31, NULL, 1, 3, 1, 9, '2019-07-22 19:08:00', NULL, NULL, '0.00', 35, '5.00', '0.00', '0.00'),
-(33, 16, NULL, 1, 3, 1, 2, '2019-07-22 23:11:00', NULL, 1, '1500.00', 45, '149.00', '0.00', '0.00');
+INSERT INTO `pedidos` (`id`, `user_id`, `cliente`, `tipo_pedido`, `origem`, `empresa_id`, `status_pedido`, `data_pedido`, `cupom_usado`, `formas_pagamento_id`, `troco_para`, `tempo_producao_aproximado_minutos`, `valor_produtos`, `valor_acrescimo`, `valor_desconto`, `motivo_rejeicao`) VALUES
+(8, 16, NULL, 1, NULL, 1, 9, '2019-07-16 17:27:00', NULL, 1, '150.00', 45, '103.00', '0.00', '0.00', NULL),
+(9, 16, NULL, 1, NULL, 1, 9, '2019-07-16 17:39:00', NULL, 4, '0.00', 45, '159.00', '3.18', '0.00', NULL),
+(10, 16, NULL, 1, 3, 1, 9, '2019-07-17 15:49:00', NULL, 1, '119.00', 35, '119.00', '0.00', '0.00', NULL),
+(11, 16, NULL, 1, 2, 1, 9, '2019-07-17 15:49:37', NULL, 1, '0.00', NULL, '109.00', '0.00', '0.00', NULL),
+(12, 16, NULL, 1, 2, 1, 9, '2019-07-17 16:39:22', NULL, 1, '0.00', 35, '109.00', '0.00', '0.00', NULL),
+(13, 16, NULL, 1, 3, 1, 9, '2019-07-17 20:04:00', NULL, 1, '0.00', 35, '240.00', '0.00', '0.00', NULL),
+(14, 16, NULL, 1, 3, 1, 9, '2019-07-17 20:07:00', NULL, 2, '0.00', 45, '5.00', '0.25', '0.00', NULL),
+(15, 16, NULL, 1, 3, 1, 9, '2019-07-17 20:09:00', NULL, 1, '15.00', 45, '5.00', '0.00', '0.00', NULL),
+(16, 30, 'Dolsan', 2, 2, 1, 14, '2019-07-17 20:55:10', NULL, NULL, '0.00', NULL, '10.00', '0.00', '0.00', NULL),
+(18, 16, NULL, 1, 3, 1, 10, '2019-07-18 19:52:00', NULL, 1, '1500.00', 45, '104.00', '0.00', '0.00', NULL),
+(19, 16, NULL, 1, 3, 1, 10, '2019-07-18 19:52:00', NULL, 4, '0.00', 45, '5.00', '0.10', '0.00', NULL),
+(20, 16, NULL, 1, 3, 1, 10, '2019-07-18 19:59:00', NULL, 1, '60.00', 45, '50.00', '0.00', '0.00', NULL),
+(21, 16, NULL, 1, 3, 1, 10, '2019-07-18 20:00:00', NULL, 2, '0.00', 45, '109.00', '5.45', '0.00', NULL),
+(22, 16, NULL, 1, 3, 1, 10, '2019-07-18 20:02:00', NULL, 1, '0.00', 45, '120.00', '0.00', '0.00', NULL),
+(23, 16, NULL, 1, 3, 1, 10, '2019-07-18 20:03:00', NULL, 4, '0.00', 45, '109.00', '2.18', '0.00', NULL),
+(24, 16, NULL, 1, 3, 1, 10, '2019-07-18 20:04:00', NULL, 2, '0.00', 45, '5.00', '0.25', '0.00', NULL),
+(25, 16, NULL, 1, 3, 1, 4, '2019-07-19 17:43:00', NULL, 4, '0.00', 35, '5.00', '0.10', '0.00', NULL),
+(26, 16, NULL, 1, 3, 1, 9, '2019-07-19 17:45:00', NULL, 1, '15.00', 45, '5.00', '0.00', '0.00', NULL),
+(27, 16, NULL, 1, 3, 1, 9, '2019-07-19 21:43:00', NULL, 4, '0.00', 45, '202.00', '4.04', '0.00', NULL),
+(28, 16, NULL, 1, 3, 1, 9, '2019-07-19 21:55:00', 'DESCONTO', 4, '0.00', 45, '46.50', '0.93', '15.00', NULL),
+(29, 16, NULL, 1, 3, 1, 9, '2019-07-19 22:31:00', 'DESCONTO', 2, '0.00', 45, '24.50', '1.23', '15.00', NULL),
+(30, 16, NULL, 1, 2, 1, 7, '2019-07-19 23:20:46', NULL, 1, '0.00', 45, '117.00', '0.00', '0.00', NULL),
+(31, 20, 'DOLSANSINHO', 2, 2, 1, 14, '2019-07-19 23:21:58', NULL, NULL, '0.00', NULL, '119.00', '0.00', '0.00', NULL),
+(32, 31, NULL, 1, 3, 1, 9, '2019-07-22 19:08:00', NULL, NULL, '0.00', 35, '5.00', '0.00', '0.00', NULL),
+(33, 16, NULL, 1, 3, 1, 9, '2019-07-22 23:11:00', NULL, 1, '1500.00', 45, '149.00', '0.00', '0.00', NULL),
+(34, 16, NULL, 1, 3, 1, 10, '2019-07-22 23:29:00', 'DESCONTO', 1, '210.00', 35, '222.00', '0.00', '15.00', NULL),
+(35, 16, NULL, 1, 3, 1, 10, '2019-07-31 16:53:00', 'DESCONTO', 1, '0.00', 35, '447.00', '0.00', '15.00', '');
 
 -- --------------------------------------------------------
 
@@ -1116,7 +1127,7 @@ CREATE TABLE IF NOT EXISTS `pedidos_produtos` (
   `ambiente_producao_responsavel` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `pedidos_produtos`
@@ -1155,7 +1166,9 @@ INSERT INTO `pedidos_produtos` (`id`, `pedido_id`, `produto_id`, `quantidade`, `
 (43, 31, 98, 1, 0, '109.00', '', '\"{\\\"133\\\":[\\\"15\\\",\\\"16\\\"],\\\"134\\\":[\\\"15\\\",\\\"16\\\"]}\"', 1, 3),
 (44, 31, 100, 1, 0, '5.00', '', '\"[]\"', 2, 1),
 (45, 32, 100, 1, 0, '5.00', '', '\"[]\"', 2, 1),
-(46, 33, 98, 1, 0, '149.00', 'Pigmeu', '{\"133\":[\"15\",\"16\",\"17\",\"18\",\"19\"],\"134\":[\"15\",\"16\",\"17\"]}', 1, 1);
+(46, 33, 98, 1, 0, '149.00', 'Pigmeu', '{\"133\":[\"15\",\"16\",\"17\",\"18\",\"19\"],\"134\":[\"15\",\"16\",\"17\"]}', 1, 3),
+(47, 34, 98, 2, 0, '222.00', 'Sem tomate', '{\"133\":[\"15\",\"19\"],\"134\":[\"15\",\"19\"]}', 1, 6),
+(48, 35, 98, 3, 0, '447.00', '', '{\"133\":[\"15\",\"16\",\"17\",\"18\",\"19\"],\"134\":[\"15\",\"16\",\"17\"]}', 1, 6);
 
 -- --------------------------------------------------------
 
@@ -1512,7 +1525,7 @@ CREATE TABLE IF NOT EXISTS `taxas_entregas_cotacao` (
   `arredondamento_tipo` int(11) DEFAULT NULL,
   `ativo` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `taxas_entregas_cotacao`
@@ -1609,7 +1622,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `nome_completo`, `tipo`, `empresa_id`, `created`, `modified`, `apelido`, `login`, `password`, `dia_nascimento`, `mes_nascimento`, `ano_nascimento`) VALUES
 (8, 'LaDev Sistemas', 3, 2, '2019-01-28 23:59:32', '2019-06-24 16:52:11', 'LaDev', 'master@ladev.com', '$2y$10$wWXWh1YjSOH5t4.zPo7/TOIkL7pxVsxgIl84MyqxH6x2aOg5d9WBe', 3, 9, 2000),
-(16, 'Cliente Ladev', 1, 2, '2019-02-05 22:14:18', '2019-06-24 17:33:10', 'Cliente Fiel', 'cliente@ladev.com', '$2y$10$/0aptDhXOOqgE36oL1SBqe3t7KhyVYbJMzyQLbOyxNIHoS46F.zWO', 3, 9, 2000),
+(16, 'Cliente Ladevzinho', 1, 2, '2019-02-05 22:14:18', '2019-07-30 18:13:38', 'Cliente Fiel', 'cliente@ladev.com', '$2y$10$T/zE2x/mnm1pImpmdITE9.XIgx/JxS8l3lMi.1UpcBtnQJ08BhbYi', 3, 9, 2000),
 (20, 'Empresa', 2, 1, '2019-02-14 21:40:09', '2019-07-08 19:48:21', 'Demonstração Lanches e Delivery', 'empresa@ladev.com', '$2y$10$xL/DkDmDdVeZsX6ccQPnmOa7i0YyQxsgMLr41A96WdTHQ4ws4jZaG', 10, 10, 2018),
 (27, 'Entregador', 4, 1, '2019-04-27 14:07:43', '2019-06-24 17:01:15', 'Entregador Teste', 'entregador@ladev.com', '$2y$10$hjD5nvw5NHwUsDO.DVYBMOEjAAOiy3CZscdhofnFxrilG30wa0u0W', 12, 11, 1987),
 (30, 'Operador', 2, 1, '2019-07-17 20:51:30', '2019-07-17 20:51:30', 'Operador', 'operador@ladev.com', '$2y$10$b7.JSKDwkwfCO8RH8A/qqOAVjgoLBF3CvU2qIKJVIiaOPz7AiNWum', 3, 9, 2000),
@@ -1628,7 +1641,7 @@ CREATE TABLE IF NOT EXISTS `users_contatos` (
   `tipo` int(11) NOT NULL,
   `contato` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Extraindo dados da tabela `users_contatos`

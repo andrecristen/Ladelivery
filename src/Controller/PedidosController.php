@@ -64,6 +64,7 @@ class PedidosController extends AppController
         $this->setPublicAction('meusPedidos');
         $this->setPublicAction('meusPedidosHistorico');
         $this->setPublicAction('verStatus');
+        $this->setPublicAction('getNewValues');
         $this->validateActions();
         $this->empresaUtils = new EmpresaUtils();
     }
@@ -202,32 +203,70 @@ class PedidosController extends AppController
         $this->set(compact('pedidos'));
     }
 
-    public function listAll()
-    {
-        $novos = $this->Pedidos->find()->where([
+    public function getNewValues(){
+        $this->render(false);
+        $values = [
+          'novos' => $this->countNovos(),
+          'producao' => $this->countProducao(),
+          'coleta' => $this->countColeta(),
+          'entrega' => $this->countEntrega(),
+          'emRota' => $this->countEmRota(),
+          'entregue' => $this->countEntregue(),
+        ];
+        echo json_encode($values);
+    }
+
+    public function countNovos(){
+        return $this->Pedidos->find()->where([
             'status_pedido' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
-        $producao = $this->Pedidos->find()->where([
-            'status_pedido' => Pedido::STATUS_EM_PRODUCAO,
-            'empresa_id' => $this->empresaUtils->getUserEmpresaId()
-        ])->count();
-        $coleta = $this->Pedidos->find()->where([
+    }
+
+    public function countProducao(){
+       return $this->Pedidos->find()->where([
+           'status_pedido' => Pedido::STATUS_EM_PRODUCAO,
+           'empresa_id' => $this->empresaUtils->getUserEmpresaId()
+       ])->count();
+    }
+
+    public function countColeta(){
+        return  $this->Pedidos->find()->where([
             'status_pedido' => Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
-        $entrega = $this->Pedidos->find()->where([
+    }
+
+    public function countEntrega(){
+        return $this->Pedidos->find()->where([
             'status_pedido' => Pedido::STATUS_AGUARDANDO_ENTREGADOR,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
-        $emRota = $this->Pedidos->find()->where([
+    }
+
+    public function countEmRota(){
+        return $this->Pedidos->find()->where([
             'status_pedido' => Pedido::STATUS_SAIU_PARA_ENTREGA,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
-        $entregue = $this->Pedidos->find()->where([
+    }
+
+    public function countEntregue(){
+        return $this->Pedidos->find()->where([
             'status_pedido' => Pedido::STATUS_ENTREGUE,
             'empresa_id' => $this->empresaUtils->getUserEmpresaId()
         ])->count();
+    }
+
+
+    public function listAll()
+    {
+        $novos = $this->countNovos();
+        $producao = $this->countProducao();
+        $coleta = $this->countColeta();
+        $entrega = $this->countEntrega();
+        $emRota = $this->countEmRota();
+        $entregue = $this->countEntregue();
         $this->set(compact('novos', 'producao', 'coleta', 'entrega', 'emRota', 'entregue'));
     }
 

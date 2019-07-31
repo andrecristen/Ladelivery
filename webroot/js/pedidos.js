@@ -11,6 +11,8 @@ $(document).ready(function () {
                     var lastNovos = $('#novos').html();
                     if(key == "novos"){
                         if (value > lastNovos){
+                            var audio = document.getElementById('alerta');
+                            audio.play();
                             alertify.alert('Novo pedido', 'Sua empresa recebeu um novo pedido por favor verifique.');
                         }
                     }
@@ -22,5 +24,5 @@ $(document).ready(function () {
 
             }
         });
-    }, 30 * 1000);
+    }, 5 * 1000);
 });

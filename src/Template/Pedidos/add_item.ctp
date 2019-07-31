@@ -20,6 +20,9 @@ if($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_COMANDA){
 <?php echo $this->Html->css('tabs.css'); ?>
 <?php echo $this->Html->css('bloq.css'); ?>
 <div class="col-sm-12">
+    <div class="div-ajax-carregamento-pagina">
+        <div id="text">Carregando Informações<br/><i class="fas fa-spinner fa-spin"></i></div>
+    </div>
     <?php if ($pedido->status_pedido == \App\Model\Entity\Pedido::STATUS_EM_ABERTURA) { ?>
         <div class="alert alert-info">
             <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' '.$message, array('controller' => 'Pedidos', 'action' => 'confirmarAbertura/'.$pedido->id), array('escape' => false, 'class' => 'btn btn-danger'));?>

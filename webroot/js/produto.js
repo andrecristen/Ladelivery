@@ -29,7 +29,7 @@ function realFindProduto(url, isAdmin, produtoId) {
             $("#precoProdutoOriginal").val(parseFloat(data.preco_produto));
             $("#precoProduto").val(parseFloat(data.preco_produto));
             $("#descricaoProduto").val(data.descricao_produto);
-            $("#bloqDiv").css('display', 'none');
+            $(".div-ajax-carregamento-pagina").css('display', 'none');
             if(isAdmin){
                 findLists(produtoId);
             }else{
@@ -38,7 +38,7 @@ function realFindProduto(url, isAdmin, produtoId) {
 
         },
         error: function (data) {
-            $("#loading-" + produtoId).hide();
+            $(".div-ajax-carregamento-pagina").hide();
         }
     });
 }
@@ -49,7 +49,7 @@ function findProdutoAdmin(produtoId) {
 }
 
 function openModalAddCart(produtoId, isAdmin) {
-    $("#loading-" + produtoId).show();
+    $(".div-ajax-carregamento-pagina").show();
     setTimeout(function () {
 
         if(isAdmin){
@@ -58,7 +58,7 @@ function openModalAddCart(produtoId, isAdmin) {
             findProduto(produtoId);
         }
         openModal();
-        $("#loading-" + produtoId).hide();
+        $(".div-ajax-carregamento-pagina").hide();
     }, 50);
 
 }

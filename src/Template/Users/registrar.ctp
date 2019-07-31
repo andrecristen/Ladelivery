@@ -5,6 +5,7 @@
  */
 //$this->setLayout(null);
 $siteUtils = new \App\Model\Utils\SiteUtils();
+$dataAtual = new \DateTime();
 $siteUtils->menuSite();
 ?>
 <div style="margin-top: 67px;" class="col-sm-12">
@@ -12,7 +13,7 @@ $siteUtils->menuSite();
     <fieldset>
         <legend><?= __('Registrar-se') ?></legend>
         <?php
-        echo $this->Form->control('nome_completo');
+        echo $this->Form->control('nome_completo', ['type' => 'text']);
         echo $this->Form->control('apelido');
         ?>
     </fieldset>
@@ -27,9 +28,9 @@ $siteUtils->menuSite();
     <fieldset>
         <legend>Nascimento</legend>
         <?php
-        echo $this->Form->control('dia_nascimento', ['label'=>'Dia']);
-        echo $this->Form->control('mes_nascimento', ['label'=>'Mês']);
-        echo $this->Form->control('ano_nascimento', ['label'=>'Ano']);
+        echo $this->Form->control('dia_nascimento', ['label' => 'Dia', 'min' => 1 , 'max' => 31]);
+        echo $this->Form->control('mes_nascimento', ['label' => 'Mês', 'min' => 1 , 'max' => 12]);
+        echo $this->Form->control('ano_nascimento', ['label' => 'Ano', 'min' => 1900 , 'max' => $dataAtual->format('Y')]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Registrar')) ?>

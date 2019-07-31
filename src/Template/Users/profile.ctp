@@ -4,6 +4,7 @@
  * Gerente de projeto & Desenvolvedor
  */
 $siteUtils = new \App\Model\Utils\SiteUtils();
+$dataAtual = new \DateTime();
 $siteUtils->menuSite();
 ?>
 <div style="margin-top: 67px;" class="container bootstrap snippet">
@@ -39,9 +40,9 @@ $siteUtils->menuSite();
             <fieldset>
                 <legend>Nascimento</legend>
                 <?php
-                echo $this->Form->control('dia_nascimento', ['label' => 'Dia']);
-                echo $this->Form->control('mes_nascimento', ['label' => 'Mês']);
-                echo $this->Form->control('ano_nascimento', ['label' => 'Ano']);
+                echo $this->Form->control('dia_nascimento', ['label' => 'Dia', 'min' => 1 , 'max' => 31]);
+                echo $this->Form->control('mes_nascimento', ['label' => 'Mês', 'min' => 1 , 'max' => 12]);
+                echo $this->Form->control('ano_nascimento', ['label' => 'Ano', 'min' => 1900 , 'max' => $dataAtual->format('Y')]);
                 ?>
             </fieldset>
             <button class="btn btn-lg btn-success pull-right" type="submit"><i class="glyphicon glyphicon-ok-sign"></i>Salvar</button>

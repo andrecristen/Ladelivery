@@ -38,7 +38,9 @@ $produtoOpen = $params['?']['openProduto'];
     <?php echo $this->Html->css('bloq.css'); ?>
 </head>
 <body style="margin-top: 65px;">
-<div class="div-ajax-carregamento-pagina"><h1>Carregando...</h1></div>
+<div class="div-ajax-carregamento-pagina">
+    <div id="text">Carregando Informações<br/><i class="fas fa-spinner fa-spin"></i></div>
+</div>
 <?php $siteUtils->menuSite() ?>
 <div class="container">
     <?php if(!$empresaAberta){

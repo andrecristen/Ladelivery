@@ -19,7 +19,7 @@ $siteUtils->menuSite();
         echo $this->Form->control('numero', ['required' => 'required']);
         echo $this->Form->control('bairro');
         echo $this->Form->control('cidade');
-        echo $this->Form->control('cep', ['label'=>'CEP']);
+        echo $this->Form->control('cep', ['label'=>'CEP', 'class' => 'cep']);
         echo $this->Form->control('complemento', ['required'=>'required']);
         echo $this->Form->control('estado', ['options' => \App\Model\Entity\Endereco::getEstados()]);
         ?>

@@ -15,7 +15,7 @@
             echo $this->Form->control('bairro');
             echo $this->Form->control('cidade');
             echo $this->Form->control('estado' , ['options' => \App\Model\Entity\Endereco::getEstados()]);
-            echo $this->Form->control('cep');
+            echo $this->Form->control('cep', ['class' => 'cep']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Adicionar')) ?>

@@ -10,7 +10,7 @@
         <legend><?= __('Adicionar Pedido Entrega') ?></legend>
         <?php
             echo $this->Form->control('pedido_id', ['options' => $pedidos]);
-            echo $this->Form->control('valor_entrega');
+            echo $this->Form->control('valor_entrega', ['class' => 'money']);
             echo $this->Form->control('cotacao_maps');
             echo $this->Form->control('endereco_id', ['options' => $enderecos]);
         ?>

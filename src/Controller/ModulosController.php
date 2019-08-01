@@ -28,7 +28,7 @@ class ModulosController extends AppController
      */
     public function index()
     {
-        $modulos = $this->paginate($this->Modulos);
+        $modulos = $this->paginate($this->Modulos->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('modulos'));
     }

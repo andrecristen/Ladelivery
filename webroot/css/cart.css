@@ -8,6 +8,10 @@
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
 }
 
+.show-mobile{
+    font-weight: bold;
+    display: none;
+}
 
 .main-cart a {
     border: 0 none;
@@ -67,8 +71,6 @@
     float: left;
 }
 
-.price:before,
-.subtotal:before,
 .subtotal-value:before,
 .total-value:before,
 .promo-value:before {
@@ -174,7 +176,7 @@
     bottom: 1.125rem;
     float: right;
     right: 0;
-    text-align: right;
+    text-align: center;
 }
 
 .remove button {
@@ -329,6 +331,9 @@
 }
 
 @media screen and (max-width: 640px) {
+    .show-mobile{
+        display: block;
+    }
     .main-cart aside,
     .basket,
     .summary,
@@ -352,7 +357,7 @@
         width: 40%;
     }
     .product-details {
-        width: 60%;
+        width: 100%;
     }
     .price,
     .subtotal {
@@ -367,12 +372,9 @@
     }
     .remove {
         bottom: 0;
-        text-align: left;
+        text-align: center;
         margin-top: 0.75rem;
         position: relative;
-    }
-    .remove button {
-        padding: 0;
     }
     .summary {
         margin-top: 1.25rem;

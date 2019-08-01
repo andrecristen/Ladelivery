@@ -71,9 +71,9 @@ $empresaAberta = $controllerPedido->empresaAberta();
             <div class="basket-labels">
                 <ul>
                     <li class="item item-heading">Item</li>
-                    <li class="price">Preço</li>
+                    <li class="price">Preço R$</li>
                     <li class="quantity">Quantidade</li>
-                    <li class="subtotal">Total</li>
+                    <li class="subtotal">Total R$</li>
                 </ul>
             </div>
             <?php
@@ -99,18 +99,33 @@ $empresaAberta = $controllerPedido->empresaAberta();
                 <div class="basket-product">
                     <div class="item">
                         <div class="product-details">
-                            <h1><strong><span class="item-quantity"></span> <?= $useProduto->nome_produto ?></strong>
-                                <br/><?= $useProduto->descricao_produto ?></h1>
+                            <h1>
+                                <strong>
+                                    <span class="show-mobile">Produto: </span>
+                                    <span class="item-quantity"></span>
+                                    <?= $useProduto->nome_produto ?>
+                                </strong>
+                                <br/>
+                                <span class="show-mobile">Descrição: </span>
+                                <?= $useProduto->descricao_produto ?>
+                            </h1>
                             <?php if ($pedidoProduto->observacao) { ?>
                                 <p><strong>Obs.: <?= $pedidoProduto->observacao ?></strong></p>
                             <?php } ?>
                         </div>
                     </div>
-                    <div class="price"><?= $pedidoProduto->valor_total_cobrado / $pedidoProduto->quantidade ?></div>
-                    <div class="quantity">
-                        <input disabled readonly type="number" value="<?= $pedidoProduto->quantidade ?>" min="1" class="quantity-field">
+                    <div class="price">
+                        <span class="show-mobile">Preço R$: </span>
+                        <?= $pedidoProduto->valor_total_cobrado / $pedidoProduto->quantidade ?>
                     </div>
-                    <div class="subtotal"><?= $pedidoProduto->valor_total_cobrado ?></div>
+                    <div class="quantity">
+                        <span class="show-mobile">Quantidade: </span>
+                        <?= $pedidoProduto->quantidade ?>
+                    </div>
+                    <div class="subtotal">
+                        <span class="show-mobile">Total R$: </span>
+                        <?= $pedidoProduto->valor_total_cobrado ?>
+                    </div>
                     <br/>
                     <br/>
                 </div>

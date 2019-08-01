@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    //Carrega as os valores dos pedidos
+    //Carrega as os valores dos pedidos a cada 45 segundos
     setInterval(function () {
         jQuery.ajax({
             url: "/pedidos/getNewValues/",
@@ -24,5 +24,5 @@ $(document).ready(function () {
 
             }
         });
-    }, 5 * 1000);
+    }, 45 * 1000);
 });

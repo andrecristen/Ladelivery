@@ -25,6 +25,10 @@ echo $this->Html->css('status.css' . $cacheVersion);
             <label><?= $pedido->id ?></label>
         </div>
         <div class="form-group">
+            <span>Situção:</span>
+            <label><?= $listStatus[$pedido->status_pedido] ?></label>
+        </div>
+        <div class="form-group">
             <span>Tempo de produção estimado:</span>
             <label><?= $pedido->tempo_producao_aproximado_minutos ?> min</label>
         </div>

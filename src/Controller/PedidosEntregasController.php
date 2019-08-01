@@ -38,7 +38,7 @@ class PedidosEntregasController extends AppController
         $this->paginate = [
             'contain' => ['Pedidos', 'Enderecos', 'Users']
         ];
-        $filterFixed = ['pedidos.empresa_id' => $this->empresaUtils->getUserEmpresaId()];
+        $filterFixed = ['Pedidos.empresa_id' => $this->empresaUtils->getUserEmpresaId()];
         $pedidosEntregas = $this->paginate($this->PedidosEntregas->find()->where($this->generateConditionsFind(false, $filterFixed)));
 
         $this->set(compact('pedidosEntregas'));

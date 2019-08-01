@@ -61,8 +61,14 @@ h6 {
     content: none;
 }
 
+
+.progressbar li.active {
+    color: #17a2b8;
+    font-weight: bold;
+}
+
 .progressbar li.atual {
-    color: green;
+    color: #28a745;
     font-weight: bold;
 }
 
@@ -71,10 +77,17 @@ h6 {
     font-weight: bold;
 }
 .progressbar li.active:before {
-    border-color: #55b776;
+    border-color: #17a2b8;
 }
 .progressbar li.active + li:after {
-    background-color: #55b776;
+    background-color: #17a2b8;
+}
+
+.progressbar li.atual:before {
+    border-color: #28a745;
+}
+.progressbar li.atual + li:after {
+    background-color: #28a745;
 }
 
 .card{

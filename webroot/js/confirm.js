@@ -39,7 +39,7 @@ function confirmar() {
             }
         });
     } else {
-        alertify.error('Selecione uma forma de pagamento');
+        alertify.alert('Atenção!','Selecione uma forma de pagamento');
     }
 }
 

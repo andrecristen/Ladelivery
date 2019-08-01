@@ -31,7 +31,7 @@ class MenusController extends AppController
         $this->paginate = [
             'contain' => ['Modulos', 'Actions']
         ];
-        $menus = $this->paginate($this->Menus);
+        $menus = $this->paginate($this->Menus->find()->where($this->generateConditionsFind(false)));
 
         $this->set(compact('menus'));
     }

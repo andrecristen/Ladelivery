@@ -43,9 +43,9 @@ $empresaAberta = $controllerPedido->empresaAberta();
                 <div class="basket-labels">
                     <ul>
                         <li class="item item-heading">Produto</li>
-                        <li class="price">Preço</li>
+                        <li class="price">Preço R$</li>
                         <li class="quantity">Quantidade</li>
-                        <li class="subtotal">Total</li>
+                        <li class="subtotal">Total R$</li>
                     </ul>
                 </div>
                 <?php
@@ -60,22 +60,37 @@ $empresaAberta = $controllerPedido->empresaAberta();
                     <div class="basket-product">
                         <div class="item">
                             <div class="product-details">
-                                <h1><strong><span class="item-quantity"></span> <?= $useProduto->nome_produto ?></strong>
-                                    <br/><?= $useProduto->descricao_produto ?></h1>
+                                <h1>
+                                    <strong>
+                                        <span class="show-mobile">Produto: </span>
+                                        <span class="item-quantity"></span>
+                                        <?= $useProduto->nome_produto ?>
+                                    </strong>
+                                    <br/>
+                                    <span class="show-mobile">Descrição: </span>
+                                    <?= $useProduto->descricao_produto ?>
+                                </h1>
                                 <?php if ($carrinhoProduto->observacao) { ?>
                                     <p><strong>Obs.: <?= $carrinhoProduto->observacao ?></strong></p>
                                 <?php } ?>
                             </div>
                         </div>
-                        <div class="price"><?= $carrinhoProduto->valor_total_cobrado / $carrinhoProduto->quantidades ?></div>
-                        <div class="quantity">
-                            <input disabled type="number" value="<?= $carrinhoProduto->quantidades ?>" min="1" class="quantity-field">
+                        <div class="price">
+                            <span class="show-mobile">Preço R$: </span>
+                            <?= $carrinhoProduto->valor_total_cobrado / $carrinhoProduto->quantidades ?>
                         </div>
-                        <div class="subtotal"><?= $carrinhoProduto->valor_total_cobrado ?></div>
+                        <div class="quantity">
+                            <span class="show-mobile">Quantidade: </span>
+                            <?= $carrinhoProduto->quantidades ?>
+                        </div>
+                        <div class="subtotal">
+                            <span class="show-mobile">Total R$: </span>
+                            <?= $carrinhoProduto->valor_total_cobrado ?>
+                        </div>
                         <br/>
                         <br/>
                         <div class="remove">
-                            <button class="btn btn-sm btn-danger" onclick="removeItemCarrinho(<?= $carrinhoProduto->id ?>)">Remover</button>
+                            <button class="btn btn-sm btn-danger" onclick="removeItemCarrinho(<?= $carrinhoProduto->id ?>)">Remover <i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                     <?php
@@ -88,14 +103,11 @@ $empresaAberta = $controllerPedido->empresaAberta();
                     <div class="summary-total">
                         <div class="total-title">Total</div>
                         <div class="total-value final-value" id="basket-total"><?= $totalCarrinho ?></div>
-                        <div class="total-title hide">Desconto</div>
-                        <div class="total-value final-value hide" id="basket-total">10</div>
-                        <div class="total-title hide">Final</div>
-                        <div class="total-value final-value hide" id="basket-total">718</div>
                     </div>
                     <?php if($itensCarrinho > 0) {?>
                         <div class="summary-total">
-                            <div style="width: auto; margin-right: 2px;" class="total-title">Endereço</div><a href="../enderecos/add-endereco-cliente" class=""><i class="far fa-plus-square"></i> Novo</a>
+                            <div style="width: auto; margin-right: 2px;" class="total-title">Endereço</div>
+                            <a style="font-size: 15px" href="../enderecos/add-endereco-cliente"><i class="far fa-plus-square"></i> Novo</a>
                             <select class="select-endereco" name="enderecoSelect">
                                 <?php
                                 $enderecos = $tableLocator->get('Enderecos')->find()->where(['user_id' => intval($_SESSION['Auth']['User']['id'])]);
@@ -111,10 +123,10 @@ $empresaAberta = $controllerPedido->empresaAberta();
                         <div class="summary-checkout">
                             <button id="btnFecharCarrinho" onclick="fecharCarrinho()" class="checkout-cta btn-success">Confirmar Conteúdo</button>
                             <br>
-                            <a href="../pages/categorias" class="checkout-cta btn-warning">Continuar Comprando</a>
+                            <a style="margin-top: 25px;" href="../pages/categorias" class="checkout-cta btn-warning">Continuar Comprando</a>
                         </div>
-                        <div class="summary-checkout">
-                            <span>Atenção! Ao clicar em confirmar conteúdo você será redirecionado para a tela final de cofirmação do pedido, que conterá o preço final do pedido e o custo de entrega para o endereço selecionado.</span>
+                        <div style="padding: 10px; text-align: center" class="summary-checkout">
+                            <span>Atenção! Ao clicar em confirmar conteúdo você será redirecionado para a tela final de confirmação do pedido, que conterá o preço final do pedido e o custo de entrega para o endereço selecionado, assim como a seleção da forma de pagamento.</span>
                         </div>
                     <?php }else{?>
                         <div class="alert alert-info" style="text-align: center">

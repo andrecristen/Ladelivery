@@ -175,11 +175,13 @@ class SiteUtils extends AppController
         echo $this->Html->css('bootstrap-select.css' . $cacheVersion);
         echo $this->Html->script('jquery.js' . $cacheVersion);
         echo $this->Html->script('popper.js' . $cacheVersion);
+        echo $this->Html->script('jquery-mask.min.js' . $cacheVersion);
         echo $this->Html->script('angular.js' . $cacheVersion);
         echo $this->Html->script('bootstrap.js' . $cacheVersion);
         // echo $this->Html->script('font-awesome-all.js'.$cacheVersion);
         echo $this->Html->script('bootstrap-select.js' . $cacheVersion);
         echo $this->Html->script('site-utils.js' . $cacheVersion);
+        echo $this->Html->script('masks.js' . $cacheVersion);
     }
 
     public function createQuadrosKanbanPedidosProdutos(PedidosProduto $pedidosProduto)

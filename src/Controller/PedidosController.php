@@ -995,7 +995,7 @@ class PedidosController extends AppController
         ];
         $filtrosHistorico = [
             ['user_id' => $this->empresaUtils->getUserId()],
-            ['status_pedido in' => [Pedido::STATUS_ENTREGUE, Pedido::STATUS_CANCELADO_CLIENTE, Pedido::STATUS_REJEITADO]]
+            ['status_pedido in' => [Pedido::STATUS_ENTREGUE, Pedido::STATUS_REJEITADO]]
         ];
         $pedidos = $this->Pedidos->find()->where($filtrosEmAndamento)->orderDesc('id');
         $pedidosHistorico = $this->Pedidos->find()->where($filtrosHistorico)->orderDesc('id')->count();
@@ -1006,7 +1006,7 @@ class PedidosController extends AppController
     {
         $filtrosHistorico = [
             ['user_id' => $this->empresaUtils->getUserId()],
-            ['status_pedido in' => [Pedido::STATUS_ENTREGUE, Pedido::STATUS_CANCELADO_CLIENTE, Pedido::STATUS_REJEITADO]]
+            ['status_pedido in' => [Pedido::STATUS_ENTREGUE, Pedido::STATUS_REJEITADO]]
         ];
         $pedidos = $this->Pedidos->find()->where($filtrosHistorico)->orderDesc('id');
         $this->set(compact('pedidos'));

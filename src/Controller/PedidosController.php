@@ -203,16 +203,20 @@ class PedidosController extends AppController
         $this->set(compact('pedidos'));
     }
 
-    public function getNewValues(){
+    public function getNewValues($onlyNew = false){
         $this->render(false);
-        $values = [
-          'novos' => $this->countNovos(),
-          'producao' => $this->countProducao(),
-          'coleta' => $this->countColeta(),
-          'entrega' => $this->countEntrega(),
-          'emRota' => $this->countEmRota(),
-          'entregue' => $this->countEntregue(),
-        ];
+        if($onlyNew){
+            $values = $this->countNovos();
+        }else{
+            $values = [
+                'novos' => $this->countNovos(),
+                'producao' => $this->countProducao(),
+                'coleta' => $this->countColeta(),
+                'entrega' => $this->countEntrega(),
+                'emRota' => $this->countEmRota(),
+                'entregue' => $this->countEntregue(),
+            ];
+        }
         echo json_encode($values);
     }
 

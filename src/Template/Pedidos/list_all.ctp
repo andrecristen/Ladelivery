@@ -82,4 +82,3 @@ echo $this->Html->script('pedidos.js' . $cacheVersion);
         </div>
     </div>
 </div>
-<?php echo $this->Html->media(['alertaDois.mp3'], ['id' => 'alerta']); ?>

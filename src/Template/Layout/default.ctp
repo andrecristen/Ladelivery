@@ -18,6 +18,7 @@ $cacheControl = new \App\Model\Utils\CacheControl();
 $cacheControl = $cacheControl->getCacheVersion();
 $siteUtils = new \App\Model\Utils\SiteUtils();
 $menusAdmin = $_SESSION["menus"];
+$novosPedidos = $siteUtils->countNewPedidos();
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,6 +47,7 @@ $menusAdmin = $_SESSION["menus"];
     <link rel="stylesheet" href="/css/input-star-directive.css<?= h($cacheControl) ?>">
     <?php echo $this->Html->script('tabs.js'); ?>
     <?php echo $this->Html->css('tabs.css'); ?>
+    <?php echo $this->Html->script('admin-utils.js'); ?>
 </head>
 <body>
 <?= $this->Flash->render() ?>
@@ -65,7 +67,7 @@ $menusAdmin = $_SESSION["menus"];
             &nbsp;
         </div>
         <div class="item-info">
-            <i title="Tipo Privilegios" class="fas fa-crown">&nbsp;</i><span><?= $this->Html->link(__(\App\Model\Entity\User::getTipoListAll()[$empresaUtils->getUserTipo()]), '#') ?></span>
+            <i title="Novos pedidos" class="fas fa-bell">&nbsp;</i><span><span id="novos-notify"><?= $novosPedidos ?></span><?= $this->Html->link(' Novos Pedidos', ['controller' => 'Pedidos', 'action' => 'listAll']) ?></span>
         </div>
         <div class="actions-system-info">
             <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-cart-plus')) . ' Abrir Pedido', array('controller' => 'Pedidos', 'action' => 'add'), array('escape' => false, 'class' => 'btn btn-sm btn-success')) ?>
@@ -82,6 +84,7 @@ $menusAdmin = $_SESSION["menus"];
         <?= $this->fetch('content') ?>
     </div>
 </div>
+<?php echo $this->Html->media(['alertaDois.mp3'], ['id' => 'alerta']); ?>
 <footer>
 </footer>
 </body>

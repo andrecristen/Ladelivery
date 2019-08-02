@@ -717,4 +717,8 @@ class SiteUtils extends AppController
         }
     }
 
+    public function countNewPedidos(){
+        return $this->getTableLocator()->get('Pedidos')->find()->where(['status_pedido' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_EMPRESA])->count();
+    }
+
 }

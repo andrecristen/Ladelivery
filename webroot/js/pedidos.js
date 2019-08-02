@@ -16,7 +16,6 @@ $(document).ready(function () {
                             alertify.alert('Novo pedido', 'Sua empresa recebeu um novo pedido por favor verifique.');
                         }
                     }
-                    console.log($('#'+key));
                     $('#'+key).html(value);
                 });
             },
@@ -24,5 +23,5 @@ $(document).ready(function () {
 
             }
         });
-    }, 45 * 1000);
+    }, 35 * 1000);
 });

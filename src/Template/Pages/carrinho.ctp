@@ -27,6 +27,9 @@ $empresaAberta = $controllerPedido->empresaAberta();
 </head>
 <body style="margin-top: 65px;">
 <?php $siteUtils->menuSite() ?>
+<div class="div-ajax-carregamento-pagina">
+    <div id="text">Adequando Informações<br/><i class="fas fa-spinner fa-spin"></i></div>
+</div>
 <div class="container main-cart">
     <main>
         <?php if(!$empresaAberta){

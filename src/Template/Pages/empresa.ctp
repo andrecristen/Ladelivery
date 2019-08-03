@@ -41,18 +41,20 @@ $turnoList = \App\Model\Entity\HorariosAtendimento::getTurnoList();
 <div style="margin-top: 70px;" class="container">
     <div class="col-sm-12" style="text-align: center">
         <iframe src="<?= $empresaUtils->getEmpresaBaseEnderecoIFrameSrc()?>" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-        <h2>Dados Legais</h2>
+        <h2><i class="fas fa-gavel"></i> Dados Legais</h2>
         <h5>Nome Fantasia: <?= $empresa->nome_fantasia?></h5>
         <h5>CNPJ: <?= $empresa->cnpj?></h5>
         <h5>IE: <?= $empresa->ie?></h5>
-        <h2>Endereço</h2>
+        <br>
+        <h2><i class="fas fa-map-marker-alt"></i> Endereço</h2>
         <h5>Rua: <?= $empresaEndereco->rua?></h5>
         <h5>Bairro: <?= $empresaEndereco->bairro?></h5>
         <h5>Número: <?= $empresaEndereco->numero?></h5>
         <h5>CEP: <?= $empresaEndereco->cep?></h5>
         <h5>Cidade: <?= $empresaEndereco->cidade?></h5>
         <h5>UF: <?= $empresaEndereco->estado?></h5>
-        <h2>Contatos</h2>
+        <br>
+        <h2><i class="fas fa-comment"></i> Contatos</h2>
         <?php
         $contatos = json_decode($empresa->contatos, true);
         foreach ($contatos as $contato){
@@ -72,7 +74,8 @@ $turnoList = \App\Model\Entity\HorariosAtendimento::getTurnoList();
             }
             ?>
         <?php }?>
-        <h2>Horários de Atendimento</h2>
+        <br>
+        <h2><i class="fas fa-clock"></i> Horários de Atendimento</h2>
         <?php foreach ($horariosAtendimento as $horario){
             ?>
             <h5><?= $diaSemanaList[$horario->dia_semana]?> - <?= $horario->hora_inicio->format('H:i')?>h às  <?= $horario->hora_fim->format('H:i')?>h</h5>

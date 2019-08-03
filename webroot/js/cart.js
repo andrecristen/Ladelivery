@@ -8,16 +8,17 @@ function removeItemCarrinho(idItemCarrinho) {
             if (data.itemExcluido) {
                 alertify.warning('Item excluído do carrinho');
                 alertify.notify('Recarregando carrinho');
+                $(".div-ajax-carregamento-pagina").show();
                 setTimeout(
-                    location.reload(true),
-                    2000
+                    location.reload(),
+                    8000
                 );
             } else {
-                alertify.error('NÃO FOI POSSIVEL EXCLUIR O ITEM DO CARRINHO');
+                alertify.alert('NÃO FOI POSSIVEL EXCLUIR O ITEM DO CARRINHO');
             }
         },
         error: function (data) {
-            alertify.error('NÃO FOI POSSIVEL EXCLUIR O ITEM DO CARRINHO');
+            alertify.alert('NÃO FOI POSSIVEL EXCLUIR O ITEM DO CARRINHO');
         }
     });
 }

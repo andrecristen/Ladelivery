@@ -254,6 +254,7 @@ function certificaMinimoPreechido(index, element) {
 }
 
 function enviteToCart(data) {
+    $(".div-ajax-invite-cart").show();
     jQuery.ajax({
         url: "../itens-carrinhos/addProduto/",
         method: "GET",
@@ -261,6 +262,7 @@ function enviteToCart(data) {
         async: false,
         dataType: "json",
         success: function (data) {
+            $(".div-ajax-invite-cart").hide();
             if (data.itemGravado) {
                 alertify.success('Item adicionado ao carrinho');
                 //Atualiza icone de carrinho;
@@ -273,9 +275,11 @@ function enviteToCart(data) {
             }
         },
         error: function (data) {
+            $(".div-ajax-invite-cart").hide();
             alertify.error('Não foi possivel adicionar o item ao carrinho');
         }
     });
+    $(".div-ajax-invite-cart").hide();
 }
 
 function enviteToPedido(data) {

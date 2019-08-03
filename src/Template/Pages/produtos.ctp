@@ -35,11 +35,13 @@ $produtoOpen = $params['?']['openProduto'];
     <?php echo $this->Html->script('produto.js'); ?>
     <?php echo $this->Html->script('tabs.js'); ?>
     <?php echo $this->Html->css('tabs.css'); ?>
-    <?php echo $this->Html->css('bloq.css'); ?>
 </head>
 <body style="margin-top: 65px;">
 <div class="div-ajax-carregamento-pagina">
     <div id="text">Carregando Informações<br/><i class="fas fa-spinner fa-spin"></i></div>
+</div>
+<div class="div-ajax-invite-cart">
+    <div id="text">Adicionando ao carrinho<br/><i class="fas fa-spinner fa-spin"></i></div>
 </div>
 <?php $siteUtils->menuSite() ?>
 <div class="container">

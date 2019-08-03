@@ -1,4 +1,6 @@
-.div-ajax-carregamento-pagina {
+.div-ajax-invite-cart,
+.div-ajax-carregamento-pagina
+{
     position: fixed;
     display: none;
     width: 100%;
@@ -11,7 +13,9 @@
     z-index: 2;
     cursor: pointer;
 }
-.div-ajax-carregamento-pagina #text{
+.div-ajax-invite-cart #text,
+.div-ajax-carregamento-pagina #text
+{
     text-align: center;
     position: absolute;
     top: 50%;
@@ -20,4 +24,8 @@
     color: white;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
+}
+
+.div-ajax-invite-cart{
+    z-index: 10000!important;
 }

@@ -173,6 +173,7 @@ class SiteUtils extends AppController
         echo $this->Html->css('bootstrap.css' . $cacheVersion);
         echo $this->Html->css('font-awesome-all.css' . $cacheVersion);
         echo $this->Html->css('bootstrap-select.css' . $cacheVersion);
+        echo $this->Html->css('bloq.css'. $cacheVersion);
         echo $this->Html->script('jquery.js' . $cacheVersion);
         echo $this->Html->script('popper.js' . $cacheVersion);
         echo $this->Html->script('jquery-mask.min.js' . $cacheVersion);
@@ -339,7 +340,7 @@ class SiteUtils extends AppController
                 $existMidia->where(['id' => $produto->midia_id]);
                 /** @var $existMidia \App\Model\Entity\Midia */
                 $existMidia = $existMidia->first();
-                echo '<a onclick="openModalAddCart(' . $produto->id . ')">';
+                echo '<a onclick="openModalAddCart(' . $produto->id . ',' . $isAdmin . ')">';
                 if ($existMidia !== null) {
                     echo $this->Html->image($existMidia->path_midia, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40'));
                 } else {
@@ -347,7 +348,7 @@ class SiteUtils extends AppController
                 }
                 echo '</a>';
             }
-            echo '<div class="card-body">';
+            echo '<div onclick="openModalAddCart(' . $produto->id . ',' . $isAdmin . ')" class="card-body">';
             echo '<h4 class="card-title">';
             echo '<span>' . $produto->nome_produto . '</span>';
             echo '<br/>';
@@ -402,15 +403,29 @@ class SiteUtils extends AppController
         echo '</div>';
     }
 
+    public final function menuSitePretty(){
+
+    }
+
     public final function menuSite()
     {
-        $cakeDescription = \App\Model\Utils\EmpresaUtils::NOME_EMPRESA_LOJA;
+        $userId = $this->Auth->user('id');
         /** @var $categorias CategoriasProduto[] */
         $categorias = $this->getTableLocator()->get('CategoriasProdutos')->find();
         $itensCarrinhos = $this->getTableLocator()->get('ItensCarrinhos')->find()->where(['user_id' => $this->Auth->user('id')])->count();
         $notificacoes = $this->getTableLocator()->get('Logs')->find()->where(['user_id' => $this->Auth->user('id'), 'situacao' => Log::SITUACAO_PENDENTE])->count();
         echo '<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">';
-        echo $this->Html->link(($cakeDescription), ['controller' => 'pages', 'action' => ''], ['class' => 'navbar-brand']);
+        echo $this->Html->link(
+            $this->Html->image( EmpresaUtils::IMAGE_SITE_PATH ,array('height' => '30', 'width' => '30')). ' '.EmpresaUtils::NOME_EMPRESA_LOJA,
+            [
+                'controller' => 'pages',
+                'action' => ''
+            ],
+            [
+                'class' => 'navbar-brand',
+                'escape' => false
+            ]
+        );
         echo '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>';
         echo '<div class="collapse navbar-collapse" id="navbarResponsive">';
         echo '<ul class="navbar-nav ml-auto">';
@@ -418,16 +433,16 @@ class SiteUtils extends AppController
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-home')) . ' Início', array('controller' => 'pages', 'action' => ''), array('escape' => false, 'class' => 'nav-link'));
         echo '</li>';
         echo '<li class="dropdown nav-item active">';
-        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-th-list')) . ' Categorias', '#', array('escape' => false, 'class' => 'nav-link dropdown-toggle'));
+        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-utensils')) . ' Produtos', '#', array('escape' => false, 'class' => 'nav-link dropdown-toggle'));
         echo '<div class="dropdown-menu menu-site">';
         foreach ($categorias as $categoria) {
             echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' ' . $categoria->nome_categoria, array('controller' => 'pages', 'action' => 'produtos?categoria=' . $categoria->id . '&categoriaNome=' . $categoria->nome_categoria), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
         }
-        echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' Todas', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
+        echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' Todas Categorias', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
         echo '</div>';
         echo '</li>';
         echo '<li class="nav-item active">';
-        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-id-card-alt')) . ' Sobre Nós', array('controller' => 'pages', 'action' => 'empresa'), array('escape' => false, 'class' => 'nav-link'));
+        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-address-card')) . ' Sobre Nós', array('controller' => 'pages', 'action' => 'empresa'), array('escape' => false, 'class' => 'nav-link'));
         echo '</li>';
         if ($this->Auth->user('id')) {
             echo '<li class="nav-item active">';

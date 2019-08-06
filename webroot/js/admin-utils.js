@@ -29,3 +29,12 @@ function allSelectSearch() {
         width: '100%',
     });
 }
+
+function onClickHiddeFilters() {
+    var elementShow = $(".icon-show");
+    var elementHide = $(".icon-hide");
+    elementHide.addClass('icon-show');
+    elementHide.removeClass('icon-hide');
+    elementShow.addClass('icon-hide');
+    elementShow.removeClass('icon-show');
+}

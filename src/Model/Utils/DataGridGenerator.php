@@ -72,7 +72,12 @@ class DataGridGenerator extends View implements TypeFields
             var_dump($this->actions);
         }
         if ($this->isShowFilters()) {
-            echo '<div class="content-filter">';
+            echo '<div class="card">';
+            echo '<div class="card-header">';
+            echo '<button type="button" class="btn btn-sm btn-info" onclick="onClickHiddeFilters()" data-toggle="collapse" data-target="#filtros"><span class="icon-hide"><i class="far fa-eye"></i></span><span class="icon-show"><i class="far fa-eye-slash"></i></span> Filtros</button>';
+            echo '</div>';
+            echo '<div class="card-header">';
+            echo '<div id="filtros" class="content-filter collapse show">';
             echo $this->Form->create(null, ['type' => 'get']);
             foreach ($this->fields as $field) {
                 $filterName = $field->getAlias() . '=' . $field->getType();
@@ -107,7 +112,7 @@ class DataGridGenerator extends View implements TypeFields
                             echo $this->Form->select($filterNameOperador, $this->getListOperador(TypeFields::TYPE_LIST), ['value' => $this->request->getQuery($filterNameOperador), 'class' => 'select-operador']);
                             echo '</div>';
                             echo '<div class="col-sm-10">';
-                            echo $this->Form->select($filterName, $list, ['label' => false, 'value' => $this->request->getQuery($filterName)]);
+                            echo $this->Form->select($filterName, $list, ['label' => false, 'value' => $this->request->getQuery($filterName), 'class' => 'select-operador']);
                             echo '<br/>';
                             echo '</div>';
                             break;
@@ -116,7 +121,7 @@ class DataGridGenerator extends View implements TypeFields
                             echo $this->Form->select($filterNameOperador, $this->getListOperador(TypeFields::TYPE_BOOLEAN), ['value' => $this->request->getQuery($filterNameOperador), 'class' => 'select-operador']);
                             echo '</div>';
                             echo '<div class="col-sm-10">';
-                            echo $this->Form->select($filterName, ['' => 'Selecione uma opção para o filtro ' . $field->getTitulo(), 1 => 'Sim', 0 => 'Não'], ['label' => false, 'value' => $this->request->getQuery($filterName)]);
+                            echo $this->Form->select($filterName, ['' => 'Selecione uma opção para o filtro ' . $field->getTitulo(), 1 => 'Sim', 0 => 'Não'], ['label' => false, 'value' => $this->request->getQuery($filterName), 'class' => 'select-operador']);
                             echo '</div>';
                             break;
                         case TypeFields::TYPE_DATE:
@@ -144,6 +149,9 @@ class DataGridGenerator extends View implements TypeFields
                     echo '</div>';
                 }
             }
+            echo '</div>';
+            echo '</div>';
+            echo '<div id="filtros" class="card-footer collapse show">';
             echo $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-search')) . ' Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
             $action = 'index';
             if ($this->getCallBackActionLimpar()) {
@@ -151,6 +159,7 @@ class DataGridGenerator extends View implements TypeFields
             }
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-trash-alt')) . ' Limpar', ['action' => $action], array('escape' => false, 'class' => 'btn btn-sm btn-danger'));
             echo $this->Form->end();
+            echo '</div>';
             echo '</div>';
         }
         echo '<div class="actions-grid">';

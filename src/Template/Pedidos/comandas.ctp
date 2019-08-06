@@ -17,7 +17,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '60px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Cliente', 'cliente', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     //$dataGrid->addField(new \App\Model\Utils\GridField('Valor Produtos', 'valor_produtos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Tempo de Producao', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '200px'));
+    //$dataGrid->addField(new \App\Model\Utils\GridField('Tempo de Producao', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '200px'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Data', 'data_pedido', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME, true, true, '150px'));
     $status = new \App\Model\Utils\GridField('Status', 'status_pedido', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
     $status->setList($pedidoModel->getComandaStatusList());

@@ -38,4 +38,14 @@ interface TypeFields
 
     const TYPE_WIDTH_PORCENT = 2;
 
+    //Tipos condicoes:
+
+    const CONDITION_IGUAL = '=';
+    const CONDITION_DIFERENTE = '<>';
+    const CONDITION_CONTEM = 'LIKE';
+    const CONDITION_MAIOR = '>';
+    const CONDITION_MAIOR_IGUAL = '>=';
+    const CONDITION_MENOR = '<';
+    const CONDITION_MENOR_IGUAL = '<=';
+
 }

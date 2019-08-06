@@ -100,9 +100,9 @@ class AppController extends Controller
         $publicActions = $this->Auth->allowedActions;
         $params = ($this->getRequest()->getAttribute('params'));
         $action = $params['action'];
-        if($action && $publicActions){
-            foreach ($publicActions as $publicAction){
-                if($publicAction == $action){
+        if ($action && $publicActions) {
+            foreach ($publicActions as $publicAction) {
+                if ($publicAction == $action) {
                     return true;
                 }
             }
@@ -112,36 +112,36 @@ class AppController extends Controller
         //Master acesso total ao sistema
         if ($this->Auth->user('tipo') == User::TIPO_MASTER) {
             return;
-        //Administrador acesso somente as rotas dos perfis dele
-        }elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR || $this->Auth->user('tipo') == User::TIPO_ENTREGADOR){
-            if (!$action){
+            //Administrador acesso somente as rotas dos perfis dele
+        } elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR || $this->Auth->user('tipo') == User::TIPO_ENTREGADOR) {
+            if (!$action) {
                 return;
             }
-            if(isset($this->validActions[$action])){
+            if (isset($this->validActions[$action])) {
                 return;
             }
             $tableLocator = new TableLocator();
-            /** @var $controller \App\Model\Entity\Controller*/
+            /** @var $controller \App\Model\Entity\Controller */
             $controller = $tableLocator->get('Controllers')->find()->where(['nome_controlador' => $this->name])->first();
-            /** @var $actionModel Action*/
+            /** @var $actionModel Action */
             $actionModel = $tableLocator->get('Actions')->find()->where(['nome_action' => $action, 'controller_id' => $controller->id])->first();
-            /** @var $perfilsUser PerfilsUser[]*/
+            /** @var $perfilsUser PerfilsUser[] */
             $perfilsUser = $tableLocator->get('PerfilsUsers')->find()->where(['user_id' => $this->Auth->user('id')]);
             $perfilAction = false;
             $encontrou = false;
-            foreach ($perfilsUser as $perfilUser){
-                if (!$encontrou){
+            foreach ($perfilsUser as $perfilUser) {
+                if (!$encontrou) {
                     $perfilAction = $tableLocator->get('PerfilsActions')->find()->where(['perfil_id' => $perfilUser->perfil_id, 'action_id' => $actionModel->id])->first();
-                    if($perfilAction){
+                    if ($perfilAction) {
                         $encontrou = true;
                     }
                 }
             }
-            if($perfilAction){
+            if ($perfilAction) {
                 return;
-            }else{
+            } else {
 //                $this->Flash->error('Você não possui acesso a ação "'.$actionModel->descricao_action.'", caso necessite desta ação contate suporte para liberar acesso.');
-                $erro = 'Você não possui acesso a ação "'.$actionModel->descricao_action.'", caso necessite desta ação contate suporte para liberar acesso.';
+                $erro = 'Você não possui acesso a ação "' . $actionModel->descricao_action . '", caso necessite desta ação contate suporte para liberar acesso.';
                 echo '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>';
                 echo '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">';
                 echo '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">';
@@ -153,7 +153,7 @@ class AppController extends Controller
                                           Oops!</h1>
                                       <h2> Você não tem acesso a essa página</h2>
                                       <div class="error-details">
-                                          '.$erro.'
+                                          ' . $erro . '
                                       </div>
                                       <div class="error-actions">
                                           <a href="javascript:history.back()" class="btn btn-primary btn-lg">
@@ -192,8 +192,8 @@ class AppController extends Controller
                       ';
                 die;
             }
-        //Cliente acesso apenas as rotas publicas
-        }elseif ($this->Auth->user('tipo') == User::TIPO_CLIENTE) {
+            //Cliente acesso apenas as rotas publicas
+        } elseif ($this->Auth->user('tipo') == User::TIPO_CLIENTE) {
             $params = ($this->getRequest()->getAttribute('params'));
             //Temos essa acao valida pra cliente
             if (isset($this->validActions[$params['action']])) {
@@ -219,34 +219,35 @@ class AppController extends Controller
         }
     }
 
-    public function validateActionView($controller, $action){
+    public function validateActionView($controller, $action)
+    {
         if ($this->Auth->user('tipo') == User::TIPO_MASTER) {
             return true;
             //Administrador acesso somente as rotas dos perfis dele
-        }elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR || $this->Auth->user('tipo') == User::TIPO_ENTREGADOR){
+        } elseif ($this->Auth->user('tipo') == User::TIPO_ADMINISTRADOR || $this->Auth->user('tipo') == User::TIPO_ENTREGADOR) {
             $tableLocator = new TableLocator();
-            /** @var $controller \App\Model\Entity\Controller*/
+            /** @var $controller \App\Model\Entity\Controller */
             $controller = $tableLocator->get('Controllers')->find()->where(['nome_controlador' => $controller])->first();
-            /** @var $actionModel Action*/
+            /** @var $actionModel Action */
             $actionModel = $tableLocator->get('Actions')->find()->where(['nome_action' => $action, 'controller_id' => $controller->id])->first();
-            /** @var $perfilsUser PerfilsUser[]*/
+            /** @var $perfilsUser PerfilsUser[] */
             $perfilsUser = $tableLocator->get('PerfilsUsers')->find()->where(['user_id' => $this->Auth->user('id')]);
             $perfilAction = false;
             $encontrou = false;
-            foreach ($perfilsUser as $perfilUser){
-                if (!$encontrou){
+            foreach ($perfilsUser as $perfilUser) {
+                if (!$encontrou) {
                     $perfilAction = $tableLocator->get('PerfilsActions')->find()->where(['perfil_id' => $perfilUser->perfil_id, 'action_id' => $actionModel->id])->first();
-                    if($perfilAction){
+                    if ($perfilAction) {
                         $encontrou = true;
                     }
                 }
             }
-            if($perfilAction){
-               return true;
-            }else{
+            if ($perfilAction) {
+                return true;
+            } else {
                 return false;
             }
-        }elseif ($this->Auth->user('tipo') == User::TIPO_CLIENTE){
+        } elseif ($this->Auth->user('tipo') == User::TIPO_CLIENTE) {
             return false;
         }
     }
@@ -259,6 +260,9 @@ class AppController extends Controller
             $search = $this->getRequest()->getQuery();
             if ($search) {
                 foreach ($search as $key => $field) {
+                    if (strpos($key, '::')) {
+                        continue;
+                    }
                     if ($field !== '' && $key !== 'page' && $key !== 'limit') {
                         $keyParts = explode('=', $key);
                         $key = $keyParts[0];
@@ -268,40 +272,24 @@ class AppController extends Controller
                         if (strpos($key, 's/')) {
                             $key = str_replace('/', '.', $key);
                             $toCamelCase = true;
-                        } elseif (strpos($key, '/')){
+                        } elseif (strpos($key, '/')) {
                             $key = str_replace('/', 's.', $key);
                             $toCamelCase = true;
                         }
-                        if($toCamelCase){
+                        if ($toCamelCase) {
                             //Se precisamos de camel case vamos tranformar so o modelo ou seja primeira parte
                             $model = explode('.', $key);
                             $modelCamelCase = $this->snakeToCamelCase($model[0]);
                             unset($model[0]);
                             $key = $modelCamelCase;
-                            foreach ($model as $part){
-                                $key .= '.'.$part;
+                            foreach ($model as $part) {
+                                $key .= '.' . $part;
                             }
                         }
-
-                        switch ($typeField){
-                            case TypeFields::TYPE_TEXT:
-                                $finalSearch[$key . ' LIKE'] = '%' . $field . '%';
-                                break;
-                            case TypeFields::TYPE_LIST:
-                            case TypeFields::TYPE_NUMBER:
-                                $finalSearch[$key] = $field;
-                                break;
-                            case TypeFields::TYPE_BOOLEAN:
-                                $finalSearch[$key] = boolval($field);
-                                break;
-                            case TypeFields::TYPE_DATE_TIME:
-                                $dateInicio = date("Y-m-d H:i",strtotime($field));
-                                $finalSearch[$key.' LIKE'] = "%".$dateInicio."%";
-                                break;
-                            case TypeFields::TYPE_DATE:
-                                $dateInicio = date("Y-m-d",strtotime($field));
-                                $finalSearch[$key.' LIKE'] = "%".$dateInicio."%";
-                                break;
+                        $operador = $search[$keyParts[0] . '::' . 'operador'];
+                        $conditionGerada = $this->montaConditionByType($typeField, $field, $key, $operador);
+                        foreach ($conditionGerada as $keyCondition => $condition) {
+                            $finalSearch[][$keyCondition] = $condition;
                         }
                     }
                 }
@@ -314,24 +302,153 @@ class AppController extends Controller
                 $schema = $tableModel->getSchema();
                 if ($schema->getColumn('empresa_id')) {
                     $nameTable = $this->snakeToCamelCase($tableModel->getTable());
-                    $finalSearch[$nameTable . '.empresa_id'] = $this->Auth->user('empresa_id');
+                    $finalSearch[][$nameTable . '.empresa_id'] = $this->Auth->user('empresa_id');
                 } else {
                     foreach ($tableModel->associations() as $association) {
                         $tableAssociation = $tableLocalor->get($association->getName());
                         $schema = $tableAssociation->getSchema();
                         if (($schema->getColumn('empresa_id') && !$empresaUtils->isEmpresaSoftware()) || $forceFilterEmpresa) {
                             $nameTable = $this->snakeToCamelCase($tableAssociation->getTable());
-                            $finalSearch[$nameTable. '.empresa_id'] = $this->Auth->user('empresa_id');
+                            $finalSearch[][$nameTable . '.empresa_id'] = $this->Auth->user('empresa_id');
                         }
                     }
                 }
             }
         }
-        $finalSearch = array_merge($finalSearch, $filtersFixed);
+        if($filtersFixed){
+            foreach ($filtersFixed as $keyFixed => $fixed){
+                $finalSearch[][$keyFixed] = $fixed;
+            }
+        }
         return $finalSearch;
     }
 
-    private function snakeToCamelCase($snakeString){
+    private function montaConditionByType($typeField, $field, $key, $operador)
+    {
+        $finalSearch = [];
+        switch ($typeField) {
+            case TypeFields::TYPE_TEXT:
+                switch ($operador) {
+                    case TypeFields::CONDITION_IGUAL:
+                        $finalSearch = $this->addConditionIgual($key, $field);
+                        break;
+                    case TypeFields::CONDITION_CONTEM:
+                        $finalSearch = $this->addConditionContem($key, $field);
+                        break;
+                    case TypeFields::CONDITION_DIFERENTE:
+                        $finalSearch = $this->addConditionDiferente($key, $field);
+                        break;
+                }
+                break;
+            case TypeFields::TYPE_LIST:
+            case TypeFields::TYPE_NUMBER:
+                switch ($operador) {
+                    case TypeFields::CONDITION_IGUAL:
+                        $finalSearch = $this->addConditionIgual($key, $field);
+                        break;
+                    case TypeFields::CONDITION_DIFERENTE:
+                        $finalSearch = $this->addConditionDiferente($key, $field);
+                        break;
+                    case TypeFields::CONDITION_MAIOR:
+                        $finalSearch = $this->addConditionMaior($key, $field);
+                        break;
+                    case TypeFields::CONDITION_MAIOR_IGUAL:
+                        $finalSearch = $this->addConditionMaiorIgual($key, $field);
+                        break;
+                    case TypeFields::CONDITION_MENOR:
+                        $finalSearch = $this->addConditionMenor($key, $field);
+                        break;
+                    case TypeFields::CONDITION_MENOR_IGUAL:
+                        $finalSearch = $this->addConditionMenorIgual($key, $field);
+                        break;
+                }
+                break;
+            case TypeFields::TYPE_BOOLEAN:
+                switch ($operador) {
+                    case TypeFields::CONDITION_IGUAL:
+                        $finalSearch = $this->addConditionIgual($key, $field);
+                        break;
+                    case TypeFields::CONDITION_DIFERENTE:
+                        $finalSearch = $this->addConditionDiferente($key, $field);
+                        break;
+                }
+                break;
+            case TypeFields::TYPE_DATE_TIME:
+                $dateInicio = date("Y-m-d H:i", strtotime($field));
+                switch ($operador) {
+                    case TypeFields::CONDITION_IGUAL:
+                        $finalSearch = $this->addConditionContem($key, $dateInicio);
+                        break;
+                    case TypeFields::CONDITION_DIFERENTE:
+                        $finalSearch = $this->addConditionNaoContem($key, $dateInicio);
+                        break;
+                }
+                break;
+            case TypeFields::TYPE_DATE:
+                $dateInicio = date("Y-m-d", strtotime($field));
+                switch ($operador) {
+                    case TypeFields::CONDITION_IGUAL:
+                        $finalSearch = $this->addConditionContem($key, $dateInicio);
+                        break;
+                    case TypeFields::CONDITION_DIFERENTE:
+                        $finalSearch = $this->addConditionNaoContem($key, $dateInicio);
+                        break;
+                }
+                break;
+        }
+        return $finalSearch;
+    }
+
+    private function addConditionIgual($key, $field){
+        $condition = [];
+        $condition[$key] = $field;
+        return $condition;
+    }
+
+    private function addConditionContem($key, $field){
+        $condition = [];
+        $condition[$key . ' LIKE '] = '%' . $field . '%';
+        return $condition;
+    }
+
+    private function addConditionNaoContem($key, $field){
+        $condition = [];
+        $condition[$key . ' NOT LIKE '] = '%' . $field . '%';
+        return $condition;
+    }
+
+    private function addConditionMaior($key, $field){
+        $condition = [];
+        $condition[$key. ' > '] = $field;
+        return $condition;
+    }
+
+    private function addConditionMaiorIgual($key, $field){
+        $condition = [];
+        $condition[$key. ' >= '] = $field;
+        return $condition;
+    }
+
+    private function addConditionMenor($key, $field){
+        $condition = [];
+        $condition[$key. ' < '] = $field;
+        return $condition;
+    }
+
+    private function addConditionMenorIgual($key, $field){
+        $condition = [];
+        $condition[$key. ' <= '] = $field;
+        return $condition;
+    }
+
+    private function addConditionDiferente($key, $field){
+        $condition = [];
+        $condition[$key . ' <> '] = $field;
+        return $condition;
+    }
+
+    private function snakeToCamelCase($snakeString)
+    {
         $camelString = str_replace('_', '', ucwords($snakeString, '_'));
         return $camelString;
     }

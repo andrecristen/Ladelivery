@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    allSelectSearch();
     //Carrega as os valores dos pedidos a cada 45 segundos
     setInterval(function () {
         jQuery.ajax({
@@ -20,3 +21,11 @@ $(document).ready(function () {
         });
     }, 35 * 1000);
 });
+
+function allSelectSearch() {
+    $('select:not(.select-operador)').selectpicker({
+        title: "",
+        liveSearch: true,
+        width: '100%',
+    });
+}

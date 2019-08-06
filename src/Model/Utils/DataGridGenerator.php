@@ -76,13 +76,26 @@ class DataGridGenerator extends View implements TypeFields
             echo $this->Form->create(null, ['type' => 'get']);
             foreach ($this->fields as $field) {
                 $filterName = $field->getAlias() . '=' . $field->getType();
+                $filterNameOperador = $field->getAlias() . '::' . 'operador';
                 if ($field->getFilter()) {
+                    echo '<div class="form-group">';
+                    echo '<div class="row">';
                     switch ($field->getType()) {
                         case TypeFields::TYPE_TEXT:
+                            echo '<div class="col-sm-2">';
+                            echo $this->Form->select($filterNameOperador, $this->getListOperador(TypeFields::TYPE_TEXT), ['value' => $this->request->getQuery($filterNameOperador), 'class' => 'select-operador']);
+                            echo '</div>';
+                            echo '<div class="col-sm-10">';
                             echo $this->Form->input($filterName, ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'type' => 'text', 'value' => $this->request->getQuery($filterName)]);
+                            echo '</div>';
                             break;
                         case TypeFields::TYPE_NUMBER:
+                            echo '<div class="col-sm-2">';
+                            echo $this->Form->select($filterNameOperador, $this->getListOperador(TypeFields::TYPE_NUMBER), ['value' => $this->request->getQuery($filterNameOperador), 'class' => 'select-operador']);
+                            echo '</div>';
+                            echo '<div class="col-sm-10">';
                             echo $this->Form->input($filterName, ['class' => 'form-control', 'autocomplete' => 'off', 'label' => false, 'placeholder' => 'Pesquisar ' . $field->getTitulo(), 'type' => 'number', 'value' => $this->request->getQuery($filterName)]);
+                            echo '</div>';
                             break;
                         case TypeFields::TYPE_LIST:
                             $list = [];
@@ -90,23 +103,45 @@ class DataGridGenerator extends View implements TypeFields
                             foreach ($field->getList() as $key => $option) {
                                 $list[$key] = $option;
                             }
+                            echo '<div class="col-sm-2">';
+                            echo $this->Form->select($filterNameOperador, $this->getListOperador(TypeFields::TYPE_LIST), ['value' => $this->request->getQuery($filterNameOperador), 'class' => 'select-operador']);
+                            echo '</div>';
+                            echo '<div class="col-sm-10">';
                             echo $this->Form->select($filterName, $list, ['label' => false, 'value' => $this->request->getQuery($filterName)]);
                             echo '<br/>';
+                            echo '</div>';
                             break;
                         case TypeFields::TYPE_BOOLEAN:
+                            echo '<div class="col-sm-2">';
+                            echo $this->Form->select($filterNameOperador, $this->getListOperador(TypeFields::TYPE_BOOLEAN), ['value' => $this->request->getQuery($filterNameOperador), 'class' => 'select-operador']);
+                            echo '</div>';
+                            echo '<div class="col-sm-10">';
                             echo $this->Form->select($filterName, ['' => 'Selecione uma opção para o filtro ' . $field->getTitulo(), 1 => 'Sim', 0 => 'Não'], ['label' => false, 'value' => $this->request->getQuery($filterName)]);
+                            echo '</div>';
                             break;
                         case TypeFields::TYPE_DATE:
+                            echo '<div class="col-sm-2">';
+                            echo $this->Form->select($filterNameOperador, $this->getListOperador(TypeFields::TYPE_DATE), ['value' => $this->request->getQuery($filterNameOperador), 'class' => 'select-operador']);
+                            echo '</div>';
+                            echo '<div class="col-sm-10">';
                             echo '<div class="input date">';
                             echo '<input title="Pesquisar ' . $field->getTitulo() . '" name="' . $filterName . '" id="' . $filterName . '" type="date" value="' . $this->request->getQuery($filterName) . '" >';
                             echo '</div>';
+                            echo '</div>';
                             break;
                         case TypeFields::TYPE_DATE_TIME:
+                            echo '<div class="col-sm-2">';
+                            echo $this->Form->select($filterNameOperador, $this->getListOperador(TypeFields::TYPE_DATE_TIME), ['value' => $this->request->getQuery($filterNameOperador), 'class' => 'select-operador']);
+                            echo '</div>';
+                            echo '<div class="col-sm-10">';
                             echo '<div class="input datetime">';
                             echo '<input title="Pesquisar ' . $field->getTitulo() . '" name="' . $filterName . '" id="' . $filterName . '" type="datetime-local" value="' . $this->request->getQuery($filterName) . '" >';
                             echo '</div>';
+                            echo '</div>';
                             break;
                     }
+                    echo '</div>';
+                    echo '</div>';
                 }
             }
             echo $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-search')) . ' Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
@@ -285,9 +320,28 @@ class DataGridGenerator extends View implements TypeFields
         echo '<p>';
         echo $this->paginator->counter(['format' => __('Página {{page}} de {{pages}}, Exibindo {{current}} registro(s) de {{count}}')]);
         echo '<div class="container-max-options">';
-        echo $this->paginator->limitControl([10 => 10, 15 => 15, 20 => 20, 50 => 50, 100 => 100], null, ['label' => 'Registros por página:', 'style']);
+        echo $this->paginator->limitControl([10 => 10, 15 => 15, 20 => 20, 50 => 50, 100 => 100], null, ['label' => 'Registros por página:', 'class' => 'select-operador']);
         echo '</div>';
         echo '</p>';
+    }
+
+    private function getListOperador($typeField){
+        $list = [];
+        $list[TypeFields::CONDITION_IGUAL] = 'Igual';
+        switch ($typeField){
+            case TypeFields::TYPE_TEXT;
+                $list[TypeFields::CONDITION_CONTEM] = 'Contém';
+                break;
+            case TypeFields::TYPE_NUMBER;
+                $list[TypeFields::CONDITION_MAIOR] = 'Maior';
+                $list[TypeFields::CONDITION_MAIOR_IGUAL] = 'Maior Igual';
+                $list[TypeFields::CONDITION_MENOR] = 'Menor';
+                $list[TypeFields::CONDITION_MENOR_IGUAL] = 'Menor Igual';
+                break;
+
+        }
+        $list[TypeFields::CONDITION_DIFERENTE] = 'Diferente';
+        return $list;
     }
 
 

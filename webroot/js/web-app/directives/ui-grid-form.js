@@ -85,6 +85,7 @@ app.directive('uiGridForm', function($templateCache) {
                 }
                 scope.add = function(){
                     scope.rows.push(1);
+                    refreshSelects();
                 };
 
                 scope.getFormName = function(){
@@ -120,7 +121,16 @@ app.directive('uiGridForm', function($templateCache) {
                             scope.$apply();
                         },0);
                     }
+                    refreshSelects();
                 };
+
+                function refreshSelects() {
+                    setTimeout(function () {
+                        allSelectSearch();
+                        $('select').selectpicker('refresh');
+                    },100);
+                }
+
                 if(attrs.list !== undefined){
                     var list = $.extend({},JSON.parse(attrs.list));
                     scope.data[modelName] = Object.values(list);

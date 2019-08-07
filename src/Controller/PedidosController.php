@@ -256,9 +256,12 @@ class PedidosController extends AppController
     }
 
     public function countEntregue(){
+        $data = new \DateTime();
         return $this->Pedidos->find()->where([
             'status_pedido' => Pedido::STATUS_ENTREGUE,
-            'empresa_id' => $this->empresaUtils->getUserEmpresaId()
+            'empresa_id' => $this->empresaUtils->getUserEmpresaId(),
+            'MONTH(data_pedido)' => $data->format('m'),
+            'YEAR(data_pedido)' => $data->format('Y'),
         ])->count();
     }
 
@@ -290,12 +293,15 @@ class PedidosController extends AppController
 
     public function entregues()
     {
+        $data = new \DateTime();
         $this->paginate = [
             'contain' => ['Users', 'FormasPagamentos']
         ];
         $filtersFixed = [
             'tipo_pedido' => Pedido::TIPO_PEDIDO_DELIVERY,
-            'status_pedido' => Pedido::STATUS_ENTREGUE
+            'status_pedido' => Pedido::STATUS_ENTREGUE,
+            'MONTH(data_pedido)' => $data->format('m'),
+            'YEAR(data_pedido)' => $data->format('Y'),
         ];
         $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('data_pedido', SORT_ASC);
         $title = $this->getTituloPage(self::PEDIDOS_ENTREGUES);

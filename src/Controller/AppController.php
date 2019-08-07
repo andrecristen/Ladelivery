@@ -375,12 +375,25 @@ class AppController extends Controller
                 break;
             case TypeFields::TYPE_DATE_TIME:
                 $dateInicio = date("Y-m-d H:i", strtotime($field));
+                $dateInicioComSegundo = $dateInicio.':59';
                 switch ($operador) {
                     case TypeFields::CONDITION_IGUAL:
                         $finalSearch = $this->addConditionContem($key, $dateInicio);
                         break;
                     case TypeFields::CONDITION_DIFERENTE:
                         $finalSearch = $this->addConditionNaoContem($key, $dateInicio);
+                        break;
+                    case TypeFields::CONDITION_MAIOR:
+                        $finalSearch = $this->addConditionMaior($key, $dateInicioComSegundo);
+                        break;
+                    case TypeFields::CONDITION_MAIOR_IGUAL:
+                        $finalSearch = $this->addConditionMaiorIgual($key, $dateInicio);
+                        break;
+                    case TypeFields::CONDITION_MENOR:
+                        $finalSearch = $this->addConditionMenor($key, $dateInicio);
+                        break;
+                    case TypeFields::CONDITION_MENOR_IGUAL:
+                        $finalSearch = $this->addConditionMenorIgual($key, $dateInicioComSegundo);
                         break;
                 }
                 break;
@@ -392,6 +405,18 @@ class AppController extends Controller
                         break;
                     case TypeFields::CONDITION_DIFERENTE:
                         $finalSearch = $this->addConditionNaoContem($key, $dateInicio);
+                        break;
+                    case TypeFields::CONDITION_MAIOR:
+                        $finalSearch = $this->addConditionMaior($key, $dateInicio);
+                        break;
+                    case TypeFields::CONDITION_MAIOR_IGUAL:
+                        $finalSearch = $this->addConditionMaiorIgual($key, $dateInicio);
+                        break;
+                    case TypeFields::CONDITION_MENOR:
+                        $finalSearch = $this->addConditionMenor($key, $dateInicio);
+                        break;
+                    case TypeFields::CONDITION_MENOR_IGUAL:
+                        $finalSearch = $this->addConditionMenorIgual($key, $dateInicio);
                         break;
                 }
                 break;

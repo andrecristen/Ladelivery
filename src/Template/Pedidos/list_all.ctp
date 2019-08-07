@@ -75,7 +75,7 @@ echo $this->Html->script('pedidos.js' . $cacheVersion);
             <div class="card">
                 <div class="card-body card-default">
                     <h5 class="card-title"><i class="fas fa-smile-wink"></i> Finalizados</h5>
-                    <p class="card-text">Sua empresa possui <b><span id="entregue"><?= $entregue?></span> pedidos finalizados.</b></p>
+                    <p class="card-text">Sua empresa possui <b><span id="entregue"><?= $entregue?></span> pedidos finalizados este mês.</b></p>
                     <a href="/pedidos/entregues" class="btn btn-rosa">Visualizar</a>
                 </div>
             </div>

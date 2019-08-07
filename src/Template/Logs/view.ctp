@@ -5,15 +5,15 @@
  */
 ?>
 <div class="col-sm-12">
-    <h3><?= h($log->id) ?></h3>
+    <h3>Notifição #<?= h($log->id) ?></h3>
     <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('#') ?></th>
+            <td><?= $this->Number->format($log->id) ?></td>
+        </tr>
         <tr>
             <th scope="row"><?= __('User') ?></th>
             <td><?= $log->has('user') ? $this->Html->link($log->user->nome_completo, ['controller' => 'Users', 'action' => 'view', $log->user->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($log->id) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Tipo') ?></th>
@@ -27,9 +27,9 @@
             <th scope="row"><?= __('Data Hora') ?></th>
             <td><?= h($log->data_hora) ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Descricao') ?></th>
+            <td><?= h($log->descricao) ?></td>
+        </tr>
     </table>
-    <div class="row">
-        <h4><?= __('Descricao') ?></h4>
-        <?= $this->Text->autoParagraph(h($log->descricao)); ?>
-    </div>
 </div>

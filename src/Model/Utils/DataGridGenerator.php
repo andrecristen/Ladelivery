@@ -342,12 +342,13 @@ class DataGridGenerator extends View implements TypeFields
                 $list[TypeFields::CONDITION_CONTEM] = 'Contém';
                 break;
             case TypeFields::TYPE_NUMBER;
+            case TypeFields::TYPE_DATE_TIME:
+            case TypeFields::TYPE_DATE:
                 $list[TypeFields::CONDITION_MAIOR] = 'Maior';
                 $list[TypeFields::CONDITION_MAIOR_IGUAL] = 'Maior Igual';
                 $list[TypeFields::CONDITION_MENOR] = 'Menor';
                 $list[TypeFields::CONDITION_MENOR_IGUAL] = 'Menor Igual';
-                break;
-
+            break;
         }
         $list[TypeFields::CONDITION_DIFERENTE] = 'Diferente';
         return $list;

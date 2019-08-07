@@ -10,7 +10,7 @@
     $dataGrid = new \App\Model\Utils\DataGridGenerator();
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->setModel($logs);
-    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER));
+    $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, 'auto', 'logs/id'));
     $tipoList = new \App\Model\Utils\GridField('Tipo', 'tipo', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
     $tipoList->setList(\App\Model\Entity\Log::getTipoList());
     //$dataGrid->addField($tipoList);

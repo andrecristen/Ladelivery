@@ -78,14 +78,30 @@ class SiteUtils extends AppController
         $date = new \DateTime();
         $date = $date->format('Y');
         $anos = [];
-        $anos[] = $anoHomologacao;
+        $anos[$anoHomologacao] = $anoHomologacao;
         $anoAtual = $anoHomologacao;
         $diferenca = (intval($date) - $anoAtual);
         for ($i = 0; $i < $diferenca; $i++) {
-            $anos[] = $anoAtual + 1;
+            $anos[$anoAtual+1] = $anoAtual + 1;
             $anoAtual += 1;
         }
         return $anos;
+    }
+
+    public static function getColorGraphs(){
+        return [
+            '#4e73df',
+            '#4edf95',
+            '#cff114',
+            '#28a745',
+            '#17a2b8',
+            '#dc3545',
+            '#FF4500',
+            '#006400',
+            '#7FFFD4',
+            '#4169E1',
+            '#EE82EE',
+        ];
     }
 
     public function showStarsByNota($nota)

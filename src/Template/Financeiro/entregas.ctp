@@ -21,7 +21,7 @@
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title"><i class="fas fa-user"></i> <?= $entrega['nome_completo'] ?></h6>
+                        <h6 class="card-title"><i class="fas fa-user"></i> <?= $entrega['nome_completo'] ? $entrega['nome_completo'] : "Não atribuido a nenhum entregador" ?></h6>
                         <p class="card-text">
                             <b>Entregas realizadas:</b> <?= $entrega['quantidade'] ?>
                             <br>

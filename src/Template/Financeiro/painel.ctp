@@ -4,22 +4,10 @@
  * Gerente de projeto & Desenvolvedor
  */
 
-$colorsGraph = [
-        '#4e73df',
-        '#4edf95',
-        '#cff114',
-        '#28a745',
-        '#17a2b8',
-        '#dc3545',
-        '#FF4500',
-        '#006400',
-        '#7FFFD4',
-        '#4169E1',
-        '#EE82EE',
-];
+$colorsGraph = \App\Model\Utils\SiteUtils::getColorGraphs();
 ?>
 <?= $this->Html->css('painel.css') ?>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<?= $this->Html->script('graph.js') ?>
 <div class="container-fluid">
     <div class="alert alert-info">
         <span>Listagem referentes a dados deste mês.</span>

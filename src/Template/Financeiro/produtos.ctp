@@ -12,7 +12,6 @@ $colorsGraph = \App\Model\Utils\SiteUtils::getColorGraphs();
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <div class="col-sm-9">
-                    <h6 class="m-0 font-weight-bold text-primary">Vendas este ano</h6>
                 </div>
                 <div class="col-sm-2">
                     <?= $this->Form->select('ano_vendas', \App\Model\Utils\SiteUtils::getAnoList(), ['value' => $anoVendas, 'class' => 'select-operador']); ?>
@@ -172,7 +171,15 @@ $colorsGraph = \App\Model\Utils\SiteUtils::getColorGraphs();
         ]);
 
         var options = {
-            legend: {position: "none"}
+            legend: {
+                position: "none"
+            },
+            hAxis: {
+                title: 'Mês'
+            },
+            vAxis: {
+                title: 'Valor em R$'
+            }
         };
 
         var chart = new google.charts.Line(document.getElementById('grafico_vendas'));

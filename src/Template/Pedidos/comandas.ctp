@@ -26,6 +26,7 @@
     $dataGrid->addActionRow('', ['action' => 'addItem'], ['class' => 'fas fa-plus-square btn btn-danger btn-sm', 'title' => 'Adicionar Item a Comanda'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao da Comanda'], false, 'id');
     $dataGrid->addActionRow('', ['action' => 'imprimir'], ['class' => 'fa fa-print btn btn-info btn-sm', 'title' => 'Imprimir Guias de Pedido'], false, 'id');
+    $dataGrid->addActionRow('', ['action' => 'gerenciarItens'], ['class' => 'fas fa-tasks btn btn-dark btn-sm', 'title' => 'Gerenciar Itens'], false, 'id');
     $dataGrid->setCallBackActionLimpar('comandas');
     $dataGrid->setController($this->name);
     $dataGrid->display();

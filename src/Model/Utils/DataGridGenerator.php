@@ -74,10 +74,10 @@ class DataGridGenerator extends View implements TypeFields
         if ($this->isShowFilters()) {
             echo '<div class="card">';
             echo '<div class="card-header">';
-            echo '<button type="button" class="btn btn-sm btn-info" onclick="onClickHiddeFilters()" data-toggle="collapse" data-target="#filtros"><span class="icon-hide"><i class="far fa-eye"></i></span><span class="icon-show"><i class="far fa-eye-slash"></i></span> Filtros</button>';
+            echo '<button type="button" class="btn btn-sm btn-info" onclick="onClickHiddeFilters()" data-toggle="collapse" data-target="#filtros"><span class="icon-show"><i class="far fa-eye"></i></span><span class="icon-hide"><i class="far fa-eye-slash"></i></span> Filtros</button>';
             echo '</div>';
             echo '<div class="card-header">';
-            echo '<div id="filtros" class="content-filter collapse show">';
+            echo '<div id="filtros" class="content-filter collapse">';
             echo $this->Form->create(null, ['type' => 'get']);
             foreach ($this->fields as $field) {
                 $filterName = $field->getAlias() . '=' . $field->getType();
@@ -151,7 +151,7 @@ class DataGridGenerator extends View implements TypeFields
             }
             echo '</div>';
             echo '</div>';
-            echo '<div id="filtros" class="card-footer collapse show">';
+            echo '<div id="filtros" class="card-footer collapse">';
             echo $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-search')) . ' Pesquisar', ['class' => 'btn btn-sm btn-success', 'style' => 'margin-right: 3px;']);
             $action = 'index';
             if ($this->getCallBackActionLimpar()) {
@@ -318,20 +318,22 @@ class DataGridGenerator extends View implements TypeFields
             echo '<span style="text-align: center">Não localizado nenhum registro</span>';
             echo '</div>';
         }
-        echo '<div class="paginator">';
-        echo '<ul class="pagination">';
-        echo $this->paginator->first(__('<< '));
-        echo $this->paginator->prev(__('<'));
-        echo $this->paginator->numbers();
-        echo $this->paginator->next(__('>'));
-        echo $this->paginator->last(__('>>'));
-        echo '</ul>';
-        echo '<p>';
-        echo $this->paginator->counter(['format' => __('Página {{page}} de {{pages}}, Exibindo {{current}} registro(s) de {{count}}')]);
-        echo '<div class="container-max-options">';
-        echo $this->paginator->limitControl([10 => 10, 15 => 15, 20 => 20, 50 => 50, 100 => 100], null, ['label' => 'Registros por página:', 'class' => 'select-operador']);
-        echo '</div>';
-        echo '</p>';
+        if($this->paginator){
+            echo '<div class="paginator">';
+            echo '<ul class="pagination">';
+            echo $this->paginator->first(__('<< '));
+            echo $this->paginator->prev(__('<'));
+            echo $this->paginator->numbers();
+            echo $this->paginator->next(__('>'));
+            echo $this->paginator->last(__('>>'));
+            echo '</ul>';
+            echo '<p>';
+            echo $this->paginator->counter(['format' => __('Página {{page}} de {{pages}}, Exibindo {{current}} registro(s) de {{count}}')]);
+            echo '<div class="container-max-options">';
+            echo $this->paginator->limitControl([10 => 10, 15 => 15, 20 => 20, 50 => 50, 100 => 100], null, ['label' => 'Registros por página:', 'class' => 'select-operador']);
+            echo '</div>';
+            echo '</p>';
+        }
     }
 
     private function getListOperador($typeField){

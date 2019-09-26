@@ -11,6 +11,7 @@
         <?php
         echo $this->Form->control('nome_fantasia');
         echo $this->Form->control('cnpj', ['class' => 'cnpj']);
+        echo $this->Form->control('user_id', ['options' => $users, 'required'=>'required', 'label' => 'Usuário']);
         echo $this->Form->control('ie');
         echo $this->Form->control('tipo_empresa', ['options' => \App\Model\Entity\Empresa::getTipoList()]);
         echo $this->Form->control('tipo_frete', ['options' => \App\Model\Entity\Empresa::getTipoFreteList()]);

@@ -11,7 +11,7 @@
     $dataGrid->setModel($enderecos);
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, 'auto', 'endereco/id'));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Usuário', 'user/nome_completo', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Usuário/Cliente', 'user/nome_completo', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Rua', 'rua', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Número', 'numero', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Bairro', 'bairro', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));

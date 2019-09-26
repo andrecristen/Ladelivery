@@ -55,8 +55,7 @@ class PedidosProdutosController extends AppController
         $filtersFixed = [
             0 => ['PedidosProdutos.ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_COZINHA],
             1 => ['Pedidos.status_pedido in' => [Pedido::STATUS_EM_PRODUCAO, Pedido::STATUS_ABERTA]],
-            2 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
-            3 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
+            2 => ['status in'=> [PedidosProduto::STATUS_EM_PRODUCAO, PedidosProduto::STATUS_EM_FILA_PRODUCAO]],
         ];
         $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_ASC);
         if ($agruparPorSituacao){
@@ -86,8 +85,7 @@ class PedidosProdutosController extends AppController
         $filtersFixed = [
             0 => ['PedidosProdutos.ambiente_producao_responsavel' => PedidosProduto::RESPONSAVEL_BAR],
             1 => ['Pedidos.status_pedido in' => [Pedido::STATUS_EM_PRODUCAO, Pedido::STATUS_ABERTA]],
-            2 => ['status <>'=> PedidosProduto::STATUS_PEDIDO_REJEITADO],
-            3 => ['status <>'=> PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO]
+            2 => ['status in'=> [PedidosProduto::STATUS_EM_PRODUCAO, PedidosProduto::STATUS_EM_FILA_PRODUCAO]],
         ];
         $pedidosProdutos = $this->paginate($this->PedidosProdutos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_ASC);
         if ($agruparPorSituacao){
@@ -157,7 +155,7 @@ class PedidosProdutosController extends AppController
         $newPedidoProduto->opcionais = $formatedOpcionais['opcionais'];
         $newPedidoProduto->valor_total_cobrado = $itensCarrinhoController->calculaPrecoProduto($produto, $newPedidoProduto->quantidade ,$formatedOpcionais['valor']);
         $newPedidoProduto->ambiente_producao_responsavel = $produto->ambiente_producao_responsavel;
-        $newPedidoProduto->status = PedidosProduto::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO;
+        $newPedidoProduto->status = PedidosProduto::STATUS_EM_FILA_PRODUCAO;
         if ($this->PedidosProdutos->save($newPedidoProduto)) {
             $success = true;
         }else{
@@ -235,6 +233,12 @@ class PedidosProdutosController extends AppController
 
     public function alterarSituacao($id = null){
         $pedidoProduto = $this->PedidosProdutos->get($id);
+        $options = \App\Model\Entity\PedidosProduto::getAlterStatusList();
+        /** @var $pedido Pedido*/
+        $pedido = $this->getTableLocator()->get('Pedidos')->find()->where(['id' => $pedidoProduto->pedido_id])->first();
+        if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA){
+            $options = \App\Model\Entity\PedidosProduto::getAlterStatusComandaList();
+        }
         if ($this->request->is(['patch', 'post', 'put'])) {
             $pedidoProduto = $this->PedidosProdutos->patchEntity($pedidoProduto, $this->request->getData());
             if ($this->PedidosProdutos->save($pedidoProduto)) {
@@ -247,7 +251,7 @@ class PedidosProdutosController extends AppController
             }
             $this->Flash->error(__('Não foi possível alterar a situação, tente novamente.'));
         }
-        $this->set(compact('pedidoProduto'));
+        $this->set(compact('pedidoProduto', 'options'));
     }
 
     public function alterarSituacaoKanban(){

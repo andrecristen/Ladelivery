@@ -248,8 +248,8 @@ function certificaMinimoPreechido(index, element) {
             opcao = 'opções';
         }
         alertify.alert('Atenção!','A lista: '+title+', precisa que você selecione ao menos '+minOptions+' '+opcao);
+        $("#opcoesTabModal").click();
         throw new Error('A lista: '+title+' precisa que selecione ao menos '+minOptions+' opções');
-        return;
     }
 }
 

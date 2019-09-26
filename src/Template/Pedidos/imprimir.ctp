@@ -12,7 +12,10 @@ $entrega = $tableLocator->get('PedidosEntregas')->find()->where(['pedido_id' => 
 $enderecoEntrega = $tableLocator->get('Enderecos')->find()->where(['id' => $entrega->endereco_id])->first();
 ?>
 <div class="col-sm-12">
-    <div class="row">
+    <div class="alert alert-info">
+        <strong>Atenção os itens listados nas guias de impressão são somente os que estão aguardando produção, para visualização de todos os itens que compõem o pedido ou a comanda utilize a ação de gerenciar itens.</strong>
+    </div>
+    <div style="padding: 10px" class="row">
         <div class="col-md-6">
             <table id="cozinhaPrint" class="printer-ticket">
                 <thead>

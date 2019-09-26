@@ -31,6 +31,20 @@ use Cake\ORM\Locator\TableLocator;
  */
 class Pedido extends Entity
 {
+
+    public function __construct(array $properties = [], array $options = [])
+    {
+        parent::__construct($properties, $options);
+        //Serve para sempre termos o nome do cliente, mesmo em casos de pedidos
+        //que tenham sido associados au usuario da empresa por nao ter o cliente
+        //cadastrado no sistema, a coluna cliente, sempre e exibida nas consultas.
+        if(!$this->cliente){
+            if($this->user && $this->user->nome_completo){
+                $this->cliente = $this->user->nome_completo;
+            }
+        }
+    }
+
     //Tipos de pedidos
     const TIPO_PEDIDO_DELIVERY = 1;
     const TIPO_PEDIDO_COMANDA = 2;
@@ -55,6 +69,7 @@ class Pedido extends Entity
     //Status para Lists pedidos tipo Comanda
     const STATUS_ABERTA = 13;
     const STATUS_FECHADA = 14;
+    const STATUS_CANCELADA = 15;
 
     //Contante sem frete
     const RETIRAR_NO_LOCAL = 'retirar-no-local';
@@ -75,7 +90,7 @@ class Pedido extends Entity
             self::STATUS_SAIU_PARA_ENTREGA => 'Saiu para entrega',
             self::STATUS_AGUARDANDO_COLETA_CLIENTE => 'Aguardando Coleta Cliente',
             self::STATUS_ENTREGUE => 'Entregue',
-            self::STATUS_REJEITADO => 'Rejeitado',
+            self::STATUS_REJEITADO => 'Rejeitado/Cancelado',
             self::STATUS_CANCELADO_CLIENTE => 'Cancelado',
             self::STATUS_EM_ABERTURA => 'Em Abertura',
         ];
@@ -83,6 +98,7 @@ class Pedido extends Entity
 
     public static function getDeliveryAlterStatusList(){
         return [
+            self::STATUS_REJEITADO => 'Rejeitado/Cancelado',
             self::STATUS_EM_PRODUCAO => 'Em Produção',
             self::STATUS_AGUARDANDO_COLETA_CLIENTE => 'Aguardando Coleta Cliente',
             self::STATUS_AGUARDANDO_ENTREGADOR => 'Aguardando Entregador',
@@ -124,6 +140,7 @@ class Pedido extends Entity
             self::STATUS_ABERTA  => 'Aberta',
             self::STATUS_FECHADA => 'Paga',
             self::STATUS_EM_ABERTURA => 'Em Abertura',
+            self::STATUS_CANCELADA => 'Cancelada',
         ];
     }
 
@@ -140,6 +157,7 @@ class Pedido extends Entity
         return [
             self::STATUS_ABERTA  => 'Aberta',
             self::STATUS_FECHADA => 'Paga',
+            self::STATUS_CANCELADA => 'Cancelada',
         ];
     }
 

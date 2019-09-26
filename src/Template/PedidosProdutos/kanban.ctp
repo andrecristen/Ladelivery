@@ -12,7 +12,7 @@ $siteUtils = new \App\Model\Utils\SiteUtils();
     <h2><?= $title ?></h2>
     <div class="container-fluid">
         <div class="row">
-            <div class="panel panel-primary kanban-col">
+            <div class="panel panel-primary kanban-col col-sm-5">
                 <div class="panel-heading">
                     <h5>Aguardando Produção</h5>
                 </div>
@@ -24,25 +24,13 @@ $siteUtils = new \App\Model\Utils\SiteUtils();
                     </div>
                 </div>
             </div>
-            <div class="panel panel-primary kanban-col">
+            <div class="panel panel-primary kanban-col col-sm-5">
                 <div class="panel-heading">
                     <h5>Em Produção</h5>
                 </div>
                 <div class="panel-body">
                     <div id="panel-<?= \App\Model\Entity\PedidosProduto::STATUS_EM_PRODUCAO ?>" class="kanban-centered">
                         <?php foreach ($pedidosProdutos[\App\Model\Entity\PedidosProduto::STATUS_EM_PRODUCAO] as $pedidoProduto){
-                            $siteUtils->createQuadrosKanbanPedidosProdutos($pedidoProduto);
-                        }?>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-primary kanban-col">
-                <div class="panel-heading">
-                    <h5>Produção Concluída</h5>
-                </div>
-                <div class="panel-body">
-                    <div id="panel-<?= \App\Model\Entity\PedidosProduto::STATUS_PRODUCAO_CONCLUIDA ?>"  class="kanban-centered">
-                        <?php foreach ($pedidosProdutos[\App\Model\Entity\PedidosProduto::STATUS_PRODUCAO_CONCLUIDA] as $pedidoProduto){
                             $siteUtils->createQuadrosKanbanPedidosProdutos($pedidoProduto);
                         }?>
                     </div>

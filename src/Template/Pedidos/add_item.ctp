@@ -26,8 +26,7 @@ if($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_COMANDA){
     <?php if ($pedido->status_pedido == \App\Model\Entity\Pedido::STATUS_EM_ABERTURA) { ?>
         <div class="alert alert-info">
             <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' '.$message, array('controller' => 'Pedidos', 'action' => 'confirmarAbertura/'.$pedido->id), array('escape' => false, 'class' => 'btn btn-danger'));?>
-            <br>
-            <strong>Confirme apenas após adicionar todos os itens.</strong>
+            <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-print')) . ' Imprimir', array('controller' => 'Pedidos', 'action' => 'imprimir/'.$pedido->id), array('escape' => false, 'class' => 'btn btn-info'));?>
         </div>
    <?php }else{
         $ambienteVenda = \App\Model\Entity\Produto::VENDA_COMANDA;
@@ -35,13 +34,13 @@ if($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_COMANDA){
             $ambienteVenda = \App\Model\Entity\Produto::VENDA_DELIVERY;
             ?>
             <div class="alert alert-info">
-                <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' Concluido', array('controller' => 'Pedidos', 'action' => 'listAll'), array('escape' => false, 'class' => 'btn btn-danger'));?>
+                <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' Concluido', $this->request->referer(), array('escape' => false, 'class' => 'btn btn-danger'));?>
                 <br>
             </div>
        <?php }else{ ?>
             <div class="alert alert-info">
-                <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' Concluido', array('controller' => 'Pedidos', 'action' => 'comandas'), array('escape' => false, 'class' => 'btn btn-danger'));?>
-                <br>
+                <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-check')) . ' Concluido', $this->request->referer(), array('escape' => false, 'class' => 'btn btn-danger'));?>
+                <?php  echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-print')) . ' Imprimir', array('controller' => 'Pedidos', 'action' => 'imprimir/'.$pedido->id), array('escape' => false, 'class' => 'btn btn-info'));?>
             </div>
        <?php }?>
     <?php }?>

@@ -18,7 +18,9 @@
     $status = new \App\Model\Utils\GridField('Status', 'status', \App\Model\Utils\DataGridGenerator::TYPE_LIST);
     $status->setList(\App\Model\Entity\PedidosProduto::getStatusGridList());
     $dataGrid->addField($status);
-    $dataGrid->addAction('PedidosProdutos', 'cozinhaKanban', 'Kanban', 'btn-danger', 'fas fa-sticky-note');
+    $dataGrid->addAction('PedidosProdutos', 'cozinhaKanban', 'Kanban', 'btn-danger', 'far fa-clipboard');
+    $dataGrid->addAction('Pedidos', 'comandas', 'Comandas', 'btn-primary', 'fas fa-sticky-note');
+    $dataGrid->addAction('Pedidos', 'listAll', 'Pedidos', 'btn-success', 'fas fa-cart-plus');
     $dataGrid->addActionRow('', ['action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Item'], false, 'id');
     $dataGrid->addActionRow('', ['controller' => 'Pedidos','action' => 'view'], ['class' => 'fa fa-search-plus btn btn-dark btn-sm', 'title' => 'Visualizar Pedido/Comanda'], false, 'pedido_id');
     $dataGrid->setCallBackActionLimpar('cozinha');

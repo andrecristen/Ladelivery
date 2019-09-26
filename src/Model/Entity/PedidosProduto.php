@@ -32,11 +32,28 @@ class PedidosProduto extends Entity
     const STATUS_EM_PRODUCAO = 4;
     const STATUS_PRODUCAO_CONCLUIDA = 5;
     const STATUS_PEDIDO_REJEITADO = 6;
+    const STATUS_PRODUCAO_CANCELADA = 7;
+    //So para comandas
+    const STATUS_ITEM_PAGO = 8;
 
     public static function getAmbienteResponsavel(){
         return [
             self::RESPONSAVEL_COZINHA => 'Cozinha',
             self::RESPONSAVEL_BAR => 'Bar',
+        ];
+    }
+
+    public static function getAllStatusList(){
+        return [
+            self::STATUS_AGUARDANDO_RECEBIMENTO_PEDIDO => 'Aguardando Confirmação Cliente',
+            self::STATUS_EM_SEPARACAO_PARA_PRODUCAO => 'Em Separação',
+            self::STATUS_EM_FILA_PRODUCAO => 'Aguardando Produção',
+            self::STATUS_EM_PRODUCAO => 'Em Produção',
+            self::STATUS_PRODUCAO_CONCLUIDA => 'Produção Concluida',
+            self::STATUS_PEDIDO_REJEITADO => 'Pedido Rejeitado',
+            self::STATUS_PRODUCAO_CANCELADA => 'Produção Cancelada',
+            self::STATUS_ITEM_PAGO => 'Item Pago',
+
         ];
     }
 
@@ -48,6 +65,17 @@ class PedidosProduto extends Entity
             self::STATUS_EM_PRODUCAO => 'Em Produção',
             self::STATUS_PRODUCAO_CONCLUIDA => 'Produção Concluida',
             self::STATUS_PEDIDO_REJEITADO => 'Pedido Rejeitado',
+            self::STATUS_PRODUCAO_CANCELADA => 'Produção Cancelada',
+        ];
+    }
+
+    public static function getStatusComandaList(){
+        return [
+            self::STATUS_EM_FILA_PRODUCAO => 'Aguardando Produção',
+            self::STATUS_EM_PRODUCAO => 'Em Produção',
+            self::STATUS_PRODUCAO_CONCLUIDA => 'Produção Concluida',
+            self::STATUS_PRODUCAO_CANCELADA => 'Produção Cancelada',
+            self::STATUS_ITEM_PAGO => 'Item Pago',
         ];
     }
 
@@ -65,6 +93,12 @@ class PedidosProduto extends Entity
             self::STATUS_EM_PRODUCAO => 'Em Produção',
             self::STATUS_PRODUCAO_CONCLUIDA => 'Produção Concluida',
         ];
+    }
+
+    public static function getAlterStatusComandaList(){
+        $list = self::getAlterStatusList();
+        $list [self::STATUS_ITEM_PAGO] = 'Item Pago';
+        return $list;
     }
 
     /**

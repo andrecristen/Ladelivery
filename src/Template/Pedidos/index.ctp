@@ -15,7 +15,7 @@
     $dataGrid->bloqActionEdit();
     $dataGrid->setPaginator($this->Paginator);
     $dataGrid->addField(new \App\Model\Utils\GridField('#', 'id', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '60px', 'pedido/id'));
-    $dataGrid->addField(new \App\Model\Utils\GridField('Cliente', 'user/nome_completo', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
+    $dataGrid->addField(new \App\Model\Utils\GridField('Cliente', 'cliente', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Pagamento', 'formas_pagamento/nome', \App\Model\Utils\DataGridGenerator::TYPE_TEXT, true, true, '100px'));
     //$dataGrid->addField(new \App\Model\Utils\GridField('Valor Produtos', 'valor_produtos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));
     //$dataGrid->addField(new \App\Model\Utils\GridField('Tempo', 'tempo_producao_aproximado_minutos', \App\Model\Utils\DataGridGenerator::TYPE_NUMBER, true, true, '100px'));

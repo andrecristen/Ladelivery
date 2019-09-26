@@ -27,6 +27,7 @@ class User extends Entity
     const TIPO_ADMINISTRADOR = 2;
     const TIPO_MASTER = 3;
     const TIPO_ENTREGADOR = 4;
+    const TIPO_EMPRESA = 5;
 
     public static function getTipoListAll(){
         return [
@@ -40,7 +41,8 @@ class User extends Entity
     public static function getTipoListCRUD(){
         return [
             self::TIPO_ADMINISTRADOR => 'Administrador',
-            self::TIPO_ENTREGADOR    => 'Entregador'
+            self::TIPO_ENTREGADOR    => 'Entregador',
+            self::TIPO_EMPRESA    =>    'Empresa'
         ];
     }
 

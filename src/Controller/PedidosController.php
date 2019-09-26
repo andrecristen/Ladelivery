@@ -115,6 +115,9 @@ class PedidosController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $dados = $this->request->getData();
+            if(isset($dados['endereco']) && $dados['endereco'] == 'on'){
+               $dados['endereco_id'] = $this->instanceNewEndereco($dados, $pedido->user_id);
+            }
             $valorEntregaFixed = false;
             if (is_float($dados['valor_entrega'])) {
                 $valorEntregaFixed = floatval($dados['valor_entrega']);
@@ -155,6 +158,28 @@ class PedidosController extends AppController
         $this->set(compact('pedido', 'users', 'enderecosCliente'));
     }
 
+    private function instanceNewEndereco($dados, $user){
+        $empresaUtils = new EmpresaUtils();
+        if(!$user){
+            //Se nao tem nosso cliente gravamos o endereco para o usuario da empresa
+            $user = $empresaUtils->getEmpresaBaseModel()->user_id;
+        }
+        $endereco = new Endereco();
+        $endereco->user_id = $user;
+        $endereco->rua = $dados['rua'];
+        $endereco->numero = $dados['numero'];
+        $endereco->bairro = $dados['bairro'];
+        $endereco->cidade = $dados['cidade'];
+        $endereco->estado = $dados['estado'];
+        $endereco->cep = $dados['cep'];
+        $endereco->complemento = $dados['complemento'];
+        $enderecosTable = $this->getTableLocator()->get('Enderecos');
+        if($enderecosTable->save($endereco)){
+            return $endereco->id;
+        }
+        return null;
+    }
+
     private function instanceNewPedido($isComanda)
     {
         $pedido = new Pedido();
@@ -174,7 +199,8 @@ class PedidosController extends AppController
 
     private function beanModelPedido($pedido, $data)
     {
-        $pedido->user_id = $data['user_id'];
+        $pedido->user_id = $data['user_id'] ? $data['user_id'] :  $this->empresaUtils->getUserEmpresaModel()->user_id;
+        $pedido->cliente = $data['cliente'];
         $pedido->formas_pagamento_id = $data['formas_pagamento_id'];
         return $pedido;
     }
@@ -458,11 +484,12 @@ class PedidosController extends AppController
     public function alterarSituacao($id = null)
     {
         $pedido = $this->Pedidos->get($id);
+        $tipoPedido = $pedido->tipo_pedido;
         if ($this->request->is(['patch', 'post', 'put'])) {
             $pedido = $this->Pedidos->patchEntity($pedido, $this->request->getData());
             if ($this->Pedidos->save($pedido)) {
                 $this->Flash->success(__('Situação Alterada com sucesso.'));
-                if ($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_DELIVERY) {
+                if ($tipoPedido == Pedido::TIPO_PEDIDO_DELIVERY) {
                     return $this->redirect(['action' => 'index']);
                 }
                 return $this->redirect(['action' => 'comandas']);
@@ -479,7 +506,7 @@ class PedidosController extends AppController
         $itensCozinha = [];
         $adicionais = [];
         $tableLocator = new TableLocator();
-        $pedidosProdutos = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $pedido->id]);
+        $pedidosProdutos = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $pedido->id, 'status' => PedidosProduto::STATUS_EM_FILA_PRODUCAO]);
         foreach ($pedidosProdutos as $item) {
             $produto = $tableLocator->get('Produtos')->find()->where(['id' => $item->produto_id])->first();
             $categoria = $tableLocator->get('CategoriasProdutos')->find()->where(['id' => $produto->categorias_produto_id])->first();
@@ -492,7 +519,35 @@ class PedidosController extends AppController
                 $itensBar[$item->id]['categoria'] = $categoria->nome_categoria;
                 $itensBar[$item->id]['produto'] = $produto->nome_produto;
                 $itensBar[$item->id]['observacao'] = $item->observacao;
-                $itensBar[$item->id]['id'] = $item->id;;
+                $itensBar[$item->id]['id'] = $item->id;
+            }
+            $adicionais[$item->id] = $this->getAdicionais($item);
+        }
+        $this->set(compact('pedido', 'itensBar', 'itensCozinha', 'adicionais'));
+    }
+
+    public function gerenciarItens($id = null){
+        $pedido = $this->Pedidos->get($id);
+        $statusList = PedidosProduto::getAllStatusList();
+        /** @var $pedidosProdutos PedidosProduto[]*/
+        $pedidosProdutos = $this->getTableLocator()->get('PedidosProdutos')->find()->where(['pedido_id' => $pedido->id]);
+        foreach ($pedidosProdutos as $item) {
+            $produto = $this->getTableLocator()->get('Produtos')->find()->where(['id' => $item->produto_id])->first();
+            $categoria = $this->getTableLocator()->get('CategoriasProdutos')->find()->where(['id' => $produto->categorias_produto_id])->first();
+            if ($item->ambiente_producao_responsavel == PedidosProduto::RESPONSAVEL_COZINHA) {
+                $itensCozinha[$item->id]['categoria'] = $categoria->nome_categoria;
+                $itensCozinha[$item->id]['produto'] = $produto->nome_produto;
+                $itensCozinha[$item->id]['observacao'] = $item->observacao;
+                $itensCozinha[$item->id]['valorTotal'] = $item->valor_total_cobrado;
+                $itensCozinha[$item->id]['status'] = $statusList[$item->status];
+                $itensCozinha[$item->id]['id'] = $item->id;
+            } else {
+                $itensBar[$item->id]['categoria'] = $categoria->nome_categoria;
+                $itensBar[$item->id]['produto'] = $produto->nome_produto;
+                $itensBar[$item->id]['observacao'] = $item->observacao;
+                $itensBar[$item->id]['valorTotal'] = $item->valor_total_cobrado;
+                $itensBar[$item->id]['status'] = $statusList[$item->status];
+                $itensBar[$item->id]['id'] = $item->id;
             }
             $adicionais[$item->id] = $this->getAdicionais($item);
         }
@@ -724,11 +779,12 @@ class PedidosController extends AppController
         $pedido = $this->Pedidos->find()->where(['id' => $pedido])->first();
         $pedidosProdutos = $this->getTableLocator()->get('PedidosProdutos')->find()->where(['pedido_id' => $pedido->id])->count();
         if ($pedidosProdutos < 1) {
-            $this->Flash->error(__('Não foi possível confirmar um pedido sem itens, por favor recarregue a pagina usando a tecla F5.'));
+            $this->Flash->error(__('Erro ao confirmar, por favor recarregue a página atual utilizando a tecla F5.'));
             return $this->redirect(['action' => 'addItem', $pedido->id]);
         }
         $successStatus = false;
-        if ($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA) {
+        $tipoPedido = $pedido->tipo_pedido;
+        if ($tipoPedido == Pedido::TIPO_PEDIDO_COMANDA) {
             $pedido->status_pedido = Pedido::STATUS_ABERTA;
         } else {
             $pedido->status_pedido = Pedido::STATUS_EM_PRODUCAO;
@@ -749,7 +805,7 @@ class PedidosController extends AppController
         }
         if ($gravouTodosItens && $successStatus) {
             $this->Pedidos->getConnection()->commit();
-            if ($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA) {
+            if ($tipoPedido == Pedido::TIPO_PEDIDO_COMANDA) {
                 $this->Flash->success(__('Comanda Confirmada Com Sucesso.'));
                 return $this->redirect(['action' => 'comandas']);
             }
@@ -811,7 +867,7 @@ class PedidosController extends AppController
             $dateTime->setTime($dateTime->format("H"), $dateTime->format('i'), 0);
             $newPedido->data_pedido = $dateTime;
             $newPedido->empresa_id = $this->empresaUtils->getEmpresaBase();
-            $newPedido->origem = Pedido::ORIGEM_APP_CLIENTE;
+            $newPedido->origem = Pedido::ORIGEM_SITE_CLIENTE;
             if ($endereco != Pedido::RETIRAR_NO_LOCAL) {
                 $tempoMedio = $tableLocator->get('TemposMedios')->find()->where(['ativo' => true, 'tipo' => TemposMedio::TIPO_PARA_ENTREGA]);
             } else {

@@ -40,6 +40,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
                         <?= $this->Html->link(__(''), ['action' => 'imprimir', $pedido->id], ['class' => 'fa fa-print btn btn-danger btn-sm', 'title' => 'Imprimir Guias de produção']) ?>
                         <?= $this->Html->link(__(''), ['action' => 'concluirPedido', $pedido->id], ['class' => 'far fa-check-square btn btn-success btn-sm', 'title' => 'Concluir Produção']) ?>
                         <?= $this->Html->link(__(''), ['action' => 'view', $pedido->id], ['class' => 'fas fa-eye btn btn-info btn-sm', 'title' => 'Visualizar']) ?>
+                        <?= $this->Html->link(__(''), ['action' => 'gerenciarItens', $pedido->id], ['class' => 'fas fa-tasks btn btn-dark btn-sm', 'title' => 'Gerenciar Itens']) ?>
                     </div>
                 </div>
             </div>

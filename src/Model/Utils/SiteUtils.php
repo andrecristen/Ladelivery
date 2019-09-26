@@ -274,7 +274,7 @@ class SiteUtils extends AppController
         echo '<div class="modal-body">';
         echo '<div class="tab">';
         echo '<button id="initialTabModal" class="tablinks" onclick="openTab(event, \'geral\')">Geral</button>';
-        echo '<button class="tablinks" onclick="openTab(event, \'opcoes\')">Opções</button>';
+        echo '<button id="opcoesTabModal" class="tablinks" onclick="openTab(event, \'opcoes\')">Opções</button>';
         echo '</div>';
         echo '<div id="geral" class="tabcontent">
                         <div class="form-horizontal">
@@ -358,9 +358,9 @@ class SiteUtils extends AppController
                 $existMidia = $existMidia->first();
                 echo '<a onclick="openModalAddCart(' . $produto->id . ',' . $isAdmin . ')">';
                 if ($existMidia !== null) {
-                    echo $this->Html->image($existMidia->path_midia, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40'));
+                    echo $this->Html->image($existMidia->path_midia, ['class' => 'img-fluid']);
                 } else {
-                    echo $this->Html->image('empresa/padrao.jpeg', array('width' => '100%', 'height' => '22%'));
+                    echo $this->Html->image('empresa/padrao.jpeg', ['class' => 'img-fluid']);
                 }
                 echo '</a>';
             }

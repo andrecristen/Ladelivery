@@ -74,7 +74,8 @@ class EmpresasController extends AppController
             }
             $this->Flash->error(__('The empresa could not be saved. Please, try again.'));
         }
-        $this->set(compact('empresa'));
+        $users = $this->Empresas->Users->find('list')->where(['tipo' => User::TIPO_EMPRESA]);
+        $this->set(compact('empresa', 'users'));
     }
 
     /**
@@ -107,7 +108,8 @@ class EmpresasController extends AppController
             }
             $this->Flash->error(__('Erro, tente novamente.'));
         }
-        $this->set(compact('empresa'));
+        $users = $this->Empresas->Users->find('list')->where(['tipo' => User::TIPO_EMPRESA]);
+        $this->set(compact('empresa', 'users'));
     }
 
     /**

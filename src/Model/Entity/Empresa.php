@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * Empresa Entity
  *
  * @property int $id
+ * @property int $user_id
  * @property string $nome_fantasia
  * @property string|null $cnpj
  * @property string|null $ie
@@ -16,6 +17,7 @@ use Cake\ORM\Entity;
  * @property float $valor_base_erro_frete
  * @property string|null $contatos
  *
+ * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\TemposMedio[] $tempos_medios
  */
 class Empresa extends Entity
@@ -82,6 +84,7 @@ class Empresa extends Entity
         'valor_base_erro_frete' => true,
         'ativa' => true,
         'tempos_medios' => true,
-        'contatos' => true
+        'contatos' => true,
+        'user_id' => true
     ];
 }

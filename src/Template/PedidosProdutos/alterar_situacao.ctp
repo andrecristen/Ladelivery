@@ -5,7 +5,7 @@
     <fieldset>
         <legend><?= __('Alterar Situacao') ?></legend>
         <?php
-        echo $this->Form->control('status', ['options' => \App\Model\Entity\PedidosProduto::getAlterStatusList()]);
+        echo $this->Form->control('status', ['options' => $options]);
         ?>
     </fieldset>
     <br/>

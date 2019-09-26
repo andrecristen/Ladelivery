@@ -23,6 +23,7 @@ echo $this->Html->script('pedidos.js' . $cacheVersion);
 <link rel="stylesheet" href="/ladev/alert/css/themes/bootstrap.min.css<?= h($cacheVersion) ?>" />
 <div class="col-sm-12">
     <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-list')) . ' Visualização em Lista', array('action' => 'index'), array('escape' => false, 'class' => 'btn btn-info btn-sm', 'title' => 'Visualização Clássica'))?>
+    <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-cart-plus')) . ' Abrir Pedido', array('action' => 'add'), array('escape' => false, 'class' => 'btn btn-success btn-sm', 'title' => 'Abrir novo pedido'))?>
     <br>
     <br>
     <div class="row">

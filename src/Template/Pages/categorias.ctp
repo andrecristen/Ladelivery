@@ -51,9 +51,9 @@ $query = $tableLocator->get('CategoriasProdutos')->find();
                     <div class="card">
                         <a href="produtos?categoria=<?= $categoria->id ?>&categoriaNome=<?= $categoria->nome_categoria ?>">
                             <?php if ($existMidia !== null) { ?>
-                                <?php echo $this->Html->image($existMidia->path_midia, array('width' => '100%', 'height' => '22%', 'background-color' => '#343a40')); ?>
+                                <?php echo $this->Html->image($existMidia->path_midia, ['class' => 'img-fluid']); ?>
                             <?php } else { ?>
-                                <?php echo $this->Html->image('empresa/padrao.jpeg', array('width' => '100%', 'height' => '22%')); ?>
+                                <?php echo $this->Html->image('empresa/padrao.jpeg', ['class' => 'img-fluid']); ?>
                             <?php } ?>
                         </a>
                         <div class="card-body">

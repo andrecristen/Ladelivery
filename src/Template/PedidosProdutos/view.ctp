@@ -3,9 +3,12 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\PedidosProduto $pedidosProduto
  */
+$ambienteList = \App\Model\Entity\PedidosProduto::getAmbienteResponsavel();
+$statusList = \App\Model\Entity\PedidosProduto::getAllStatusList();
+$tipo = ($pedidosProduto->pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_COMANDA) ? 'Comanda' : 'Pedido';
 ?>
 <div class="col-sm-12">
-    <h3>Pedido Item #<?= h($pedidosProduto->id) ?></h3>
+    <h3><?= $tipo ?> Item #<?= h($pedidosProduto->id) ?></h3>
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('#') ?></th>
@@ -61,11 +64,11 @@
         </tr>
         <tr>
             <th scope="row"><?= __('Ambiente Producao Responsavel') ?></th>
-            <td><?= $this->Number->format($pedidosProduto->ambiente_producao_responsavel) ?></td>
+            <td><?= $ambienteList[$pedidosProduto->ambiente_producao_responsavel] ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Status') ?></th>
-            <td><?= $this->Number->format($pedidosProduto->status) ?></td>
+            <td><?= $statusList[$pedidosProduto->status]?></td>
         </tr>
     </table>
 </div>

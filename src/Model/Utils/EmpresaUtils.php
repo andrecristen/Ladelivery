@@ -20,10 +20,17 @@ use Cake\ORM\Locator\TableLocator;
  */
 class EmpresaUtils extends AppController
 {
+    //Constantes Gerais
     const NOME_EMPRESA_LOJA = 'Baiucas & Bonna';
+    //Constantes de Manutenção
+    const EM_MANUTENCAO = false;
+    const HORAS_PREVISTAS_MANUTENCAO = 1;
+    //Constantes de Relatorio
     const ANO_HOMOLOGACAO_EMPRESA = 2019;
+    //Constantes de Imagens
     const IMAGE_LOGIN_PATH = 'empresa/logologin.png';
     const IMAGE_SITE_PATH = 'empresa/logoSite.png';
+    const IMAGE_PADRAO_PRODUTOS_SEM_IMAGEM = 'empresa/padrao.jpeg';
 
     /*
      * Id da empresa unica que fornece produtos.

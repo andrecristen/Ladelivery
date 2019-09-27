@@ -22,6 +22,8 @@ use App\Model\Utils\EmpresaUtils;
 use App\Model\Utils\TypeFields;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Locator\TableLocator;
 
 /**
@@ -34,6 +36,18 @@ use Cake\ORM\Locator\TableLocator;
  */
 class AppController extends Controller
 {
+    public function __construct(ServerRequest $request = null, Response $response = null, $name = null, $eventManager = null, $components = null)
+    {
+        parent::__construct($request, $response, $name, $eventManager, $components);
+
+        if(EmpresaUtils::EM_MANUTENCAO){
+            $pass = $this->getRequest()->getParam('pass');
+            if(!isset($pass[0]) || $pass[0] !== 'manutencao'){
+                return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'manutencao']);
+            }
+        }
+    }
+
     protected $validActions = [];
 
     /**

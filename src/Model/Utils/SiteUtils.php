@@ -360,7 +360,7 @@ class SiteUtils extends AppController
                 if ($existMidia !== null) {
                     echo $this->Html->image($existMidia->path_midia, ['class' => 'img-fluid']);
                 } else {
-                    echo $this->Html->image('empresa/padrao.jpeg', ['class' => 'img-fluid']);
+                    echo $this->Html->image(EmpresaUtils::IMAGE_PADRAO_PRODUTOS_SEM_IMAGEM, ['class' => 'img-fluid']);
                 }
                 echo '</a>';
             }

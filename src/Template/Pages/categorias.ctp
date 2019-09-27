@@ -53,7 +53,7 @@ $query = $tableLocator->get('CategoriasProdutos')->find();
                             <?php if ($existMidia !== null) { ?>
                                 <?php echo $this->Html->image($existMidia->path_midia, ['class' => 'img-fluid']); ?>
                             <?php } else { ?>
-                                <?php echo $this->Html->image('empresa/padrao.jpeg', ['class' => 'img-fluid']); ?>
+                                <?php echo $this->Html->image($empresaUtils::IMAGE_PADRAO_PRODUTOS_SEM_IMAGEM, ['class' => 'img-fluid']); ?>
                             <?php } ?>
                         </a>
                         <div class="card-body">

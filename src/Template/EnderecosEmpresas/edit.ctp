@@ -7,9 +7,9 @@
 <div class="col-sm-12">
     <?= $this->Form->create($enderecosEmpresa) ?>
     <fieldset>
-        <legend><?= __('Editar Enderecos Empresa') ?></legend>
+        <legend><?= __('Editar Endereço Empresa') ?></legend>
         <?php
-        echo $this->Form->control('empresa_id', ['options' => $empresas, 'disabled' => 'disabled']);
+        echo $this->Form->control('empresa_id', ['options' => $empresas, 'disabled' => 'disabled', 'required' => 'required']);
         echo $this->Form->control('rua');
         echo $this->Form->control('numero');
         echo $this->Form->control('bairro');

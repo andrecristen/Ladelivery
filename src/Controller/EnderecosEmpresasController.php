@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\User;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 
@@ -82,8 +84,13 @@ class EnderecosEmpresasController extends AppController
     public function edit($id = null)
     {
         $enderecosEmpresa = $this->EnderecosEmpresas->get($id, [
-            'contain' => []
+            'contain' => ['Empresas']
         ]);
+        $empresaUtils = new EmpresaUtils();
+        if($enderecosEmpresa->empresa->id != $empresaUtils->getUserEmpresaId() && $empresaUtils->getUserTipo() !== User::TIPO_MASTER){
+            $this->Flash->error(__('Você não pode editar endereços desta empresa, você só pode editar os referentes a sua empresa.'));
+            return $this->redirect(['action' => 'index']);
+        }
         if ($this->request->is(['patch', 'post', 'put'])) {
             $enderecosEmpresa = $this->EnderecosEmpresas->patchEntity($enderecosEmpresa, $this->request->getData());
             if ($this->EnderecosEmpresas->save($enderecosEmpresa)) {

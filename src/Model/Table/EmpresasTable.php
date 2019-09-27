@@ -83,6 +83,11 @@ class EmpresasTable extends Table
             ->allowEmptyString('tipo_empresa', false);
 
         $validator
+            ->integer('tipo_frete')
+            ->requirePresence('tipo_frete', 'create')
+            ->allowEmptyString('tipo_frete', false);
+
+        $validator
             ->boolean('ativa')
             ->requirePresence('ativa', 'create')
             ->allowEmptyString('ativa', false);
@@ -108,7 +113,7 @@ class EmpresasTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->isUnique(['cnpj']));
+        $rules->add($rules->isUnique(['cnpj'], 'Este CNPJ já está em uso.'));
 
         return $rules;
     }

@@ -68,11 +68,11 @@ class EmpresasController extends AppController
                 $empresa->contatos = json_encode($contatos);
             }
             if ($this->Empresas->save($empresa)) {
-                $this->Flash->success(__('The empresa has been saved.'));
+                $this->Flash->success(__('Empresa adicionada com sucesso.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The empresa could not be saved. Please, try again.'));
+            $this->Flash->error(__('Não foi possível adicionar empresa, tente novamente.'));
         }
         $users = $this->Empresas->Users->find('list')->where(['tipo' => User::TIPO_EMPRESA]);
         $this->set(compact('empresa', 'users'));
@@ -91,7 +91,7 @@ class EmpresasController extends AppController
             'contain' => []
         ]);
         $empresaUtils = new EmpresaUtils();
-        if($empresa->id != $empresaUtils->getUserEmpresaId()){
+        if($empresa->id != $empresaUtils->getUserEmpresaId() && $empresaUtils->getUserTipo() !== User::TIPO_MASTER){
             $this->Flash->error(__('Você não pode editar esta empresa, você só pode editar a sua empresa.'));
             return $this->redirect(['action' => 'index']);
         }
@@ -106,7 +106,7 @@ class EmpresasController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Erro, tente novamente.'));
+            $this->Flash->error(__('Erro ao editar empresa, tente novamente.'));
         }
         $users = $this->Empresas->Users->find('list')->where(['tipo' => User::TIPO_EMPRESA]);
         $this->set(compact('empresa', 'users'));
@@ -124,9 +124,9 @@ class EmpresasController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $empresa = $this->Empresas->get($id);
         if ($this->Empresas->delete($empresa)) {
-            $this->Flash->success(__('The empresa has been deleted.'));
+            $this->Flash->success(__('Empresa excluida com sucesso.'));
         } else {
-            $this->Flash->error(__('The empresa could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Não foi possível excluir a empresa, tente novamente.'));
         }
 
         return $this->redirect(['action' => 'index']);

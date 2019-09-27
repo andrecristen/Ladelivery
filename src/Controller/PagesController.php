@@ -63,6 +63,11 @@ class PagesController extends AppController
         $html = new HtmlHelper($appView, []);
         $flash = new FlashHelper($appView, []);
         $this->set(compact('page', 'subpage', 'html', 'flash'));
+        $empresaUtils = new \App\Model\Utils\EmpresaUtils();
+        if($path[0] == 'produtos' && !$empresaUtils->getUserId()){
+            $this->Flash->default('Para poder adicionar ao seu carrinho, por favor entre com sua conta');
+            $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        }
         try {
             $this->render(implode('/', $path));
         } catch (MissingTemplateException $exception) {

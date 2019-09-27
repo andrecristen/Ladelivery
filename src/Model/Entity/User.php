@@ -34,7 +34,8 @@ class User extends Entity
             self::TIPO_CLIENTE       => 'Cliente',
             self::TIPO_ADMINISTRADOR => 'Administrador',
             self::TIPO_MASTER        => 'Master',
-            self::TIPO_ENTREGADOR    => 'Entregador'
+            self::TIPO_ENTREGADOR    => 'Entregador',
+            self::TIPO_EMPRESA    => 'Empresa'
         ];
     }
 

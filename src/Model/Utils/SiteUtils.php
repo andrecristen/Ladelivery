@@ -227,7 +227,7 @@ class SiteUtils extends AppController
     {
         echo '<div style="padding-left: 10px!important; padding-right: 10px!important;" class="row">
             <div style="width: 100%" class="alert alert-info">
-                <h4>Para poder adicionar ao carrinho, por favor entre com sua conta! ' . $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')) . ' Entre Agora', array('controller' => 'Users', 'action' => 'login'), array('escape' => false, 'class' => '')) . '</h4>
+                <h4 style="">Para poder adicionar ao seu carrinho, por favor entre com sua conta! ' . $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')) . ' Entre Agora', array('controller' => 'Users', 'action' => 'login'), array('escape' => false, 'class' => '')) . '</h4>
             </div>
         </div>';
     }

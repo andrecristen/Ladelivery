@@ -60,8 +60,7 @@ $siteUtils->menuSite();
                 $usuario = $tableLocator->get('Users')->find()->where(['id' => $avaliacao->user_id])->first() ?>
                 <div class="row">
                     <div class="col-sm-2">
-                        <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded">
-                        <div class="review-block-name"><?= $usuario->nome_completo ?> </div>
+                        <div class="review-block-name"><strong><?= $usuario->nome_completo ?></strong> </div>
                     </div>
                     <div class="col-sm-10">
                         <div class="review-block-rate">
@@ -72,6 +71,7 @@ $siteUtils->menuSite();
                         </div>
                     </div>
                 </div>
+                <br>
                 <fieldset>
                     <legend></legend>
                 </fieldset>

@@ -223,7 +223,7 @@ class UsersController extends AppController
                 if($user['tipo'] == User::TIPO_ADMINISTRADOR || $user['tipo'] == User::TIPO_MASTER || $user['tipo'] == User::TIPO_ENTREGADOR ){
                     $_SESSION["menus"] = $this->getMenusToUser($user);
                     if($redirect == '/pages'){
-                        return $this->redirect('/financeiro/painel');
+                        return $this->redirect('/pages/blank');
                     }
                 }
                 return $this->redirect($this->Auth->redirectUrl());

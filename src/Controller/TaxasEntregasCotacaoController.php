@@ -35,6 +35,9 @@ class TaxasEntregasCotacaoController extends AppController
     {
         if ($this->empresaUtils->getUserEmpresaModel()->tipo_frete == Empresa::FRETE_TIPO_FAIXA){
             return $this->redirect(['controller' => 'TaxasEntregasCotacaoFaixas','action' => 'index']);
+        }elseif ($this->empresaUtils->getUserEmpresaModel()->tipo_frete == Empresa::FRETE_NAO_CONDIZENTE){
+            $this->Flash->error('Empresa sem tipo de cotação definido, verifique o cadastro da empresa da sessão.');
+            return $this->redirect(['controller' => 'Pages','action' => 'display', 'blank']);
         }
         $this->paginate = [
             'contain' => ['Empresas']

@@ -220,11 +220,12 @@ class PedidosController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'FormasPagamentos']
+            'contain' => ['Users', 'FormasPagamentos'],
+            'order' => ['id' => 'desc']
         ];
         $filtersFixed = ['tipo_pedido' => Pedido::TIPO_PEDIDO_DELIVERY,
             'status_pedido <> ' => Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE];
-        $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
+        $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)));
 
         $this->set(compact('pedidos'));
     }

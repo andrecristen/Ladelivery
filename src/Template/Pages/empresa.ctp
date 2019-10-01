@@ -20,7 +20,6 @@ $haveProdutos = count($produtosMaisVendidos);
 $empresa = $empresaUtils->getEmpresaBaseModel();
 /** @var $empresaEndereco \App\Model\Entity\EnderecosEmpresa*/
 $empresaEndereco = $empresaUtils->getEmpresaBaseEnderecoModel();
-$iconsContato = \App\Model\Entity\Empresa::getTipoContatoIconList();
 /** @var $horariosAtendimento \App\Model\Entity\HorariosAtendimento[]*/
 $horariosAtendimento = $tableLocator->get('HorariosAtendimentos')->find()->where(['empresa_id' => $empresaUtils->getEmpresaBase()])->orderAsc('dia_semana')->orderAsc('turno');
 $diaSemanaList = \App\Model\Entity\HorariosAtendimento::getDiaSemanaList();
@@ -57,23 +56,8 @@ $turnoList = \App\Model\Entity\HorariosAtendimento::getTurnoList();
         <h2><i class="fas fa-comment"></i> Contatos</h2>
         <?php
         $contatos = json_decode($empresa->contatos, true);
-        foreach ($contatos as $contato){
-            switch ($contato['tipo_contato']){
-                case \App\Model\Entity\Empresa::TIPO_CONTATO_FACEBOOK:
-                    ?> <h5><a target="_blank" href="https://<?= $contato['valor_contato']?>"><i class="<?= $iconsContato[$contato['tipo_contato']]?>"></i> <?= $contato['valor_contato']?></a></h5><?php
-                    break;
-                case \App\Model\Entity\Empresa::TIPO_CONTATO_TELEFONE:
-                    ?> <h5><i class="<?= $iconsContato[$contato['tipo_contato']]?>"></i> <?= $contato['valor_contato']?></h5><?php
-                    break;
-                case \App\Model\Entity\Empresa::TIPO_CONTATO_EMAIL:
-                    ?> <h5><a target="_blank" href="mailto:<?=$contato['valor_contato']?>"><i class="<?= $iconsContato[$contato['tipo_contato']]?>"></i> <?= $contato['valor_contato']?></a></h5><?php
-                    break;
-                case \App\Model\Entity\Empresa::TIPO_CONTATO_WPP:
-                    ?> <h5><a target="_blank" href="https://wa.me/55<?= preg_replace("/[^0-9]/", "", $contato['valor_contato'])?>?text=Olá,%20poderia%20me%20tirar%20uma%20dúvida?"><i class="<?= $iconsContato[$contato['tipo_contato']]?>"></i> <?= $contato['valor_contato']?></a></h5><?php
-                    break;
-            }
-            ?>
-        <?php }?>
+        $siteUtils->montaContatos($contatos);
+        ?>
         <br>
         <h2><i class="fas fa-clock"></i> Horários de Atendimento</h2>
         <?php foreach ($horariosAtendimento as $horario){

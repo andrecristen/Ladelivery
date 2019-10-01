@@ -55,9 +55,9 @@ $novosPedidos = $siteUtils->countNewPedidos();
     <?php $siteUtils->menuAdmin($menusAdmin)?>
     <?php $empresaUtils = new \App\Model\Utils\EmpresaUtils() ?>
     <div class="system-info">
-        <div class="item-logo">
+        <a href="/pages/blank" class="item-logo">
             <?= $this->Html->image('empresa/logoLaDev.png') ?>
-        </div>
+        </a>
         <div class="item-info">
             <i title="Usuário" class="fas fa-user-circle">&nbsp;</i><span><?= $this->Html->link(__($empresaUtils->getUserName()), ['controller' => 'Users', 'action' => 'view', $empresaUtils->getUserId()]) ?></span>
             &nbsp;

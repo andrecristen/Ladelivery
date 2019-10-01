@@ -49,7 +49,7 @@ class FinanceiroController extends AppController
         $produtos = [];
         if ($produtosMaisComprados) {
             foreach ($produtosMaisComprados as $produtoMaisComprado) {
-                $produtos[] = ['quantidade' => $produtoMaisComprado['total'], 'nome' => $produtoMaisComprado['produto_id']];
+                $produtos[] = ['quantidade' => $produtoMaisComprado['total'], 'nome' => $produtoMaisComprado['nome_produto']];
             }
         }
         $vendasDiasSemana = $this->getVendasPorDiaSemana();

@@ -334,6 +334,26 @@ class SiteUtils extends AppController
         echo '</div>';
     }
 
+    public function montaContatos($contatos){
+        $iconsContato = \App\Model\Entity\Empresa::getTipoContatoIconList();
+        foreach ($contatos as $contato) {
+            switch ($contato['tipo_contato']){
+                case \App\Model\Entity\Empresa::TIPO_CONTATO_FACEBOOK:
+                    ?> <h5><a target="_blank" href="https://<?= $contato['valor_contato']?>"><i class="<?= $iconsContato[$contato['tipo_contato']]?>"></i> <?= $contato['valor_contato']?></a></h5><?php
+                    break;
+                case \App\Model\Entity\Empresa::TIPO_CONTATO_TELEFONE:
+                    ?> <h5><i class="<?= $iconsContato[$contato['tipo_contato']]?>"></i> <?= $contato['valor_contato']?></h5><?php
+                    break;
+                case \App\Model\Entity\Empresa::TIPO_CONTATO_EMAIL:
+                    ?> <h5><a target="_blank" href="mailto:<?=$contato['valor_contato']?>"><i class="<?= $iconsContato[$contato['tipo_contato']]?>"></i> <?= $contato['valor_contato']?></a></h5><?php
+                    break;
+                case \App\Model\Entity\Empresa::TIPO_CONTATO_WPP:
+                    ?> <h5><a target="_blank" href="https://wa.me/55<?= preg_replace("/[^0-9]/", "", $contato['valor_contato'])?>?text=Olá,%20poderia%20me%20tirar%20uma%20dúvida?"><i class="<?= $iconsContato[$contato['tipo_contato']]?>"></i> <?= $contato['valor_contato']?></a></h5><?php
+                    break;
+            }
+        }
+    }
+
     public final function createProdutosCategoria($categoria, $showStars = true, $isAdmin = false, $showFoto = true, $titleButtonComprar = false, $ambienteVenda = Produto::VENDA_DELIVERY)
     {
         if (!$titleButtonComprar) {
@@ -399,7 +419,7 @@ class SiteUtils extends AppController
     public final function menuAdmin($menus)
     {
         echo '<div class="nav-side-menu">';
-        echo '<div class="brand">LADelivery</div>';
+        echo '<a href="/pages/blank" class="brand">LADelivery</a>';
         echo '<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>';
         echo '<i class="fa fa-bars fa-fw toggle-btn-pc" onclick="closeMenu()"></i>';
         echo '<div class="menu-list">';

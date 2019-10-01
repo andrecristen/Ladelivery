@@ -3,12 +3,18 @@
  * André Cristen - andrecristenibirama@gmail.com
  * Gerente de projeto & Desenvolvedor
  */
+$siteUtils = new \App\Model\Utils\SiteUtils();
+$empresaUtils = new \App\Model\Utils\EmpresaUtils();
+$empresa = $empresaUtils->getEmpresaSoftwareModel()
 ?>
 <div style="text-align: center" class="col-sm-12">
     <h1>LaDev Sistemas</h1>
     <br>
-    <h3><i class="fab fa-whatsapp"></i>&nbsp; (47) 99780-2814 André Cristen</h3>
-    <h3><i class="fas fa-at"></i>&nbsp; ladev.sistemas@gmail.com</h3>
+    <?php
+    $contatos = json_decode($empresa->contatos, true);
+    $siteUtils->montaContatos($contatos);
+    ?>
+    <h5><a target="_blank" href="https://ladevsistemas.com.br/"><i class="fas fa-desktop"></i> ladevsistemas.com.br</a></h5>
     <br>
     <h5>Segunda a Sexta - 15h45 às 00h00</h5>
     <h5>Sábados e Domingos - 9h00 às 18h00</h5>

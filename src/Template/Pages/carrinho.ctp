@@ -124,9 +124,9 @@ $empresaAberta = $controllerPedido->empresaAberta();
                             </select>
                         </div>
                         <div class="summary-checkout">
-                            <button id="btnFecharCarrinho" onclick="fecharCarrinho()" class="checkout-cta btn-success">Confirmar Conteúdo</button>
-                            <br>
                             <a style="margin-top: 25px;" href="../pages/categorias" class="checkout-cta btn-warning">Continuar Comprando</a>
+                            <br>
+                            <button id="btnFecharCarrinho" onclick="fecharCarrinho()" class="checkout-cta btn-success">Confirmar Conteúdo</button>
                         </div>
                         <div style="padding: 10px; text-align: center" class="summary-checkout">
                             <span>Atenção! Ao clicar em confirmar conteúdo você será redirecionado para a tela final de confirmação do pedido, que conterá o preço final do pedido e o custo de entrega para o endereço selecionado, assim como a seleção da forma de pagamento.</span>

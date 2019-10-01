@@ -48,7 +48,7 @@ $empresaAberta = $controllerPedido->empresaAberta();
             </div>
             <div class="modal-footer">
                 <button style="display: none" type="button" id="closeModal" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button type="button" onclick="confirmarTroco()" class="btn btn-primary">Confirmar</button>
+                <button type="button" onclick="confirmarTroco()" class="btn btn-primary">Confirmar Troco</button>
             </div>
         </div>
     </div>

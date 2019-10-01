@@ -11,7 +11,12 @@ $(document).ready(function () {
                 var lastNovos = $('#novos-notify').html();
                 if (data > lastNovos){
                     var audio = document.getElementById('alerta');
-                    audio.play();
+                    const playPromise = audio.play();
+                    if (playPromise !== null){
+                        playPromise.catch(() => {
+                            audio.play();
+                        })
+                    }
                     $('#novos-notify').html(data);
                 }
             },

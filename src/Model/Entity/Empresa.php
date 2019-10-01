@@ -33,6 +33,7 @@ class Empresa extends Entity
 
     const FRETE_TIPO_KM = 1;
     const FRETE_TIPO_FAIXA = 2;
+    const FRETE_NAO_CONDIZENTE = 3;
 
     public static function getTipoList(){
         return [
@@ -63,6 +64,7 @@ class Empresa extends Entity
         return [
             self::FRETE_TIPO_KM => 'Valor Por KM',
             self::FRETE_TIPO_FAIXA => 'Valor Por Faixa de Distância',
+            self::FRETE_NAO_CONDIZENTE => 'Não Condizente',
         ];
     }
 

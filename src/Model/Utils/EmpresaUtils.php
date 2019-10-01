@@ -67,6 +67,17 @@ class EmpresaUtils extends AppController
         return $empresa;
     }
 
+    /**
+     * @return Empresa
+     */
+    public function getEmpresaSoftwareModel()
+    {
+        $tableLocator = new TableLocator();
+        /** @var $empresa Empresa*/
+        $empresa = $tableLocator->get('Empresas')->find()->where(['id' => $this->empresaSoftwareId])->first();
+        return $empresa;
+    }
+
     public function getEmpresaBaseEnderecoModel(){
         $tableLocator = new TableLocator();
         /** @var $empresaEndereco EnderecosEmpresa*/

@@ -1,7 +1,8 @@
 <?php
 $empresaUtils = new \App\Model\Utils\EmpresaUtils();
 $siteUtils = new \App\Model\Utils\SiteUtils();
-$siteUtils->ambiguousHeadImportsSite()
+$siteUtils->ambiguousHeadImportsSite();
+$this->layout = false;
 ?>
 <?php if(\App\Model\Utils\EmpresaUtils::EM_MANUTENCAO){ ?>
     <div style="padding: 80px">

@@ -5,7 +5,10 @@
  */
 $siteUtils = new \App\Model\Utils\SiteUtils();
 $empresaUtils = new \App\Model\Utils\EmpresaUtils();
-$empresa = $empresaUtils->getEmpresaSoftwareModel()
+$empresa = $empresaUtils->getEmpresaSoftwareModel();
+if($empresaUtils->getUserTipo() == \App\Model\Entity\User::TIPO_CLIENTE || !$empresaUtils->getUserId()){
+    return;
+}
 ?>
 <div style="text-align: center" class="col-sm-12">
     <h1>LaDev Sistemas</h1>

@@ -10,6 +10,7 @@ namespace App\Model;
 class ExceptionSQLMessage
 {
     private $exceptions = [
+            "unique_produto_dia_semana"=>'Já existe um cadastro para o produto para o dia da semana selecionado.',
             "unique_lista_id_opcoes"=>'Esta lista já está associada a este adicional.',
             "unique_lista_produto"=>'Esta lista já está associada a este produto.',
             "listas_produtos_ibfk_2"=>'Esta lista possui associação a um ou mais produtos, portanto não é possivel exclui-la.',

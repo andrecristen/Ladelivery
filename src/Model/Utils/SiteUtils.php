@@ -368,6 +368,13 @@ class SiteUtils extends AppController
         $produtos = $this->getTableLocator()->get('Produtos')->find()->where($condicao);
         $produtoscount = 0;
         foreach ($produtos as $produto) {
+            $data = date('Y-m-d');
+            //Condiz com a lista de dias da semana Em HorariosAtendimento
+            $diasemana = date('w', strtotime($data));
+            $desativadoHoje = $this->getTableLocator()->get('ProgramarDesativarProdutos')->find()->where(['produto_id' => $produto->id, 'programacao_ativa' => true, 'dia_semana' => $diasemana])->count();
+            if($desativadoHoje > 0){
+                continue;
+            }
             echo '<div style="cursor: pointer!important;" class="col-lg-3 col-md-4 col-sm-6 portfolio-item">';
             echo '<div class="card" style="margin-bottom: 5px">';
             if ($showFoto) {

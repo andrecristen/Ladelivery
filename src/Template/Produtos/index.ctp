@@ -19,6 +19,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Criado', 'created', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME, true, false, 'auto', 'produto/created'));
     $dataGrid->addField(new \App\Model\Utils\GridField('Editado', 'modified', \App\Model\Utils\DataGridGenerator::TYPE_DATE_TIME,true, false, 'auto', 'produto/modified'));
     $dataGrid->setController($this->name);
+    $dataGrid->addAction('ProgramarDesativarProdutos', 'index', 'Definir Dias Desativados', 'btn-success', 'fab fa-creative-commons-nc', null, 'Define em que dias da semana o produto não deve ser vendido');
     $dataGrid->display();
     ?>
 </div>

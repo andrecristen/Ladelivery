@@ -165,11 +165,11 @@ class DataGridGenerator extends View implements TypeFields
         echo '<div class="actions-grid">';
         ?>
         <?php if ($this->isShowActions() && !$this->noAdd && $this->appController->validateActionView($this->getController(), 'add')) { ?>
-        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-plus-square')) . ' Adicionar', ['action' => 'add'], array('escape' => false, 'class' => 'btn btn-sm btn-primary')) ?>
+        <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-plus-square')) . ' Adicionar', ['action' => 'add'], array('escape' => false, 'title' => 'Adicionar', 'class' => 'btn btn-sm btn-primary')) ?>
     <?php } ?>
         <?php foreach ($this->actions as $action) {
         if ($this->isShowActions() && $this->appController->validateActionView($action['controller'], $action['action'])) {
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])) . ' ' . $action['titulo'], ['controller' => $action['controller'], 'action' => $action['action'], $action['params']], array('escape' => false, 'class' => $action['class'] . ' btn-sm'));
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => $action['icon'])) . ' ' . $action['titulo'], ['controller' => $action['controller'], 'action' => $action['action'], $action['params']], array('escape' => false, 'title' => $action['help'] ? $action['help'] : $action['titulo'] , 'class' => 'btn btn-sm '.$action['class']));
         } ?>
     <?php } ?>
         <?php
@@ -360,9 +360,9 @@ class DataGridGenerator extends View implements TypeFields
     /**
      * @param array $fields
      */
-    public function addAction($controller, $action, $titulo, $class = 'btn btn-primary', $icon = ' ', $params = '')
+    public function addAction($controller, $action, $titulo, $classColor = 'btn btn-primary', $icon = ' ', $params = '', $help = null)
     {
-        $this->actions[] = ['titulo' => $titulo, 'action' => $action, 'params' => $params, 'controller' => $controller, 'class' => $class, 'icon' => $icon];
+        $this->actions[] = ['titulo' => $titulo, 'action' => $action, 'params' => $params, 'controller' => $controller, 'class' => $classColor, 'icon' => $icon, 'help' => $help];
     }
 
     /**

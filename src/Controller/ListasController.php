@@ -170,9 +170,14 @@ class ListasController extends AppController
 
     }
 
-    public function getListas($produto = null)
+    public function getListas($produto = null, $echo = true)
     {
         $this->render(false);
+        $return = ListasController::getListasProduto($produto);
+        echo json_encode($return);
+    }
+
+    public static function getListasProduto($produto){
         $tableLocator = new TableLocator();
         $listas = [];
         $options = [];
@@ -180,16 +185,18 @@ class ListasController extends AppController
         $listasProdutos = $listasProdutosTable->query();
         $listasProdutos->where(['produto_id' => $produto]);
         foreach ($listasProdutos as $listaProduto) {
-            $this->render(false);
-            $listas[] = $this->Listas->query()->where(['id' => $listaProduto->lista_id])->first();
+            $listas[] = $tableLocator->get('Listas')->query()->where(['id' => $listaProduto->lista_id])->first();
             $listasOpcoesTable = $tableLocator->get('ListasOpcoesExtras');
             $listasOpcoes = $listasOpcoesTable->find()->where(['lista_id' => $listaProduto->lista_id, 'ativa' => true]);
             foreach ($listasOpcoes as $opcaoLista) {
                 $opcoesTable = $tableLocator->get('OpcoesExtras');
-                $opcao = $opcoesTable->query()->where(['id' => $opcaoLista->opcoes_extra_id]);
+                $opcao = $opcoesTable->query()->where(['id' => $opcaoLista->opcoes_extra_id])->first();
                 $options[$listaProduto->lista_id][] = $opcao;
             }
         }
-        echo json_encode(['listas' => $listas, 'options' => $options]);
+        return [
+            'listas' => $listas,
+            'options' => $options
+        ];
     }
 }

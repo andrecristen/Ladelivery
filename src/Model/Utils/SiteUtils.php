@@ -417,7 +417,7 @@ class SiteUtils extends AppController
             $produtoscount++;
         }
         if ($produtoscount < 1) {
-            echo '<div style="width: 100%" class="alert alert-danger" role="alert"> <i class="far fa-grin-beam-sweat fa-3x" style="color: #000000"></i>&nbsp;<span>Está categoria ainda não possui nenhum item cadastrado, mas não deixe de visitar para encontrar novidades!</span></div>';
+            echo '<div style="width: 100%" class="alert alert-danger" role="alert"> <i class="far fa-grin-beam-sweat fa-3x" style="color: #000000"></i>&nbsp;<span>Está categoria ainda não possui nenhum item ativo para venda, mas não deixe de visitar para encontrar novidades!</span></div>';
         }
         echo '</div>';
         echo '<br>';

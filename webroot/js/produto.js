@@ -82,11 +82,11 @@ function montaListasAdicionais(data) {
         if(data.options[data.listas[i].id] !== undefined){
             for (var j = 0; j < data.options[data.listas[i].id].length; j++) {
                 var option = document.createElement('option');
-                option.setAttribute('data-content', data.options[data.listas[i].id][j][0].nome_adicional + ' +R$ '+data.options[data.listas[i].id][j][0].valor_adicional + ' <button title="Visualizar Descrição da Opção" style="position: absolute; right: 5px" class="btn btn-sm btn-info" onclick="showDescricao('+data.options[data.listas[i].id][j][0].id+', event)"><i class="far fa-eye"></i></button>');
-                option.setAttribute('title', data.options[data.listas[i].id][j][0].nome_adicional + ' +R$ '+data.options[data.listas[i].id][j][0].valor_adicional);
-                descricoes[data.options[data.listas[i].id][j][0].id] = data.options[data.listas[i].id][j][0].descricao_adicional;
-                option.setAttribute('idopcional', data.options[data.listas[i].id][j][0].id);
-                option.setAttribute('valoradicional', data.options[data.listas[i].id][j][0].valor_adicional);
+                option.setAttribute('data-content', data.options[data.listas[i].id][j].nome_adicional + ' +R$ '+data.options[data.listas[i].id][j].valor_adicional + ' <button title="Visualizar Descrição da Opção" style="position: absolute; right: 5px" class="btn btn-sm btn-info" onclick="showDescricao('+data.options[data.listas[i].id][j].id+', event)"><i class="far fa-eye"></i></button>');
+                option.setAttribute('title', data.options[data.listas[i].id][j].nome_adicional + ' +R$ '+data.options[data.listas[i].id][j].valor_adicional);
+                descricoes[data.options[data.listas[i].id][j].id] = data.options[data.listas[i].id][j].descricao_adicional;
+                option.setAttribute('idopcional', data.options[data.listas[i].id][j].id);
+                option.setAttribute('valoradicional', data.options[data.listas[i].id][j].valor_adicional);
                 select.appendChild(option);
             }
         }

@@ -7,7 +7,7 @@ $this->layout = false;
 <?php if(\App\Model\Utils\EmpresaUtils::EM_MANUTENCAO){ ?>
     <div style="padding: 80px">
         <div class="row">
-            <?php echo $this->Html->image('empresa/logoLaDevNew.svg', ['class' => 'img-fluid', 'width' => '100px', 'heigth' => '100px']); ?>
+            <?php echo $this->Html->image('empresa/logoLadevNew.svg', ['class' => 'img-fluid', 'width' => '100px', 'heigth' => '100px']); ?>
         </div>
         <hr>
         <h4><strong>Prezado visitante</strong></h4>
@@ -23,7 +23,7 @@ $this->layout = false;
 <?php }else{ ?>
     <div style="padding: 80px">
         <div class="row">
-            <?php echo $this->Html->image('empresa/logoLaDevNew.svg', ['class' => 'img-fluid', 'width' => '100px', 'heigth' => '100px']); ?>
+            <?php echo $this->Html->image('empresa/logoLadevNew.svg', ['class' => 'img-fluid', 'width' => '100px', 'heigth' => '100px']); ?>
         </div>
         <hr>
         <h4><strong>Site em funcionamento normal</strong></h4>

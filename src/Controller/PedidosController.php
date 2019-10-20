@@ -474,9 +474,6 @@ class PedidosController extends AppController
 
     public function comandas()
     {
-        $this->paginate = [
-            'contain' => ['Users']
-        ];
         $filtersFixed = ['tipo_pedido' => Pedido::TIPO_PEDIDO_COMANDA];
         $pedidos = $this->paginate($this->Pedidos->find()->where($this->generateConditionsFind(true, $filtersFixed)))->sortBy('id', SORT_DESC);
         $this->set(compact('pedidos'));

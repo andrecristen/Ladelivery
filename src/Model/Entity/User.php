@@ -81,7 +81,7 @@ class User extends Entity
     ];
 
     public function _setPassword($password){
-        if(strlen($password > 0)){
+        if($password){
             return (new DefaultPasswordHasher)->hash($password);
         }
     }

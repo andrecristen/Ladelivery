@@ -22,6 +22,7 @@ class EmpresaUtils extends AppController
 {
     //Constantes Gerais
     const NOME_EMPRESA_LOJA = 'Baiucas & Bonna';
+    const LINK_SITE = "http://ladelivery.com.br";
     //Constantes de Manutenção
     const EM_MANUTENCAO = false;
     const HORAS_PREVISTAS_MANUTENCAO = 1;

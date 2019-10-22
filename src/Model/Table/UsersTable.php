@@ -1,6 +1,9 @@
 <?php
 namespace App\Model\Table;
 
+use App\Controller\LogsController;
+use App\Model\Entity\Log;
+use App\Model\Entity\User;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -24,6 +27,21 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
+    
+    /**
+     * Gera o token para um novo usuário
+     *
+     * @param $event
+     * @param $entity
+     * @param $options
+     */
+    public function afterSave($event, $entity, $options) {
+        /** @var $entity User*/
+        if(!$entity->token && $entity->tipo != User::TIPO_CLIENTE){
+            $entity->token = User::gerarToken($entity);
+            $this->save($entity);
+        }
+    }
 
     /**
      * Initialize method
@@ -73,6 +91,11 @@ class UsersTable extends Table
             ->scalar('apelido')
             ->maxLength('apelido', 200)
             ->allowEmptyString('apelido');
+
+        $validator
+            ->scalar('token')
+            ->maxLength('token', 200)
+            ->allowEmptyString('token');
 
         $validator
             ->scalar('login')

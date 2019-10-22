@@ -92,6 +92,7 @@ class PedidosProduto extends Entity
             self::STATUS_EM_FILA_PRODUCAO => 'Aguardando Produção',
             self::STATUS_EM_PRODUCAO => 'Em Produção',
             self::STATUS_PRODUCAO_CONCLUIDA => 'Produção Concluida',
+            self::STATUS_PRODUCAO_CANCELADA => 'Produção Cancelada',
         ];
     }
 

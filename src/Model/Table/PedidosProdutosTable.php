@@ -35,28 +35,10 @@ class PedidosProdutosTable extends Table
      */
     public function afterSave($event, $entity, $options) {
         $tableLocator = new TableLocator();
-        $pedidosProdutos = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $entity->pedido_id]);
-        $itens = 0;
-        $itensProduzidos = 0;
-        foreach ($pedidosProdutos as $pedidosProduto){
-            if($pedidosProduto->status == PedidosProduto::STATUS_PRODUCAO_CONCLUIDA){
-                $itensProduzidos++;
-            }
-            $itens++;
-        }
-        if($itens == $itensProduzidos){
-            $pedidoTable = $tableLocator->get('Pedidos');
-            /** @var $pedido Pedido*/
-            $pedido = $pedidoTable->find()->where(['id' => $entity->pedido_id])->first();
-            if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_DELIVERY){
-                if($pedido->getEntrega()){
-                    $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_ENTREGADOR;
-                }else{
-                    $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE;
-                }
-                $pedidoTable->save($pedido);
-            }
-        }
+        $pedidoTable = $tableLocator->get('Pedidos');
+        /** @var $pedido Pedido*/
+        $pedido = $pedidoTable->find()->where(['id' => $entity->pedido_id])->first();
+        Pedido::atualizaSituacaoPedido($pedido);
     }
 
     /**

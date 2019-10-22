@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  * @property string|null $apelido
  * @property string $login
  * @property string $password
+ * @property string $token
  * @property int $dia_nascimento
  * @property int $mes_nascimento
  * @property int $ano_nascimento
@@ -64,6 +65,7 @@ class User extends Entity
         'apelido' => true,
         'login' => true,
         'password' => true,
+        'token' => true,
         'dia_nascimento' => true,
         'mes_nascimento' => true,
         'ano_nascimento' => true,
@@ -79,6 +81,11 @@ class User extends Entity
     protected $_hidden = [
         'password'
     ];
+
+    public static function gerarToken(User $user){
+        $dateTime = new \DateTime();
+        return md5($user->login. $dateTime->format('ymdhis'). $user->nome_completo);
+    }
 
     public function _setPassword($password){
         if($password){

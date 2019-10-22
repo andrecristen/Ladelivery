@@ -43,6 +43,49 @@ class Pedido extends Entity
                 $this->cliente = $this->user->nome_completo;
             }
         }
+        if($this->tipo_pedido == self::TIPO_PEDIDO_COMANDA){
+            $this->valor_a_pagar = $this->getValorPendenteComanda();
+        }
+    }
+
+    public static function atualizaSituacaoPedido(Pedido $pedido){
+        $tableLocator = new TableLocator();
+        $pedidoTable = $tableLocator->get('Pedidos');
+        $pedidosProdutos = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $pedido->id]);
+        $itens = 0;
+        $itensProduzidos = 0;
+        $itensCancelados = 0;
+        $itensPagos = 0;
+        foreach ($pedidosProdutos as $pedidosProduto){
+            if($pedidosProduto->status == PedidosProduto::STATUS_PRODUCAO_CONCLUIDA){
+                $itensProduzidos++;
+            }
+            if($pedidosProduto->status == PedidosProduto::STATUS_PRODUCAO_CANCELADA){
+                $itensCancelados++;
+            }
+            if($pedidosProduto->status == PedidosProduto::STATUS_ITEM_PAGO){
+                $itensPagos++;
+            }
+            $itens++;
+        }
+        if($itens == ($itensProduzidos + $itensCancelados) && $itensProduzidos){
+            if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_DELIVERY){
+                if($pedido->getEntrega()){
+                    $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_ENTREGADOR;
+                }else{
+                    $pedido->status_pedido = Pedido::STATUS_AGUARDANDO_COLETA_CLIENTE;
+                }
+            }
+        }elseif ($itens == $itensCancelados){
+            if($pedido->tipo_pedido == Pedido::TIPO_PEDIDO_COMANDA){
+                $pedido->status_pedido = Pedido::STATUS_CANCELADA;
+            }else{
+                $pedido->status_pedido = Pedido::STATUS_REJEITADO;
+            }
+        }elseif ($itens == $itensPagos){
+            $pedido->status_pedido = Pedido::STATUS_FECHADA;
+        }
+        $pedidoTable->save($pedido);
     }
 
     //Tipos de pedidos
@@ -115,6 +158,19 @@ class Pedido extends Entity
         }
         $valorTotal = ($this->valor_produtos - $this->valor_desconto) + $this->valor_acrescimo + $valorEntrega;
         return $valorTotal;
+    }
+
+    public function getValorPendenteComanda(){
+        $tableLocator = new TableLocator();
+        /** @var $itens PedidosProduto[]*/
+        $itens = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $this->id]);
+        $valorProdutos = 0;
+        foreach ($itens as $item){
+            if($item->status != PedidosProduto::STATUS_ITEM_PAGO && $item->status != PedidosProduto::STATUS_PRODUCAO_CANCELADA){
+                $valorProdutos += $item->valor_total_cobrado;
+            }
+        }
+        return $valorProdutos;
     }
 
     /**

@@ -231,7 +231,7 @@ class PedidosProdutosController extends AppController
         }
     }
 
-    public function alterarSituacao($id = null){
+    public function alterarSituacao($id = null, $redirectToGerenciarItens = false){
         $pedidoProduto = $this->PedidosProdutos->get($id);
         $options = \App\Model\Entity\PedidosProduto::getAlterStatusList();
         /** @var $pedido Pedido*/
@@ -243,7 +243,9 @@ class PedidosProdutosController extends AppController
             $pedidoProduto = $this->PedidosProdutos->patchEntity($pedidoProduto, $this->request->getData());
             if ($this->PedidosProdutos->save($pedidoProduto)) {
                 $this->Flash->success(__('Situação Alterada com sucesso.'));
-                $this->verificaTodosItensProducaoConcluida();
+                if($redirectToGerenciarItens){
+                    $this->redirect(['controller' => 'Pedidos', 'action' => 'gerenciarItens', $pedido->id]);
+                }
                 if($pedidoProduto->ambiente_producao_responsavel == PedidosProduto::RESPONSAVEL_COZINHA){
                     return $this->redirect(['action' => 'cozinha']);
                 }
@@ -272,14 +274,6 @@ class PedidosProdutosController extends AppController
         }else{
             echo json_encode(['success' => false]);
         }
-    }
-
-    /**
-     * Verifica se todos os itens de um pedido estao em producao concluida, pra dai alterar
-     * o status do pedido pra producao concluida tambem.
-     */
-    private function verificaTodosItensProducaoConcluida(){
-
     }
     /**
      * Delete method

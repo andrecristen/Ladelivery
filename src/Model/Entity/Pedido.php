@@ -46,17 +46,21 @@ class Pedido extends Entity
         if($this->tipo_pedido == self::TIPO_PEDIDO_COMANDA){
             $this->valor_a_pagar = $this->getValorPendenteComanda();
         }
+        $this->valor_total = $this->getValorTotal();
     }
 
-    public static function atualizaSituacaoPedido(Pedido $pedido){
+    public static function atualizaSituacaoEValorProdutosPedido(Pedido $pedido){
         $tableLocator = new TableLocator();
         $pedidoTable = $tableLocator->get('Pedidos');
+        /** @var $pedidosProdutos PedidosProduto[]*/
         $pedidosProdutos = $tableLocator->get('PedidosProdutos')->find()->where(['pedido_id' => $pedido->id]);
         $itens = 0;
         $itensProduzidos = 0;
         $itensCancelados = 0;
         $itensPagos = 0;
+        $valorTotalProdutos = 0;
         foreach ($pedidosProdutos as $pedidosProduto){
+            $valorTotalProdutos += $pedidosProduto->valor_total_cobrado;
             if($pedidosProduto->status == PedidosProduto::STATUS_PRODUCAO_CONCLUIDA){
                 $itensProduzidos++;
             }
@@ -85,6 +89,7 @@ class Pedido extends Entity
         }elseif ($itens == $itensPagos){
             $pedido->status_pedido = Pedido::STATUS_FECHADA;
         }
+        $pedido->valor_produtos = $valorTotalProdutos;
         $pedidoTable->save($pedido);
     }
 

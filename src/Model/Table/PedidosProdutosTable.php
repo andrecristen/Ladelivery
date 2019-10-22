@@ -38,7 +38,7 @@ class PedidosProdutosTable extends Table
         $pedidoTable = $tableLocator->get('Pedidos');
         /** @var $pedido Pedido*/
         $pedido = $pedidoTable->find()->where(['id' => $entity->pedido_id])->first();
-        Pedido::atualizaSituacaoPedido($pedido);
+        Pedido::atualizaSituacaoEValorProdutosPedido($pedido);
     }
 
     /**

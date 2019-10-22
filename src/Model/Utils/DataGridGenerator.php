@@ -297,6 +297,9 @@ class DataGridGenerator extends View implements TypeFields
                     if ($actionTable['id']) {
                         $actionTable['url'][] = $entidade[$actionTable['id']];
                     }
+                    if($actionTable['params']){
+                        $actionTable['url'][] = $actionTable['params'];
+                    }
                     if (!$actionTable['isPost']) {
                         echo $this->Html->link($actionTable['titulo'], $actionTable['url'], $actionTable['options']);
                     } else {
@@ -368,9 +371,9 @@ class DataGridGenerator extends View implements TypeFields
     /**
      * @param array $fields
      */
-    public function addActionRow($title, $url = null, array $options = [], $isPostLink = false, $paramIdentificador)
+    public function addActionRow($title, $url = null, array $options = [], $isPostLink = false, $paramIdentificador, $params = null)
     {
-        $this->actionsTable[] = ['titulo' => $title, 'url' => $url, 'options' => $options, 'isPost' => $isPostLink, 'id' => $paramIdentificador];
+        $this->actionsTable[] = ['titulo' => $title, 'url' => $url, 'options' => $options, 'isPost' => $isPostLink, 'id' => $paramIdentificador, 'params' => $params];
     }
 
     /** Ajudantes para visualizacao das informacoes que compoem a table

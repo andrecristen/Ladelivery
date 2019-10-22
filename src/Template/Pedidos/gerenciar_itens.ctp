@@ -32,6 +32,12 @@ $listUtils = new \App\Model\Utils\ListUtils();
             <th scope="row"><?= __('Valor Total R$') ?></th>
             <td><?= $this->Number->format($pedido->getValorTotal()) ?></td>
         </tr>
+        <?php if ($pedido->tipo_pedido == \App\Model\Entity\Pedido::TIPO_PEDIDO_COMANDA) { ?>
+        <tr>
+            <th scope="row"><?= __('Valor Total Pendente R$') ?></th>
+            <td><?= $this->Number->format($pedido->valor_a_pagar) ?></td>
+        </tr>
+        <?php } ?>
     </table>
     <h3><?= __('Itens Cozinha') ?></h3>
     <?php
@@ -48,7 +54,7 @@ $listUtils = new \App\Model\Utils\ListUtils();
     $dataGrid->addField(new \App\Model\Utils\GridField('Status', 'status', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->setController($this->name);
     $dataGrid->setShowFilters(false);
-    $dataGrid->addActionRow('', ['controller' => 'PedidosProdutos', 'action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Item'], false, 'id');
+    $dataGrid->addActionRow('', ['controller' => 'PedidosProdutos', 'action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Item'], false, 'id', true);
     $dataGrid->addActionRow('', ['controller' => 'PedidosProdutos', 'action' => 'view'], ['class' => 'fa fa-search btn btn-info btn-sm', 'title' => 'Visualizar'], false, 'id');
     $dataGrid->display();
     ?>
@@ -67,7 +73,7 @@ $listUtils = new \App\Model\Utils\ListUtils();
     $dataGrid->addField(new \App\Model\Utils\GridField('Status', 'status', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->setController($this->name);
     $dataGrid->setShowFilters(false);
-    $dataGrid->addActionRow('', ['controller' => 'PedidosProdutos', 'action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Item'], false, 'id');
+    $dataGrid->addActionRow('', ['controller' => 'PedidosProdutos', 'action' => 'alterarSituacao'], ['class' => 'fa fa-history btn btn-success btn-sm', 'title' => 'Alterar Situacao do Item'], false, 'id', true);
     $dataGrid->addActionRow('', ['controller' => 'PedidosProdutos', 'action' => 'view'], ['class' => 'fa fa-search btn btn-info btn-sm', 'title' => 'Visualizar'], false, 'id');
     $dataGrid->display();
     ?>

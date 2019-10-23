@@ -67,7 +67,7 @@ class BannersController extends AppController
                 $file = $_FILES['uploadfile'];
                 if($file['name'] != ""){
                     if(!$this->verificaDimensionsBanner($file)){
-                        $this->Flash->error(__('Atenção, para banners forneça uma imagem com tamanaho igual a 1200x400  pixels.'));
+                        $this->Flash->error(__('Atenção, para banners forneça uma imagem com tamanho igual a 1200x400  pixels.'));
                         return;
                     }
                     $midia = $midiaController->newMidiaByUpload($file, Midia::TIPO_BANNER);
@@ -107,7 +107,7 @@ class BannersController extends AppController
                 $file = $_FILES['uploadfile'];
                 if($file['name'] != ""){
                     if(!$this->verificaDimensionsBanner($file)){
-                        $this->Flash->error(__('Atenção, para banners forneça uma imagem com tamanaho igual a 1200x400  pixels.'));
+                        $this->Flash->error(__('Atenção, para banners forneça uma imagem com tamanaho entre 1180X380 a 1220X420 pixels.'));
                         return;
                     }
                     $midia = $midiaController->newMidiaByUpload($file, Midia::TIPO_BANNER);
@@ -131,10 +131,10 @@ class BannersController extends AppController
 
     private function verificaDimensionsBanner($file){
         $fileinfo = @getimagesize ($file["tmp_name"]);
-        if($fileinfo[0] < 1200 || $fileinfo[0] > 1200){
+        if($fileinfo[0] < 1180 || $fileinfo[0] > 1220){
             return false;
         }
-        if($fileinfo[1] < 400 || $fileinfo[1] > 400){
+        if($fileinfo[1] < 380 || $fileinfo[1] > 420){
             return false;
         }
         return true;

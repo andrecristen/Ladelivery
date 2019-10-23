@@ -28,12 +28,18 @@ class LogsController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
+    public function index($isNotificacao = false)
     {
         $this->paginate = [
             'contain' => ['Users']
         ];
-        $logs = $this->paginate($this->Logs->find()->where($this->generateConditionsFind(false)));
+        $fixed = [];
+        if($isNotificacao){
+            $fixed = [
+                'Logs.tipo' => Log::TIPO_NOTIFICACAO_USUARIO
+            ];
+        }
+        $logs = $this->paginate($this->Logs->find()->where($this->generateConditionsFind(false, $fixed)));
 
         $this->set(compact('logs'));
     }

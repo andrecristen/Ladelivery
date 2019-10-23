@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Model\Entity\CategoriasProduto;
 use App\Model\Entity\Pedido;
 use App\Model\Entity\PedidosProduto;
 use App\Model\Entity\Produto;
@@ -59,6 +60,7 @@ class ComandasController extends BaseApiController
 
     public function allComandas()
     {
+        /** @var $comandas Pedido[]*/
         $comandas = $this->getTableLocator()->get('Pedidos')->find()->where(['tipo_pedido' => Pedido::TIPO_PEDIDO_COMANDA, 'status_pedido' => Pedido::STATUS_ABERTA]);
         $comandasFormat = [];
         $situacaoList = Pedido::getComandaStatusList();
@@ -67,6 +69,7 @@ class ComandasController extends BaseApiController
                 'id' => $comanda->id,
                 'cliente' => $comanda->cliente,
                 'situacao' => $situacaoList[$comanda->status_pedido],
+                'situacao_id' => $comanda->status_pedido,
                 'valor' => $comanda->getValorTotal()
             ];
         }
@@ -78,6 +81,7 @@ class ComandasController extends BaseApiController
 
     public function allCategorias()
     {
+        /** @var $categorias CategoriasProduto[]*/
         $categorias = $this->getTableLocator()->get('CategoriasProdutos')->find()->all();
         $categoriaFormat = [];
         foreach ($categorias as $categoria) {
@@ -95,6 +99,7 @@ class ComandasController extends BaseApiController
     public function getItens()
     {
         $categoria = $this->getRequest()->getData('categoria');
+        /** @var $itens Produto[]*/
         $itens = $this->getTableLocator()->get('Produtos')->find()->where(['categorias_produto_id' => $categoria, 'ativo_produto' => true]);
         $itensFormat = [];
         foreach ($itens as $item) {
@@ -257,6 +262,33 @@ class ComandasController extends BaseApiController
     }
 
     public function opcionaisItem(){
+        $adicionais = [];
+        $message = false;
+        try{
+            $item = $this->getRequest()->getData('item');
+            /** @var $pedidoProduto PedidosProduto*/
+            $pedidoProduto = $this->getTableLocator()->get('PedidosProdutos')->find()->where(['id' => $item])->first();
+            if(!$pedidoProduto){
+                throw new \Exception("Não localizado item.");
+            }else{
+                $controller = new \App\Controller\PedidosController();
+                $adicionais = $controller->getAdicionais($pedidoProduto);
+                $success = true;
+            }
+        }catch (\Exception $exception){
+            $message = $exception->getMessage();
+            $success = false;
+        }
+        $return = [
+            'success' => $success,
+            'message' => $message,
+            'opcionais' => $adicionais,
+        ];
+        $this->callReturn($return);
+    }
 
+    public function getListaSituacao(){
+        $lista = Pedido::getComandaAlterStatusList();
+        $this->callReturn($lista);
     }
 }

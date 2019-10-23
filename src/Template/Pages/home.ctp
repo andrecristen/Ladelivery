@@ -42,7 +42,7 @@ $empresa = $empresaUtils->getEmpresaBaseModel()
     <?php }
     /** @var $banners \App\Model\Entity\Banner[]*/
     $banners = $tableLocator->get('Banners')->find()->where(['ativo' => true]);
-    ?>
+    if ($banners->count() > 0){?>
     <div style="height: 400px" id="carouselExampleIndicators" class="carousel slide height-size" data-ride="carousel">
         <ol class="carousel-indicators">
             <?php
@@ -83,6 +83,7 @@ $empresa = $empresaUtils->getEmpresaBaseModel()
     </div>
     <br>
     <br>
+    <?php } ?>
     <h2 style="text-align: center">Tempo de Produção</h2>
     <div class="card-deck mb-3 text-center">
         <div class="card mb-6 box-shadow">

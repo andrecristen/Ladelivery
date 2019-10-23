@@ -453,6 +453,8 @@ class SiteUtils extends AppController
     public final function menuSite()
     {
         $userId = $this->Auth->user('id');
+        $userNome = explode(' ', $this->Auth->user('nome_completo'));
+        $userNome = $userNome[0];
         /** @var $categorias CategoriasProduto[] */
         $categorias = $this->getTableLocator()->get('CategoriasProdutos')->find();
         $itensCarrinhos = $this->getTableLocator()->get('ItensCarrinhos')->find()->where(['user_id' => $this->Auth->user('id')])->count();
@@ -485,14 +487,14 @@ class SiteUtils extends AppController
         echo '</div>';
         echo '</li>';
         echo '<li class="nav-item active">';
-        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-address-card')) . ' Sobre Nós', array('controller' => 'pages', 'action' => 'empresa'), array('escape' => false, 'class' => 'nav-link'));
+        echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-info-circle')) . ' Sobre Nós', array('controller' => 'pages', 'action' => 'empresa'), array('escape' => false, 'class' => 'nav-link'));
         echo '</li>';
         if ($this->Auth->user('id')) {
             echo '<li class="nav-item active">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-bell')) . ' Notificações' . $this->Html->tag('div', $notificacoes, array('class' => 'icon-notify-number')), array('controller' => 'pages', 'action' => 'notificacao'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
             echo '<li class="nav-item active">';
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-circle')) . ' Minha Conta', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'nav-link'));
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-circle')) . ' Olá, '.$userNome , array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
             echo '<li class="nav-item active">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-cart')) . ' Carrinho' . $this->Html->tag('div', $itensCarrinhos, array('class' => 'icon-cart-number')), array('controller' => 'pages', 'action' => 'carrinho'), array('escape' => false, 'class' => 'nav-link'));

@@ -18,6 +18,7 @@
     $dataGrid->addField(new \App\Model\Utils\GridField('Apelido', 'apelido', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->addField(new \App\Model\Utils\GridField('Login', 'login', \App\Model\Utils\DataGridGenerator::TYPE_TEXT));
     $dataGrid->setController($this->name);
+    $dataGrid->addActionRow('', ['controller' => 'Marketing', 'action' => 'email'], ['class' => 'fas fa-envelope-open-text btn btn-success btn-sm', 'title' => 'Enviar Email'], false, 'id');
     $dataGrid->setCallBackActionLimpar('clientes');
     $dataGrid->display();
     ?>

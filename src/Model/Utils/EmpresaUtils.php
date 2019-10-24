@@ -21,7 +21,8 @@ use Cake\ORM\Locator\TableLocator;
 class EmpresaUtils extends AppController
 {
     //Constantes Gerais
-    const NOME_EMPRESA_LOJA = 'Baiucas & Bonna';
+    const NOME_EMPRESA_LOJA = 'Demostração';
+    //Usado na construção de links como envio de email de recuperar senha
     const LINK_SITE = "http://ladelivery.com.br";
     //Constantes de Manutenção
     const EM_MANUTENCAO = false;

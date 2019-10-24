@@ -12,6 +12,7 @@ use Cake\Controller\ComponentRegistry;
 use Cake\Datasource\ConnectionManager;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
+use Cake\Routing\Router;
 
 /**
  * Users Controller
@@ -226,11 +227,23 @@ class UsersController extends AppController
                         return $this->redirect('/pages/blank');
                     }
                 }
+                $data = $this->getRequest()->getData();
+                $params = $this->getRequest()->getParam('?');
+                $redirectUrl = isset($params['redirect-url']) && $params['redirect-url'] !== '/users/login' ? $params['redirect-url'] : false;
+                if(!$redirectUrl){
+                    $redirectUrl = isset($data['redirectUrl']) && $data['redirectUrl'] != '/users/login' ? $data['redirectUrl'] : false;
+                }
+
+                if($redirectUrl){
+                    return $this->redirect($redirectUrl);
+                }
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->default(__('Login ou Senha incorretos!'), ['class'=>'"alert alert-danger']);
             }
         }
+        $redirectUrl = $this->referer(null, true);
+        $this->set(compact('redirectUrl'));
     }
 
     private function getMenusToUser($user){

@@ -66,7 +66,8 @@ class PagesController extends AppController
         $empresaUtils = new \App\Model\Utils\EmpresaUtils();
         if($path[0] == 'produtos' && !$empresaUtils->getUserId()){
             $this->Flash->default('Para poder adicionar ao seu carrinho, por favor entre com sua conta');
-            $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            $params = $this->getRequest()->getParam('?');
+            $this->redirect(['controller' => 'Users', 'action' => 'login?redirectUrl=/pages/produtos?categoria='.$params['categoria']]);
         }
         try {
             $this->render(implode('/', $path));

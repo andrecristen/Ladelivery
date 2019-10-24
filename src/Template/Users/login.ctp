@@ -16,10 +16,11 @@
             <!-- Login Form -->
             <?= $this->Form->create() ?>
             <?php
+                echo $this->Form->control('redirectUrl', ['label'=>'', 'value' => $redirectUrl, 'style' => 'display: none;']);
                 echo $this->Form->control('login', ['label'=>'', 'class'=>"fadeIn second", 'placeholder'=>'E-mail']);
                 echo $this->Form->control('password', ['label'=>'', 'class'=>"fadeIn second", 'placeholder'=>'Senha']);
             ?>
-            <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-home')).' Cancelar', '/', array('escape' => false , 'class' => 'btn btn-sm btn-danger')) ?>
+            <?= $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-home')).' Cancelar', $this->request->referer(), array('escape' => false , 'class' => 'btn btn-sm btn-danger')) ?>
             <?= $this->Form->button($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')).' Entrar', ['class' => 'btn btn-sm btn-primary']) ?>
             <br/>
             <!-- Acoes -->

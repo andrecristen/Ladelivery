@@ -474,10 +474,10 @@ class SiteUtils extends AppController
         echo '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>';
         echo '<div class="collapse navbar-collapse" id="navbarResponsive">';
         echo '<ul class="navbar-nav ml-auto">';
-        echo '<li class="nav-item active">';
+        echo '<li class="nav-item">';
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fa fa-home')) . ' Início', array('controller' => 'pages', 'action' => ''), array('escape' => false, 'class' => 'nav-link'));
         echo '</li>';
-        echo '<li class="dropdown nav-item active">';
+        echo '<li class="dropdown nav-item">';
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-utensils')) . ' Produtos', '#', array('escape' => false, 'class' => 'nav-link dropdown-toggle'));
         echo '<div class="dropdown-menu menu-site">';
         foreach ($categorias as $categoria) {
@@ -486,24 +486,24 @@ class SiteUtils extends AppController
         echo $this->Html->link($this->Html->tag('i', '', array('class' => '')) . ' Todas Categorias', array('controller' => 'pages', 'action' => 'categorias'), array('escape' => false, 'class' => 'dropdown-item menu-site-item'));
         echo '</div>';
         echo '</li>';
-        echo '<li class="nav-item active">';
+        echo '<li class="nav-item">';
         echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-info-circle')) . ' Sobre Nós', array('controller' => 'pages', 'action' => 'empresa'), array('escape' => false, 'class' => 'nav-link'));
         echo '</li>';
         if ($this->Auth->user('id')) {
-            echo '<li class="nav-item active">';
+            echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-bell')) . ' Notificações' . $this->Html->tag('div', $notificacoes, array('class' => 'icon-notify-number')), array('controller' => 'pages', 'action' => 'notificacao'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
-            echo '<li class="nav-item active">';
-            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-circle')) . ' Olá, '.$userNome , array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'nav-link'));
-            echo '</li>';
-            echo '<li class="nav-item active">';
+            echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-shopping-cart')) . ' Carrinho' . $this->Html->tag('div', $itensCarrinhos, array('class' => 'icon-cart-number')), array('controller' => 'pages', 'action' => 'carrinho'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
             echo '<li class="nav-item active">';
+            echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-user-circle')) . '<strong> Olá, '.$userNome.'</strong>', array('controller' => 'users', 'action' => 'profile'), array('escape' => false, 'class' => 'nav-link'));
+            echo '</li>';
+            echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-out-alt')) . ' Sair', array('controller' => 'users', 'action' => 'logout'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
         } else {
-            echo '<li class="nav-item active">';
+            echo '<li class="nav-item">';
             echo $this->Html->link($this->Html->tag('i', '', array('class' => 'fas fa-sign-in-alt')) . ' Entrar', array('controller' => 'users', 'action' => 'login'), array('escape' => false, 'class' => 'nav-link'));
             echo '</li>';
         }

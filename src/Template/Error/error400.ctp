@@ -43,14 +43,15 @@ endif;
         </div>
         <p class="lead text-gray-800 mb-5">
             <font style="vertical-align: inherit;">
-                <font style="vertical-align: inherit;">Página não encontrada</font>
+                <font style="vertical-align: inherit;">Página não encontrada!</font>
             </font>
         </p>
         <p class="text-gray-800 mb-0">
             <font style="vertical-align: inherit;">
                 <font style="vertical-align: inherit;">
-                    Parece que você encontrou está no lugar errado ...
-                    <?= __d('cake', 'A requisição para o endereço {0} não teve sucesso no servidor. Retorno recebido "'.h($message).'"', "<strong>'{$url}'</strong>") ?>
+                    <?= __d('cake', 'A requisição para o endereço {0} não teve sucesso no servidor. Retorno recebido "'.h($message).'".', "<strong>'{$url}'</strong>") ?>
+                    <br>
+                    <br>
                 </font>
             </font>
         </p>

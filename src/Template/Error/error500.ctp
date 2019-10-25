@@ -36,9 +36,30 @@ if (Configure::read('debug')) :
     $this->end();
 endif;
 ?>
-<h2><?= __d('cake', "Ocorreu um erro interno. Lamentamos!") ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= h($message) ?>
-    <?= h('Algo de errado aconteceu, verifique o endereço digitado e tente novamente') ?>
-</p>
+<?= $this->Html->css('dashboard.css') ?>
+<div class="container-fluid">
+    <div class="text-center">
+        <div class="error mx-auto" data-text="500">
+            <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">500</font>
+            </font>
+        </div>
+        <p class="lead text-gray-800 mb-5">
+            <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">Ocorreu um erro interno. Lamentamos!</font>
+            </font>
+        </p>
+        <p class="text-gray-800 mb-0">
+            <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">
+                    <?= h('Algo de errado aconteceu, verifique o endereço digitado e tente novamente.') ?>
+                    <br>
+                    <strong><?= __d('cake', 'Error') ?>: </strong>
+                    <?= h($message) ?>
+                    <br>
+                    <br>
+                </font>
+            </font>
+        </p>
+    </div>
+</div>

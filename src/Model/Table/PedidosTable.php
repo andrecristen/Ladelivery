@@ -2,8 +2,12 @@
 namespace App\Model\Table;
 
 use App\Controller\LogsController;
+use App\Controller\SituacaoPedidoNotificacaoController;
 use App\Model\Entity\Log;
 use App\Model\Entity\Pedido;
+use App\Model\Entity\SituacaoPedidoNotificacao;
+use App\Model\Utils\EmpresaUtils;
+use Cake\ORM\Locator\TableLocator;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -44,6 +48,16 @@ class PedidosTable extends Table
             //Vamos gerar a notificacao
             $situacaoList = Pedido::getDeliveryStatusList();
             LogsController::newInstanceLog(Log::TIPO_NOTIFICACAO_USUARIO, 'Seu pedido #'.$entity->id.', teve uma alteração de situação. A nova situação é: '.$situacaoList[$statusAtual].'.', $entity->user_id);
+            //Nossa empresa envia email? Se sim vamos enviar
+            if(EmpresaUtils::ENVIA_EMAIL_PEDIDO){
+                $tableLocator = new TableLocator();
+                /** @var $notificacao SituacaoPedidoNotificacao*/
+                $notificacao = $tableLocator->get('SituacaoPedidoNotificacao')->find()->where(['situacao_pedido' => $entity->status_pedido])->first();
+                if($notificacao){
+                    $situacaoPedidoNotificaoController = new SituacaoPedidoNotificacaoController();
+                    $situacaoPedidoNotificaoController->renderTemplate($entity, $notificacao);
+                }
+            }
         }
     }
 

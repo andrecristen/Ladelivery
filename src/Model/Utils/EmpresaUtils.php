@@ -22,17 +22,23 @@ class EmpresaUtils extends AppController
 {
     //Constantes Gerais
     const NOME_EMPRESA_LOJA = 'Demostração';
+    const NOME_SISTEMA = 'LaDelivery';
     //Usado na construção de links como envio de email de recuperar senha
     const LINK_SITE = "http://ladelivery.com.br";
+
     //Constantes de Manutenção
     const EM_MANUTENCAO = false;
     const HORAS_PREVISTAS_MANUTENCAO = 1;
     //Constantes de Relatorio
     const ANO_HOMOLOGACAO_EMPRESA = 2019;
+
     //Constantes de Imagens
     const IMAGE_LOGIN_PATH = 'empresa/logologin.png';
     const IMAGE_SITE_PATH = 'empresa/logoSite.png';
     const IMAGE_PADRAO_PRODUTOS_SEM_IMAGEM = 'empresa/padrao.jpeg';
+
+    //Constantes Notificacao
+    const ENVIA_EMAIL_PEDIDO = true;
 
     /*
      * Id da empresa unica que fornece produtos.

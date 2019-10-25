@@ -2,6 +2,7 @@
 namespace App\Mailer;
 
 use App\Model\Entity\AlteracaoSenha;
+use App\Model\Utils\EmpresaUtils;
 use Cake\Mailer\Mailer;
 
 /**
@@ -23,6 +24,6 @@ class AlteracaoSenhaMailer extends Mailer
             ->setEmailFormat('html')
             ->setTemplate('alteracao_senha')
             ->setViewVars(['token' => $alteracaoSenha->token , 'userName' => $alteracaoSenha->user->nome_completo])
-            ->setSubject('Alteração de Senha LaDelivery');
+            ->setSubject('Alteração de Senha '.EmpresaUtils::NOME_SISTEMA);
     }
 }

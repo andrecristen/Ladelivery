@@ -14,7 +14,7 @@
                 Olá <b><?= $userName?></b>,
                 <br>
                 <br>
-                <span>Recebemos uma solicitação de alteração de senha para sua conta no sistema LaDelivery</span>
+                <span>Recebemos uma solicitação de alteração de senha para sua conta no sistema <?= \App\Model\Utils\EmpresaUtils::NOME_SISTEMA?></span>
                 <br>
                 <br>
                 </center>
@@ -27,7 +27,7 @@
             <br>
             <br>
             <center>
-                <span>Se você não solicitou está alteração recomendamos alterar a senha da sua conta LaDelivery e também sua senha da conta de e-mail</span>.
+                <span>Se você não solicitou está alteração recomendamos alterar a senha da sua conta em nosso site e também sua senha da conta de e-mail</span>.
             </center>
             <br>
             <br>
@@ -37,6 +37,6 @@
     </tbody>
 </table>
 <center>
-    <h2>Atenciosamente equipe LaDelivery</h2>
+    <h2>Atenciosamente equipe <?php \App\Model\Utils\EmpresaUtils::NOME_EMPRESA_LOJA?></h2>
     <span style="padding:20px;color:#555;line-height:25px;font-size:16px">Não responda este e-mail</span>
 </center>

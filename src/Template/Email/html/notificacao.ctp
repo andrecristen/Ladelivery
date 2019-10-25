@@ -1,0 +1,5 @@
+<?php
+?>
+<div>
+    <?= $template?>
+</div>

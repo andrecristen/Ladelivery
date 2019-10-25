@@ -20,8 +20,18 @@ $cacheVersion = $cacheControl->getCacheVersion();
                     <input onchange="alternateFieldsCliente(this)" type="checkbox" checked class="form-check-input" id="cliente">&nbsp;
                     <label class="form-check-label" for="cliente">Cliente com conta cadastrada</label>
                   </div>';
-            echo $this->Form->control('user_id', ['id' => 'cliente_cadastrado', 'label'=> 'Cliente', 'options' => $users, 'required' => 'required']);
+            ?>
+            <div id="div_cadastrado">
+                <?php
+                echo $this->Form->control('user_id', ['id' => 'cliente_cadastrado', 'label'=> 'Cliente', 'options' => $users, 'required' => 'required']);
+                ?>
+            </div>
+            <div style="display: none" id="div_nao_cadastrado">
+            <?php
             echo $this->Form->control('cliente', ['id' => 'cliente_nao_cadastrado', 'disabled' => 'disabled', 'label'=> 'Cliente Não cadastrado', 'required' => 'required']);
+            ?>
+            </div>
+            <?php
             echo $this->Form->control('formas_pagamento_id', ['label'=> 'Forma Pagamento', 'options' => $formasPagamento, 'required' => 'required']);
         } ?>
 

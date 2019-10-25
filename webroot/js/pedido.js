@@ -1,4 +1,6 @@
 function alternateFieldsCliente(check) {
+    $("#div_cadastrado").toggle();
+    $("#div_nao_cadastrado").toggle();
     if($(check).prop('checked')){
         $("#cliente_nao_cadastrado").prop('disabled', 'disabled');
         $("#cliente_nao_cadastrado").val(null);

@@ -26,7 +26,7 @@ $tableLocator = new \Cake\ORM\Locator\TableLocator();
            <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-title"><i class="fas fa-user-alt"></i>&nbsp;<?= $pedido->user->nome_completo ?></h6>
+                        <h6 class="card-title"><i class="fas fa-user-alt"></i>&nbsp;<?= $pedido->cliente ?></h6>
                         <p class="card-text">
                             Identificador Pedido: <?= $pedido->id?>
                             <br>

@@ -197,15 +197,22 @@ class PedidosController extends AppController
         return $pedido;
     }
 
-    private function beanModelPedido($pedido, $data)
+    private function beanModelPedido(Pedido $pedido, $data)
     {
         $pedido->user_id = $data['user_id'] ? $data['user_id'] :  $this->empresaUtils->getUserEmpresaModel()->user_id;
         $pedido->cliente = $data['cliente'];
+        if(!$pedido->cliente){
+            /** @var $user User*/
+            $user = $this->getTableLocator()->get('Users')->find()->where(['id' => $pedido->user_id])->first();
+            if($user){
+                $pedido->cliente = $user->nome_completo;
+            }
+        }
         $pedido->formas_pagamento_id = $data['formas_pagamento_id'];
         return $pedido;
     }
 
-    private function beanModelComanda($pedido, $data)
+    private function beanModelComanda(Pedido $pedido, $data)
     {
         $pedido->user_id = $this->empresaUtils->getUserId();
         $pedido->cliente = $data['cliente'];
@@ -859,6 +866,7 @@ class PedidosController extends AppController
             $this->Pedidos->getConnection()->begin();
             $newPedido = $this->Pedidos->newEntity();
             $newPedido->user_id = $this->Auth->user('id');
+            $newPedido->cliente = $this->Auth->user('nome_completo');
             $newPedido->valor_produtos = 0;
             $newPedido->status_pedido = Pedido::STATUS_AGUARDANDO_CONFIRMACAO_CLIENTE;
             $dateTime = new  \DateTime();

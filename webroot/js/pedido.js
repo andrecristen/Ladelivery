@@ -17,7 +17,6 @@ function alternateFieldsCliente(check) {
 }
 
 function alternateFieldsEndereco(check) {
-    debugger;
     if($(check).prop('checked')){
         $("#area-endereco").css('display', 'none');
         $("#area-new-endereco").css('display', 'block');

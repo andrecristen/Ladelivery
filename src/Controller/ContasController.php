@@ -96,7 +96,15 @@ class ContasController extends AppController
             $this->Flash->error(__('Não foi possível salvar a conta, tente novamente.'));
         }
         $users = $this->Contas->Users->find('list');
-        $this->set(compact('conta', 'users'));
+        $checked = $conta->user_id ? 'checked': '';
+        $styleNaoCadastrado = '';
+        $styleCadastrado = '';
+        if($checked == ''){
+            $styleCadastrado = 'style="display: none"';
+        }else{
+            $styleNaoCadastrado = 'style="display: none"';
+        }
+        $this->set(compact('conta', 'users', 'checked', 'styleNaoCadastrado', 'styleCadastrado'));
     }
 
     public function definirPago($id = null){

@@ -229,9 +229,9 @@ class UsersController extends AppController
                 }
                 $data = $this->getRequest()->getData();
                 $params = $this->getRequest()->getParam('?');
-                $redirectUrl = isset($params['redirect-url']) && $params['redirect-url'] !== '/users/login' ? $params['redirect-url'] : false;
+                $redirectUrl = isset($params['redirect-url']) && $params['redirect-url'] !== '/users/login' && $params['redirect-url'] !== '/users/registrar' ? $params['redirect-url'] : false;
                 if(!$redirectUrl){
-                    $redirectUrl = isset($data['redirectUrl']) && $data['redirectUrl'] != '/users/login' ? $data['redirectUrl'] : false;
+                    $redirectUrl = isset($data['redirectUrl']) && $data['redirectUrl'] != '/users/login' && $params['redirect-url'] !== '/users/registrar' ? $data['redirectUrl'] : false;
                 }
 
                 if($redirectUrl){

@@ -19,6 +19,7 @@ $cacheControl = $cacheControl->getCacheVersion();
 $siteUtils = new \App\Model\Utils\SiteUtils();
 $menusAdmin = $_SESSION["menus"];
 $novosPedidos = $siteUtils->countNewPedidos();
+$title = preg_split('/(?=[A-Z])/',$this->fetch('title'));
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,7 +27,7 @@ $novosPedidos = $siteUtils->countNewPedidos();
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $cakeDescription ?> : <?= $this->fetch('title') ?>
+        <?= $cakeDescription ?> : <?= join($title, " " )?>
     </title>
     <?= $this->Html->meta('icon') ?>
     <link rel="stylesheet" href="/css/base.css<?= h($cacheControl) ?>">

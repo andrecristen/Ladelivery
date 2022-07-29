@@ -3,4 +3,3 @@
 ## Framework: CakePHP
 ## Status BD: Em Finalização
 ## Version: 1.0
-Responsável WEB: André Cristen

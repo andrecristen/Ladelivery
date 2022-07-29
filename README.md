@@ -1,5 +1,3 @@
 # Web LaDelivery - LaDev 
-## Status: Em Finalização
-## Framework: CakePHP
-## Status BD: Em Finalização
-## Version: 1.0
+
+## Criação de site de delivery com painel de gestão para aperfeicoamento de conhecimentos na linguagem PHP e aprendizado do framework CakePHP.
